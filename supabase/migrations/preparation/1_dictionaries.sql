@@ -1,6 +1,7 @@
 -- Create dictionaries table with type as PRIMARY KEY
 CREATE TABLE dictionaries (
-    type VARCHAR(50) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) UNIQUE NOT NULL,
     name JSONB NOT NULL
 );
 
