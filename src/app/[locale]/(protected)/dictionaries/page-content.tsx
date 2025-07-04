@@ -14,6 +14,7 @@ import {
   DictionaryEntryNameDisplay,
   useDictionaryStore,
 } from "@/entities/dictionaries";
+import { DictionaryDescriptionInput } from "@/entities/dictionaries/components/dictionary-description";
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { Button } from "@/modules/shadcn/components/ui/button";
@@ -141,6 +142,9 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                       </div>
                       <div>
                         <DictionaryNameInput id={dictId} locale="en" />
+                      </div>
+                      <div>
+                        <DictionaryDescriptionInput id={dictId} />
                       </div>
 
                       <Separator className="my-4" />

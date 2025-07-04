@@ -1,10 +1,8 @@
-
 CREATE TABLE dictionary_entries (
     id SERIAL PRIMARY KEY,
-    type VARCHAR(50) NOT NULL REFERENCES dictionaries(type) ON DELETE CASCADE ON UPDATE CASCADE,
-    code VARCHAR(50) NOT NULL,
-    name JSONB NOT NULL,
-    UNIQUE (type, code)
+    dictionary_id INTEGER NOT NULL REFERENCES dictionaries(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    code VARCHAR(50) UNIQUE NOT NULL,
+    name JSONB NOT NULL
 );
 
 ALTER TABLE dictionary_entries DISABLE ROW LEVEL SECURITY;
