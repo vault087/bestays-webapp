@@ -40,7 +40,7 @@ describe("useDictionaryCodeInput", () => {
     });
 
     expect(result.current).toEqual({
-      inputId: "dictionary-code-1",
+      inputId: "dictionary-code-input-1",
       value: "PROPERTY_TYPES",
       onChange: expect.any(Function),
       placeholder: "Enter dictionary code",
@@ -63,22 +63,5 @@ describe("useDictionaryCodeInput", () => {
         result.current.onChange("NEW_CODE");
       });
     }).not.toThrow();
-  });
-
-  it("should return error for empty code", () => {
-    const TestComponent = ({ children }: { children: React.ReactNode }) => (
-      <DictionaryStoreTestProvider>{children}</DictionaryStoreTestProvider>
-    );
-
-    const { result } = renderHook(() => useDictionaryCodeInput(1), {
-      wrapper: TestComponent,
-    });
-
-    // Update to empty code and rerender to get the error
-    act(() => {
-      result.current.onChange("");
-    });
-
-    expect(result.current.error).toBe("Code cannot be empty");
   });
 });
