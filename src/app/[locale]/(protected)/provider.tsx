@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { type ReactNode } from "react";
 import * as React from "react";
-import { ThemeProvider } from "@/components/theme/components/theme-provider";
 import { AuthGuard } from "@/components/auth/auth-guard";
+import { ThemeProvider } from "@/components/theme/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Bestays Dashboard",

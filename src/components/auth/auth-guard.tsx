@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { getUser } from "@cms-data/modules/users/user.libs";
-import { User } from "@cms-data/modules/users/user.types";
+import { getUser } from "@/entities/users/user.libs";
+import { User } from "@/entities/users/user.types";
 
 interface AuthGuardProps {
   children: React.ReactNode;

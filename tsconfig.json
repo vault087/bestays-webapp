@@ -19,12 +19,6 @@
       }
     ],
     "paths": {
-      "@cms-data/*": ["./src/packages/cms-data/*"],
-      "@cms-ai/*": ["./src/packages/cms-ai/*"],
-      "@cms/*": ["./src/packages/cms/*"],
-      "@shared-ui/*": ["./src/packages/shared-ui/*"],
-      "@appkit/*": ["./src/packages/appkit/*"],
-
       "@/*": ["./src/*"]
     }
   },

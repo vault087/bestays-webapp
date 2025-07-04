@@ -54,32 +54,6 @@ const eslintConfig = [
           groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
           pathGroups: [
             {
-              pattern: "@shared-ui/**",
-              group: "internal",
-              position: "before",
-            },
-            {
-              pattern: "@appkit/**",
-              group: "internal",
-              position: "before",
-            },
-
-            {
-              pattern: "@cms-data/**",
-              group: "internal",
-              position: "after",
-            },
-            {
-              pattern: "@cms/**",
-              group: "internal",
-              position: "after",
-            },
-            {
-              pattern: "@cms-ai/**",
-              group: "internal",
-              position: "after",
-            },
-            {
               pattern: "@/**",
               group: "internal",
               position: "before",

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SideBarDomainList } from './sidebar-domain-list';
 
 export default async function SideBar() {
   return (
@@ -65,9 +64,7 @@ export default async function SideBar() {
       </div>
 
       {/* Domain List */}
-      <div>
-        <SideBarDomainList />
-      </div>
+      <div>listing..</div>
     </div>
   );
 }

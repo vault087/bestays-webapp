@@ -1,9 +1,9 @@
 import { NextFetchEvent, type NextRequest } from "next/server";
 import { NextMiddleware } from "next/server";
 import createMiddleware from "next-intl/middleware";
+import { createMiddlewareChain } from "./libs";
 import { LOCALES, DEFAULT_LOCALE } from "./modules/i18n/types/locale-types";
-import { createMiddlewareChain } from "./packages/appkit/utils/middleware-chain";
-import { updateSession } from "./packages/cms-data/libs/supabase/middleware/updateSession";
+import { updateSession } from "./modules/supabase/middleware/updateSession";
 
 const handleI18nRouting = createMiddleware({
   locales: LOCALES,

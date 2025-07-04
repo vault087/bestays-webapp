@@ -1,2 +1,0 @@
-ALTER TABLE cms_domains ADD COLUMN description JSONB DEFAULT NULL;
-ALTER TABLE cms_properties ADD COLUMN description JSONB DEFAULT NULL;

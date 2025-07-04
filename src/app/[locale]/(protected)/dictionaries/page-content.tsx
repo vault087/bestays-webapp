@@ -2,6 +2,7 @@
 
 import { PlusCircle } from "lucide-react";
 import React, { use } from "react";
+import { DebugCard } from "@/components/ui/debug-json-card";
 import {
   createStandaloneDictionaryStore,
   DictionaryStoreProvider,
@@ -47,6 +48,8 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
             </Button>
           </CardContent>
         </Card>
+
+        <DebugCard label="Error State Debug" json={{ error, dictionaries, entries }} />
       </div>
     );
   }
@@ -96,6 +99,11 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
             </div>
           </CardContent>
         </Card>
+
+        <DebugCard
+          label="All Dictionaries & Entries (Empty State)"
+          json={{ dictionaries, entries, message: "No dictionaries found" }}
+        />
       </div>
     );
   }
@@ -174,6 +182,8 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
             Add new Dictionary
           </Button>
         </div>
+
+        <DebugCard label="All Dictionaries & Entries" json={{ dictionaries, entries, storeState: store.getState() }} />
       </div>
     </DictionaryStoreProvider>
   );

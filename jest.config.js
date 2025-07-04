@@ -8,7 +8,6 @@ const customJestConfig = {
   setupFiles: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
-    "^@appkit/(.*)$": "<rootDir>/src/packages/appkit/$1",
   },
   testEnvironment: "jsdom",
   coverageProvider: "v8",

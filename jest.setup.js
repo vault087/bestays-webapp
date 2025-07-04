@@ -39,7 +39,6 @@ jest.mock("@/modules/supabase/clients/client.server", () => ({
   ),
 }));
 
-// Mock the main CMS libs (which re-exports the above)
 jest.mock("@/modules/supabase", () => ({
   supabase: {
     from: jest.fn(),

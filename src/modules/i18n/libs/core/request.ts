@@ -17,7 +17,7 @@ export default getRequestConfig(async ({ requestLocale }): Promise<RequestConfig
     try {
       defaultMessages = (await import(`/messages/${defaultLocale}.json`)).default;
     } catch (error) {
-      console.warn(`[CMS i18n] Could not load default locale messages for '${defaultLocale}'.`, error);
+      console.warn(`[i18n] Could not load default locale messages for '${defaultLocale}'.`, error);
     }
   }
 

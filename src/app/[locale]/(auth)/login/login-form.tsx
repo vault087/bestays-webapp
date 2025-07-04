@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { login } from "@cms/modules/users/auth.actions";
+import { login } from "@/entities/users/libs/auth";
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);

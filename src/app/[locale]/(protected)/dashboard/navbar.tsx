@@ -1,7 +1,7 @@
 "use client";
 
 import { redirect } from "next/navigation";
-import { logout } from "@cms/modules/users/auth.actions";
+import { logout } from "@/entities/users/libs/auth";
 
 export default function NavBar() {
   async function logoutHandler() {
