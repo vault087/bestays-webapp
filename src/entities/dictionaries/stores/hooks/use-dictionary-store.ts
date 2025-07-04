@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useStore } from "zustand";
 import { useDictionaryStoreContext } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
 import { DictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
@@ -7,9 +7,7 @@ import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dicti
 // Access the dictionary store
 export function useDictionaryStore<T>(selector: (state: DictionaryStore) => T): T {
   const store = useDictionaryStoreContext();
-  // Memoize the selector to prevent infinite loop from getServerSnapshot
-  const memoizedSelector = useCallback(selector, [selector]);
-  return useStore(store, memoizedSelector);
+  return useStore(store, selector);
 }
 
 // Access dictionary actions
@@ -37,26 +35,25 @@ export function useDictionaryActions(): {
 
 // Access a specific dictionary by ID
 export function useDictionary(id: number): Dictionary | undefined {
-  return useDictionaryStore(useCallback((state) => state.dictionaries[id], [id]));
+  return useDictionaryStore((state) => state.dictionaries[id]);
 }
 
 // Access a specific entry by dictionary ID and entry ID
 export function useDictionaryEntry(dictionaryId: number, entryId: number): DictionaryEntry | undefined {
-  return useDictionaryStore(useCallback((state) => state.entries[dictionaryId]?.[entryId], [dictionaryId, entryId]));
+  return useDictionaryStore((state) => state.entries[dictionaryId]?.[entryId]);
 }
 
-// Get sorted entry IDs (alphabetically by code)
-export function useDictionaryEntriesSorted(dictionaryId: number): number[] {
-  return useDictionaryStore(
-    useCallback(
-      (state) => {
-        const entries = state.entries[dictionaryId] || {};
+export function useDictionaryEntries(dictionaryId: number): DictionaryEntry[] {
+  return useDictionaryStore((state) => state.entries[dictionaryId] || EMPTY_ENTRIES);
+}
 
-        return Object.values(entries)
-          .sort((a, b) => a.code.localeCompare(b.code))
-          .map((entry) => entry.id);
-      },
-      [dictionaryId],
-    ),
-  );
+const EMPTY_ENTRIES = {};
+// Get sorted entry IDs (alphabetically by code)
+export function useDictionaryEntriesSortedIds(dictionaryId: number): number[] {
+  return useDictionaryStore((state) => {
+    const entries = state.entries[dictionaryId] || EMPTY_ENTRIES;
+    return Object.values(entries)
+      .sort((a, b) => a.code.localeCompare(b.code))
+      .map((entry) => entry.id);
+  });
 }

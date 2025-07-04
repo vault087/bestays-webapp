@@ -19,6 +19,9 @@ export interface DictionaryStoreActions {
   addEntry: (dictionaryId: number, entry: DictionaryEntry) => void;
   updateEntry: (dictionaryId: number, entryId: number, updater: (draft: DictionaryEntry) => void) => void;
   deleteEntry: (dictionaryId: number, entryId: number) => void;
+  // Validation methods (computed, no state changes)
+  validateEntryCode: (dictionaryId: number, entryId: number, code: string) => string | undefined;
+  isEntryCodeDuplicate: (dictionaryId: number, entryId: number, code: string) => boolean;
 }
 
 // Combined store type
@@ -26,7 +29,7 @@ export type DictionaryStore = DictionaryStoreState & DictionaryStoreActions;
 export type DictionaryStoreApi = StoreApi<DictionaryStore>;
 
 // Store creator function
-export const createDictionaryStore: StateCreator<DictionaryStore> = (set) => ({
+export const createDictionaryStore: StateCreator<DictionaryStore> = (set, get) => ({
   // Initial state
   dictionaries: {},
   entries: {},
@@ -119,6 +122,24 @@ export const createDictionaryStore: StateCreator<DictionaryStore> = (set) => ({
         }
       }),
     ),
+
+  // Validation methods
+  isEntryCodeDuplicate: (dictionaryId: number, entryId: number, code: string) => {
+    const state = get();
+    const entries = state.entries[dictionaryId] || {};
+    return Object.values(entries).some((otherEntry) => otherEntry.id !== entryId && otherEntry.code === code);
+  },
+
+  validateEntryCode: (dictionaryId: number, entryId: number, code: string) => {
+    const state = get();
+    if (!code) {
+      return "Code cannot be empty";
+    }
+    if (state.isEntryCodeDuplicate(dictionaryId, entryId, code)) {
+      return "Code must be unique within this dictionary";
+    }
+    return undefined;
+  },
 });
 
 // Create standalone store (useful for tests and simple usage)

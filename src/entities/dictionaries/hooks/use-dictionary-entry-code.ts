@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useDictionaryEntry, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { generateInputId } from "@/utils";
 
 // Display hook for dictionary entry code
 export function useDictionaryEntryCodeDisplay(dictionaryId: number, entryId: number): string | undefined {
@@ -18,12 +19,15 @@ export function useDictionaryEntryCodeInput(
   placeholder: string;
   error?: string;
 } {
-  const entry = useDictionaryEntry(dictionaryId, entryId);
-  const updateEntry = useDictionaryStore((state) => state.updateEntry);
-  const entries = useDictionaryStore((state) => state.entries[dictionaryId] || {});
+  // ✅ Single store access with validation methods
+  const { entry, updateEntry, validateEntryCode } = useDictionaryStore((state) => ({
+    entry: state.entries[dictionaryId]?.[entryId],
+    updateEntry: state.updateEntry,
+    validateEntryCode: state.validateEntryCode,
+  }));
 
-  // Generate a unique input ID
-  const inputId = `dictionary-entry-code-${dictionaryId}-${entryId}`;
+  // Generate a unique input ID using the utility
+  const inputId = generateInputId("dictionary-entry", entryId.toString(), "code");
 
   // Handle change
   const onChange = useCallback(
@@ -35,16 +39,8 @@ export function useDictionaryEntryCodeInput(
     [dictionaryId, entryId, updateEntry],
   );
 
-  // Validate for uniqueness and emptiness
-  const isDuplicate = Object.values(entries).some(
-    (otherEntry) => otherEntry.id !== entryId && otherEntry.code === entry?.code,
-  );
-
-  const error = !entry?.code
-    ? "Code cannot be empty"
-    : isDuplicate
-      ? "Code must be unique within this dictionary"
-      : undefined;
+  // Get validation error if any
+  const error = entry?.code ? validateEntryCode(dictionaryId, entryId, entry.code) : "Code cannot be empty";
 
   return {
     inputId,

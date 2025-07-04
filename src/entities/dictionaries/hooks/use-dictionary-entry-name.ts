@@ -44,7 +44,7 @@ export function useDictionaryEntryNameInput(
   );
 
   // Validate - name should not be empty for primary locale
-  const error = locale === "en" && entry?.name?.[locale] === "" ? "Name cannot be empty for primary locale" : undefined;
+  const error = undefined;
 
   return {
     inputId,

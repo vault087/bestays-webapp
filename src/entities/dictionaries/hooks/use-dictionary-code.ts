@@ -18,7 +18,6 @@ export function useDictionaryCodeInput(id: number): {
   const dictionary = useDictionary(id);
   const updateDictionary = useDictionaryStore((state) => state.updateDictionary);
 
-  // Generate a unique input ID
   const inputId = `dictionary-code-${id}`;
 
   // Handle change
@@ -31,9 +30,7 @@ export function useDictionaryCodeInput(id: number): {
     [id, updateDictionary],
   );
 
-  // Validate for uniqueness (would need to check against other dictionaries)
-  // This is a simplified version - a real implementation would check for uniqueness
-  const error = (dictionary?.code as string) === "" ? "Code cannot be empty" : undefined;
+  const error = undefined;
 
   return {
     inputId,

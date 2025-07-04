@@ -12,6 +12,7 @@ import {
   DictionaryEntryCodeInput,
   DictionaryEntryNameFloatingInput,
   DictionaryEntryNameDisplay,
+  useDictionaryStore,
 } from "@/entities/dictionaries";
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
@@ -28,6 +29,16 @@ interface DictionariesPageContentProps {
   }>;
 }
 
+function ReactiveDebugCard() {
+  // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
+  const { dictionaries, entries } = useDictionaryStore((state) => ({
+    dictionaries: state.dictionaries,
+    entries: state.entries,
+  }));
+
+  return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
+}
+
 export default function DictionariesPageContent({ dictionariesPromise }: DictionariesPageContentProps) {
   // Use React's 'use' hook to resolve the promise
   const { dictionaries, entries, error } = use(dictionariesPromise);
@@ -38,18 +49,20 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
   // Error handling
   if (error) {
     return (
-      <div className="container mx-auto p-4">
-        <h1 className="mb-6 text-2xl font-bold">Error Loading Dictionaries</h1>
-        <Card className="bg-red-50">
-          <CardContent className="p-4">
-            <p className="text-red-600">{error}</p>
-            <Button className="mt-4" onClick={() => window.location.reload()}>
-              Retry
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="flex gap-6 p-4">
+        <div className="flex-1">
+          <h1 className="mb-6 text-2xl font-bold">Error Loading Dictionaries</h1>
+          <Card className="bg-red-50">
+            <CardContent className="p-4">
+              <p className="text-red-600">{error}</p>
+              <Button className="mt-4" onClick={() => window.location.reload()}>
+                Retry
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
-        <DebugCard label="Error State Debug" json={{ error, dictionaries, entries }} />
+        <ReactiveDebugCard />
       </div>
     );
   }
@@ -86,19 +99,21 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
   const dictionaryCount = Object.keys(dictionaries).length;
   if (dictionaryCount === 0) {
     return (
-      <div className="container mx-auto p-4">
-        <h1 className="mb-6 text-2xl font-bold">Dictionary System Demo</h1>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-center text-gray-500">No dictionaries found</p>
-            <div className="mt-8 text-center">
-              <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add new Dictionary
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="flex gap-6 p-4">
+        <div className="flex-1">
+          <h1 className="mb-6 text-2xl font-bold">Dictionary System Demo</h1>
+          <Card>
+            <CardContent className="p-4">
+              <p className="text-center text-gray-500">No dictionaries found</p>
+              <div className="mt-8 text-center">
+                <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add new Dictionary
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <DebugCard
           label="All Dictionaries & Entries (Empty State)"
@@ -110,77 +125,83 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
 
   return (
     <DictionaryStoreProvider store={store}>
-      <div className="container mx-auto p-4">
-        <h1 className="mb-6 text-2xl font-bold">Dictionary System Demo</h1>
+      <div className="flex gap-6 p-4">
+        <div className="flex-1">
+          <h1 className="mb-6 text-2xl font-bold">Dictionary System Demo</h1>
 
-        <div className="flex flex-wrap gap-6">
-          {Object.entries(dictionaries).map(([dictionaryId]) => {
-            const dictId = Number(dictionaryId);
-            return (
-              <Card key={dictionaryId} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
-                <CardHeader>
-                  <CardTitle>
-                    <DictionaryCodeDisplay id={dictId} />
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="mb-2 text-sm font-medium">Dictionary name:</h3>
-                      <DictionaryNameFloatingInput id={dictId} locale="en" />
-                    </div>
-                    <div>
-                      <h3 className="mb-2 text-sm font-medium">Dictionary type:</h3>
-                      <DictionaryCodeInput id={dictId} />
-                    </div>
+          <div className="flex flex-wrap gap-6">
+            {Object.entries(dictionaries).map(([dictionaryId]) => {
+              const dictId = Number(dictionaryId);
+              return (
+                <Card key={dictionaryId} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                  <CardHeader>
+                    <CardTitle>
+                      <DictionaryCodeDisplay id={dictId} />
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="mb-2 text-sm font-medium">Dictionary name:</h3>
+                        <DictionaryNameFloatingInput id={dictId} locale="en" />
+                      </div>
+                      <div>
+                        <h3 className="mb-2 text-sm font-medium">Dictionary type:</h3>
+                        <DictionaryCodeInput id={dictId} />
+                      </div>
 
-                    <Separator className="my-4" />
+                      <Separator className="my-4" />
 
-                    {/* Dictionary entries */}
-                    {entries[dictId] &&
-                      Object.entries(entries[dictId]).map(([entryId]) => {
-                        const entId = Number(entryId);
-                        return (
-                          <Card key={entryId} className="mb-4">
-                            <CardHeader className="py-2">
-                              <CardTitle className="text-sm">
-                                <DictionaryEntryNameDisplay dictionaryId={dictId} entryId={entId} locale="en" />
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent className="py-3">
-                              <div className="space-y-3">
-                                <div>
-                                  <h4 className="mb-1 text-xs font-medium">Code:</h4>
-                                  <DictionaryEntryCodeInput dictionaryId={dictId} entryId={entId} />
+                      {/* Dictionary entries */}
+                      {entries[dictId] &&
+                        Object.entries(entries[dictId]).map(([entryId]) => {
+                          const entId = Number(entryId);
+                          return (
+                            <Card key={entryId} className="mb-4">
+                              <CardHeader className="py-2">
+                                <CardTitle className="text-sm">
+                                  <DictionaryEntryNameDisplay dictionaryId={dictId} entryId={entId} locale="en" />
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent className="py-3">
+                                <div className="space-y-3">
+                                  <div>
+                                    <h4 className="mb-1 text-xs font-medium">Code:</h4>
+                                    <DictionaryEntryCodeInput dictionaryId={dictId} entryId={entId} />
+                                  </div>
+                                  <div>
+                                    <h4 className="mb-1 text-xs font-medium">Name:</h4>
+                                    <DictionaryEntryNameFloatingInput
+                                      dictionaryId={dictId}
+                                      entryId={entId}
+                                      locale="en"
+                                    />
+                                  </div>
                                 </div>
-                                <div>
-                                  <h4 className="mb-1 text-xs font-medium">Name:</h4>
-                                  <DictionaryEntryNameFloatingInput dictionaryId={dictId} entryId={entId} locale="en" />
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
 
-                    <Separator className="my-4" />
+                      <Separator className="my-4" />
 
-                    <Button variant="outline" className="w-full" onClick={() => handleAddEntry(dictId)}>
-                      <PlusCircle className="mr-2 h-4 w-4" />
-                      Add new entry
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                      <Button variant="outline" className="w-full" onClick={() => handleAddEntry(dictId)}>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add new entry
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
 
-        <div className="mt-8 text-center">
-          <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add new Dictionary
-          </Button>
+          <div className="mt-8 text-center">
+            <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add new Dictionary
+            </Button>
+          </div>
         </div>
 
         <DebugCard label="All Dictionaries & Entries" json={{ dictionaries, entries, storeState: store.getState() }} />
