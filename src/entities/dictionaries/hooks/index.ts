@@ -5,3 +5,7 @@ export * from "./use-meta-option";
 export * from "./use-meta-number";
 export * from "./use-meta-text";
 export * from "./use-type";
+export * from "./use-dictionary-type";
+export * from "./use-dictionary-name";
+export * from "./use-dictionary-entry-code";
+export * from "./use-dictionary-entry-name";
