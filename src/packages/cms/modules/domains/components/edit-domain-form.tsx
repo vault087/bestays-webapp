@@ -1,12 +1,12 @@
 "use client";
 
 import { useActionState } from "react";
-import { DebugCard } from "@/packages/shared-ui/components/ui/debug-json-card";
+import { DebugCard } from "@/components/ui/debug/debug-json-card";
 import { Domain } from "@cms/modules/domains/domain.types";
 import LocalizedTextField from "@cms/modules/localization/components/localized-text-field";
-import { EditDomainToolbar } from './edit-domain-toolbar';
-import { EditDomainProvider, useEditDomainContext } from './edit-domain.context';
-import { EditDomainFormState } from './edit-domain.types';
+import { EditDomainToolbar } from "./edit-domain-toolbar";
+import { EditDomainProvider, useEditDomainContext } from "./edit-domain.context";
+import { EditDomainFormState } from "./edit-domain.types";
 
 export default function EditDomainForm({
   formData,

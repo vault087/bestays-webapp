@@ -41,7 +41,7 @@
 
 import { Maximize2 } from "lucide-react";
 import { memo, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { QuickTooltip } from "@shared-ui/components/ui/quick-tooltip";
+import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { PropertyRowContext } from "@cms/modules/domain-editor/contexts";
 import { useOrderedPropertyOptions } from "@cms/modules/domain-editor/features/property-editing";

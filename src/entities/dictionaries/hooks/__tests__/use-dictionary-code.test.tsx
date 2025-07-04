@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import React from "react";
 import { useDictionaryCodeDisplay, useDictionaryCodeInput } from "@/entities/dictionaries/hooks/use-dictionary-code";
 import { DictionaryStoreTestProvider } from "@/entities/dictionaries/mocks/test-utils";
@@ -57,9 +57,11 @@ describe("useDictionaryCodeInput", () => {
       wrapper: TestComponent,
     });
 
-    // Test onChange function
+    // Test onChange function wrapped in act
     expect(() => {
-      result.current.onChange("NEW_CODE");
+      act(() => {
+        result.current.onChange("NEW_CODE");
+      });
     }).not.toThrow();
   });
 
@@ -72,8 +74,10 @@ describe("useDictionaryCodeInput", () => {
       wrapper: TestComponent,
     });
 
-    // Mock empty code
-    result.current.onChange("");
+    // Update to empty code and rerender to get the error
+    act(() => {
+      result.current.onChange("");
+    });
 
     expect(result.current.error).toBe("Code cannot be empty");
   });

@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { memo, useCallback, useContext } from "react";
-import { QuickTooltip } from "@shared-ui/components/ui/quick-tooltip";
+import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { cn } from "@/modules/shadcn";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { useCMSTranslations } from "@cms/i18n/use-cms-translation.hooks";

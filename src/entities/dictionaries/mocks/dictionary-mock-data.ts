@@ -4,8 +4,8 @@ import { Dictionary, DictionaryEntry } from "@/entities/dictionaries";
 export const mockDictionaries: Record<number, Dictionary> = {
   1: {
     id: 1,
-    code: "areas",
-    name: { en: "Area", th: "พื้นที่", ru: "Район" },
+    code: "PROPERTY_TYPES",
+    name: { en: "Property Types", th: "ประเภทอสังหาริมทรัพย์", ru: "Типы недвижимости" },
     is_new: false,
   },
   2: {

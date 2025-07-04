@@ -2,7 +2,7 @@
 
 import { Type, Hash, ToggleRight, RulerDimensionLine, CircleCheck } from "lucide-react";
 import { memo, useCallback, useContext, useMemo, useState } from "react";
-import { QuickTooltip } from "@shared-ui/components/ui/quick-tooltip";
+import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { createPropertyMeta } from "@cms-data/modules/properties/property.utils";

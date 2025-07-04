@@ -1,6 +1,6 @@
 import { IconGripVertical, IconSortAscendingLetters } from "@tabler/icons-react";
 import { memo, useCallback } from "react";
-import { QuickTooltip } from "@shared-ui/components/ui/quick-tooltip";
+import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { ToggleGroup, ToggleGroupItem } from "@/modules/shadcn/components/ui/toggle-group";
 import { useCMSTranslations } from "@cms/i18n/use-cms-translation.hooks";
 import { useDebugRender } from "@cms/modules/domain-editor/hooks";

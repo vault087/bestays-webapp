@@ -1,5 +1,5 @@
 import { ClientOnly } from "@/components/utils/client-only";
-import { DebugCard } from "@shared-ui/components/ui/debug-json-card";
+import { DebugCard } from "@/components/ui/debug/debug-json-card";
 import { useCanvasStore } from "@cms/modules/domain-editor/stores/canvas-store/canvas.store.hooks";
 
 export default function CanvasDebugCard() {

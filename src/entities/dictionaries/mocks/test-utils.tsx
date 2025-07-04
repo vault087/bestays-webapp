@@ -16,6 +16,12 @@ export function createTestDictionaryStore(
   );
 }
 
+// Test Provider component for tests (matches test expectations)
+export function DictionaryStoreTestProvider({ children }: { children: ReactNode }) {
+  const testStore = createTestDictionaryStore();
+  return <DictionaryStoreProvider store={testStore}>{children}</DictionaryStoreProvider>;
+}
+
 // Render with dictionary providers
 export function renderWithDictionaryProviders(ui: ReactNode, store?: DictionaryStoreApi) {
   const testStore = store || createTestDictionaryStore();

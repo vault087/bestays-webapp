@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { QuickTooltip } from "@shared-ui/components/ui/quick-tooltip";
+import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn/components/ui/floating-label-input";
 import { ToggleGroup, ToggleGroupItem } from "@/modules/shadcn/components/ui/toggle-group";
 import { useCMSTranslations } from "@cms/i18n/use-cms-translation.hooks";

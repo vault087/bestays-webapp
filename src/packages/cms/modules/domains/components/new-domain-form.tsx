@@ -1,11 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
-import { DebugCard } from "@/packages/shared-ui/components/ui/debug-json-card";
+import { DebugCard } from "@/components/ui/debug/debug-json-card";
 import { Domain } from "@cms/modules/domains/domain.types";
 import LocalizedTextField from "@cms/modules/localization/components/localized-text-field";
-import { NewDomainProvider, useNewDomainContext } from './new-domain.context';
-import { NewDomainState } from './new-domain.types';
+import { NewDomainProvider, useNewDomainContext } from "./new-domain.context";
+import { NewDomainState } from "./new-domain.types";
 
 type Props = {
   serverAction: (formState: NewDomainState, formData: FormData) => Promise<NewDomainState>;

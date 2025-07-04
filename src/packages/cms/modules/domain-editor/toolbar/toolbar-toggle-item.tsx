@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { QuickTooltip } from "@shared-ui/components/ui/quick-tooltip";
+import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { cn } from "@/modules/shadcn";
 import { ToggleGroupItem } from "@/modules/shadcn/components/ui/toggle-group";
 
