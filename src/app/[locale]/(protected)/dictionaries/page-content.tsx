@@ -13,7 +13,6 @@ import {
   DictionaryEntryCodeInput,
   DictionaryEntryNameDisplay,
   useDictionaryStore,
-  useDictionaryStoreContext,
 } from "@/entities/dictionaries";
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
@@ -33,8 +32,7 @@ interface DictionariesPageContentProps {
 function ReactiveDebugCard() {
   // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
   const dictionaries = useDictionaryStore((state) => state.dictionaries);
-  const store = useDictionaryStoreContext();
-  const entries = store.getState().entries;
+  const entries = useDictionaryStore((state) => state.entries);
 
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
@@ -101,7 +99,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
     return (
       <div className="flex gap-6 p-4">
         <div className="flex-1">
-          <h1 className="mb-6 text-2xl font-bold">Dictionary System Demo</h1>
+          <h1 className="mb-4 text-2xl font-bold">Dictionary System Demo</h1>
           <Card>
             <CardContent className="p-4">
               <p className="text-center text-gray-500">No dictionaries found</p>
@@ -124,25 +122,25 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
     <DictionaryStoreProvider store={store}>
       <div className="flex gap-6 p-4">
         <div className="flex-1">
-          <h1 className="mb-6 text-2xl font-bold">Dictionary System Demo</h1>
+          <h1 className="mb-4 text-2xl font-bold">Dictionary System Demo</h1>
 
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-4">
             {Object.entries(dictionaries).map(([dictionaryId]) => {
               const dictId = Number(dictionaryId);
               return (
-                <Card key={dictionaryId} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                <Card key={dictionaryId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
                   <CardHeader>
                     <CardTitle>
                       <DictionaryCodeDisplay id={dictId} />
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      <div>
-                        <DictionaryNameInput id={dictId} locale="en" />
-                      </div>
+                    <div className="space-y-1">
                       <div>
                         <DictionaryCodeInput id={dictId} />
+                      </div>
+                      <div>
+                        <DictionaryNameInput id={dictId} locale="en" />
                       </div>
 
                       <Separator className="my-4" />
@@ -152,14 +150,14 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                         Object.entries(entries[dictId]).map(([entryId]) => {
                           const entId = Number(entryId);
                           return (
-                            <Card key={entryId} className="mb-4">
-                              <CardHeader className="py-2">
+                            <Card key={entryId} className="gap-0">
+                              <CardHeader>
                                 <CardTitle className="text-sm">
                                   <DictionaryEntryNameDisplay dictionaryId={dictId} entryId={entId} locale="en" />
                                 </CardTitle>
                               </CardHeader>
-                              <CardContent className="py-3">
-                                <div className="space-y-3">
+                              <CardContent>
+                                <div className="space-y-1">
                                   <div>
                                     <DictionaryEntryCodeInput dictionaryId={dictId} entryId={entId} />
                                   </div>

@@ -22,7 +22,7 @@ export const DictionaryNameInput = memo(function DictionaryNameInput({ id, local
   const { inputId, value, onChange, placeholder, error } = useDictionaryNameInput(id, locale);
 
   return (
-    <div className="relative">
+    <div className="relative space-y-1">
       <FloatingInput
         id={inputId}
         value={value}

@@ -4,13 +4,6 @@ import { useDictionaryStoreContext } from "@/entities/dictionaries/stores/contex
 import { DictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 
-// Access the dictionary store
-
-export function useDictionaryState(): DictionaryStore {
-  const store = useDictionaryStoreContext();
-  return store.getState();
-}
-
 export function useDictionaryStore<T>(selector: (state: DictionaryStore) => T): T {
   const store = useDictionaryStoreContext();
   return useStore(store, selector);

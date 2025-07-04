@@ -12,7 +12,7 @@ export const DictionaryEntryCodeInput = memo(function DictionaryEntryCodeInput({
   const { inputId, value, onChange, placeholder, error } = useDictionaryEntryCodeInput(dictionaryId, entryId);
 
   return (
-    <div className="space-y-1">
+    <div className="relative space-y-1">
       <FloatingInput
         id={inputId}
         value={value}
