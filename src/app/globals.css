@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "tailwind-scrollbar";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  html {
+    font-family: "Inter", sans-serif;
+    /* Fix for iPad Chrome CSS loading issues
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none; */
+  }
+}
+
+@import "../../src/modules/shadcn/css/shadcn.css";

@@ -1,0 +1,151 @@
+{
+  "domain_editor": {
+    "save_and_continue": "Save & Continue",
+    "preview": "Preview",
+    "developer_panel": "Developer panel",
+    "preview-toggle": "Preview",
+    "code-toggle": "Code (for website developer)",
+    "settings-toggle": "Advanced settings",
+    "tree-toggle": "Show compact list",
+    "translations-toggle": "Translations",
+    "cancel": "Cancel",
+    "save": "Save",
+    "offline": "Offline",
+    "publish": "Publish",
+    "saving": "Saving...",
+    "domain": {
+      "back_to_list": "Back to List",
+      "edit": "Edit",
+      "edit_title": "Edit Domain",
+      "edit_description": "Configure your domain settings",
+      "name": "Domain Name",
+      "name_placeholder": "Enter domain name",
+      "unnamed": "Unnamed Domain",
+      "code": "Domain Code",
+      "code_placeholder": "Enter domain code",
+      "description": "Description",
+      "description_placeholder": "Enter domain description",
+      "active": "Active",
+      "active_no": "Inactive",
+      "locked": "Locked",
+      "locked_no": "Unlocked",
+      "system_description": "System Description",
+      "system_description_placeholder": "Enter system description",
+      "status": {
+        "ready": "Ready"
+      },
+      "publish": {
+        "title": "Publish Domain",
+        "description": "Make this domain available to users"
+      }
+    },
+    "property": {
+      "name": {
+        "label": "Field name",
+        "placeholder": "Enter field name"
+      },
+      "description": {
+        "label": "Short description",
+        "placeholder": "Enter short description"
+      },
+      "code": {
+        "label": "Code",
+        "placeholder": "Enter code"
+      },
+      "is-private": {
+        "tooltip": {
+          "on": "Private field only visible to you",
+          "off": "Public field visible to all users"
+        }
+      },
+      "is-locked": {
+        "tooltip": {
+          "on": "Field is locked and can't be deleted or some fields can't be edited",
+          "off": "Field is unlocked"
+        }
+      },
+      "is-required": {
+        "tooltip": {
+          "on": "This field is required",
+          "off": "This field is not required"
+        }
+      },
+      "meta": {
+        "number": {
+          "min": {
+            "label": "Min",
+            "tooltip": "Set option minimum value"
+          },
+          "max": {
+            "label": "Max",
+            "tooltip": "Set option maximum value"
+          },
+          "is-integer": {
+            "on": {
+              "label": "Whole numbers",
+              "tooltip": "Use whole numbers only (123)"
+            },
+            "off": {
+              "label": "Decimal numbers",
+              "tooltip": "Use decimal numbers (123.00)"
+            }
+          }
+        },
+        "text": {
+          "max": {
+            "label": "Max length",
+            "tooltip": "Set option maximum length"
+          },
+          "multiline": {
+            "on": {
+              "label": "Multiline text area",
+              "tooltip": "Multiline text area"
+            },
+            "off": {
+              "label": "Single line text field",
+              "tooltip": "Single line text field"
+            }
+          }
+        },
+        "option": {
+          "name": {
+            "label": "Option name",
+            "tooltip": "Set option name"
+          },
+          "multi": {
+            "on": {
+              "label": "Multi selection",
+              "tooltip": "Multi selection"
+            },
+            "off": {
+              "label": "Single selection",
+              "tooltip": "Single selection"
+            }
+          },
+          "sorting": {
+            "manual": {
+              "label": "Manual",
+              "tooltip": "Manual sorting"
+            },
+            "alphabet": {
+              "label": "Alphabetical",
+              "tooltip": "Alphabetical sorting"
+            }
+          }
+        }
+      },
+      "property_type": {
+        "text": "Text",
+        "text_description": "Single or Multi-line text",
+        "number": "Number",
+        "number_description": "Numeric input",
+        "bool": "Toggle",
+        "bool_description": "Yes or No",
+        "option": "Options",
+        "option_description": "Select from a list of options or tags",
+        "size": "Size",
+        "size_description": "Area size (rai, sqm, etc.)"
+      }
+    }
+  }
+}
