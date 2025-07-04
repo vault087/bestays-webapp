@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDictionary, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { useDictionary, useDictionaryActions } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: number): string | undefined {
@@ -16,7 +16,7 @@ export function useDictionaryCodeInput(id: number): {
   error?: string;
 } {
   const dictionary = useDictionary(id);
-  const updateDictionary = useDictionaryStore((state) => state.updateDictionary);
+  const { updateDictionary } = useDictionaryActions();
 
   const inputId = `dictionary-code-${id}`;
 

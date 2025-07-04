@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDictionaryEntry, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { useDictionaryActions, useDictionaryEntry } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 
 // Display hook for dictionary entry name
 export function useDictionaryEntryNameDisplay(
@@ -25,7 +25,7 @@ export function useDictionaryEntryNameInput(
   error?: string;
 } {
   const entry = useDictionaryEntry(dictionaryId, entryId);
-  const updateEntry = useDictionaryStore((state) => state.updateEntry);
+  const { updateEntry } = useDictionaryActions();
 
   // Generate a unique input ID
   const inputId = `dictionary-entry-name-${dictionaryId}-${entryId}-${locale}`;

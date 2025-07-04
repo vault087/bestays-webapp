@@ -8,11 +8,12 @@ import {
   DictionaryStoreProvider,
   DictionaryCodeInput,
   DictionaryCodeDisplay,
-  DictionaryNameFloatingInput,
+  DictionaryNameInput,
+  DictionaryEntryNameInput,
   DictionaryEntryCodeInput,
-  DictionaryEntryNameFloatingInput,
   DictionaryEntryNameDisplay,
   useDictionaryStore,
+  useDictionaryStoreContext,
 } from "@/entities/dictionaries";
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
@@ -31,10 +32,9 @@ interface DictionariesPageContentProps {
 
 function ReactiveDebugCard() {
   // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
-  const { dictionaries, entries } = useDictionaryStore((state) => ({
-    dictionaries: state.dictionaries,
-    entries: state.entries,
-  }));
+  const dictionaries = useDictionaryStore((state) => state.dictionaries);
+  const store = useDictionaryStoreContext();
+  const entries = store.getState().entries;
 
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
@@ -115,10 +115,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
           </Card>
         </div>
 
-        <DebugCard
-          label="All Dictionaries & Entries (Empty State)"
-          json={{ dictionaries, entries, message: "No dictionaries found" }}
-        />
+        <ReactiveDebugCard />
       </div>
     );
   }
@@ -142,11 +139,9 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <h3 className="mb-2 text-sm font-medium">Dictionary name:</h3>
-                        <DictionaryNameFloatingInput id={dictId} locale="en" />
+                        <DictionaryNameInput id={dictId} locale="en" />
                       </div>
                       <div>
-                        <h3 className="mb-2 text-sm font-medium">Dictionary type:</h3>
                         <DictionaryCodeInput id={dictId} />
                       </div>
 
@@ -166,16 +161,10 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                               <CardContent className="py-3">
                                 <div className="space-y-3">
                                   <div>
-                                    <h4 className="mb-1 text-xs font-medium">Code:</h4>
                                     <DictionaryEntryCodeInput dictionaryId={dictId} entryId={entId} />
                                   </div>
                                   <div>
-                                    <h4 className="mb-1 text-xs font-medium">Name:</h4>
-                                    <DictionaryEntryNameFloatingInput
-                                      dictionaryId={dictId}
-                                      entryId={entId}
-                                      locale="en"
-                                    />
+                                    <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale="en" />
                                   </div>
                                 </div>
                               </CardContent>
@@ -204,7 +193,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
           </div>
         </div>
 
-        <DebugCard label="All Dictionaries & Entries" json={{ dictionaries, entries, storeState: store.getState() }} />
+        <ReactiveDebugCard />
       </div>
     </DictionaryStoreProvider>
   );

@@ -1,11 +1,17 @@
-import { useCallback } from "react";
-import { useDictionaryEntry, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { useCallback, useMemo } from "react";
+import {
+  useDictionaryActions,
+  useDictionaryEntry,
+  useDictionaryStore,
+} from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { generateInputId } from "@/utils";
 
 // Display hook for dictionary entry code
 export function useDictionaryEntryCodeDisplay(dictionaryId: number, entryId: number): string | undefined {
-  const entry = useDictionaryEntry(dictionaryId, entryId);
-  return entry?.code;
+  return useDictionaryStore(
+    useCallback((state) => state.entries[dictionaryId]?.[entryId]?.code, [dictionaryId, entryId]),
+  );
 }
 
 // Input hook for dictionary entry code
@@ -19,28 +25,27 @@ export function useDictionaryEntryCodeInput(
   placeholder: string;
   error?: string;
 } {
-  // ✅ Single store access with validation methods
-  const { entry, updateEntry, validateEntryCode } = useDictionaryStore((state) => ({
-    entry: state.entries[dictionaryId]?.[entryId],
-    updateEntry: state.updateEntry,
-    validateEntryCode: state.validateEntryCode,
-  }));
+  const entry = useDictionaryEntry(dictionaryId, entryId);
+  const { updateEntry, validateEntryCode } = useDictionaryActions();
 
   // Generate a unique input ID using the utility
-  const inputId = generateInputId("dictionary-entry", entryId.toString(), "code");
+  const inputId = useMemo(() => generateInputId("dictionary-entry", entryId.toString(), "code"), [entryId]);
 
   // Handle change
   const onChange = useCallback(
     (value: string) => {
-      updateEntry(dictionaryId, entryId, (draft) => {
+      updateEntry(dictionaryId, entryId, (draft: DictionaryEntry) => {
         draft.code = value;
       });
     },
     [dictionaryId, entryId, updateEntry],
   );
 
-  // Get validation error if any
-  const error = entry?.code ? validateEntryCode(dictionaryId, entryId, entry.code) : "Code cannot be empty";
+  // Memoize error computation to prevent unnecessary validations
+  const error = useMemo(() => {
+    if (!entry?.code) return "Code cannot be empty";
+    return validateEntryCode(dictionaryId, entryId, entry.code);
+  }, [entry?.code, validateEntryCode, dictionaryId, entryId]);
 
   return {
     inputId,
