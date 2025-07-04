@@ -1,22 +1,22 @@
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { Dictionary, DictionaryEntry } from "@/entities/dictionaries";
 
 // Mock dictionaries
 export const mockDictionaries: Record<number, Dictionary> = {
   1: {
     id: 1,
-    type: "areas",
+    code: "areas",
     name: { en: "Area", th: "พื้นที่", ru: "Район" },
     is_new: false,
   },
   2: {
     id: 2,
-    type: "location_strengths",
+    code: "location_strengths",
     name: { en: "Location Strength", th: "ทำเล/จุดแข็ง", ru: "Преимущество Местоположения" },
     is_new: false,
   },
   3: {
     id: 3,
-    type: "highlights",
+    code: "highlights",
     name: { en: "Highlights", th: "จุดเด่น", ru: "Особенности" },
     is_new: false,
   },
@@ -87,10 +87,10 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
 };
 
 // Helper function to create a new dictionary
-export function createMockDictionary(id: number, type: string, name: Record<string, string>): Dictionary {
+export function createMockDictionary(id: number, code: string, name: Record<string, string>): Dictionary {
   return {
     id,
-    type,
+    code,
     name,
     is_new: true,
   };

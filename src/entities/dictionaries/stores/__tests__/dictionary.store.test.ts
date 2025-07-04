@@ -23,11 +23,11 @@ describe("Dictionary Store", () => {
 
       // Act
       store.getState().updateDictionary(1, (draft) => {
-        draft.type = "updated_type";
+        draft.code = "updated_type";
       });
 
       // Assert
-      expect(store.getState().dictionaries[1].type).toBe("updated_type");
+      expect(store.getState().dictionaries[1].code).toBe("updated_type");
       expect(store.getState().hasChanged).toBe(true);
     });
 

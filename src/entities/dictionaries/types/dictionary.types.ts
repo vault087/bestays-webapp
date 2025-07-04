@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LocalizedTextSchema } from "@/entities/localized-text/types/localized-text.type";
+import { LocalizedTextSchema } from "@/entities/localized-text";
 
 // Table constants
 export const DICTIONARIES_TABLE = "dictionaries";
@@ -8,7 +8,7 @@ export const DICTIONARY_ENTRIES_TABLE = "dictionary_entries";
 // Database Schemas
 export const DBDictionarySchema = z.object({
   id: z.number().int().positive(),
-  type: z.string().min(1).max(50),
+  code: z.string().min(1).max(50),
   name: LocalizedTextSchema,
 });
 

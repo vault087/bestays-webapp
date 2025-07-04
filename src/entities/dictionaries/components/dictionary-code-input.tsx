@@ -1,13 +1,13 @@
 import React, { memo } from "react";
-import { useDictionaryTypeInput } from "@/entities/dictionaries/hooks/use-dictionary-type";
+import { useDictionaryCodeInput } from "@/entities/dictionaries/hooks/use-dictionary-code";
 import { Input } from "@/modules/shadcn/components/ui/input";
 
-interface DictionaryTypeInputProps {
+interface DictionaryCodeInputProps {
   id: number;
 }
 
-const DictionaryTypeInput = ({ id }: DictionaryTypeInputProps) => {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryTypeInput(id);
+const DictionaryCodeInput = ({ id }: DictionaryCodeInputProps) => {
+  const { inputId, value, onChange, placeholder, error } = useDictionaryCodeInput(id);
 
   return (
     <div className="space-y-1">
@@ -23,4 +23,4 @@ const DictionaryTypeInput = ({ id }: DictionaryTypeInputProps) => {
   );
 };
 
-export default memo(DictionaryTypeInput);
+export default memo(DictionaryCodeInput);

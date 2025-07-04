@@ -1,14 +1,14 @@
 import { useCallback } from "react";
 import { useDictionary, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 
-// Display hook for dictionary type
-export function useDictionaryTypeDisplay(id: number): string | undefined {
+// Display hook for dictionary code
+export function useDictionaryCodeDisplay(id: number): string | undefined {
   const dictionary = useDictionary(id);
-  return dictionary?.type;
+  return dictionary?.code as string | undefined;
 }
 
-// Input hook for dictionary type
-export function useDictionaryTypeInput(id: number): {
+// Input hook for dictionary code
+export function useDictionaryCodeInput(id: number): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
@@ -19,13 +19,13 @@ export function useDictionaryTypeInput(id: number): {
   const updateDictionary = useDictionaryStore((state) => state.updateDictionary);
 
   // Generate a unique input ID
-  const inputId = `dictionary-type-${id}`;
+  const inputId = `dictionary-code-${id}`;
 
   // Handle change
   const onChange = useCallback(
     (value: string) => {
       updateDictionary(id, (draft) => {
-        draft.type = value;
+        draft.code = value;
       });
     },
     [id, updateDictionary],
@@ -33,13 +33,13 @@ export function useDictionaryTypeInput(id: number): {
 
   // Validate for uniqueness (would need to check against other dictionaries)
   // This is a simplified version - a real implementation would check for uniqueness
-  const error = dictionary?.type === "" ? "Type cannot be empty" : undefined;
+  const error = (dictionary?.code as string) === "" ? "Code cannot be empty" : undefined;
 
   return {
     inputId,
-    value: dictionary?.type || "",
+    value: (dictionary?.code as string) || "",
     onChange,
-    placeholder: "Enter dictionary type",
+    placeholder: "Enter dictionary code",
     error,
   };
 }

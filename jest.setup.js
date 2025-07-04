@@ -12,7 +12,13 @@ console.warn = (...args) => {
 };
 
 // Mock Supabase server client
-jest.mock("@cms-data/libs/supabase/clients/client.server", () => ({
+jest.mock("@/modules/supabase/clients/client.server", () => ({
+  auth: {
+    getSession: jest.fn(),
+    getUser: jest.fn(),
+    refreshSession: jest.fn(),
+    signOut: jest.fn(),
+  },
   getSupabase: jest.fn(() =>
     Promise.resolve({
       from: jest.fn(),
@@ -34,7 +40,7 @@ jest.mock("@cms-data/libs/supabase/clients/client.server", () => ({
 }));
 
 // Mock the main CMS libs (which re-exports the above)
-jest.mock("@cms-data/libs", () => ({
+jest.mock("@/modules/supabase", () => ({
   supabase: {
     from: jest.fn(),
     rpc: jest.fn(),
@@ -107,38 +113,38 @@ class ResizeObserver {
 }
 global.ResizeObserver = ResizeObserver;
 
-// Mock QuickTooltip to handle button roles and accessibility correctly
-jest.mock("@shared-ui/components/ui/quick-tooltip", () => {
-  const React = require("react");
-  return {
-    QuickTooltip: (props) => {
-      const { content, children } = props;
+// // Mock QuickTooltip to handle button roles and accessibility correctly
+// jest.mock("@shared-ui/components/ui/quick-tooltip", () => {
+//   const React = require("react");
+//   return {
+//     QuickTooltip: (props) => {
+//       const { content, children } = props;
 
-      // Handle button elements and elements with button role
-      if (React.isValidElement(children)) {
-        const isButton =
-          children.type === "button" ||
-          children.props.role === "button" ||
-          children.type?.displayName?.includes?.("Button");
+//       // Handle button elements and elements with button role
+//       if (React.isValidElement(children)) {
+//         const isButton =
+//           children.type === "button" ||
+//           children.props.role === "button" ||
+//           children.type?.displayName?.includes?.("Button");
 
-        if (isButton) {
-          return React.cloneElement(children, {
-            "aria-label": content,
-            "data-tooltip": content, // Add data attribute for testing
-            ...children.props, // Preserve existing props
-          });
-        }
-      }
+//         if (isButton) {
+//           return React.cloneElement(children, {
+//             "aria-label": content,
+//             "data-tooltip": content, // Add data attribute for testing
+//             ...children.props, // Preserve existing props
+//           });
+//         }
+//       }
 
-      // For non-button elements, wrap in a div with tooltip attributes
-      return React.createElement(
-        "div",
-        {
-          "data-tooltip": content,
-          title: content,
-        },
-        children,
-      );
-    },
-  };
-});
+//       // For non-button elements, wrap in a div with tooltip attributes
+//       return React.createElement(
+//         "div",
+//         {
+//           "data-tooltip": content,
+//           title: content,
+//         },
+//         children,
+//       );
+//     },
+//   };
+// });

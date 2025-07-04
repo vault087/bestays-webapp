@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, createContext, useContext } from "react";
 import { DictionaryStoreApi } from "@/entities/dictionaries/stores/dictionary.store";
 

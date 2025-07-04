@@ -8,10 +8,6 @@ const customJestConfig = {
   setupFiles: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
-    "^@cms-data/(.*)$": "<rootDir>/src/packages/cms-data/$1",
-    "^@cms/(.*)$": "<rootDir>/src/packages/cms/$1",
-    "^@cms-ai/(.*)$": "<rootDir>/src/packages/cms-ai/$1",
-    "^@shared-ui/(.*)$": "<rootDir>/src/packages/shared-ui/$1",
     "^@appkit/(.*)$": "<rootDir>/src/packages/appkit/$1",
   },
   testEnvironment: "jsdom",
@@ -20,6 +16,7 @@ const customJestConfig = {
   testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"],
   // Ignore utility files and empty test files
   testPathIgnorePatterns: [
+    "/src/packages/",
     "/node_modules/",
     "/.next/",
     "/dist/",

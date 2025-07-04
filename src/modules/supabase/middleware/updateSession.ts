@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { supabase } from "@cms-data/libs/supabase/clients/client";
+import { supabase } from "@/modules/supabase/clients/client";
 
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
   try {
