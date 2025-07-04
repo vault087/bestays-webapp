@@ -1,1 +1,1 @@
-export type { FormProperty } from "./form-property";
+export * from "./dictionary.types";
