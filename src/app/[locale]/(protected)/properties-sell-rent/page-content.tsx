@@ -17,7 +17,7 @@ export default function PropertiesSellRentPageContent({ propertiesPromise }: Pro
   const store = React.useMemo(() => createPropertyStore("properties-sell-rent", properties), [properties]);
   return (
     <PropertyStoreProvider store={store}>
-      <PropertyStoreHydrated fallback={<div>Loading...</div>}>
+      <PropertyStoreHydrated fallback={<div>Restoring store...</div>}>
         <div>PropertiesSellRentPageContent</div>
         {Object.values(properties).map((property) => (
           <div key={property.id}>{JSON.stringify(property)}</div>
