@@ -25,7 +25,7 @@ const Logo = () => {
             alt="logo"
             width={32}
             height={32}
-            className="contrast-125 saturate-125 transition-all duration-300 group-hover:opacity-80 dark:rounded-full"
+            className="dark:contrast- contrast-125 saturate-125 transition-all duration-300 group-hover:opacity-80 dark:invert"
           />
         </div>
       </Link>
