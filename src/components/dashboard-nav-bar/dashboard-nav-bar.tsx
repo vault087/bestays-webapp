@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ThemeSwitcher } from "@/components/theme";
-import { Link, useTranslations } from "@/modules/i18n";
+import { Link, usePathname, useTranslations } from "@/modules/i18n";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import {
   Button,
@@ -36,10 +36,15 @@ const Logo = () => {
 export default function DashboardNavBar() {
   const { t } = useTranslations("Dashboard.NavBar");
 
+  const pathname = usePathname();
+  const isActive = (href: string) => {
+    console.log("pathname", pathname, href, pathname === href);
+    return pathname === href;
+  };
   // Navigation links array to be used in both desktop and mobile menus
   const navigationLinks = [
-    { href: "/dashboard/listings", label: t("Listings"), active: true },
-    { href: "/dashboard/settings", label: t("Settings") },
+    { href: "/dashboard/properties-sell-rent", label: t("Listings") },
+    { href: "/dashboard/dictionaries", label: t("Settings") },
   ];
   return (
     <header className="border-b px-4 md:px-6">
@@ -82,7 +87,7 @@ export default function DashboardNavBar() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink href={link.href} className="py-1.5" active={link.active}>
+                      <NavigationMenuLink href={link.href} className="py-1.5" active={isActive(link.href)}>
                         {link.label}
                       </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -100,7 +105,7 @@ export default function DashboardNavBar() {
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
-                      active={link.active}
+                      active={isActive(link.href)}
                       href={link.href}
                       className="text-muted-foreground hover:text-primary py-1.5 font-medium"
                     >
@@ -113,11 +118,11 @@ export default function DashboardNavBar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center space-x-2">
           <LocaleSwitcher />
           <ThemeSwitcher />
           <Button asChild variant="ghost" size="sm" className="text-sm select-none">
-            <Link href="/logout">Sign Out</Link>
+            <Link href="/logout">{t("SignOut")}</Link>
           </Button>
         </div>
       </div>

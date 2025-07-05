@@ -1,5 +1,12 @@
 {
-  "schema_builder": {
-    "pageName": "Настройка формы"
+  "Dashboard": {
+    "NavBar": {
+      "Listings": "Список объявлений",
+      "Settings": "Настройки",
+      "SignOut": "Выйти"
+    }
+  },
+  "Home": {
+    "LogIn": "Войти"
   }
 }

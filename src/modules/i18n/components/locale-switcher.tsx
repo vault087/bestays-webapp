@@ -4,6 +4,7 @@ import { Globe, ChevronDown, CheckIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 import { ClientOnly } from "@/components/utils/client-only";
 import { useLocalization } from "@/modules/i18n/context/localization-context";
+import { getLanguageName } from "@/modules/i18n/utils/get-language";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -33,14 +34,12 @@ function LocaleSwitcherInner() {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            aria-label="Select language"
-            className="-px-2 -mr-2 flex items-center gap-1 hover:cursor-pointer"
-          >
-            <Globe size={16} aria-hidden="true" />
-            <span>{currentLocale.toUpperCase()}</span>
-            <ChevronDown size={16} aria-hidden="true" />
+          <Button variant="ghost" aria-label="Select language" className="flex items-center pr-2 hover:cursor-pointer">
+            <div className="flex items-center space-x-1.5">
+              <Globe size={16} aria-hidden="true" />
+              <span className="text-sm">{getLanguageName(currentLocale, currentLocale)}</span>
+              <ChevronDown size={16} aria-hidden="true" />
+            </div>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[80px]">
@@ -50,7 +49,7 @@ function LocaleSwitcherInner() {
               onClick={() => switchLocale(locale)}
               className="flex items-center justify-between"
             >
-              <span className="flex items-center gap-2">{locale.toUpperCase()}</span>
+              <span className="flex items-center gap-2">{getLanguageName(locale, currentLocale)}</span>
               {currentLocale === locale && <CheckIcon className="text-foreground" size={16} aria-hidden="true" />}
             </DropdownMenuItem>
           ))}

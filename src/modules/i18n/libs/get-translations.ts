@@ -12,7 +12,7 @@ export type ServerTranslationsResult = {
 };
 
 // This function provides a structured way to get translation functions on the server.
-export async function getTranslations({ namespace }: { namespace?: string }): Promise<ServerTranslationsResult> {
+export async function getTranslations(namespace: string): Promise<ServerTranslationsResult> {
   const locale = await getLocale();
 
   const defaultNamespace = namespace ? `default.${namespace}` : "default";

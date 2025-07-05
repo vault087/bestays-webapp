@@ -1,4 +1,4 @@
-import { ModeSwitcher } from "@/components/theme/components/theme-switcher";
+import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 
 interface ColorSwatch {
   name: string;
@@ -134,7 +134,7 @@ export default function ThemePage() {
             Explore all available colors and design tokens from your theme system
           </p>
         </div>
-        <ModeSwitcher />
+        <ThemeSwitcher />
       </div>
 
       {/* Color Categories */}

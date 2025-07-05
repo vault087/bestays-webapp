@@ -2,7 +2,11 @@
   "Dashboard": {
     "NavBar": {
       "Listings": "Listings",
-      "Settings": "Settings"
+      "Settings": "Settings",
+      "SignOut": "Sign Out"
     }
+  },
+  "Home": {
+    "LogIn": "Log In"
   }
 }

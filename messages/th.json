@@ -1,3 +1,12 @@
 {
-  "schema_builder": {}
+  "Dashboard": {
+    "NavBar": {
+      "Listings": "รายการประกาศ",
+      "Settings": "ตั้งค่า",
+      "SignOut": "ออกจากระบบ"
+    }
+  },
+  "Home": {
+    "LogIn": "เข้าสู่ระบบ"
+  }
 }

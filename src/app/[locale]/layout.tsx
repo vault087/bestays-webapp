@@ -6,7 +6,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { ThemeProvider } from "@/components/theme/components/theme-provider";
 import { LocalizationProvider } from "@/modules/i18n/context/localization-provider";
 import { routing } from "@/modules/i18n/core/routing";
-import { registerLanguages } from "@/modules/i18n/utils/get-language";
 
 export default async function LocaleLayout({
   children,
@@ -20,8 +19,6 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
-
-  registerLanguages();
 
   return (
     <html

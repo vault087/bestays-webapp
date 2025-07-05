@@ -1,17 +1,18 @@
 import Image from "next/image";
-import Link from "next/link";
 import BackgroundAnimated from "@/components/background/background-animated";
+import { Link } from "@/modules/i18n";
+import { getTranslations } from "@/modules/i18n/libs";
+import { Button } from "@/modules/shadcn/";
 
-function Button({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <button className={`rounded-md bg-blue-500 px-4 py-2 text-sm text-white ${className}`}>{children}</button>;
-}
+export default async function HomePage() {
+  const { t } = await getTranslations("Home");
 
-export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Background Image Section */}
       <div className="relative min-h-[80vh] w-full overflow-hidden">
         <BackgroundAnimated />
+        <div className="absolute right-0 z-20 flex"></div>
         {/* Overlay */}
         <div className="absolute inset-0 z-10 bg-black/40" />
         {/* Content */}
@@ -45,9 +46,9 @@ export default function HomePage() {
       </div>
 
       {/* Three Sections */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="my-8 flex flex-col items-center justify-center space-y-8">
         {/* For Rent Section */}
-        <section className="mb-16">
+        <section className="flex flex-col">
           <h2 className="mb-8 text-center text-3xl font-bold text-gray-900">For Rent</h2>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -179,82 +180,17 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Investment Projects Section */}
-        <section className="mb-16">
-          <h2 className="mb-8 text-center text-3xl font-bold text-gray-900">Investment Projects</h2>
-
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {/* Featured Property Card */}
-            <div className="col-span-1 overflow-hidden rounded-xl bg-white shadow-md lg:col-span-2">
-              <div className="relative h-64 w-full">
-                <Image
-                  src="/images/investment-property.jpg"
-                  alt="Ocean View Condominium investment in Phuket"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="mb-2 text-xl font-semibold">Ocean View Condominiums</h3>
-                <p className="mb-2 text-gray-700">Phuket</p>
-                <p className="mb-4 text-lg font-bold text-blue-600">Starting from ฿3,900,000</p>
-                <Button className="w-full">
-                  <Link href="/properties/investment/phuket/ocean-view-condos">View Project</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Project Links */}
-            <div className="col-span-1 rounded-xl bg-gray-50 p-6">
-              <h3 className="mb-4 text-xl font-semibold">Featured Investment Areas</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/properties/investment/phuket"
-                    className="flex items-center text-blue-600 hover:underline"
-                  >
-                    <span className="mr-2">→</span> Phuket
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/properties/investment/samui" className="flex items-center text-blue-600 hover:underline">
-                    <span className="mr-2">→</span> Koh Samui
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/properties/investment/bangkok"
-                    className="flex items-center text-blue-600 hover:underline"
-                  >
-                    <span className="mr-2">→</span> Bangkok
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/properties/investment/chiang-mai"
-                    className="flex items-center text-blue-600 hover:underline"
-                  >
-                    <span className="mr-2">→</span> Chiang Mai
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/properties/investment"
-                    className="mt-6 flex items-center font-semibold text-blue-700 hover:underline"
-                  >
-                    <span className="mr-2">✓</span> View All Investment Projects
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
         {/* Contact Info */}
         <div className="mt-8 space-y-3 border-t border-gray-200 pt-8 text-center text-gray-600">
           <p>📍 Sanchao, Ko Phangan, Surat Thani, Thailand 84280</p>
           <p>📧 beststaysinfo@gmail.com</p>
           <p>📱 +66 98-034-8288</p>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <Link href="/dashboard">
+            <span className="text-accent-foreground p-2 text-sm font-light">{t("LogIn")}</span>
+          </Link>
         </div>
       </div>
     </div>
