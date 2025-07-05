@@ -8,7 +8,7 @@ export type PropertiesResponse = Promise<{
 /**
  * Loads all dictionaries and their entries from Supabase
  */
-export async function loadAllDictionaries(): PropertiesResponse {
+export async function loadAllProperties(): PropertiesResponse {
   try {
     // Fetch dictionaries and entries in parallel
     const propertiesResponse = await supabase.from(PROPERTIES_SALE_RENT_TABLE).select("*");
@@ -43,16 +43,4 @@ export async function loadAllDictionaries(): PropertiesResponse {
       error: errorMessage,
     };
   }
-}
-
-/**
- * React Server Component compatible function to load dictionaries
- * This is designed to be called during server rendering and passed as a promise
- */
-export function getDictionaries(): Promise<{
-  dictionaries: Record<number, Dictionary>;
-  entries: Record<number, Record<number, DictionaryEntry>>;
-  error: string | null;
-}> {
-  return loadAllDictionaries();
 }

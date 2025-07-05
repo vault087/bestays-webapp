@@ -77,25 +77,3 @@ export async function loadAllDictionaries(): DictionariesResponse {
     };
   }
 }
-
-/**
- * React Server Component compatible function to load dictionaries
- * This is designed to be called during server rendering and passed as a promise
- */
-export async function getDictionaries(): Promise<{
-  dictionaries: Record<number, Dictionary>;
-  entries: Record<number, Record<number, DictionaryEntry>>;
-  error: string | null;
-}> {
-  try {
-    return await loadAllDictionaries();
-  } catch (error) {
-    console.error("Failed to load dictionaries:", error);
-
-    return {
-      dictionaries: {},
-      entries: {},
-      error: error instanceof Error ? error.message : "Unknown error occurred",
-    };
-  }
-}

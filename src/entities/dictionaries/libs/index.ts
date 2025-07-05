@@ -1,1 +1,1 @@
-export * from "./dictionary.libs";
+export * from "./load-all-dictionaries";

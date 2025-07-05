@@ -1,1 +1,1 @@
-export * from "./properties.libs";
+export * from "./load-all-properties";

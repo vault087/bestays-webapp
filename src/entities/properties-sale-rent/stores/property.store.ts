@@ -25,7 +25,7 @@ export type PropertyStore = PropertyStoreState & PropertyStoreActions;
 export type PropertyStoreApi = StoreApi<PropertyStore>;
 
 // Store creator function
-export function createPropertyStore(id: string, properties: Record<string, Property>): PropertyStoreApi {
+export function createPropertyStore(store_id: string, properties: Record<string, Property>): PropertyStoreApi {
   const initialState: PropertyStoreState = {
     dbProperties: properties,
     properties,
@@ -74,13 +74,18 @@ export function createPropertyStore(id: string, properties: Record<string, Prope
           ),
       }),
       {
-        name: `property-store-${id}`,
+        name: `property-store-${store_id}`,
         partialize: (state) => ({
           dbProperties: state.dbProperties,
           properties: state.properties,
           deletedPropertyIds: state.deletedPropertyIds,
           hasChanged: state.hasChanged,
         }),
+        onRehydrateStorage: () => (state) => {
+          if (state) {
+            state.hasHydrated = true;
+          }
+        },
       },
     ),
   );

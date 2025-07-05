@@ -13,21 +13,16 @@ import {
   DictionaryEntryCodeInput,
   DictionaryEntryNameDisplay,
   useDictionaryStore,
+  GetDictionariesActionResponse,
+  DictionaryDescriptionInput,
+  createMockDictionary,
+  createMockDictionaryEntry,
 } from "@/entities/dictionaries";
-import { DictionaryDescriptionInput } from "@/entities/dictionaries/components/dictionary-description";
-import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
-import { Button } from "@/modules/shadcn/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/modules/shadcn/components/ui/card";
-import { Separator } from "@/modules/shadcn/components/ui/separator";
+import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
-  dictionariesPromise: Promise<{
-    dictionaries: Record<number, Dictionary>;
-    entries: Record<number, Record<number, DictionaryEntry>>;
-    error: string | null;
-  }>;
+  dictionariesPromise: GetDictionariesActionResponse;
 }
 
 function ReactiveDebugCard() {
