@@ -1,4 +1,5 @@
-import { Property, loadAllProperties } from "@/entities/properties-sale-rent";
+import { Property } from "@/entities/properties-sale-rent";
+import { loadAllProperties } from "@/entities/properties-sale-rent/libs";
 
 export type GetPropertiesActionResponse = Promise<{
   properties: Record<number, Property>;

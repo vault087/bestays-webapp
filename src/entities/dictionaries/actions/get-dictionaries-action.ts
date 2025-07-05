@@ -1,4 +1,5 @@
-import { Dictionary, DictionaryEntry, loadAllDictionaries } from "@/entities/dictionaries";
+import { Dictionary, DictionaryEntry } from "@/entities/dictionaries";
+import { loadAllDictionaries } from "@/entities/dictionaries/libs";
 
 export type GetDictionariesActionResponse = Promise<{
   dictionaries: Record<number, Dictionary>;
