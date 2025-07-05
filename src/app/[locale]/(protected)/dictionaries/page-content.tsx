@@ -24,8 +24,8 @@ import { Separator } from "@/modules/shadcn/components/ui/separator";
 // Define props for the client component
 interface DictionariesPageContentProps {
   dictionariesPromise: Promise<{
-    dictionaries: Dictionary[];
-    entries: DictionaryEntry[];
+    dictionaries: Record<number, Dictionary>;
+    entries: Record<number, Record<number, DictionaryEntry>>;
     error: string | null;
   }>;
 }
