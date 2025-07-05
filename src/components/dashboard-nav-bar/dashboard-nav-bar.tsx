@@ -117,7 +117,7 @@ export default function DashboardNavBar() {
           <LocaleSwitcher />
           <ThemeSwitcher />
           <Button asChild variant="ghost" size="sm" className="text-sm select-none">
-            <a href="#">Sign Out</a>
+            <Link href="/logout">Sign Out</Link>
           </Button>
         </div>
       </div>
