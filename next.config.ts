@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const config: NextConfig = {
+  allowedDevOrigins: ["local-origin.dev", "*.local-origin.dev"],
   compiler: {
     // Enable React optimizations
     reactRemoveProperties: process.env.NODE_ENV === "production",

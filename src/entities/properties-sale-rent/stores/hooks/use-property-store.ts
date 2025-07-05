@@ -1,23 +1,19 @@
 import { useMemo } from "react";
 import { useStore } from "zustand";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
-import { DictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { usePropertyStoreContext } from "@/entities/properties-sale-rent/stores/contexts/property-store.context";
+import { PropertyStore } from "@/entities/properties-sale-rent/stores/property.store";
+import { Property } from "@/entities/properties-sale-rent/types/property.types";
 
-export function useDictionaryStore<T>(selector: (state: DictionaryStore) => T): T {
-  const store = useDictionaryStoreContext();
+export function usePropertyStore<T>(selector: (state: PropertyStore) => T): T {
+  const store = usePropertyStoreContext();
   return useStore(store, selector);
 }
 
 // Access dictionary actions
-export function useDictionaryActions(): {
-  addDictionary: (dictionary: Dictionary) => void;
-  updateDictionary: (id: number, updater: (draft: Dictionary) => void) => void;
-  deleteDictionary: (id: number) => void;
-  addEntry: (dictionaryId: number, entry: DictionaryEntry) => void;
-  updateEntry: (dictionaryId: number, entryId: number, updater: (draft: DictionaryEntry) => void) => void;
-  deleteEntry: (dictionaryId: number, entryId: number) => void;
-  validateEntryCode: (dictionaryId: number, entryId: number, code: string) => string | undefined;
+export function usePropertyActions(): {
+  addProperty: (property: Property) => void;
+  updateProperty: (id: string, updater: (draft: Property) => void) => void;
+  deleteProperty: (id: string) => void;
 } {
   const store = useDictionaryStoreContext();
   return useMemo(
