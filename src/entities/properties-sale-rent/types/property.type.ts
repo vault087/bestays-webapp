@@ -5,7 +5,7 @@ import { DBImageSchema } from "@/entities/media/types/image.type";
 import { DBPriceSchema } from "./price.type";
 
 // Table constants
-export const PROPERTIES_SALE_RENT_TABLE = "dictionaries";
+export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
 
 export const DBSizeSchema = z.object({
   value: z.number().positive().positive(),
