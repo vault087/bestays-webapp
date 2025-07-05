@@ -3,10 +3,11 @@
     "NavBar": {
       "Listings": "Listings",
       "Settings": "Settings",
-      "SignOut": "Sign Out"
+      "Logout": "Logout"
     }
   },
   "Home": {
+    "Dashboard": "Dashboard",
     "LogIn": "Log In"
   }
 }

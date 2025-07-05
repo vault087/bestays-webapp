@@ -3,10 +3,11 @@
     "NavBar": {
       "Listings": "รายการประกาศ",
       "Settings": "ตั้งค่า",
-      "SignOut": "ออกจากระบบ"
+      "Logout": "ออกจากระบบ"
     }
   },
   "Home": {
+    "Dashboard": "หน้าหลัก",
     "LogIn": "เข้าสู่ระบบ"
   }
 }

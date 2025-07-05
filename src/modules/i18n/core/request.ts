@@ -30,8 +30,6 @@ export default getRequestConfig(async ({ requestLocale }): Promise<RequestConfig
     default: defaultMessages,
   };
 
-  console.log(messages);
-
   return {
     locale: currentLocale,
     messages,

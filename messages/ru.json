@@ -3,10 +3,11 @@
     "NavBar": {
       "Listings": "Список объявлений",
       "Settings": "Настройки",
-      "SignOut": "Выйти"
+      "Logout": "Выйти"
     }
   },
   "Home": {
+    "Dashboard": "Панель управления",
     "LogIn": "Войти"
   }
 }

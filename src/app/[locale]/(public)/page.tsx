@@ -189,7 +189,7 @@ export default async function HomePage() {
 
         <div className="flex items-center justify-center">
           <Link href="/dashboard">
-            <span className="text-accent-foreground p-2 text-sm font-light">{t("LogIn")}</span>
+            <span className="text-accent-foreground p-2 text-sm font-light">{t("Dashboard")}</span>
           </Link>
         </div>
       </div>
