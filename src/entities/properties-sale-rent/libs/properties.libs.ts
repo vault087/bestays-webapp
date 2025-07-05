@@ -1,81 +1,45 @@
-import { createClient } from "@supabase/supabase-js";
-import {
-  Dictionary,
-  DictionaryEntry,
-  DICTIONARIES_TABLE,
-  DICTIONARY_ENTRIES_TABLE,
-} from "@/entities/dictionaries/types/dictionary.types";
+import { Property, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale-rent";
+import { supabase } from "@/modules/supabase/clients/client";
 
-// Create Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+export type PropertiesResponse = Promise<{
+  properties: Record<number, Property>;
+  error: string | null;
+}>;
 /**
  * Loads all dictionaries and their entries from Supabase
  */
-export async function loadAllDictionaries(): Promise<{
-  dictionaries: Record<number, Dictionary>;
-  entries: Record<number, Record<number, DictionaryEntry>>;
-  error: string | null;
-}> {
+export async function loadAllDictionaries(): PropertiesResponse {
   try {
     // Fetch dictionaries and entries in parallel
-    const [dictionariesResponse, entriesResponse] = await Promise.all([
-      supabase.from(DICTIONARIES_TABLE).select("*"),
-      supabase.from(DICTIONARY_ENTRIES_TABLE).select("*"),
-    ]);
+    const propertiesResponse = await supabase.from(PROPERTIES_SALE_RENT_TABLE).select("*");
 
     // Check for errors
-    if (dictionariesResponse.error) throw dictionariesResponse.error;
-    if (entriesResponse.error) throw entriesResponse.error;
+    if (propertiesResponse.error) throw propertiesResponse.error;
 
-    const dictionariesData = dictionariesResponse.data;
-    const entriesData = entriesResponse.data;
+    const propertiesData = propertiesResponse.data;
 
     // Process dictionaries into a record by ID
-    const dictionaries: Record<number, Dictionary> = {};
-    dictionariesData?.forEach((dict) => {
-      dictionaries[dict.id] = {
-        id: dict.id,
-        code: dict.code,
-        name: dict.name || {},
+    const properties: Record<number, Property> = {};
+    propertiesData?.forEach((property) => {
+      properties[property.id] = {
+        ...property,
         is_new: false,
       };
     });
 
-    // Process entries into a nested record by dictionary_id and entry id
-    const entries: Record<number, Record<number, DictionaryEntry>> = {};
-    entriesData?.forEach((entry) => {
-      if (!entries[entry.dictionary_id]) {
-        entries[entry.dictionary_id] = {};
-      }
-
-      entries[entry.dictionary_id][entry.id] = {
-        id: entry.id,
-        dictionary_id: entry.dictionary_id,
-        code: entry.code,
-        name: entry.name || {},
-        is_new: false,
-      };
-    });
-
-    console.log("Data loaded from Supabase:", {
-      dictCount: Object.keys(dictionaries).length,
-      entriesCount: Object.keys(entries).length,
+    console.log("Properties loaded from Supabase:", {
+      propertiesCount: Object.keys(properties).length,
     });
 
     return {
-      dictionaries,
-      entries,
+      properties,
       error: null,
     };
   } catch (error) {
     console.error("Failed to load dictionaries:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return {
-      dictionaries: {},
-      entries: {},
+      properties: {},
       error: errorMessage,
     };
   }

@@ -1,10 +1,15 @@
-import { getDictionaries } from "@/entities/dictionaries";
+import { Suspense } from "react";
+import { getDictionariesAction } from "@/entities/dictionaries";
 import DictionariesPageContent from "./page-content";
 
 export default function DictionariesPage() {
   // Create the promise but don't await it
-  const dictionariesPromise = getDictionaries();
+  const dictionariesPromise = getDictionariesAction();
 
   // Pass the promise directly to the client component
-  return <DictionariesPageContent dictionariesPromise={dictionariesPromise} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DictionariesPageContent dictionariesPromise={dictionariesPromise} />
+    </Suspense>
+  );
 }

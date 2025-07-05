@@ -8,6 +8,7 @@ import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 export const DictionaryDescriptionDisplay = memo(function DictionaryDescriptionDisplay({ id }: { id: number }) {
   const description = useDictionaryDescriptionDisplay(id);
 
+  console.log("description", description);
   if (!description) {
     return <span className="text-gray-400">No description</span>;
   }

@@ -60,8 +60,6 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
             </CardContent>
           </Card>
         </div>
-
-        <ReactiveDebugCard />
       </div>
     );
   }

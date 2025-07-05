@@ -1,1 +1,1 @@
-export * from "./dictionary-store-hydrated";
+export * from "./property-store-hydrated";
