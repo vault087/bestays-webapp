@@ -1,11 +1,11 @@
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
-import { createStandaloneDictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
+import { createDictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
 
 describe("Dictionary Store", () => {
   describe("Dictionary Operations", () => {
     test("should add a dictionary", () => {
       // Arrange
-      const store = createStandaloneDictionaryStore();
+      const store = createDictionaryStore({}, {});
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
 
       // Act
@@ -19,7 +19,7 @@ describe("Dictionary Store", () => {
     test("should update a dictionary", () => {
       // Arrange
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
-      const store = createStandaloneDictionaryStore({ 1: dictionary });
+      const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
       store.getState().updateDictionary(1, (draft) => {
@@ -34,7 +34,7 @@ describe("Dictionary Store", () => {
     test("should delete a dictionary", () => {
       // Arrange
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
-      const store = createStandaloneDictionaryStore({ 1: dictionary });
+      const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
       store.getState().deleteDictionary(1);
@@ -47,7 +47,7 @@ describe("Dictionary Store", () => {
     test("should track deleted dictionary IDs", () => {
       // Arrange
       const dictionary = { ...createMockDictionary(1, "test_type", { en: "Test Dictionary" }), is_new: false };
-      const store = createStandaloneDictionaryStore({ 1: dictionary });
+      const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
       store.getState().deleteDictionary(1);
@@ -62,7 +62,7 @@ describe("Dictionary Store", () => {
       // Arrange
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
       const entry = createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" });
-      const store = createStandaloneDictionaryStore({ 1: dictionary });
+      const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
       store.getState().addEntry(1, entry);
@@ -76,7 +76,7 @@ describe("Dictionary Store", () => {
       // Arrange
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
       const entry = createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" });
-      const store = createStandaloneDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
+      const store = createDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
 
       // Act
       store.getState().updateEntry(1, 101, (draft) => {
@@ -92,7 +92,7 @@ describe("Dictionary Store", () => {
       // Arrange
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
       const entry = createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" });
-      const store = createStandaloneDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
+      const store = createDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
 
       // Act
       store.getState().deleteEntry(1, 101);
@@ -106,7 +106,7 @@ describe("Dictionary Store", () => {
       // Arrange
       const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
       const entry = { ...createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" }), is_new: false };
-      const store = createStandaloneDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
+      const store = createDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
 
       // Act
       store.getState().deleteEntry(1, 101);

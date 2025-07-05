@@ -4,7 +4,7 @@ import { PlusCircle } from "lucide-react";
 import React, { use } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
-  createStandaloneDictionaryStore,
+  createDictionaryStore,
   DictionaryStoreProvider,
   DictionaryCodeInput,
   DictionaryCodeDisplay,
@@ -24,8 +24,8 @@ import { Separator } from "@/modules/shadcn/components/ui/separator";
 // Define props for the client component
 interface DictionariesPageContentProps {
   dictionariesPromise: Promise<{
-    dictionaries: Record<number, Dictionary>;
-    entries: Record<number, Record<number, DictionaryEntry>>;
+    dictionaries: Dictionary[];
+    entries: DictionaryEntry[];
     error: string | null;
   }>;
 }
@@ -43,7 +43,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
   const { dictionaries, entries, error } = use(dictionariesPromise);
 
   // Create store with the resolved data
-  const store = React.useMemo(() => createStandaloneDictionaryStore(dictionaries, entries), [dictionaries, entries]);
+  const store = React.useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   // Error handling
   if (error) {

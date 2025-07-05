@@ -5,17 +5,20 @@ import { LocalizedTextSchema } from "@/entities/localized-text";
 export const DICTIONARIES_TABLE = "dictionaries";
 export const DICTIONARY_ENTRIES_TABLE = "dictionary_entries";
 
+export const DBCodeSchema = z.string().min(1).max(50);
+
 // Database Schemas
 export const DBDictionarySchema = z.object({
   id: z.number().int().positive(),
-  code: z.string().min(1).max(50),
+  code: DBCodeSchema,
   name: LocalizedTextSchema,
+  description: z.string().optional(),
 });
 
 export const DBDictionaryEntrySchema = z.object({
   id: z.number().int().positive(),
   dictionary_id: z.number().int().positive(),
-  code: z.string().min(1).max(50),
+  code: DBCodeSchema,
   name: LocalizedTextSchema,
 });
 
@@ -31,5 +34,8 @@ export const DictionaryEntrySchema = DBDictionaryEntrySchema.extend({
 // Types
 export type DBDictionary = z.infer<typeof DBDictionarySchema>;
 export type DBDictionaryEntry = z.infer<typeof DBDictionaryEntrySchema>;
+export type DBCode = z.infer<typeof DBCodeSchema>;
+
 export type Dictionary = z.infer<typeof DictionarySchema>;
 export type DictionaryEntry = z.infer<typeof DictionaryEntrySchema>;
+export type Code = DBCode;

@@ -6,3 +6,4 @@ CREATE TABLE dictionaries (
 );
 
 ALTER TABLE dictionaries DISABLE ROW LEVEL SECURITY;
+
