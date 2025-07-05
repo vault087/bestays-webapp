@@ -1,4 +1,3 @@
-export * from "./components/theme-provider";
-export * from "./components/theme-switcher";
+export * from "./components";
 export * from "./theme-types";
 export * from "./theme-utils";

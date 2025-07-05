@@ -23,5 +23,5 @@ const config: NextConfig = {
   },
 };
 
-const withNextIntl = createNextIntlPlugin("src/modules/i18n/libs/core/request.ts");
+const withNextIntl = createNextIntlPlugin("src/modules/i18n/core/request.ts");
 export default withNextIntl(config);

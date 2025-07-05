@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
 import { ProtectedProvider } from "./provider";
 
 export const metadata: Metadata = {
@@ -12,8 +13,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <ProtectedProvider>{children}</ProtectedProvider>
-    </div>
+    <ProtectedProvider>
+      <div className="flex min-h-screen flex-col">
+        <DashboardNavBarComponent />
+        {children}
+      </div>
+    </ProtectedProvider>
   );
 }

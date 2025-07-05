@@ -7,7 +7,6 @@ export default getRequestConfig(async ({ requestLocale }): Promise<RequestConfig
   const requested = await requestLocale;
   const currentLocale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
   const defaultLocale = routing.defaultLocale; // e.g., 'en'
-
   // Load current locale's base messages
   const currentMessages = (await import(`/messages/${currentLocale}.json`)).default;
 
@@ -19,6 +18,8 @@ export default getRequestConfig(async ({ requestLocale }): Promise<RequestConfig
     } catch (error) {
       console.warn(`[i18n] Could not load default locale messages for '${defaultLocale}'.`, error);
     }
+  } else {
+    defaultMessages = currentMessages;
   }
 
   // Merge messages with default as fallback and keep default namespace for explicit access
@@ -28,6 +29,8 @@ export default getRequestConfig(async ({ requestLocale }): Promise<RequestConfig
     // Add default namespace for explicit access to default locale translations
     default: defaultMessages,
   };
+
+  console.log(messages);
 
   return {
     locale: currentLocale,

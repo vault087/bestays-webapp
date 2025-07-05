@@ -3,8 +3,9 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { ThemeProvider } from "@/components/theme/components/theme-provider";
 import { LocalizationProvider } from "@/modules/i18n/context/localization-provider";
-import { routing } from "@/modules/i18n/libs/core/routing";
+import { routing } from "@/modules/i18n/core/routing";
 import { registerLanguages } from "@/modules/i18n/utils/get-language";
 
 export default async function LocaleLayout({
@@ -30,7 +31,11 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider>
-          <LocalizationProvider>{children}</LocalizationProvider>
+          <LocalizationProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+            </ThemeProvider>
+          </LocalizationProvider>
         </NextIntlClientProvider>
       </body>
     </html>

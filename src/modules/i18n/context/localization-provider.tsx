@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import { usePathname, useRouter } from "@/modules/i18n/libs/core/navigation";
+import { usePathname, useRouter } from "@/modules/i18n/core/client/navigation";
 import { LOCALES, DEFAULT_LOCALE } from "@/modules/i18n/types/locale-types";
 import { LocalizationContext } from "./localization-context";
 

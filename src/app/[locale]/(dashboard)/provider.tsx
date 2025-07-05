@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { type ReactNode } from "react";
 import * as React from "react";
 import { AuthGuard } from "@/components/auth/auth-guard";
-import { ThemeProvider } from "@/components/theme/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Bestays Dashboard",
@@ -10,11 +9,5 @@ export const metadata: Metadata = {
 };
 
 export function ProtectedProvider({ children }: { children: ReactNode }): ReactNode {
-  return (
-    <AuthGuard>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        {children}
-      </ThemeProvider>
-    </AuthGuard>
-  );
+  return <AuthGuard>{children}</AuthGuard>;
 }

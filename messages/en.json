@@ -1,5 +1,8 @@
 {
-  "schema_builder": {
-    "pageName": "Schema Builder"
+  "Dashboard": {
+    "NavBar": {
+      "Listings": "Listings",
+      "Settings": "Settings"
+    }
   }
 }

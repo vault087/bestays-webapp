@@ -17,5 +17,5 @@ export * from "./ui/skeleton";
 export * from "./ui/switch";
 export * from "./ui/textarea";
 export * from "./ui/timeline";
-export * from "./ui/toggle-group";
 export * from "./ui/toggle";
+export * from "./ui/navigation-menu";

@@ -5,15 +5,15 @@ import { useTheme } from "next-themes";
 import { ClientOnly } from "@/components/utils/client-only";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/modules/shadcn";
 
-export function ModeSwitcher() {
+export function ThemeSwitcher() {
   return (
     <ClientOnly>
-      <ModeSwitcherInner />
+      <ThemeSwitcherInner />
     </ClientOnly>
   );
 }
 
-export function ModeSwitcherInner() {
+export function ThemeSwitcherInner() {
   const { theme, setTheme } = useTheme();
 
   const options: {
@@ -42,15 +42,19 @@ export function ModeSwitcherInner() {
     },
   ];
 
+  console.log("theme", theme);
+
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="icon" variant="ghost" aria-label="Select theme" className="hover:cursor-pointer">
-            {theme === "light" && <SunIcon size={16} aria-hidden="true" />}
-            {theme === "dark" && <MoonIcon size={16} aria-hidden="true" />}
-            {theme === "system" && <MonitorCog size={16} aria-hidden="true" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button size="icon" variant="ghost" aria-label="Select theme" className="hover:cursor-pointer">
+              {theme === "light" && <SunIcon size={16} aria-hidden="true" />}
+              {theme === "dark" && <MoonIcon size={16} aria-hidden="true" />}
+              {theme === "system" && <MonitorCog size={16} aria-hidden="true" />}
+            </Button>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-32">
           {options.map((option) => (
