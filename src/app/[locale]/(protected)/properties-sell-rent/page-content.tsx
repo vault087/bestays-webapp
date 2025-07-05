@@ -1,12 +1,8 @@
 "use client";
 
 import React, { use } from "react";
-import {
-  PropertyStoreHydrated,
-  GetPropertiesActionResponse,
-  PropertyStoreProvider,
-  createPropertyStore,
-} from "@/entities/properties-sale-rent";
+import { PropertyStoreHydrated, PropertyStoreProvider, createPropertyStore } from "@/entities/properties-sale-rent";
+import { GetPropertiesActionResponse } from "@/entities/properties-sale-rent/actions";
 
 interface PropertiesSellRentPageContentProps {
   propertiesPromise: GetPropertiesActionResponse;

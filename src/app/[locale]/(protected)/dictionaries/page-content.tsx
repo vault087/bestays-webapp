@@ -13,11 +13,9 @@ import {
   DictionaryEntryCodeInput,
   DictionaryEntryNameDisplay,
   useDictionaryStore,
-  GetDictionariesActionResponse,
   DictionaryDescriptionInput,
-  createMockDictionary,
-  createMockDictionaryEntry,
 } from "@/entities/dictionaries";
+import { GetDictionariesActionResponse } from "@/entities/dictionaries/actions";
 import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
@@ -76,14 +74,27 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
     const newId = getNewDictionaryId();
-    const newDictionary = createMockDictionary(newId, `new_dictionary_${newId}`, { en: `New Dictionary ${newId}` });
+    const newDictionary = {
+      id: newId,
+      code: `new_dictionary`,
+      name: { en: `New Dictionary` },
+      description: "",
+      is_new: true,
+    };
     store.getState().addDictionary(newDictionary);
   };
 
   // Function to handle adding a new entry to a specific dictionary
   const handleAddEntry = (dictionaryId: number) => {
     const newId = getNewEntryId();
-    const newEntry = createMockDictionaryEntry(newId, dictionaryId, `new_code_${newId}`, { en: `New Entry ${newId}` });
+    const newEntry = {
+      id: newId,
+      dictionary_id: dictionaryId,
+      code: `new_entry`,
+      name: { en: `New Entry` },
+      description: "",
+      is_new: true,
+    };
     store.getState().addEntry(dictionaryId, newEntry);
   };
 

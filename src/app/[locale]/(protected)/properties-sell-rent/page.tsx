@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getPropertiesAction } from "@/entities/properties-sale-rent";
+import { getPropertiesAction } from "@/entities/properties-sale-rent/actions";
 import PropertiesSellRentPageContent from "./page-content";
 
 export default function PropertiesSellRentPage() {

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getDictionariesAction } from "@/entities/dictionaries";
+import { getDictionariesAction } from "@/entities/dictionaries/actions";
 import DictionariesPageContent from "./page-content";
 
 export default function DictionariesPage() {
