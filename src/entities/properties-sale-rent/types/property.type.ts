@@ -21,8 +21,8 @@ export const DBRoomCountsSchema = z.object({
 // Database Schemas
 export const DBPropertySchema = z.object({
   id: z.string().uuid(),
-  title: LocalizedTextSchema,
-  description: LocalizedTextSchema,
+  title: LocalizedTextSchema.nullish(),
+  description: LocalizedTextSchema.nullish(),
   ownership_type: DBCodeSchema.nullish(),
   property_type: DBCodeSchema.nullish(),
   area: DBCodeSchema.nullish(),
@@ -36,7 +36,7 @@ export const DBPropertySchema = z.object({
   land_features: z.array(DBCodeSchema).nullish(),
   room_counts: DBRoomCountsSchema.nullish(),
   nearby_attractions: z.array(DBCodeSchema).nullish(),
-  land_and_construction: LocalizedTextSchema.nullish(),
+  land_and_construction: z.array(DBCodeSchema).nullish(),
 
   additional_info: z.string().nullish(),
   images: z.array(DBImageSchema).nullish(),

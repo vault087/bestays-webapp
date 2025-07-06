@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS properties_sale_rent;
+
 CREATE TABLE properties_sale_rent (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     title JSONB,
@@ -15,8 +17,9 @@ CREATE TABLE properties_sale_rent (
     land_features VARCHAR(50)[],
     room_counts JSONB,
     nearby_attractions VARCHAR(50)[],
-    land_and_construction JSONB,
+    land_and_construction VARCHAR(50)[],
 
+    additional_info TEXT,
     images JSONB,
     is_published BOOLEAN DEFAULT FALSE,
 

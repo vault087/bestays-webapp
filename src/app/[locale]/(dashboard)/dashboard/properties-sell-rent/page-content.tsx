@@ -3,13 +3,10 @@
 import { useLocale } from "next-intl";
 import React, { use } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
-import { useDictionaryStore } from "@/entities/dictionaries";
 import {
   PropertyStoreHydrated,
   PropertyStoreProvider,
   createPropertyStore,
-  PropertyTitleDisplay,
-  PropertyDescriptionDisplay,
   PropertyIdProvider,
   PropertyTitleInput,
   PropertyDescriptionInput,
