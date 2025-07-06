@@ -7,7 +7,6 @@ import {
   PropertyStoreHydrated,
   PropertyStoreProvider,
   createPropertyStore,
-  PropertyIdProvider,
   PropertyTitleInput,
   PropertyDescriptionInput,
   usePropertyStore,
@@ -29,10 +28,8 @@ export default function PropertiesSellRentPageContent({ propertiesPromise }: Pro
           <div className="flex w-1/2 flex-col gap-4">
             {Object.values(properties).map((property) => (
               <div key={property.id} className="flex flex-row gap-4">
-                <PropertyIdProvider propertyId={property.id}>
-                  <PropertyTitleInput id={property.id} locale={locale} />
-                  <PropertyDescriptionInput id={property.id} locale={locale} />
-                </PropertyIdProvider>
+                <PropertyTitleInput id={property.id} locale={locale} />
+                <PropertyDescriptionInput id={property.id} locale={locale} />
               </div>
             ))}
             {error && <div>{error}</div>}

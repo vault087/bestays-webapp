@@ -12,13 +12,13 @@ export const DBDictionarySchema = z.object({
   id: z.number().int().positive(),
   code: DBCodeSchema,
   name: LocalizedTextSchema,
-  description: z.string().optional(),
+  description: z.string().nullish(),
 });
 
 export const DBDictionaryEntrySchema = z.object({
   id: z.number().int().positive(),
   dictionary_id: z.number().int().positive(),
-  code: DBCodeSchema,
+  code: DBCodeSchema.nullish(),
   name: LocalizedTextSchema,
 });
 

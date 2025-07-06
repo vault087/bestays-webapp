@@ -8,10 +8,6 @@ import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 export const PropertyTitleDisplay = memo(function PropertyTitleDisplay({ id, locale }: { id: string; locale: string }) {
   const title = usePropertyTitleDisplay(id, locale);
 
-  if (!title) {
-    return <span className="text-gray-400">No name ({locale})</span>;
-  }
-
   return <span>{title}</span>;
 });
 

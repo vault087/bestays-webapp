@@ -1,22 +1,21 @@
 "use client";
 
 import { PlusCircle } from "lucide-react";
+import { useLocale } from "next-intl";
 import React, { use } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
   createDictionaryStore,
   DictionaryStoreProvider,
   DictionaryCodeInput,
-  DictionaryCodeDisplay,
   DictionaryNameInput,
   DictionaryEntryNameInput,
   DictionaryEntryCodeInput,
-  DictionaryEntryNameDisplay,
   useDictionaryStore,
   DictionaryDescriptionInput,
 } from "@/entities/dictionaries";
 import { GetDictionariesActionResponse } from "@/entities/dictionaries/actions";
-import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from "@/modules/shadcn/";
+import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
@@ -34,6 +33,7 @@ function ReactiveDebugCard() {
 export default function DictionariesPageContent({ dictionariesPromise }: DictionariesPageContentProps) {
   // Use React's 'use' hook to resolve the promise
   const { dictionaries, entries, error } = use(dictionariesPromise);
+  const locale = useLocale();
 
   // Create store with the resolved data
   const store = React.useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
@@ -123,6 +123,8 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
     );
   }
 
+  const showCode = false;
+
   return (
     <DictionaryStoreProvider store={store}>
       <div className="flex gap-6 p-4">
@@ -134,18 +136,15 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
               const dictId = Number(dictionaryId);
               return (
                 <Card key={dictionaryId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
-                  <CardHeader>
-                    <CardTitle>
-                      <DictionaryCodeDisplay id={dictId} />
-                    </CardTitle>
-                  </CardHeader>
                   <CardContent>
                     <div className="space-y-1">
+                      {showCode && (
+                        <div>
+                          <DictionaryCodeInput id={dictId} />
+                        </div>
+                      )}
                       <div>
-                        <DictionaryCodeInput id={dictId} />
-                      </div>
-                      <div>
-                        <DictionaryNameInput id={dictId} locale="en" />
+                        <DictionaryNameInput id={dictId} locale={locale} />
                       </div>
                       <div>
                         <DictionaryDescriptionInput id={dictId} />
@@ -158,23 +157,16 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                         Object.entries(entries[dictId]).map(([entryId]) => {
                           const entId = Number(entryId);
                           return (
-                            <Card key={entryId} className="gap-0">
-                              <CardHeader>
-                                <CardTitle className="text-sm">
-                                  <DictionaryEntryNameDisplay dictionaryId={dictId} entryId={entId} locale="en" />
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
+                            <div key={entryId}>
+                              <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale={locale} />
+                              {showCode && (
                                 <div className="space-y-1">
                                   <div>
                                     <DictionaryEntryCodeInput dictionaryId={dictId} entryId={entId} />
                                   </div>
-                                  <div>
-                                    <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale="en" />
-                                  </div>
                                 </div>
-                              </CardContent>
-                            </Card>
+                              )}
+                            </div>
                           );
                         })}
 

@@ -17,7 +17,6 @@ export function usePropertyLocalizedFieldDisplay(
 
   const localizedField = property[field] as LocalizedText | null | undefined;
   const value = localizedField?.[locale];
-
   return value === null ? undefined : value;
 }
 
@@ -34,6 +33,8 @@ export function usePropertyLocalizedFieldInput(
   error?: string;
 } {
   const value = usePropertyLocalizedFieldDisplay(id, locale, field);
+
+  console.log("value", id);
 
   const { updateProperty } = usePropertyActions();
 

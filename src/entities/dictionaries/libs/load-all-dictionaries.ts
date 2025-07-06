@@ -34,9 +34,7 @@ export async function loadAllDictionaries(): DictionariesResponse {
     const dictionaries: Record<number, Dictionary> = {};
     dictionariesData?.forEach((dict) => {
       dictionaries[dict.id] = {
-        id: dict.id,
-        code: dict.code,
-        name: dict.name || {},
+        ...dict,
         is_new: false,
       };
     });
@@ -49,10 +47,7 @@ export async function loadAllDictionaries(): DictionariesResponse {
       }
 
       entries[entry.dictionary_id][entry.id] = {
-        id: entry.id,
-        dictionary_id: entry.dictionary_id,
-        code: entry.code,
-        name: entry.name || {},
+        ...entry,
         is_new: false,
       };
     });
