@@ -2,6 +2,7 @@ import { produce } from "immer";
 import { StoreApi, createStore } from "zustand";
 import { persist } from "zustand/middleware";
 import { Property } from "@/entities/properties-sale-rent/types/property.type";
+import { generateUUID } from "@/utils/generate-uuid";
 
 // Dictionary Store State
 export interface PropertyStoreState {
@@ -10,11 +11,11 @@ export interface PropertyStoreState {
   deletedPropertyIds: string[];
   hasChanged: boolean;
   hasHydrated: boolean;
+  resetKey: string;
 }
 
 // Dictionary Store Actions
 export interface PropertyStoreActions {
-  hasHydrated: boolean;
   addProperty: (property: Property) => void;
   updateProperty: (id: string, updater: (draft: Property) => void) => void;
   deleteProperty: (id: string) => void;
@@ -26,18 +27,21 @@ export type PropertyStoreApi = StoreApi<PropertyStore>;
 
 // Store creator function
 export function createPropertyStore(store_id: string, properties: Record<string, Property>): PropertyStoreApi {
-  const initialState: PropertyStoreState = {
-    dbProperties: properties,
-    properties,
-    hasHydrated: false,
-    hasChanged: false,
-    deletedPropertyIds: [],
-  };
+  function buildInitialState(initialProperties: Record<string, Property>): PropertyStoreState {
+    return {
+      dbProperties: initialProperties,
+      properties: initialProperties,
+      deletedPropertyIds: [],
+      hasChanged: false,
+      hasHydrated: false,
+      resetKey: generateUUID(),
+    };
+  }
 
   return createStore<PropertyStore>()(
     persist(
       (set) => ({
-        ...initialState,
+        ...buildInitialState(properties),
 
         // Property actions
         addProperty: (property: Property) =>
@@ -51,6 +55,8 @@ export function createPropertyStore(store_id: string, properties: Record<string,
         updateProperty: (id: string, updater: (draft: Property) => void) =>
           set(
             produce((state: PropertyStore) => {
+              console.log("updateProperty", id);
+              console.log("state.properties", state.dbProperties);
               if (state.properties[id]) {
                 updater(state.properties[id]);
                 state.hasChanged = true;
@@ -72,6 +78,16 @@ export function createPropertyStore(store_id: string, properties: Record<string,
               state.hasChanged = true;
             }),
           ),
+
+        reset: () =>
+          set((state) => {
+            return {
+              ...state,
+              ...buildInitialState(state.dbProperties),
+              hasHydrated: state.hasHydrated,
+              resetKey: generateUUID(), // Force component re-render
+            };
+          }),
       }),
       {
         name: `property-store-${store_id}`,

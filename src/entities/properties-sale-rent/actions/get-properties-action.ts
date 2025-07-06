@@ -2,7 +2,7 @@ import { Property } from "@/entities/properties-sale-rent";
 import { loadAllProperties } from "@/entities/properties-sale-rent/libs";
 
 export type GetPropertiesActionResponse = Promise<{
-  properties: Record<number, Property>;
+  properties: Record<string, Property>;
   error: string | null;
 }>;
 

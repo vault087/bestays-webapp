@@ -2,7 +2,7 @@ import { Property, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale
 import { supabase } from "@/modules/supabase/clients/client";
 
 export type PropertiesResponse = Promise<{
-  properties: Record<number, Property>;
+  properties: Record<string, Property>;
   error: string | null;
 }>;
 /**
@@ -19,7 +19,7 @@ export async function loadAllProperties(): PropertiesResponse {
     const propertiesData = propertiesResponse.data;
 
     // Process dictionaries into a record by ID
-    const properties: Record<number, Property> = {};
+    const properties: Record<string, Property> = {};
     propertiesData?.forEach((property) => {
       properties[property.id] = {
         ...property,

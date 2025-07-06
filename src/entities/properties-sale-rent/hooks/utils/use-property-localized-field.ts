@@ -34,8 +34,6 @@ export function usePropertyLocalizedFieldInput(
 } {
   const value = usePropertyLocalizedFieldDisplay(id, locale, field);
 
-  console.log("value", id);
-
   const { updateProperty } = usePropertyActions();
 
   // Generate a unique input ID
