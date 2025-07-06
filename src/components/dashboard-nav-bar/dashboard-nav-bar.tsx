@@ -50,32 +50,36 @@ export default function DashboardNavBar() {
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
-        <div className="flex items-center gap-2">
+
+        <div className="flex w-1/3 items-center gap-2">
           {/* Mobile menu trigger */}
           <PopoverMenu navigationLinks={navigationLinks} isActive={isActive} />
           {/* Main nav */}
           <div className="flex items-center gap-6">
             <Logo />
-            {/* Navigation menu */}
-            <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      active={isActive(link.href)}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      {link.label}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
           </div>
         </div>
+
+        <div className="flex w-1/3 items-center justify-center gap-2">
+          {/* Navigation menu */}
+          <NavigationMenu className="max-md:hidden">
+            <NavigationMenuList className="gap-2">
+              {navigationLinks.map((link, index) => (
+                <NavigationMenuItem key={index}>
+                  <NavigationMenuLink
+                    active={isActive(link.href)}
+                    href={link.href}
+                    className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                  >
+                    {link.label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
         {/* Right side */}
-        <div className="flex items-center space-x-3">
+        <div className="flex w-1/3 items-center justify-end space-x-3">
           <LocaleSwitcher />
           <ThemeSwitcher />
           <AvatarMenu />
