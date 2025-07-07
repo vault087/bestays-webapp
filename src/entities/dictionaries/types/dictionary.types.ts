@@ -17,6 +17,7 @@ export const DBDictionarySchema = z.object({
 
 export const DBDictionaryEntrySchema = z.object({
   id: z.number().int().positive(),
+  is_active: z.boolean().default(true),
   dictionary_id: z.number().int().positive(),
   code: DBCodeSchema.nullish(),
   name: LocalizedTextSchema,

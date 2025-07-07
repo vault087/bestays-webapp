@@ -1,5 +1,6 @@
 CREATE TABLE dictionary_entries (
     id SERIAL PRIMARY KEY,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
     dictionary_id INTEGER NOT NULL REFERENCES dictionaries(id) ON DELETE CASCADE ON UPDATE CASCADE,
     code VARCHAR(50) UNIQUE NOT NULL,
     name JSONB NOT NULL

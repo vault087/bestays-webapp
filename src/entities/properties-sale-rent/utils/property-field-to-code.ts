@@ -9,4 +9,5 @@ export const PropertyToDictionaryCodeMap = {
   land_features: "land_features",
   room_counts: "room_counts",
   nearby_attractions: "nearby_attractions",
-};
+  land_and_construction: "land_and_construction",
+} as const;
