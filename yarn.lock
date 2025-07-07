@@ -4811,6 +4811,7 @@ __metadata:
     ai: "npm:^4.3.16"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
+    country-flag-icons: "npm:^1.5.19"
     date-fns: "npm:^4.1.0"
     deep-equal: "npm:^2.2.3"
     dotenv: "npm:^17.0.1"
@@ -5354,6 +5355,13 @@ __metadata:
     typescript:
       optional: true
   checksum: 10c0/0382a9ed13208f8bfc22ca2f62b364855207dffdb73dc26e150ade78c3093f1cf56172df2dd460c8caf2afa91c0ed4ec8a88c62f8f9cd1cf423d26506aa8797a
+  languageName: node
+  linkType: hard
+
+"country-flag-icons@npm:^1.5.19":
+  version: 1.5.19
+  resolution: "country-flag-icons@npm:1.5.19"
+  checksum: 10c0/f6adeadd7a406c593c8cfe4b3f0630d937188f79854755677448bd89024d404307b7a38b03612d5310c77c45ea535e0c409f24dc80d787673f1e3b35ddae43de
   languageName: node
   linkType: hard
 
