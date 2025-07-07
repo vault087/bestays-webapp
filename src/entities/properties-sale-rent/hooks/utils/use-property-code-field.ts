@@ -9,75 +9,47 @@ type PropertyCodeField = keyof typeof PropertyToDictionaryCodeMap;
 // Option type for select/multiselect components
 type FieldOption = { code: string; label: string; isInactive?: boolean };
 
-// Helper to find dictionary ID by code
-function useDictionaryIdByCode(dictionaryCode: string): number | undefined {
+// Single consolidated hook to get all dictionary data for a field
+function useDictionaryFieldData(
+  dictionaryCode: string,
+  locale: string,
+): {
+  dictionaryId: number | undefined;
+  options: FieldOption[];
+  dictionaryExists: boolean;
+  availableCodes?: string[];
+} {
   return useDictionaryStore((state) => {
+    // Find dictionary by code
     const dictionaries = Object.values(state.dictionaries);
     const dictionary = dictionaries.find((dict) => dict.code === dictionaryCode);
-    return dictionary?.id;
-  });
-}
+    const dictionaryId = dictionary?.id;
 
-// Helper to get active entries for a dictionary with their display names
-function useActiveEntriesWithNames(dictionaryId: number | undefined, locale: string): FieldOption[] {
-  return useDictionaryStore((state) => {
-    if (!dictionaryId || !state.entries[dictionaryId]) return [];
+    if (!dictionaryId || !state.entries[dictionaryId]) {
+      return {
+        dictionaryId: undefined,
+        options: [],
+        dictionaryExists: false,
+      };
+    }
 
+    // Get entries and create options
     const entries = Object.values(state.entries[dictionaryId]);
-    return entries
-      .filter((entry) => entry.is_active !== false) // Include entries without is_active field (default true)
+    const options = entries
+      .filter((entry) => entry.is_active !== false)
       .map((entry) => ({
         code: entry.code || "",
         label: entry.name?.[locale] || entry.code || "",
-        isInactive: entry.is_active === false, // For styling inactive entries
+        isInactive: entry.is_active === false,
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
-  });
-}
 
-// Validation function for single code
-function useValidateCode(dictionaryCode: string, code: string | undefined): string | undefined {
-  const dictionaryId = useDictionaryIdByCode(dictionaryCode);
-
-  return useDictionaryStore((state) => {
-    if (!code) return undefined;
-
-    if (!dictionaryId || !state.entries[dictionaryId]) {
-      return `Dictionary "${dictionaryCode}" not found`;
-    }
-
-    const entries = Object.values(state.entries[dictionaryId]);
-    const entryExists = entries.some((entry) => entry.code === code);
-
-    if (!entryExists) {
-      return `Code "${code}" does not exist in dictionary "${dictionaryCode}"`;
-    }
-
-    return undefined;
-  });
-}
-
-// Validation function for arrays
-function useValidateCodes(dictionaryCode: string, codes: string[]): string | undefined {
-  const dictionaryId = useDictionaryIdByCode(dictionaryCode);
-
-  return useDictionaryStore((state) => {
-    if (codes.length === 0) return undefined;
-
-    if (!dictionaryId || !state.entries[dictionaryId]) {
-      return `Dictionary "${dictionaryCode}" not found`;
-    }
-
-    const entries = Object.values(state.entries[dictionaryId]);
-    const availableCodes = entries.map((entry) => entry.code).filter(Boolean);
-
-    const invalidCodes = codes.filter((code) => !availableCodes.includes(code));
-
-    if (invalidCodes.length > 0) {
-      return `Invalid codes: ${invalidCodes.join(", ")}`;
-    }
-
-    return undefined;
+    return {
+      dictionaryId,
+      options,
+      dictionaryExists: true,
+      availableCodes: entries.map((entry) => entry.code).filter((code): code is string => Boolean(code)),
+    };
   });
 }
 
@@ -97,11 +69,19 @@ export function usePropertySingleCodeField<T extends PropertyCodeField>(
   const { updateProperty } = usePropertyActions();
 
   const dictionaryCode = PropertyToDictionaryCodeMap[field];
-  const dictionaryId = useDictionaryIdByCode(dictionaryCode);
-  const options = useActiveEntriesWithNames(dictionaryId, locale);
+  const { options, dictionaryExists, availableCodes } = useDictionaryFieldData(dictionaryCode, locale);
 
   const currentValue = property?.[field] as string | undefined;
-  const error = useValidateCode(dictionaryCode, currentValue);
+
+  // Validation logic
+  const error = useMemo(() => {
+    if (!currentValue) return undefined;
+    if (!dictionaryExists) return `Dictionary "${dictionaryCode}" not found`;
+    if (!availableCodes?.includes(currentValue)) {
+      return `Code "${currentValue}" does not exist in dictionary "${dictionaryCode}"`;
+    }
+    return undefined;
+  }, [currentValue, dictionaryExists, dictionaryCode, availableCodes]);
 
   const setValue = useCallback(
     (code: string | undefined) => {
@@ -117,7 +97,7 @@ export function usePropertySingleCodeField<T extends PropertyCodeField>(
     setValue,
     options,
     error,
-    dictionaryExists: !!dictionaryId,
+    dictionaryExists,
   };
 }
 
@@ -140,11 +120,20 @@ export function usePropertyArrayCodeField<T extends PropertyCodeField>(
   const { updateProperty } = usePropertyActions();
 
   const dictionaryCode = PropertyToDictionaryCodeMap[field];
-  const dictionaryId = useDictionaryIdByCode(dictionaryCode);
-  const options = useActiveEntriesWithNames(dictionaryId, locale);
+  const { options, dictionaryExists, availableCodes } = useDictionaryFieldData(dictionaryCode, locale);
 
   const currentValues = useMemo(() => (property?.[field] as string[] | undefined) || [], [property, field]);
-  const error = useValidateCodes(dictionaryCode, currentValues);
+
+  // Validation logic
+  const error = useMemo(() => {
+    if (currentValues.length === 0) return undefined;
+    if (!dictionaryExists) return `Dictionary "${dictionaryCode}" not found`;
+    const invalidCodes = currentValues.filter((code) => !availableCodes?.includes(code));
+    if (invalidCodes.length > 0) {
+      return `Invalid codes: ${invalidCodes.join(", ")}`;
+    }
+    return undefined;
+  }, [currentValues, dictionaryExists, dictionaryCode, availableCodes]);
 
   const setValues = useCallback(
     (codes: string[]) => {
@@ -190,6 +179,6 @@ export function usePropertyArrayCodeField<T extends PropertyCodeField>(
     toggleValue,
     options,
     error,
-    dictionaryExists: !!dictionaryId,
+    dictionaryExists,
   };
 }
