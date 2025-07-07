@@ -2,7 +2,7 @@
 import { useParams, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { usePathname, useRouter } from "@/modules/i18n/core/client/navigation";
-import { LOCALES, DEFAULT_LOCALE } from "@/modules/i18n/types/locale-types";
+import { LOCALES, DEFAULT_LOCALE, FLAGS } from "@/modules/i18n/types/locale-types";
 import { LocalizationContext } from "./localization-context";
 
 export const LocalizationContextProvider = LocalizationContext.Provider;
@@ -42,6 +42,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
         pathname: pathname,
         routeParams: params,
         switchLocale: switchLocale,
+        flag: FLAGS,
       }}
     >
       {children}
