@@ -9,5 +9,15 @@
   "Home": {
     "Dashboard": "หน้าหลัก",
     "LogIn": "เข้าสู่ระบบ"
+  },
+  "UI": {
+    "Tooltips": {
+      "SelectLanguage": "เลือกภาษา",
+      "Theme": {
+        "Light": "โหมดสว่าง",
+        "Dark": "โหมดมืด",
+        "System": "โหมดระบบ"
+      }
+    }
   }
 }

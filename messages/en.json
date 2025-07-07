@@ -9,5 +9,15 @@
   "Home": {
     "Dashboard": "Dashboard",
     "LogIn": "Log In"
+  },
+  "UI": {
+    "Tooltips": {
+      "SelectLanguage": "Select language",
+      "Theme": {
+        "Light": "Light Mode",
+        "Dark": "Dark Mode",
+        "System": "System Mode"
+      }
+    }
   }
 }
