@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useDictionaryStore } from "@/entities/dictionaries/stores";
+import { useDictionaryEntries } from "@/entities/dictionaries/stores";
 import { Code, Dictionary } from "@/entities/dictionaries/types/dictionary.types";
 import { usePropertyActions, usePropertyField } from "@/entities/properties-sale-rent";
 import { Property } from "@/entities/properties-sale-rent/types";
@@ -25,10 +25,10 @@ export function usePropertyOption(
   propertyId: string,
   locale: string,
   field: PropertyOptionField,
-  dictionary: Dictionary | undefined,
+  dictionary: Dictionary,
   variant: string = "",
 ): PropertyOptionResponse {
-  const entities = useDictionaryStore((state) => state.entries);
+  const entities = useDictionaryEntries(dictionary.id);
   const selectedCode = usePropertyField(propertyId, field) as Code | undefined;
   const { updateProperty } = usePropertyActions();
 
@@ -47,18 +47,14 @@ export function usePropertyOption(
   );
 
   const options = useMemo(() => {
-    if (!dictionary || !dictionary.id) {
-      return [];
-    }
-
-    return Object.values(entities[dictionary.id])
+    return Object.values(entities)
       .filter((entry) => entry.is_active !== false)
       .map((entry) => ({
         code: entry?.code || "",
         label: entry?.name?.[locale] || entry.code || "",
         isActive: entry.is_active,
       }));
-  }, [entities, locale, dictionary]);
+  }, [entities, locale]);
 
   const selectedOption = useMemo(() => {
     if (!selectedCode) {
