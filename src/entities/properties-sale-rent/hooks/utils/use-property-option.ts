@@ -15,10 +15,10 @@ export type PropertyOption = {
 };
 
 export type PropertyOptionResponse = {
-  selected: PropertyOption | undefined;
-  setSelected: (code: string) => void;
-  options: PropertyOption[];
   inputId: string;
+  selected: PropertyOption | undefined;
+  setSelected: (code: Code) => void;
+  options: PropertyOption[];
 };
 
 export function usePropertyOption(
@@ -27,7 +27,7 @@ export function usePropertyOption(
   field: PropertyOptionField,
   dictionaryCode: Code,
   variant: string = "",
-): PropertyOptionResponse | undefined {
+): PropertyOptionResponse {
   const dictionaries = useDictionaryStore((state) => state.dictionaries);
   const dictionary = getDictionaryByCode(dictionaries, dictionaryCode);
 
@@ -36,7 +36,8 @@ export function usePropertyOption(
   const { updateProperty } = usePropertyActions();
 
   const setSelected = useCallback(
-    (code: string | undefined) => {
+    (code: Code) => {
+      console.log("setSelected", code);
       updateProperty(propertyId, (draft) => {
         draft[field] = code;
       });
@@ -71,9 +72,9 @@ export function usePropertyOption(
   }, [selectedCode, options]);
 
   return {
+    inputId,
     selected: selectedOption,
     setSelected,
-    options,
-    inputId,
+    options: options,
   };
 }

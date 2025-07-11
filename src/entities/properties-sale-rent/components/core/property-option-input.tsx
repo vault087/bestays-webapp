@@ -2,7 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
+import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import {
   usePropertyOption,
   PropertyOptionField,
@@ -29,7 +29,7 @@ export function PropertyOptionInput({
 }: {
   propertyId: string;
   field: PropertyOptionField;
-  dictionary: string;
+  dictionary: Code;
   locale: string;
 }) {
   const { inputId, selected, setSelected, options } = usePropertyOption(
@@ -54,23 +54,23 @@ export function PropertyOptionInput({
             className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
             <span className={cn("truncate", !selected && "text-muted-foreground")}>
-              {selected ? selected.label : "Select area type"}
+              {selected ? selected.label : "Select option"}
             </span>
             <ChevronDownIcon size={16} className="text-muted-foreground/80 shrink-0" aria-hidden="true" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0" align="start">
           <Command>
-            <CommandInput placeholder="Find organization" />
+            <CommandInput placeholder="Find option" />
             <CommandList>
-              <CommandEmpty>No organization found.</CommandEmpty>
+              <CommandEmpty>Not found.</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
                     key={option.code}
-                    value={option.code}
-                    onSelect={(currentValue) => {
-                      setSelected(currentValue as DBCode);
+                    value={option.label}
+                    onSelect={() => {
+                      setSelected(option.code);
                       setOpen(false);
                     }}
                   >
@@ -83,7 +83,7 @@ export function PropertyOptionInput({
               <CommandGroup>
                 <Button variant="ghost" className="w-full justify-start font-normal">
                   <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
-                  New area type
+                  New option
                 </Button>
               </CommandGroup>
             </CommandList>
