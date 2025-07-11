@@ -15,6 +15,7 @@ import {
   DictionaryDescriptionInput,
 } from "@/entities/dictionaries";
 import { GetDictionariesActionResponse } from "@/entities/dictionaries/actions";
+import { DictionaryMetaInfoInput } from "@/entities/dictionaries/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
@@ -78,7 +79,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
       id: newId,
       code: `new_dictionary`,
       name: { en: `New Dictionary` },
-      description: "",
+      description: { en: `New Dictionary` },
       is_new: true,
     };
     store.getState().addDictionary(newDictionary);
@@ -92,8 +93,9 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
       dictionary_id: dictionaryId,
       code: `new_entry`,
       name: { en: `New Entry` },
-      description: "",
+      description: { en: `New Entry` },
       is_new: true,
+      is_active: true,
     };
     store.getState().addEntry(dictionaryId, newEntry);
   };
@@ -147,7 +149,8 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                         <DictionaryNameInput id={dictId} locale={locale} />
                       </div>
                       <div>
-                        <DictionaryDescriptionInput id={dictId} />
+                        <DictionaryDescriptionInput id={dictId} locale={locale} />
+                        <DictionaryMetaInfoInput id={dictId} />
                       </div>
 
                       <Separator className="my-4" />

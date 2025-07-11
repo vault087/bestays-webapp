@@ -7,12 +7,17 @@ export const DICTIONARY_ENTRIES_TABLE = "dictionary_entries";
 
 export const DBCodeSchema = z.string().min(1).max(50);
 
+export const DBMetadataSchema = z.object({
+  info: z.string().nullish(),
+});
+
 // Database Schemas
 export const DBDictionarySchema = z.object({
   id: z.number().int().positive(),
   code: DBCodeSchema,
   name: LocalizedTextSchema,
-  description: z.string().nullish(),
+  description: LocalizedTextSchema.nullish(),
+  metadata: DBMetadataSchema.nullish(),
 });
 
 export const DBDictionaryEntrySchema = z.object({

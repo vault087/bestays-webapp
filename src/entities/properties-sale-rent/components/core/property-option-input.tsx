@@ -2,6 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { useDictionaryByCode } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import {
   usePropertyOption,
@@ -24,14 +25,16 @@ import { cn } from "@/modules/shadcn/utils/cn";
 export function PropertyOptionInput({
   propertyId,
   field,
-  dictionary,
+  dictionaryCode,
   locale,
 }: {
   propertyId: string;
   field: PropertyOptionField;
-  dictionary: Code;
+  dictionaryCode: Code;
   locale: string;
 }) {
+  const dictionary = useDictionaryByCode(dictionaryCode);
+
   const { inputId, selected, setSelected, options } = usePropertyOption(
     propertyId,
     locale,
@@ -43,7 +46,7 @@ export function PropertyOptionInput({
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={inputId}>Select with search and button</Label>
+      <Label htmlFor={inputId}>{dictionary?.name?.[locale] || dictionaryCode}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

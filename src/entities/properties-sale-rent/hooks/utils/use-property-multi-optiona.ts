@@ -4,38 +4,41 @@ import { Code, Dictionary } from "@/entities/dictionaries/types/dictionary.types
 import { usePropertyActions, usePropertyField } from "@/entities/properties-sale-rent";
 import { Property } from "@/entities/properties-sale-rent/types";
 import { generateInputId } from "@/utils";
-
+import { PropertyOption } from "./use-property-option";
 // Property field types that accept codes
-export type PropertyOptionField = keyof Pick<Property, "area" | "ownership_type" | "property_type" | "divisible_sale">;
 
-export type PropertyOption = {
-  code: Code;
-  label: string;
-  isActive?: boolean;
-};
+export type PropertyMultiOptionField = keyof Pick<
+  Property,
+  | "location_strengths"
+  | "highlights"
+  | "transaction_types"
+  | "land_features"
+  | "nearby_attractions"
+  | "land_and_construction"
+>;
 
-export type PropertyOptionResponse = {
+export type PropertyMultiOptionResponse = {
   inputId: string;
-  selected: PropertyOption | undefined;
-  setSelected: (code: Code) => void;
+  selected: PropertyOption[];
+  setSelected: (codes: Code[]) => void;
   options: PropertyOption[];
 };
 
-export function usePropertyOption(
+export function usePropertyMultiOption(
   propertyId: string,
   locale: string,
-  field: PropertyOptionField,
+  field: PropertyMultiOptionField,
   dictionary: Dictionary | undefined,
   variant: string = "",
-): PropertyOptionResponse {
+): PropertyMultiOptionResponse {
   const entities = useDictionaryStore((state) => state.entries);
-  const selectedCode = usePropertyField(propertyId, field) as Code | undefined;
+  const selectedCodes = usePropertyField(propertyId, field) as Code[] | undefined;
   const { updateProperty } = usePropertyActions();
 
   const setSelected = useCallback(
-    (code: Code) => {
+    (codes: Code[]) => {
       updateProperty(propertyId, (draft) => {
-        draft[field] = code;
+        draft[field] = codes;
       });
     },
     [propertyId, field, updateProperty],
@@ -60,16 +63,16 @@ export function usePropertyOption(
       }));
   }, [entities, locale, dictionary]);
 
-  const selectedOption = useMemo(() => {
-    if (!selectedCode) {
-      return undefined;
+  const selectedOptions = useMemo(() => {
+    if (!selectedCodes) {
+      return [];
     }
-    return options.find((option) => option.code === selectedCode);
-  }, [selectedCode, options]);
+    return options.filter((option) => selectedCodes.includes(option.code));
+  }, [selectedCodes, options]);
 
   return {
     inputId,
-    selected: selectedOption,
+    selected: selectedOptions,
     setSelected,
     options: options,
   };

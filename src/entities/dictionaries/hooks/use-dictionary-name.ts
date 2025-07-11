@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from "react";
-import { useDictionary, useDictionaryActions } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import {
+  useDictionary,
+  useDictionaryActions,
+  useDictionaryStore,
+} from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
 export function useDictionaryNameDisplay(id: number, locale: string): string | undefined {
-  const dictionary = useDictionary(id);
-  const name = dictionary?.name?.[locale];
-  return name === null ? undefined : name;
+  return useDictionaryStore((state) => state.dictionaries[id].name?.[locale]);
 }
 
 // Input hook for dictionary name
@@ -20,7 +22,7 @@ export function useDictionaryNameInput(
   placeholder: string;
   error?: string;
 } {
-  const dictionary = useDictionary(id);
+  const value = useDictionaryNameDisplay(id, locale);
   const { updateDictionary } = useDictionaryActions();
 
   // Generate a unique input ID
@@ -45,7 +47,7 @@ export function useDictionaryNameInput(
 
   return {
     inputId,
-    value: dictionary?.name?.[locale] || "",
+    value: value || "",
     onChange,
     placeholder: `Enter dictionary name (${locale})`,
     error,

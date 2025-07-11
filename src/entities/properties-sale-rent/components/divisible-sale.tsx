@@ -5,7 +5,7 @@ export function PropertyDivisibleSale({ propertyId, locale }: { propertyId: stri
     <PropertyOptionInput
       propertyId={propertyId}
       field="divisible_sale"
-      dictionary="divisible_sale_types"
+      dictionaryCode="divisible_sale_types"
       locale={locale}
     />
   );

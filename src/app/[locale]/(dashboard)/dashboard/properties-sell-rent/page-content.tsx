@@ -19,6 +19,13 @@ import {
   PropertyType,
 } from "@/entities/properties-sale-rent";
 import { GetPropertiesActionResponse } from "@/entities/properties-sale-rent/actions";
+import {
+  PropertyLandAndConstruction,
+  PropertyLandFeatures,
+  PropertyLocationStrengths,
+  PropertyNearbyAttractions,
+  PropertyTransactionTypes,
+} from "@/entities/properties-sale-rent/components";
 
 interface PropertiesSellRentPageContentProps {
   propertiesPromise: GetPropertiesActionResponse;
@@ -51,9 +58,8 @@ export default function PropertiesSellRentPageContent({
     <DictionaryStoreProvider store={dictionaryStore}>
       <PropertyStoreProvider store={propertyStore}>
         <PropertyStoreHydrated fallback={<div></div>}>
-          <div>PropertiesSellRentPageContent</div>
-          <div className="flex flex-row gap-4">
-            <div className="flex w-1/2 flex-col gap-4">
+          <div className="bg-accent mx-auto flex flex-row justify-center gap-4 p-8">
+            <div className="bg-background flex flex-col gap-4">
               {Object.values(properties).map((property) => (
                 <div key={property.id} className="space-y-4 rounded-lg border p-4">
                   <h3 className="text-lg font-semibold">Property {property.id.slice(-8)}</h3>
@@ -65,6 +71,11 @@ export default function PropertiesSellRentPageContent({
                     <PropertyType propertyId={property.id} locale={locale} />
                     <PropertyDivisibleSale propertyId={property.id} locale={locale} />
                     <PropertyHighlights propertyId={property.id} locale={locale} />
+                    <PropertyLocationStrengths propertyId={property.id} locale={locale} />
+                    <PropertyLandAndConstruction propertyId={property.id} locale={locale} />
+                    <PropertyLandFeatures propertyId={property.id} locale={locale} />
+                    <PropertyNearbyAttractions propertyId={property.id} locale={locale} />
+                    <PropertyTransactionTypes propertyId={property.id} locale={locale} />
                   </div>
                 </div>
               ))}

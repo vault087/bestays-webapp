@@ -16,9 +16,10 @@ export function useDictionaryActions(): DictionaryStoreActions {
   return store.getState();
 }
 
-// Access a specific dictionary by ID
-export function useDictionary(id: number): Dictionary | undefined {
-  return useDictionaryStore((state) => state.dictionaries[id]);
+export function useDictionaryByCode(code: string): Dictionary | undefined {
+  return useDictionaryStore((state) =>
+    Object.values(state.dictionaries).find((dictionary) => dictionary.code === code),
+  );
 }
 
 // Access a specific entry by dictionary ID and entry ID

@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from "react";
-import { useDictionary, useDictionaryActions } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { useDictionaryActions, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: number): string | undefined {
-  const dictionary = useDictionary(id);
-  return dictionary?.code as string | undefined;
+  return useDictionaryStore((state) => state.dictionaries[id].code);
 }
 
 // Input hook for dictionary code
