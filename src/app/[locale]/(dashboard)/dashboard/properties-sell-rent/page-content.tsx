@@ -14,13 +14,11 @@ import {
   PropertyArea,
   PropertyHighlights,
   usePropertyStore,
-} from "@/entities/properties-sale-rent";
-import { GetPropertiesActionResponse } from "@/entities/properties-sale-rent/actions";
-import {
   PropertyDivisibleSale,
   PropertyOwnershipType,
-} from "@/entities/properties-sale-rent/components/divisible-sale";
-import { PropertyType } from "@/entities/properties-sale-rent/components/property-type";
+  PropertyType,
+} from "@/entities/properties-sale-rent";
+import { GetPropertiesActionResponse } from "@/entities/properties-sale-rent/actions";
 
 interface PropertiesSellRentPageContentProps {
   propertiesPromise: GetPropertiesActionResponse;
