@@ -10,6 +10,16 @@
     "Dashboard": "หน้าหลัก",
     "LogIn": "เข้าสู่ระบบ"
   },
+  "PropertiesSaleRent": {
+    "fields": {
+      "title": {
+        "placeholder": "ป้อนหัวข้อ"
+      },
+      "description": {
+        "placeholder": "ป้อนคำอธิบาย"
+      }
+    }
+  },
   "UI": {
     "Tooltips": {
       "SelectLanguage": "เลือกภาษา",

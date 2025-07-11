@@ -10,6 +10,16 @@
     "Dashboard": "Панель управления",
     "LogIn": "Войти"
   },
+  "PropertiesSaleRent": {
+    "fields": {
+      "title": {
+        "placeholder": "Введите заголовок"
+      },
+      "description": {
+        "placeholder": "Введите описание"
+      }
+    }
+  },
   "UI": {
     "Tooltips": {
       "SelectLanguage": "Выбрать язык",

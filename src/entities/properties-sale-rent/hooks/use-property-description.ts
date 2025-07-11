@@ -13,7 +13,6 @@ export function usePropertyDescriptionInput(
   inputId: string;
   value: string;
   onChange: (value: string) => void;
-  placeholder: string;
   error?: string;
 } {
   return usePropertyLocalizedFieldInput(id, locale, "description");

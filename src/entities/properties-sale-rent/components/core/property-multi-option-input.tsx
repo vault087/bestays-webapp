@@ -37,16 +37,24 @@ export function PropertyMultiOptionInput({
         }}
         commandProps={{
           label: dictionary?.name?.[locale] || dictionaryCode,
-          value: selected.map((option) => option.code).join(","),
+          filter: (value, search) => {
+            const option = options.find((opt) => opt.code === value);
+            if (!option) return 0;
+
+            const searchLower = search.toLowerCase();
+            return option.label.toLowerCase().includes(searchLower) ? 1 : 0;
+          },
         }}
         value={selected.map((option) => ({
           value: option.code,
           label: option.label,
         }))}
-        options={options.map((option) => ({
-          value: option.code,
-          label: option.label,
-        }))}
+        defaultOptions={options
+          .filter((option) => option.isActive)
+          .map((option) => ({
+            value: option.code,
+            label: option.label,
+          }))}
         onChange={(value) => {
           setSelected(value.map((option) => option.value));
         }}

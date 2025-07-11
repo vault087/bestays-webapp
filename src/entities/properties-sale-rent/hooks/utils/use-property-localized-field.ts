@@ -4,7 +4,7 @@ import { useProperty, usePropertyActions } from "@/entities/properties-sale-rent
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Explicitly define the LocalizedText fields from Property type
-type PropertyLocalizedTextFields = "title" | "description" | "land_and_construction";
+type PropertyLocalizedTextFields = "title" | "description";
 
 // Display hook for Property localized fields
 export function usePropertyLocalizedFieldDisplay(
@@ -29,7 +29,6 @@ export function usePropertyLocalizedFieldInput(
   inputId: string;
   value: string;
   onChange: (value: string) => void;
-  placeholder: string;
   error?: string;
 } {
   const value = usePropertyLocalizedFieldDisplay(id, locale, field);
@@ -37,17 +36,20 @@ export function usePropertyLocalizedFieldInput(
   const { updateProperty } = usePropertyActions();
 
   // Generate a unique input ID
-  const inputId = useMemo(() => generateInputId("Property", id.toString(), field, locale), [id, locale, field]);
+  const inputId = useMemo(() => generateInputId("Property", id.slice(-8), field, locale), [id, locale, field]);
 
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      console.log("onChange", id, field, locale, value);
       updateProperty(id, (draft) => {
         const currentField = draft[field] as LocalizedText | null | undefined;
+        console.log("currentField", currentField);
         if (!currentField) {
           (draft[field] as LocalizedText) = {};
         }
         (draft[field] as LocalizedText)[locale] = value;
+        console.log("updateProperty", value);
       });
     },
     [id, locale, updateProperty, field],
@@ -61,7 +63,6 @@ export function usePropertyLocalizedFieldInput(
     inputId,
     value: value || "",
     onChange,
-    placeholder: `Enter Property ${field} (${locale})`,
     error,
   };
 }
