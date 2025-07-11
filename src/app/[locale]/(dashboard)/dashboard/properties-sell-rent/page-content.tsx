@@ -16,6 +16,11 @@ import {
   usePropertyStore,
 } from "@/entities/properties-sale-rent";
 import { GetPropertiesActionResponse } from "@/entities/properties-sale-rent/actions";
+import {
+  PropertyDivisibleSale,
+  PropertyOwnershipType,
+} from "@/entities/properties-sale-rent/components/divisible-sale";
+import { PropertyType } from "@/entities/properties-sale-rent/components/property-type";
 
 interface PropertiesSellRentPageContentProps {
   propertiesPromise: GetPropertiesActionResponse;
@@ -47,7 +52,7 @@ export default function PropertiesSellRentPageContent({
   return (
     <DictionaryStoreProvider store={dictionaryStore}>
       <PropertyStoreProvider store={propertyStore}>
-        <PropertyStoreHydrated fallback={<div>Restoring store...</div>}>
+        <PropertyStoreHydrated fallback={<div></div>}>
           <div>PropertiesSellRentPageContent</div>
           <div className="flex flex-row gap-4">
             <div className="flex w-1/2 flex-col gap-4">
@@ -58,6 +63,9 @@ export default function PropertiesSellRentPageContent({
                     <PropertyTitleInput id={property.id} locale={locale} />
                     <PropertyDescriptionInput id={property.id} locale={locale} />
                     <PropertyArea propertyId={property.id} locale={locale} />
+                    <PropertyOwnershipType propertyId={property.id} locale={locale} />
+                    <PropertyType propertyId={property.id} locale={locale} />
+                    <PropertyDivisibleSale propertyId={property.id} locale={locale} />
                     <PropertyHighlights propertyId={property.id} locale={locale} />
                   </div>
                 </div>

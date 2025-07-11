@@ -3,7 +3,7 @@
 import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
 import * as React from "react";
-import { cn } from "@/modules/shadcn/utils";
+import { cn } from "@/modules/shadcn/utils/cn";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./dialog";
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {

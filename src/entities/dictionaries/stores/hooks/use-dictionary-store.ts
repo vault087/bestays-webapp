@@ -1,6 +1,9 @@
+import { useMemo } from "react";
 import { useStore } from "zustand";
 import { DictionaryStore, DictionaryStoreActions, useDictionaryStoreContext } from "@/entities/dictionaries";
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { DBCode, Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+
+const EMPTY_ENTRIES = {};
 
 export function useDictionaryStore<T>(selector: (state: DictionaryStore) => T): T {
   const store = useDictionaryStoreContext();
@@ -23,17 +26,21 @@ export function useDictionaryEntry(dictionaryId: number, entryId: number): Dicti
   return useDictionaryStore((state) => state.entries[dictionaryId]?.[entryId]);
 }
 
-export function useDictionaryEntries(dictionaryId: number): DictionaryEntry[] {
-  return useDictionaryStore((state) => Object.values(state.entries[dictionaryId] || EMPTY_ENTRIES));
+const EMPTY_ENTRIES_ARRAY: DictionaryEntry[] = [];
+export function useDictionaryEntriesByCode(code: DBCode): DictionaryEntry[] {
+  const dictionaries = useDictionaryStore((state) => state.dictionaries);
+  const entries = useDictionaryStore((state) => state.entries);
+
+  return useMemo(() => {
+    const matchingDictionaries = Object.values(dictionaries).filter((dictionary) => dictionary.code === code);
+    if (matchingDictionaries.length === 0) {
+      return EMPTY_ENTRIES_ARRAY;
+    }
+    const dictionaryId = matchingDictionaries[0].id;
+    return Object.values(entries[dictionaryId] || EMPTY_ENTRIES);
+  }, [dictionaries, entries, code]);
 }
 
-const EMPTY_ENTRIES = {};
-// Get sorted entry IDs (alphabetically by code)
-export function useDictionaryEntriesSortedIds(dictionaryId: number): number[] {
-  return useDictionaryStore((state) => {
-    const entries = state.entries[dictionaryId] || EMPTY_ENTRIES;
-    return Object.values(entries)
-      .sort((a, b) => a.code.localeCompare(b.code))
-      .map((entry) => entry.id);
-  });
+export function useDictionaryEntries(dictionaryId: number): DictionaryEntry[] {
+  return useDictionaryStore((state) => Object.values(state.entries[dictionaryId] || EMPTY_ENTRIES));
 }

@@ -1,8 +1,5 @@
 import React, { memo } from "react";
-import {
-  usePropertyTitleDisplay,
-  usePropertyTitleInput,
-} from "@/entities/properties-sale-rent/hooks/use-property-title";
+import { usePropertyTitleDisplay, usePropertyTitleInput } from "@/entities/properties-sale-rent";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
 export const PropertyTitleDisplay = memo(function PropertyTitleDisplay({ id, locale }: { id: string; locale: string }) {

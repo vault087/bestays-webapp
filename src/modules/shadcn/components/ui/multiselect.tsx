@@ -4,7 +4,7 @@ import { Command as CommandPrimitive, useCommandState } from "cmdk";
 import { XIcon } from "lucide-react";
 import * as React from "react";
 import { useEffect } from "react";
-import { cn } from "@/modules/shadcn/utils";
+import { cn } from "@/modules/shadcn/utils/cn";
 import { Command, CommandGroup, CommandItem, CommandList } from "./command";
 
 export interface Option {

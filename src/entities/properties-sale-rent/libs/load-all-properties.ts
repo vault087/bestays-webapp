@@ -11,7 +11,7 @@ export type PropertiesResponse = Promise<{
 export async function loadAllProperties(): PropertiesResponse {
   try {
     // Fetch dictionaries and entries in parallel
-    const propertiesResponse = await supabase.from(PROPERTIES_SALE_RENT_TABLE).select("*");
+    const propertiesResponse = await supabase.from(PROPERTIES_SALE_RENT_TABLE).select("*").limit(1);
 
     // Check for errors
     if (propertiesResponse.error) throw propertiesResponse.error;

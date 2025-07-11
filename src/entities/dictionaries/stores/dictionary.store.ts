@@ -2,6 +2,8 @@ import { produce } from "immer";
 import { createStore, StoreApi } from "zustand";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 
+export const EMPTY_ENTRIES: Record<number, DictionaryEntry> = {};
+
 // Dictionary Store State
 export interface DictionaryStoreState {
   hasHydrated: boolean;

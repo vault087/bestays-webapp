@@ -1,8 +1,5 @@
 import React, { memo } from "react";
-import {
-  usePropertyDescriptionDisplay,
-  usePropertyDescriptionInput,
-} from "@/entities/properties-sale-rent/hooks/use-property-description";
+import { usePropertyDescriptionDisplay, usePropertyDescriptionInput } from "@/entities/properties-sale-rent";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
 export const PropertyDescriptionDisplay = memo(function PropertyDescriptionDisplay({
