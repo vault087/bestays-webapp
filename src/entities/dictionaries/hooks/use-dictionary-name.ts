@@ -1,9 +1,5 @@
 import { useCallback, useMemo } from "react";
-import {
-  useDictionary,
-  useDictionaryActions,
-  useDictionaryStore,
-} from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import { useDictionaryActions, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name

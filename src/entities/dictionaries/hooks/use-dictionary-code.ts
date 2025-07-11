@@ -16,7 +16,7 @@ export function useDictionaryCodeInput(id: number): {
   error?: string;
 } {
   const { updateDictionary } = useDictionaryActions();
-  const dictionary = useDictionary(id);
+  const dictionaryCode = useDictionaryCodeDisplay(id);
 
   const inputId = useMemo(() => generateInputId("dictionary", id.toString(), "code"), [id]);
 
@@ -34,7 +34,7 @@ export function useDictionaryCodeInput(id: number): {
 
   return {
     inputId,
-    value: (dictionary?.code as string) || "",
+    value: dictionaryCode || "",
     onChange,
     placeholder: "Enter dictionary code",
     error,

@@ -33,7 +33,7 @@ export function usePropertyMultiOption(
 ): PropertyMultiOptionResponse {
   const entities = useDictionaryEntries(dictionary?.id || 0);
   const selectedCodes = usePropertyField(propertyId, field) as Code[] | undefined;
-  console.log("selectedCodes", selectedCodes);
+
   const { updateProperty } = usePropertyActions();
 
   const setSelected = useCallback(

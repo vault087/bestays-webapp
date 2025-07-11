@@ -5,7 +5,6 @@ import {
   usePropertyMultiOption,
   PropertyMultiOptionField,
 } from "@/entities/properties-sale-rent/hooks/utils/use-property-multi-optiona";
-import { Label } from "@/modules/shadcn/components/ui/label";
 import MultipleSelector from "@/modules/shadcn/components/ui/multiselect";
 
 export function PropertyMultiOptionInput({
@@ -31,8 +30,11 @@ export function PropertyMultiOptionInput({
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={inputId}>{dictionary?.name?.[locale] || dictionaryCode}</Label>
+      <p>{dictionary?.name?.[locale] || dictionaryCode}</p>
       <MultipleSelector
+        inputProps={{
+          id: inputId,
+        }}
         commandProps={{
           label: dictionary?.name?.[locale] || dictionaryCode,
           value: selected.map((option) => option.code).join(","),
@@ -41,14 +43,14 @@ export function PropertyMultiOptionInput({
           value: option.code,
           label: option.label,
         }))}
-        defaultOptions={options.map((option) => ({
+        options={options.map((option) => ({
           value: option.code,
           label: option.label,
         }))}
         onChange={(value) => {
           setSelected(value.map((option) => option.value));
         }}
-        placeholder="Select frameworks"
+        placeholder={dictionary?.name?.[locale]}
         hideClearAllButton
         hidePlaceholderWhenSelected
         emptyIndicator={<p className="text-center text-sm">No results found</p>}

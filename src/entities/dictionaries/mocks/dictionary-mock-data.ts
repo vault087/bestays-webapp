@@ -32,6 +32,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "bangkok",
       name: { en: "Bangkok", th: "กรุงเทพ", ru: "Бангкок" },
       is_new: false,
+      is_active: true,
     },
     102: {
       id: 102,
@@ -39,6 +40,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "phuket",
       name: { en: "Phuket", th: "ภูเก็ต", ru: "Пхукет" },
       is_new: false,
+      is_active: true,
     },
     103: {
       id: 103,
@@ -46,6 +48,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "chiang_mai",
       name: { en: "Chiang Mai", th: "เชียงใหม่", ru: "Чиангмай" },
       is_new: false,
+      is_active: true,
     },
   },
 
@@ -57,6 +60,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "near_beach",
       name: { en: "Near Beach", th: "ใกล้ชายหาด", ru: "Рядом с пляжем" },
       is_new: false,
+      is_active: true,
     },
     202: {
       id: 202,
@@ -64,6 +68,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "city_center",
       name: { en: "City Center", th: "ใจกลางเมือง", ru: "Центр города" },
       is_new: false,
+      is_active: true,
     },
   },
 
@@ -75,6 +80,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "pool",
       name: { en: "Swimming Pool", th: "สระว่ายน้ำ", ru: "Бассейн" },
       is_new: false,
+      is_active: true,
     },
     302: {
       id: 302,
@@ -82,6 +88,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
       code: "garden",
       name: { en: "Garden", th: "สวน", ru: "Сад" },
       is_new: false,
+      is_active: true,
     },
   },
 };
@@ -109,5 +116,6 @@ export function createMockDictionaryEntry(
     code,
     name,
     is_new: true,
+    is_active: true,
   };
 }

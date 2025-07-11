@@ -9,9 +9,7 @@ import { generateInputId } from "@/utils";
 
 // Display hook for dictionary entry code
 export function useDictionaryEntryCodeDisplay(dictionaryId: number, entryId: number): string | undefined {
-  return useDictionaryStore(
-    useCallback((state) => state.entries[dictionaryId]?.[entryId]?.code, [dictionaryId, entryId]),
-  );
+  return useDictionaryStore((state) => state.entries[dictionaryId]?.[entryId]?.code) || undefined;
 }
 
 // Input hook for dictionary entry code
