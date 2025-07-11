@@ -28,11 +28,12 @@ export function usePropertyMultiOption(
   propertyId: string,
   locale: string,
   field: PropertyMultiOptionField,
-  dictionary: Dictionary,
+  dictionary: Dictionary | undefined,
   variant: string = "",
 ): PropertyMultiOptionResponse {
-  const entities = useDictionaryEntries(dictionary.id);
+  const entities = useDictionaryEntries(dictionary?.id || 0);
   const selectedCodes = usePropertyField(propertyId, field) as Code[] | undefined;
+  console.log("selectedCodes", selectedCodes);
   const { updateProperty } = usePropertyActions();
 
   const setSelected = useCallback(

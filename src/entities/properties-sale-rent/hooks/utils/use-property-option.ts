@@ -25,16 +25,18 @@ export function usePropertyOption(
   propertyId: string,
   locale: string,
   field: PropertyOptionField,
-  dictionary: Dictionary,
+  dictionary: Dictionary | undefined,
   variant: string = "",
 ): PropertyOptionResponse {
-  const entities = useDictionaryEntries(dictionary.id);
+  const entities = useDictionaryEntries(dictionary?.id || 0);
   const selectedCode = usePropertyField(propertyId, field) as Code | undefined;
   const { updateProperty } = usePropertyActions();
 
   const setSelected = useCallback(
     (code: Code) => {
+      console.log("1", code);
       updateProperty(propertyId, (draft) => {
+        console.log("2", draft[field], code);
         draft[field] = code;
       });
     },

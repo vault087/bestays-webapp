@@ -18,5 +18,7 @@ export function useProperty(id: string): Property | undefined {
 }
 
 export function usePropertyField<T extends keyof Property>(id: string, field: T): Property[T] | undefined {
-  return usePropertyStore((state) => state.properties[id]?.[field]);
+  return usePropertyStore((state) => {
+    return state.properties[id]?.[field];
+  });
 }

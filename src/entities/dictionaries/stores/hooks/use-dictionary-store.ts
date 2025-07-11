@@ -42,6 +42,6 @@ export function useDictionaryEntriesByCode(code: DBCode): DictionaryEntry[] {
   }, [dictionaries, entries, code]);
 }
 
-export function useDictionaryEntries(dictionaryId: number): DictionaryEntry[] {
-  return useDictionaryStore((state) => Object.values(state.entries[dictionaryId] || EMPTY_ENTRIES));
+export function useDictionaryEntries(dictionaryId: number | undefined): Record<number, DictionaryEntry> {
+  return useDictionaryStore((state) => (dictionaryId ? state.entries[dictionaryId] || EMPTY_ENTRIES : EMPTY_ENTRIES));
 }

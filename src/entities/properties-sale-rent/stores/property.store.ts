@@ -55,9 +55,8 @@ export function createPropertyStore(store_id: string, properties: Record<string,
         updateProperty: (id: string, updater: (draft: Property) => void) =>
           set(
             produce((state: PropertyStore) => {
-              console.log("updateProperty", id);
-              console.log("state.properties", state.dbProperties);
               if (state.properties[id]) {
+                console.log("updateProperty", id);
                 updater(state.properties[id]);
                 state.hasChanged = true;
               }
