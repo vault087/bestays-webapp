@@ -54,7 +54,7 @@ export function PropertyMultiOptionInput({
         emptyIndicator={<p className="text-center text-sm">No results found</p>}
       />
       <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
-        {/* {dictionary?.description?.[locale] || ""} */}
+        {dictionary?.description?.[locale] || ""}
       </p>
     </div>
   );

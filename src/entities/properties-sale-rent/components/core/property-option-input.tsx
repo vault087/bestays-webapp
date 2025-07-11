@@ -93,6 +93,9 @@ export function PropertyOptionInput({
           </Command>
         </PopoverContent>
       </Popover>
+      <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
+        {dictionary?.description?.[locale] || ""}
+      </p>
     </div>
   );
 }
