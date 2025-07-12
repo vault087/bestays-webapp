@@ -1,7 +1,12 @@
-import { PropertyMultiOptionInput } from "./core/property-multi-option-input";
+import { PropertyMultiOptionCheckbox } from "./multi-options/property-multi-option-checkbox";
 
 export function PropertyHighlights({ propertyId, locale }: { propertyId: string; locale: string }) {
   return (
-    <PropertyMultiOptionInput propertyId={propertyId} field="highlights" dictionaryCode="highlights" locale={locale} />
+    <PropertyMultiOptionCheckbox
+      propertyId={propertyId}
+      field="highlights"
+      dictionaryCode="highlights"
+      locale={locale}
+    />
   );
 }

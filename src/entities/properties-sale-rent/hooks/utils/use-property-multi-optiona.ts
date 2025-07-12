@@ -21,6 +21,7 @@ export type PropertyMultiOptionResponse = {
   inputId: string;
   selected: PropertyOption[];
   setSelected: (codes: Code[]) => void;
+  toggle: (code: Code) => void;
   options: PropertyOption[];
 };
 
@@ -43,6 +44,15 @@ export function usePropertyMultiOption(
       });
     },
     [propertyId, field, updateProperty],
+  );
+
+  const toggle = useCallback(
+    (code: Code) => {
+      setSelected(
+        selectedCodes?.includes(code) ? selectedCodes?.filter((c) => c !== code) : [...(selectedCodes || []), code],
+      );
+    },
+    [setSelected, selectedCodes],
   );
 
   const inputId = useMemo(
@@ -71,6 +81,7 @@ export function usePropertyMultiOption(
     inputId,
     selected: selectedOptions,
     setSelected,
+    toggle,
     options: options,
   };
 }

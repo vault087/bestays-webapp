@@ -28,6 +28,7 @@ export function PropertyMultiOptionInput({
     "multi-option-input",
   );
 
+  console.log("[RENDER] PropertyMultiOptionInput");
   return (
     <div className="*:not-first:mt-2">
       <p>{dictionary?.name?.[locale] || dictionaryCode}</p>

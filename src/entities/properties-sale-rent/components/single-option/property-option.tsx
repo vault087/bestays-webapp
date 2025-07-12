@@ -44,6 +44,8 @@ export function PropertyOptionInput({
   );
   const [open, setOpen] = useState<boolean>(false);
 
+  console.log("[RENDER] PropertyOptionInput");
+
   return (
     <div className="*:not-first:mt-2">
       <Label htmlFor={inputId}>{dictionary?.name?.[locale] || dictionaryCode}</Label>
@@ -70,7 +72,7 @@ export function PropertyOptionInput({
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
-                    key={option.code}
+                    key={option.code + option.label}
                     value={option.label}
                     onSelect={() => {
                       setSelected(option.code);

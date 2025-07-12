@@ -1,4 +1,4 @@
-import { PropertyOptionInput } from "./core/property-option-input";
+import { PropertyOptionInput } from "./single-option/property-option";
 
 export function PropertyType({ propertyId, locale }: { propertyId: string; locale: string }) {
   return (
