@@ -12,5 +12,9 @@ export function loadPropertySummaries(): ReturnType<typeof fetch> {
 }
 
 export function loadPropertyDetails(): ReturnType<typeof fetch> {
-  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, ["id", "description"]);
+  return fetch(
+    PROPERTIES_SALE_RENT_TABLE,
+    DBPropertySchema,
+    Object.keys(DBPropertySchema.shape) as (keyof typeof DBPropertySchema.shape)[],
+  );
 }

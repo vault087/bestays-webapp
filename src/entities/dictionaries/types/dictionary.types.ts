@@ -18,6 +18,9 @@ export const DBDictionarySchema = z.object({
   name: LocalizedTextSchema,
   description: LocalizedTextSchema.nullish(),
   metadata: DBMetadataSchema.nullish(),
+  created_by: z.string().nullish(),
+  created_at: z.string().nullish(),
+  updated_at: z.string().nullish(),
 });
 
 export const DBDictionaryEntrySchema = z.object({
@@ -26,14 +29,25 @@ export const DBDictionaryEntrySchema = z.object({
   dictionary_id: z.number().int().positive(),
   code: DBCodeSchema.nullish(),
   name: LocalizedTextSchema,
+  created_by: z.string().nullish(),
+  created_at: z.string().nullish(),
+  updated_at: z.string().nullish(),
 });
 
 // Form Schemas (extend DB schemas)
-export const DictionarySchema = DBDictionarySchema.extend({
+export const DictionarySchema = DBDictionarySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+}).extend({
   is_new: z.boolean().default(false),
 });
 
-export const DictionaryEntrySchema = DBDictionaryEntrySchema.extend({
+export const DictionaryEntrySchema = DBDictionaryEntrySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+}).extend({
   is_new: z.boolean().default(false),
 });
 

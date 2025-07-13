@@ -6,7 +6,7 @@ import {
 } from "@/entities/dictionaries/types/dictionary.types";
 import { supabase } from "@/modules/supabase/clients/client";
 
-export type DictionariesResponse = Promise<{
+export type AllDictionariesResponse = Promise<{
   dictionaries: Record<number, Dictionary>;
   entries: Record<number, Record<number, DictionaryEntry>>;
   error: string | null;
@@ -15,7 +15,7 @@ export type DictionariesResponse = Promise<{
 /**
  * Loads all dictionaries and their entries from Supabase
  */
-export async function loadAndConvertAllDictionaries(): DictionariesResponse {
+export async function loadAndConvertAllDictionaries(): AllDictionariesResponse {
   try {
     // Fetch dictionaries and entries in parallel
     const [dictionariesResponse, entriesResponse] = await Promise.all([

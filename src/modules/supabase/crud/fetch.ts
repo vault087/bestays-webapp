@@ -59,26 +59,31 @@ export async function fetch<S extends z.ZodRawShape, K extends keyof S & string>
     // Validate and filter each entity against the field schema
     const validEntities: InferFromSubset<S, K>[] = [];
 
-    data.forEach((entity, index) => {
+    data.forEach((entity) => {
       try {
         // Parse the entity against the field schema
-        const validatedEntity = fieldSchema.parse(entity);
-        validEntities.push(validatedEntity as InferFromSubset<S, K>);
+        const validatedEntity = fieldSchema.safeParse(entity);
+
+        // Only push successful validations and unwrap the data
+        if (validatedEntity.success) {
+          validEntities.push(validatedEntity.data);
+        }
       } catch (validationError) {
-        console.error(`Failed to validate entity at index ${index}:`, {
-          entity,
-          error: validationError instanceof Error ? validationError.message : validationError,
-        });
+        console.log("validationError", validationError);
+        // console.error(`Failed to validate entity:`, {
+        // entity,
+        // error: validationError instanceof Error ? validationError.message : validationError,
+        // });
       }
     });
 
-    console.log("Entities loaded from Supabase:", {
-      table,
-      totalFetched: data.length,
-      validEntities: validEntities.length,
-      invalidEntities: data.length - validEntities.length,
-      fields,
-    });
+    // console.log("Entities loaded from Supabase:", {
+    //   table,
+    //   totalFetched: data.length,
+    //   validEntities: validEntities.length,
+    //   invalidEntities: data.length - validEntities.length,
+    //   fields,
+    // });
 
     return {
       data: validEntities,

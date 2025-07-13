@@ -42,16 +42,18 @@ export const DBPropertySchema = z.object({
   images: z.array(DBImageSchema).nullish(),
   is_published: z.boolean().default(false),
 
-  createdAt: z.string().nullish(),
-  updatedAt: z.string().nullish(),
-  deletedAt: z.string().nullish(),
+  created_by: z.string().nullish(),
+  created_at: z.string().nullish(),
+  updated_at: z.string().nullish(),
+  deleted_at: z.string().nullish(),
 });
 
 // Form Schemas (extend DB schemas)
 export const PropertySchema = DBPropertySchema.omit({
-  createdAt: true,
-  updatedAt: true,
-  deletedAt: true,
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+  deleted_at: true,
 }).extend({
   is_new: z.boolean().default(false),
 });
