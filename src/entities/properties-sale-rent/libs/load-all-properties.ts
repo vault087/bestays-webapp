@@ -8,7 +8,7 @@ export type PropertiesResponse = Promise<{
 /**
  * Loads all dictionaries and their entries from Supabase
  */
-export async function loadAllProperties(): PropertiesResponse {
+export async function loadAndConvertAllProperties(): PropertiesResponse {
   try {
     // Fetch dictionaries and entries in parallel
     const propertiesResponse = await supabase.from(PROPERTIES_SALE_RENT_TABLE).select("*");

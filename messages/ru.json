@@ -2,6 +2,7 @@
   "Dashboard": {
     "NavBar": {
       "Listings": "Список объявлений",
+      "Properties": "Недвижимость",
       "Settings": "Настройки",
       "Logout": "Выйти"
     }

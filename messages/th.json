@@ -2,6 +2,7 @@
   "Dashboard": {
     "NavBar": {
       "Listings": "รายการประกาศ",
+      "Properties": "คุณสมบัติ",
       "Settings": "ตั้งค่า",
       "Logout": "ออกจากระบบ"
     }

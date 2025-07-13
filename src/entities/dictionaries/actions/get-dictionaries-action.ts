@@ -1,5 +1,5 @@
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries";
-import { loadAllDictionaries } from "@/entities/dictionaries/libs";
+import { loadAndConvertAllDictionaries } from "@/entities/dictionaries/libs";
 
 export type GetDictionariesActionResponse = Promise<{
   dictionaries: Record<number, Dictionary>;
@@ -13,7 +13,7 @@ export type GetDictionariesActionResponse = Promise<{
  */
 export async function getDictionariesAction(): GetDictionariesActionResponse {
   try {
-    return await loadAllDictionaries();
+    return await loadAndConvertAllDictionaries();
   } catch (error) {
     console.error("Failed to load dictionaries:", error);
 

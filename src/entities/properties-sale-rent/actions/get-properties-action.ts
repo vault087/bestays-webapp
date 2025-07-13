@@ -1,5 +1,5 @@
 import { Property } from "@/entities/properties-sale-rent";
-import { loadAllProperties } from "@/entities/properties-sale-rent/libs";
+import { loadAndConvertAllProperties } from "@/entities/properties-sale-rent/libs";
 
 export type GetPropertiesActionResponse = Promise<{
   properties: Record<string, Property>;
@@ -12,7 +12,7 @@ export type GetPropertiesActionResponse = Promise<{
  */
 export async function getPropertiesAction(): GetPropertiesActionResponse {
   try {
-    return await loadAllProperties();
+    return await loadAndConvertAllProperties();
   } catch (error) {
     console.error("Failed to load dictionaries:", error);
 

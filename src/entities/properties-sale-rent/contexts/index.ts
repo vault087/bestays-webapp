@@ -1,1 +1,1 @@
-export * from "./property-id.context";
+export * from "./property.context";

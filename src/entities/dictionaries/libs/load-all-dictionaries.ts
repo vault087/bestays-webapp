@@ -15,7 +15,7 @@ export type DictionariesResponse = Promise<{
 /**
  * Loads all dictionaries and their entries from Supabase
  */
-export async function loadAllDictionaries(): DictionariesResponse {
+export async function loadAndConvertAllDictionaries(): DictionariesResponse {
   try {
     // Fetch dictionaries and entries in parallel
     const [dictionariesResponse, entriesResponse] = await Promise.all([

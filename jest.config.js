@@ -8,6 +8,7 @@ const customJestConfig = {
   setupFiles: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+    "^@/form-kit/(.*)$": "<rootDir>/src/modules/form-kit/$1",
   },
   testEnvironment: "jsdom",
   coverageProvider: "v8",

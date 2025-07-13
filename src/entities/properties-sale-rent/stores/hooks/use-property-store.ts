@@ -22,3 +22,7 @@ export function usePropertyField<T extends keyof Property>(id: string, field: T)
     return state.properties[id]?.[field];
   });
 }
+
+export function usePropertyStoreHydration(): boolean {
+  return usePropertyStore((state) => state.hasHydrated);
+}
