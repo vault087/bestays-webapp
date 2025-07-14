@@ -6,6 +6,8 @@ import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dicti
 import {
   PropertyTitleUncontrolledInput,
   PropertyDescriptionUncontrolledInput,
+  PropertyNotesUncontrolledInput,
+  PropertyAdditionalInfoUncontrolledInput,
   PropertyAreaUncontrolledInput,
   PropertyDivisibleSaleUncontrolledInput,
   PropertyOwnershipTypeUncontrolledInput,
@@ -82,10 +84,10 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               updateProperty={(updater) => handleUpdateProperty(property.id, updater)}
               key={property.id}
             >
-              {/* <div className="flex flex-row gap-2"> */}
-              <PropertyTitleUncontrolledInput id={property.id} locale={locale} />
-              <PropertyDescriptionUncontrolledInput id={property.id} locale={locale} />
-              {/* </div> */}
+              <PropertyTitleUncontrolledInput locale={locale} />
+              <PropertyDescriptionUncontrolledInput locale={locale} />
+              <PropertyNotesUncontrolledInput locale={locale} />
+              <PropertyAdditionalInfoUncontrolledInput locale={locale} />
               <PropertyAreaUncontrolledInput locale={locale} />
               <PropertyHighlightsUncontrolledInput locale={locale} />
               <PropertyHighlightsUncontrolledCheckbox locale={locale} />

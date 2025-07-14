@@ -1,28 +1,22 @@
 import { useCallback, useMemo } from "react";
-import { LocalizedText } from "@/entities/localized-text";
 import { useInitialPropertyContext } from "@/entities/properties/components/context/initial-property.context";
 import { useProperty } from "@/entities/properties-sale-rent";
-import { PropertyLocalizedTextField } from "@/entities/properties-sale-rent/types/property.type";
+import { PropertyTextField } from "@/entities/properties-sale-rent/types/property.type";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for Property localized fields
-export function usePropertyLocalizedTextDisplay(
-  id: string,
-  locale: string,
-  field: PropertyLocalizedTextField,
-): string | undefined {
+export function usePropertyTextDisplay(id: string, locale: string, field: PropertyTextField): string | undefined {
   const property = useProperty(id);
   if (!property) return undefined;
 
-  const localizedField = property[field] as LocalizedText | null | undefined;
-  const value = localizedField?.[locale];
+  const value = property[field] as string | null | undefined;
   return value === null ? undefined : value;
 }
 
 // Input hook for Property localized fields
-export function usePropertyLocalizedTextInput(
+export function usePropertyTextInput(
   locale: string,
-  field: PropertyLocalizedTextField,
+  field: PropertyTextField,
 ): {
   inputId: string;
   value: string;
@@ -37,16 +31,12 @@ export function usePropertyLocalizedTextInput(
     [initialProperty.id, locale, field],
   );
 
-  const currentValue = initialProperty[field] as LocalizedText | null | undefined;
+  const currentValue = initialProperty[field] as string | null | undefined;
   // Handle change
   const onChange = useCallback(
     (value: string) => {
       updateProperty((draft) => {
-        const currentField = draft[field] as LocalizedText | null | undefined;
-        if (!currentField) {
-          (draft[field] as LocalizedText) = {};
-        }
-        (draft[field] as LocalizedText)[locale] = value;
+        draft[field] = value;
       });
     },
     [locale, updateProperty, field],
@@ -58,7 +48,7 @@ export function usePropertyLocalizedTextInput(
 
   return {
     inputId,
-    value: currentValue?.[locale] || "",
+    value: currentValue || "",
     onChange,
     error,
   };

@@ -46,7 +46,7 @@ export const useCodeField = ({
     const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
     const dictionary = dictionariesByCode[dictionaryCode];
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property-code", initialProperty.id, field, variant, locale);
+    const inputId = generateInputId("property-code", initialProperty.id.slice(-8), field, variant, locale);
 
     function getLocalizedText(text: LocalizedText | undefined, code: Code) {
       return text?.[locale] || code;

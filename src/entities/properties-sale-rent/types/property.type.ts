@@ -59,8 +59,8 @@ export type PropertyMultiCodeField = keyof Pick<
 >;
 
 export type PropertyCodeField = keyof Pick<Property, "area" | "ownership_type" | "property_type" | "divisible_sale">;
-
 export type PropertyLocalizedTextField = "title" | "description";
+export type PropertyTextField = "notes" | "additional_info";
 
 export const covertPropertyFieldToDictionaryCode: Record<PropertyMultiCodeField | PropertyCodeField, Code> = {
   // Multi-code fields

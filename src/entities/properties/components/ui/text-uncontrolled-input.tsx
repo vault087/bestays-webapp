@@ -1,51 +1,51 @@
 import { useTranslations } from "next-intl";
 import { memo } from "react";
-import { usePropertyLocalizedTextInput } from "@/entities/properties/components";
-import { PropertyLocalizedTextField } from "@/entities/properties-sale-rent/types/property.type";
+import { usePropertyTextInput } from "@/entities/properties/components/hooks/use-text-field";
+import { PropertyTextField } from "@/entities/properties-sale-rent/types/property.type";
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyTitleUncontrolledInput = memo(function PropertyTitleUncontrolledInput({
+export const PropertyNotesUncontrolledInput = memo(function PropertyNotesUncontrolledInput({
   locale,
 }: {
   locale: string;
 }) {
   const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("title.label");
-  const subtitle = t("title.subtitle");
-  const placeholder = t("title.placeholder");
+  const title = t("notes.label");
+  const subtitle = t("notes.subtitle");
+  const placeholder = t("notes.placeholder");
   return (
-    <PropertyLocalizedTextUncontrolledInput
+    <PropertyTextUncontrolledInput
       title={title}
       placeholder={placeholder}
       subtitle={subtitle}
       locale={locale}
-      field="title"
+      field="notes"
     />
   );
 });
 
-export const PropertyDescriptionUncontrolledInput = memo(function PropertyDescriptionUncontrolledInput({
+export const PropertyAdditionalInfoUncontrolledInput = memo(function PropertyAdditionalInfoUncontrolledInput({
   locale,
 }: {
   locale: string;
 }) {
   const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("description.label");
-  const placeholder = t("description.placeholder");
-  const subtitle = t("description.subtitle");
+  const title = t("additional_info.label");
+  const placeholder = t("additional_info.placeholder");
+  const subtitle = t("additional_info.subtitle");
   return (
-    <PropertyLocalizedTextUncontrolledInput
+    <PropertyTextUncontrolledInput
       title={title}
       placeholder={placeholder}
       subtitle={subtitle}
       locale={locale}
-      field="description"
+      field="additional_info"
     />
   );
 });
 
-export const PropertyLocalizedTextUncontrolledInput = memo(function PropertyLocalizedTextUncontrolledInput({
+export const PropertyTextUncontrolledInput = memo(function PropertyTextUncontrolledInput({
   title,
   placeholder,
   subtitle,
@@ -56,10 +56,10 @@ export const PropertyLocalizedTextUncontrolledInput = memo(function PropertyLoca
   placeholder: string;
   subtitle: string;
   locale: string;
-  field: PropertyLocalizedTextField;
+  field: PropertyTextField;
 }) {
-  const { inputId, value, onChange, error } = usePropertyLocalizedTextInput(locale, field);
-  useDebugRender("LocalizedTextUncontrolledInput" + title);
+  const { inputId, value, onChange, error } = usePropertyTextInput(locale, field);
+  useDebugRender("TextUncontrolledInput" + title);
   return (
     <div className="flex w-full flex-col bg-transparent">
       <span className="font-open-sans text-md items-center border-0">{title}</span>

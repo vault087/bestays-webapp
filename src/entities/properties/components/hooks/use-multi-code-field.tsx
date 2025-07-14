@@ -48,7 +48,7 @@ export const useMultiCodeField = ({
     const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
     const dictionary = dictionariesByCode[dictionaryCode];
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property", initialProperty.id, field, variant, locale);
+    const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
 
     const options: MultiCodeOption[] = entries.map((entry) => ({
       code: entry.code as Code,

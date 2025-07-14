@@ -22,6 +22,16 @@
         "label": "Description",
         "placeholder": "Enter description",
         "subtitle": "Please enter a short description of the property"
+      },
+      "notes": {
+        "label": "Notes",
+        "placeholder": "Enter notes",
+        "subtitle": "Please enter any additional notes about the property"
+      },
+      "additional_info": {
+        "label": "Additional Info",
+        "placeholder": "Enter additional info",
+        "subtitle": "Please enter any additional information about the property"
       }
     }
   },
