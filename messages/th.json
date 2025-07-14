@@ -14,10 +14,14 @@
   "PropertiesSaleRent": {
     "fields": {
       "title": {
-        "placeholder": "ป้อนหัวข้อ"
+        "label": "หัวข้อ",
+        "placeholder": "ป้อนหัวข้อ",
+        "subtitle": "กรุณาป้อนหัวข้อสั้นๆ สำหรับคุณสมบัติ"
       },
       "description": {
-        "placeholder": "ป้อนคำอธิบาย"
+        "label": "คำอธิบาย",
+        "placeholder": "ป้อนคำอธิบาย",
+        "subtitle": "กรุณาป้อนคำอธิบายสั้นๆ สำหรับคุณสมบัติ"
       }
     }
   },

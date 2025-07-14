@@ -3,9 +3,9 @@ import { useLocale } from "next-intl";
 import { memo, useCallback, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
-import { DictionaryProvider } from "@/entities/properties/components/context/dictionary.context";
-import { InitialPropertyProvider } from "@/entities/properties/components/context/initial-property.context";
 import {
+  PropertyTitleUncontrolledInput,
+  PropertyDescriptionUncontrolledInput,
   PropertyAreaUncontrolledInput,
   PropertyDivisibleSaleUncontrolledInput,
   PropertyOwnershipTypeUncontrolledInput,
@@ -17,7 +17,9 @@ import {
   PropertyLandFeaturesUncontrolledCheckbox,
   PropertyNearbyAttractionsUncontrolledCheckbox,
   PropertyLandAndConstructionUncontrolledCheckbox,
-} from "@/entities/properties/components/ui";
+} from "@/entities/properties/components";
+import { DictionaryProvider } from "@/entities/properties/components/context/dictionary.context";
+import { InitialPropertyProvider } from "@/entities/properties/components/context/initial-property.context";
 import {
   createPropertyStore,
   convertToPropertyStore,
@@ -80,6 +82,10 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               updateProperty={(updater) => handleUpdateProperty(property.id, updater)}
               key={property.id}
             >
+              {/* <div className="flex flex-row gap-2"> */}
+              <PropertyTitleUncontrolledInput id={property.id} locale={locale} />
+              <PropertyDescriptionUncontrolledInput id={property.id} locale={locale} />
+              {/* </div> */}
               <PropertyAreaUncontrolledInput locale={locale} />
               <PropertyHighlightsUncontrolledInput locale={locale} />
               <PropertyHighlightsUncontrolledCheckbox locale={locale} />

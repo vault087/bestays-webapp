@@ -14,10 +14,14 @@
   "PropertiesSaleRent": {
     "fields": {
       "title": {
-        "placeholder": "Enter title"
+        "label": "Title",
+        "placeholder": "Enter title",
+        "subtitle": "Please enter a short title for the property"
       },
       "description": {
-        "placeholder": "Enter description"
+        "label": "Description",
+        "placeholder": "Enter description",
+        "subtitle": "Please enter a short description of the property"
       }
     }
   },
