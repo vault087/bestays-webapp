@@ -1,3 +1,3 @@
 export * from "./code-input";
-export * from "./multi-code-input";
-export * from "./multi-code-checkbox";
+export * from "./multi-code-uncontrolled-input";
+export * from "./multi-code-uncontrolled-checkbox";

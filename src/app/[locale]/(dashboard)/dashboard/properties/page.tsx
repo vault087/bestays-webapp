@@ -8,8 +8,6 @@ export default async function PropertiesPage() {
   const dbProperties = await loadPropertyDetails();
   const dbDictionaries = await loadDictionaries();
 
-  console.log("dbProperties.data:", dbProperties.data);
-
   const properties: Property[] = dbProperties.data.map((property) => ({
     id: property.id || "",
     is_published: property.is_published || false,

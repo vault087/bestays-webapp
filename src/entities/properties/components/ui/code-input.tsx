@@ -18,22 +18,22 @@ import { Label } from "@/modules/shadcn/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { cn } from "@/modules/shadcn/utils/cn";
 
-export function PropertyAreaInput({ locale }: { locale: string }) {
-  return <PropertyFieldCodeInput field="area" locale={locale} />;
+export function PropertyAreaUncontrolledInput({ locale }: { locale: string }) {
+  return <PropertyCodeUncontrolledInput field="area" locale={locale} />;
 }
-export function PropertyDivisibleSaleInput({ locale }: { locale: string }) {
-  return <PropertyFieldCodeInput field="divisible_sale" locale={locale} />;
+export function PropertyDivisibleSaleUncontrolledInput({ locale }: { locale: string }) {
+  return <PropertyCodeUncontrolledInput field="divisible_sale" locale={locale} />;
 }
-export function PropertyOwnershipTypeInput({ locale }: { locale: string }) {
-  return <PropertyFieldCodeInput field="ownership_type" locale={locale} />;
+export function PropertyOwnershipTypeUncontrolledInput({ locale }: { locale: string }) {
+  return <PropertyCodeUncontrolledInput field="ownership_type" locale={locale} />;
 }
-export function PropertyPropertyTypeInput({ locale }: { locale: string }) {
-  return <PropertyFieldCodeInput field="property_type" locale={locale} />;
+export function PropertyPropertyTypeUncontrolledInput({ locale }: { locale: string }) {
+  return <PropertyCodeUncontrolledInput field="property_type" locale={locale} />;
 }
 
-export function PropertyFieldCodeInput({ field, locale }: { field: PropertyCodeField; locale: string }) {
+export function PropertyCodeUncontrolledInput({ field, locale }: { field: PropertyCodeField; locale: string }) {
   console.log("[RENDER] PropertyMultiCodeInput");
-  const { inputId, initialValue, options, title, subtitle, setValue } = useCodeField({
+  const { inputId, currentValue, options, title, subtitle, setValue } = useCodeField({
     field,
     locale,
     variant: "input",
@@ -55,8 +55,8 @@ export function PropertyFieldCodeInput({ field, locale }: { field: PropertyCodeF
             aria-expanded={open}
             className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
-            <span className={cn("truncate", !initialValue && "text-muted-foreground")}>
-              {initialValue ? initialValue.label : "Select option"}
+            <span className={cn("truncate", !currentValue && "text-muted-foreground")}>
+              {currentValue ? currentValue.label : "Select option"}
             </span>
             <ChevronDownIcon size={16} className="text-muted-foreground/80 shrink-0" aria-hidden="true" />
           </Button>
@@ -77,7 +77,7 @@ export function PropertyFieldCodeInput({ field, locale }: { field: PropertyCodeF
                     }}
                   >
                     {option.label}
-                    {initialValue?.value === option.value && <CheckIcon size={16} className="ml-auto" />}
+                    {currentValue?.value === option.value && <CheckIcon size={16} className="ml-auto" />}
                   </CommandItem>
                 ))}
               </CommandGroup>
