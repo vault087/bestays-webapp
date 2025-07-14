@@ -3,25 +3,23 @@
 import { ReactNode, createContext, useContext, useMemo } from "react";
 import { DictionaryEntry, Dictionary } from "@/entities/dictionaries/types/dictionary.types";
 
-export type DictionariesContextType = {
+export type DictionaryContextType = {
   dictionariesByCode: Record<string, Dictionary>;
   entriesByDictionaryCode: Record<string, DictionaryEntry[]>;
-  dictionaryForPropertyField: (field: string) => Dictionary | undefined;
-  entriesForPropertyField: (field: string) => DictionaryEntry[] | undefined;
 };
 
 // Create context with proper type safety
-export const DictionariesContext = createContext<DictionariesContextType | null>(null);
+export const DictionaryContext = createContext<DictionaryContextType | null>(null);
 
 // Store Provider props
-export interface DictionariesProviderProps {
+export interface DictionaryProviderProps {
   children: ReactNode;
   dictionaries: Dictionary[];
   entries: DictionaryEntry[];
 }
 
 // Store Provider component
-export const DictionariesProvider = ({ children, dictionaries, entries }: DictionariesProviderProps) => {
+export const DictionaryProvider = ({ children, dictionaries, entries }: DictionaryProviderProps) => {
   const contextValue = useMemo(() => {
     const dictionariesByCode = dictionaries.reduce(
       (acc, dictionary) => {
@@ -54,30 +52,20 @@ export const DictionariesProvider = ({ children, dictionaries, entries }: Dictio
       {} as Record<string, DictionaryEntry[]>,
     );
 
-    const dictionaryForPropertyField = (field: string) => {
-      return dictionariesByCode[field];
-    };
-
-    const entriesForPropertyField = (field: string) => {
-      return entriesByDictionaryCode[field];
-    };
-
     return {
       dictionariesByCode,
       entriesByDictionaryCode,
-      dictionaryForPropertyField,
-      entriesForPropertyField,
     };
   }, [dictionaries, entries]);
 
-  return <DictionariesContext.Provider value={contextValue}>{children}</DictionariesContext.Provider>;
+  return <DictionaryContext.Provider value={contextValue}>{children}</DictionaryContext.Provider>;
 };
 
 // Context hook
-export function useDictionariesContext(): DictionariesContextType {
-  const context = useContext(DictionariesContext);
+export function useDictionaryContext(): DictionaryContextType {
+  const context = useContext(DictionaryContext);
   if (!context) {
-    throw new Error("useDictionariesContext must be used within a DictionariesProvider");
+    throw new Error("useDictionaryContext must be used within a DictionaryProvider");
   }
   return context;
 }

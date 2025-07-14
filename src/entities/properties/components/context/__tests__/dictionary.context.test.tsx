@@ -2,14 +2,14 @@ import { render } from "@testing-library/react";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { LocalizedText } from "@/entities/localized-text/types/localized-text.type";
 import {
-  DictionariesProvider,
-  useDictionariesContext,
-  DictionariesContextType,
-} from "@/entities/properties/components/context/dictionaries.context";
+  DictionaryProvider,
+  useDictionaryContext,
+  DictionaryContextType,
+} from "@/entities/properties/components/context/dictionary.context";
 
 // Test component to access context values
-const TestComponent = ({ onContext }: { onContext: (context: DictionariesContextType) => void }) => {
-  const context = useDictionariesContext();
+const TestComponent = ({ onContext }: { onContext: (context: DictionaryContextType) => void }) => {
+  const context = useDictionaryContext();
   onContext(context);
   return <div data-testid="test-component">Test</div>;
 };
@@ -44,7 +44,7 @@ const createDictionaryEntry = (
   is_new: false,
 });
 
-describe("DictionariesProvider", () => {
+describe("DictionaryProvider", () => {
   describe("Normal operation", () => {
     it("should provide correct context values with valid dictionaries and entries", () => {
       const dictionaries: Dictionary[] = [
@@ -59,12 +59,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(4, 2, "rural", "Rural Area"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       expect(capturedContext).not.toBeNull();
@@ -87,12 +87,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(2, 1, "condo", "Condominium"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Test dictionaryForPropertyField
@@ -107,12 +107,12 @@ describe("DictionariesProvider", () => {
 
   describe("Edge cases", () => {
     it("should handle empty dictionaries and entries arrays", () => {
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={[]} entries={[]}>
+        <DictionaryProvider dictionaries={[]} entries={[]}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       expect(capturedContext!.dictionariesByCode).toEqual({});
@@ -133,12 +133,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(2, 3, "urban", "Urban Area"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Should only include dictionaries with valid codes
@@ -157,12 +157,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(4, 1, "condo", "Condominium"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Should only include entries with valid codes
@@ -181,12 +181,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(3, 1, "condo", "Condominium"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Should only include entries for existing dictionaries
@@ -207,12 +207,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(4, 1, "apartment", "Apartment"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       expect(capturedContext!.entriesByDictionaryCode.property_type).toHaveLength(4);
@@ -230,12 +230,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(2, 2, "urban", "Urban Area"), // References invalid dictionary ID
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Should handle gracefully without crashing
@@ -262,12 +262,12 @@ describe("DictionariesProvider", () => {
         createDictionaryEntry(6, 4, "freehold", "Freehold"),
       ];
 
-      let capturedContext: DictionariesContextType | null = null;
+      let capturedContext: DictionaryContextType | null = null;
 
       render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Only valid dictionaries should be included
@@ -287,16 +287,16 @@ describe("DictionariesProvider", () => {
   });
 
   describe("Error handling", () => {
-    it("should throw error when useDictionariesContext is used outside provider", () => {
+    it("should throw error when useDictionaryContext is used outside provider", () => {
       const ComponentWithoutProvider = () => {
-        useDictionariesContext();
+        useDictionaryContext();
         return <div>Should not render</div>;
       };
 
       // Expect the error to be thrown
       expect(() => {
         render(<ComponentWithoutProvider />);
-      }).toThrow("useDictionariesContext must be used within a DictionariesProvider");
+      }).toThrow("useDictionaryContext must be used within a DictionaryProvider");
     });
   });
 
@@ -306,25 +306,25 @@ describe("DictionariesProvider", () => {
 
       const entries: DictionaryEntry[] = [createDictionaryEntry(1, 1, "house", "House")];
 
-      const contextValues: DictionariesContextType[] = [];
+      const contextValues: DictionaryContextType[] = [];
 
       const TestMemoComponent = () => {
-        const context = useDictionariesContext();
+        const context = useDictionaryContext();
         contextValues.push(context);
         return <div>Test</div>;
       };
 
       const { rerender } = render(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestMemoComponent />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Rerender with same props
       rerender(
-        <DictionariesProvider dictionaries={dictionaries} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
           <TestMemoComponent />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       expect(contextValues).toHaveLength(2);
@@ -338,25 +338,25 @@ describe("DictionariesProvider", () => {
 
       const entries: DictionaryEntry[] = [createDictionaryEntry(1, 1, "house", "House")];
 
-      const contextValues: DictionariesContextType[] = [];
+      const contextValues: DictionaryContextType[] = [];
 
       const TestMemoComponent = () => {
-        const context = useDictionariesContext();
+        const context = useDictionaryContext();
         contextValues.push(context);
         return <div>Test</div>;
       };
 
       const { rerender } = render(
-        <DictionariesProvider dictionaries={dictionaries1} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries1} entries={entries}>
           <TestMemoComponent />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       // Rerender with different dictionaries
       rerender(
-        <DictionariesProvider dictionaries={dictionaries2} entries={entries}>
+        <DictionaryProvider dictionaries={dictionaries2} entries={entries}>
           <TestMemoComponent />
-        </DictionariesProvider>,
+        </DictionaryProvider>,
       );
 
       expect(contextValues).toHaveLength(2);

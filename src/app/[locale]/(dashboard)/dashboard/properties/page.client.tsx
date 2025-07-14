@@ -1,11 +1,22 @@
 "use client";
-import { useMemo } from "react";
+import { useLocale } from "next-intl";
 import { DebugCard } from "@/components/ui/debug-json-card";
-import { createDictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
-import { MultiOptionCheckbox } from "@/entities/properties/components/ui/multi-option-checkbox";
+import { DictionaryProvider } from "@/entities/properties/components/context/dictionary.context";
+import { InitialPropertyProvider } from "@/entities/properties/components/context/initial-property.context";
+import {
+  PropertyHighlightsCheckbox,
+  PropertyLocationStrengthsCheckbox,
+  PropertyLandFeaturesCheckbox,
+  PropertyNearbyAttractionsCheckbox,
+  PropertyLandAndConstructionCheckbox,
+  PropertyTransactionTypesCheckbox,
+  PropertyAreaInput,
+  PropertyDivisibleSaleInput,
+  PropertyOwnershipTypeInput,
+  PropertyPropertyTypeInput,
+} from "@/entities/properties/components/ui";
 import { usePropertyStore } from "@/entities/properties-sale-rent/stores/hooks";
-import { createPropertyStore } from "@/entities/properties-sale-rent/stores/property.store";
 import { Property } from "@/entities/properties-sale-rent/types";
 
 export default function PropertiesPageClient({
@@ -57,48 +68,44 @@ export default function PropertiesPageClient({
     );
   };
 
-  const propertyStore = useMemo(
-    () => createPropertyStore("properties-sell-rent", convertToPropertyStore(properties)),
-    [properties],
-  );
-  const dictionaryStore = useMemo(
-    () =>
-      createDictionaryStore(convertToDictionaryStore(dictionaries, entries), convertToDictionaryEntriesStore(entries)),
-    [dictionaries, entries],
-  );
+  // const propertyStore = useMemo(
+  //   () => createPropertyStore("properties-sell-rent", convertToPropertyStore(properties)),
+  //   [properties],
+  // );
+  // const dictionaryStore = useMemo(
+  //   () =>
+  //     createDictionaryStore(convertToDictionaryStore(dictionaries, entries), convertToDictionaryEntriesStore(entries)),
+  //   [dictionaries, entries],
+  // );
 
   // prepare dictionaries and entries for the store and context
 
-  const highlightsDictionary = dictionaries.find((dict) => dict.code === "highlights");
-  const highlightsEntries = entries.filter((entry) => entry.dictionary_id === highlightsDictionary?.id);
-  console.log("highlightsEntries", highlightsEntries);
-
+  const locale = useLocale();
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <p>Properties</p>
-      <div className="flex flex-row gap-4">
-        <div className="grid grid-cols-2 gap-4">
-          {properties.map((property) => (
-            <MultiOptionCheckbox
-              key={property.id}
-              inputId="multi-option-checkbox"
-              initialValues={[]}
-              setValue={() => {}}
-              options={highlightsEntries}
-              dictionary={{
-                code: "property_type",
-                name: { en: "Highlights" },
-                description: { en: "Please select the highlights for the property" },
-                id: 1,
-                is_new: false,
-              }}
-              locale="en"
-            />
-          ))}
+    <DictionaryProvider dictionaries={dictionaries} entries={entries}>
+      <div className="flex flex-col gap-4 p-4">
+        <p>Properties</p>
+        <div className="flex flex-row gap-4">
+          <div className="flex flex-row flex-wrap gap-4">
+            {properties.slice(0, 1).map((property) => (
+              <InitialPropertyProvider initialProperty={property} updateProperty={() => {}} key={property.id}>
+                <PropertyAreaInput locale={locale} />
+                <PropertyDivisibleSaleInput locale={locale} />
+                <PropertyOwnershipTypeInput locale={locale} />
+                <PropertyPropertyTypeInput locale={locale} />
+                <PropertyHighlightsCheckbox locale={locale} />
+                <PropertyLocationStrengthsCheckbox locale={locale} />
+                <PropertyTransactionTypesCheckbox locale={locale} />
+                <PropertyLandFeaturesCheckbox locale={locale} />
+                <PropertyNearbyAttractionsCheckbox locale={locale} />
+                <PropertyLandAndConstructionCheckbox locale={locale} />
+              </InitialPropertyProvider>
+            ))}
+          </div>
+          {/* <ReactiveDebugCard /> */}
         </div>
-        <ReactiveDebugCard />
       </div>
-    </div>
+    </DictionaryProvider>
   );
 }
 

@@ -1,35 +1,33 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useMemo } from "react";
-import { DictionaryEntry, Dictionary } from "@/entities/dictionaries/types/dictionary.types";
 import { Property } from "@/entities/properties-sale-rent/types/property.type";
 
 export type InitialPropertyContextType = {
-  property: Property;
-  dictionary: Dictionary;
-  entries: DictionaryEntry[];
+  initialProperty: Property;
+  updateProperty: (updater: (draft: Property) => void) => void;
 };
 
 // Create context with proper type safety
 export const InitialPropertyContext = createContext<InitialPropertyContextType | null>(null);
 
 // Store Provider props
-export interface InitialPropertyProviderProps {
+export type InitialPropertyProviderProps = {
   children: ReactNode;
-  property: Property;
-  dictionary: Dictionary;
-  entries: DictionaryEntry[];
-}
+} & InitialPropertyContextType;
 
 // Store Provider component
-export const InitialPropertyProvider = ({ children, property, dictionary, entries }: InitialPropertyProviderProps) => {
+export const InitialPropertyProvider = ({
+  children,
+  initialProperty,
+  updateProperty,
+}: InitialPropertyProviderProps) => {
   const contextValue = useMemo(() => {
     return {
-      property,
-      dictionary,
-      entries,
+      initialProperty,
+      updateProperty,
     };
-  }, [property, dictionary, entries]);
+  }, [initialProperty, updateProperty]);
 
   return <InitialPropertyContext.Provider value={contextValue}>{children}</InitialPropertyContext.Provider>;
 };

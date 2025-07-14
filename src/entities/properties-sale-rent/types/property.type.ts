@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DBCodeSchema } from "@/entities/dictionaries/types/dictionary.types";
+import { Code, DBCodeSchema } from "@/entities/dictionaries/types/dictionary.types";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
 import { DBPriceSchema } from "./price.type";
@@ -47,6 +47,32 @@ export const DBPropertySchema = z.object({
   updated_at: z.string().nullish(),
   deleted_at: z.string().nullish(),
 });
+
+export type PropertyMultiCodeField = keyof Pick<
+  Property,
+  | "location_strengths"
+  | "highlights"
+  | "transaction_types"
+  | "land_features"
+  | "nearby_attractions"
+  | "land_and_construction"
+>;
+
+export type PropertyCodeField = keyof Pick<Property, "area" | "ownership_type" | "property_type" | "divisible_sale">;
+
+export const covertPropertyFieldToDictionaryCode: Record<PropertyMultiCodeField | PropertyCodeField, Code> = {
+  // Multi-code fields
+  area: "areas",
+  divisible_sale: "divisible_sale_types",
+  ownership_type: "ownership_types",
+  property_type: "property_types",
+  location_strengths: "location_strengths",
+  highlights: "highlights",
+  transaction_types: "transaction_types",
+  land_features: "land_features",
+  nearby_attractions: "nearby_attractions",
+  land_and_construction: "land_and_construction",
+};
 
 // Form Schemas (extend DB schemas)
 export const PropertySchema = DBPropertySchema.omit({

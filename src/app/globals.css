@@ -6,7 +6,7 @@
 
 @layer base {
   html {
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-open-sans), sans-serif;
     /* Fix for iPad Chrome CSS loading issues
     -webkit-text-size-adjust: none;
     text-size-adjust: none; */
@@ -14,3 +14,8 @@
 }
 
 @import "../../src/modules/shadcn/css/shadcn.css";
+
+@theme inline {
+  --font-open-sans: var(--font-open-sans);
+  --font-montserrat: var(--font-montserrat);
+}

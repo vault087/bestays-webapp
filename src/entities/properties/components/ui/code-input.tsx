@@ -2,12 +2,8 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useDictionaryByCode } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
-import { Code } from "@/entities/dictionaries/types/dictionary.types";
-import {
-  usePropertyOption,
-  PropertyOptionField,
-} from "@/entities/properties-sale-rent/hooks/utils/use-property-option";
+import { useCodeField } from "@/entities/properties/components/hooks/use-code-field";
+import { PropertyCodeField } from "@/entities/properties-sale-rent/types/property.type";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
   Command,
@@ -22,33 +18,34 @@ import { Label } from "@/modules/shadcn/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { cn } from "@/modules/shadcn/utils/cn";
 
-export function PropertyOptionInput({
-  propertyId,
-  field,
-  dictionaryCode,
-  locale,
-}: {
-  propertyId: string;
-  field: PropertyOptionField;
-  dictionaryCode: Code;
-  locale: string;
-}) {
-  const dictionary = useDictionaryByCode(dictionaryCode);
+export function PropertyAreaInput({ locale }: { locale: string }) {
+  return <PropertyFieldCodeInput field="area" locale={locale} />;
+}
+export function PropertyDivisibleSaleInput({ locale }: { locale: string }) {
+  return <PropertyFieldCodeInput field="divisible_sale" locale={locale} />;
+}
+export function PropertyOwnershipTypeInput({ locale }: { locale: string }) {
+  return <PropertyFieldCodeInput field="ownership_type" locale={locale} />;
+}
+export function PropertyPropertyTypeInput({ locale }: { locale: string }) {
+  return <PropertyFieldCodeInput field="property_type" locale={locale} />;
+}
 
-  const { inputId, selected, setSelected, options } = usePropertyOption(
-    propertyId,
-    locale,
+export function PropertyFieldCodeInput({ field, locale }: { field: PropertyCodeField; locale: string }) {
+  console.log("[RENDER] PropertyMultiCodeInput");
+  const { inputId, initialValue, options, title, subtitle, setValue } = useCodeField({
     field,
-    dictionary,
-    "option-input",
-  );
+    locale,
+    variant: "input",
+  });
+
   const [open, setOpen] = useState<boolean>(false);
 
   console.log("[RENDER] PropertyOptionInput");
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={inputId}>{dictionary?.name?.[locale] || dictionaryCode}</Label>
+      <Label htmlFor={inputId}>{title}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -58,8 +55,8 @@ export function PropertyOptionInput({
             aria-expanded={open}
             className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
-            <span className={cn("truncate", !selected && "text-muted-foreground")}>
-              {selected ? selected.label : "Select option"}
+            <span className={cn("truncate", !initialValue && "text-muted-foreground")}>
+              {initialValue ? initialValue.label : "Select option"}
             </span>
             <ChevronDownIcon size={16} className="text-muted-foreground/80 shrink-0" aria-hidden="true" />
           </Button>
@@ -72,15 +69,15 @@ export function PropertyOptionInput({
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
-                    key={option.code + option.label}
+                    key={option.value}
                     value={option.label}
                     onSelect={() => {
-                      setSelected(option.code);
+                      setValue(option.value);
                       setOpen(false);
                     }}
                   >
                     {option.label}
-                    {selected?.code === option.code && <CheckIcon size={16} className="ml-auto" />}
+                    {initialValue?.value === option.value && <CheckIcon size={16} className="ml-auto" />}
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -96,7 +93,7 @@ export function PropertyOptionInput({
         </PopoverContent>
       </Popover>
       <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
-        {dictionary?.description?.[locale] || ""}
+        {subtitle}
       </p>
     </div>
   );

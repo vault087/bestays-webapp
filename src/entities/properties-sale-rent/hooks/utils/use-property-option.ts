@@ -6,7 +6,6 @@ import { Property } from "@/entities/properties-sale-rent/types";
 import { generateInputId } from "@/utils";
 
 // Property field types that accept codes
-export type PropertyOptionField = keyof Pick<Property, "area" | "ownership_type" | "property_type" | "divisible_sale">;
 
 export type PropertyOption = {
   code: Code;

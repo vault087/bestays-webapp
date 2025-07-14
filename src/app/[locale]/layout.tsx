@@ -1,11 +1,22 @@
 import "@/app/globals.css";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
+import { Open_Sans, Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { ThemeProvider } from "@/components/theme/components/theme-provider";
 import { LocalizationProvider } from "@/modules/i18n/context/localization-provider";
 import { routing } from "@/modules/i18n/core/routing";
+
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
+  subsets: ["latin"],
+  weight: ["300", "500", "600", "700", "800"],
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["300", "500", "600", "700", "800"],
+});
 
 export default async function LocaleLayout({
   children,
@@ -22,7 +33,7 @@ export default async function LocaleLayout({
 
   return (
     <html
-      className={`${GeistSans.variable} ${GeistMono.variable} smooth-scroll`}
+      className={`${openSans.variable} ${montserrat.variable} smooth-scroll`}
       lang={locale}
       suppressHydrationWarning
     >

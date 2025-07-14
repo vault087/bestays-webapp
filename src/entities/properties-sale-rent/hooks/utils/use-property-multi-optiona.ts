@@ -7,16 +7,6 @@ import { generateInputId } from "@/utils";
 import { PropertyOption } from "./use-property-option";
 // Property field types that accept codes
 
-export type PropertyMultiOptionField = keyof Pick<
-  Property,
-  | "location_strengths"
-  | "highlights"
-  | "transaction_types"
-  | "land_features"
-  | "nearby_attractions"
-  | "land_and_construction"
->;
-
 export type PropertyMultiOptionResponse = {
   inputId: string;
   selected: PropertyOption[];
