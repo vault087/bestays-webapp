@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useRef } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import { useDictionaryContext } from "@/entities/properties/components/context/dictionary.context";
 import { useInitialPropertyContext } from "@/entities/properties/components/context/initial-property.context";
@@ -37,9 +37,8 @@ export const useMultiCodeField = ({
   const { dictionariesByCode, entriesByDictionaryCode } = useDictionaryContext();
   const { initialProperty, updateProperty } = useInitialPropertyContext();
 
-  const fieldValue = initialProperty[field] as Code[];
   // Get initial values from context
-  const initialValues: Code[] = fieldValue || [];
+  const initialValues: Code[] = initialProperty[field] as Code[];
 
   // Local state for immediate UI updates
   const [currentValues, setCurrentValues] = useState<Code[]>(initialValues);
@@ -64,21 +63,23 @@ export const useMultiCodeField = ({
   }, [dictionariesByCode, entriesByDictionaryCode, field, variant, locale, initialProperty.id]);
 
   // Update both local state and context
+  // ✅ OPTIMIZED - Stable callback with ref
+  const currentValuesRef = useRef(currentValues);
+  currentValuesRef.current = currentValues;
+
   const toggleValue = useCallback(
     (value: Code | null | undefined, checked: boolean) => {
       if (!value) return;
 
-      const newValues = checked ? [...currentValues, value] : currentValues.filter((v) => v !== value);
+      const current = currentValuesRef.current; // ← Access via ref
+      const newValues = checked ? [...current, value] : current.filter((v) => v !== value);
 
-      // Immediate UI update
       setCurrentValues(newValues);
-
-      // Update context for persistence
       updateProperty((draft) => {
         draft[field] = newValues;
       });
     },
-    [currentValues, updateProperty, field],
+    [updateProperty, field], // ← No currentValues dependency
   );
 
   const setValues = useCallback(

@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import { useMultiCodeField } from "@/entities/properties/components/hooks/use-multi-code-field";
 import { PropertyMultiCodeField } from "@/entities/properties-sale-rent/types/property.type";
@@ -25,7 +25,7 @@ export function PropertyLandAndConstructionUncontrolledInput({ locale }: { local
   return <MultiCodeUncontrolledInput field="land_and_construction" locale={locale} />;
 }
 
-const MultiCodeUncontrolledInput = memo(function MultiCodeUncontrolledInput({
+const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
   field,
   locale,
 }: {
@@ -37,14 +37,16 @@ const MultiCodeUncontrolledInput = memo(function MultiCodeUncontrolledInput({
     locale,
     variant: "input",
   });
-  useDebugRender("Input" + title);
+
+  // Create lookup map once
+  const optionsMap = useMemo(() => new Map(options.map((opt) => [opt.code, opt.label])), [options]);
 
   const convertedValues: Option[] = useMemo(() => {
     return currentValues.map((code) => ({
       value: code,
-      label: options.find((option) => option.code === code)?.label || "",
+      label: optionsMap.get(code) || "",
     }));
-  }, [currentValues, options]);
+  }, [currentValues, optionsMap]);
 
   const convertedOptions: Option[] = useMemo(() => {
     return options.map((option) => ({
@@ -71,6 +73,7 @@ const MultiCodeUncontrolledInput = memo(function MultiCodeUncontrolledInput({
     [setValues],
   );
 
+  useDebugRender("MultiInput" + title);
   return (
     <div className="*:not-first:mt-2">
       <p>{title}</p>
@@ -95,4 +98,4 @@ const MultiCodeUncontrolledInput = memo(function MultiCodeUncontrolledInput({
       </p>
     </div>
   );
-});
+};

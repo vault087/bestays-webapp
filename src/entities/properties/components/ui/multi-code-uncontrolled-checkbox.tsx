@@ -1,5 +1,4 @@
 "use client";
-import React, { memo } from "react";
 import { useMultiCodeField, MultiCodeOption } from "@/entities/properties/components/hooks/use-multi-code-field";
 import { PropertyMultiCodeField } from "@/entities/properties-sale-rent/types/property.type";
 import { Checkbox } from "@/modules/shadcn/components/ui/checkbox";
@@ -25,20 +24,14 @@ export function PropertyLandAndConstructionUncontrolledCheckbox({ locale }: { lo
   return <MultiCodeUncontrolledCheckbox field="land_and_construction" locale={locale} />;
 }
 
-const MultiCodeUncontrolledCheckbox = memo(function PropertyMultiCodeUncontrolledCheckbox({
-  field,
-  locale,
-}: {
-  field: PropertyMultiCodeField;
-  locale: string;
-}) {
+function MultiCodeUncontrolledCheckbox({ field, locale }: { field: PropertyMultiCodeField; locale: string }) {
   const { currentValues, options, title, subtitle, toggleValue } = useMultiCodeField({
     field,
     locale,
     variant: "checkbox",
   });
-
   useDebugRender("Checkbox" + title);
+
   return (
     <div className="*:not-first:mt-2">
       <p>{title}</p>
@@ -59,4 +52,4 @@ const MultiCodeUncontrolledCheckbox = memo(function PropertyMultiCodeUncontrolle
       </p>
     </div>
   );
-});
+}

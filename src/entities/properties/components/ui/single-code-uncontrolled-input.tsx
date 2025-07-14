@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useCodeField } from "@/entities/properties/components/hooks/use-code-field";
 import { PropertyCodeField } from "@/entities/properties-sale-rent/types/property.type";
 import { Button } from "@/modules/shadcn/components/ui/button";
@@ -43,6 +43,10 @@ function SingleCodeUncontrolledInput({ field, locale }: { field: PropertyCodeFie
 
   useDebugRender("Input" + title);
 
+  // ✅ EFFICIENT - Stable callback, current data
+  const optionsRef = useRef(options);
+  optionsRef.current = options; // Always current
+
   return (
     <div className="*:not-first:mt-2">
       <Label htmlFor={inputId}>{title}</Label>
@@ -69,15 +73,15 @@ function SingleCodeUncontrolledInput({ field, locale }: { field: PropertyCodeFie
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
-                    key={option.value}
+                    key={option.code}
                     value={option.label}
                     onSelect={() => {
-                      setValue(option.value);
+                      setValue(option.code);
                       setOpen(false);
                     }}
                   >
                     {option.label}
-                    {currentValue?.value === option.value && <CheckIcon size={16} className="ml-auto" />}
+                    {currentValue?.code === option.code && <CheckIcon size={16} className="ml-auto" />}
                   </CommandItem>
                 ))}
               </CommandGroup>
