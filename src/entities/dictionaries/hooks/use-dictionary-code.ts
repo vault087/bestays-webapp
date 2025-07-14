@@ -4,7 +4,7 @@ import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: number): string | undefined {
-  return useDictionaryStore((state) => state.dictionaries[id].code);
+  return useDictionaryStore((state) => state.dictionaries[id]?.code);
 }
 
 // Input hook for dictionary code
