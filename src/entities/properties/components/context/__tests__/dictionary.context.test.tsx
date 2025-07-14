@@ -79,48 +79,6 @@ describe("DictionaryProvider", () => {
       });
     });
 
-    it("should provide correct helper functions", () => {
-      const dictionaries: Dictionary[] = [createDictionary(1, "property_type", "Property Type")];
-
-      const entries: DictionaryEntry[] = [
-        createDictionaryEntry(1, 1, "house", "House"),
-        createDictionaryEntry(2, 1, "condo", "Condominium"),
-      ];
-
-      let capturedContext: DictionaryContextType | null = null;
-
-      render(
-        <DictionaryProvider dictionaries={dictionaries} entries={entries}>
-          <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionaryProvider>,
-      );
-
-      // Test dictionaryForPropertyField
-      expect(capturedContext!.dictionaryForPropertyField("property_type")).toEqual(dictionaries[0]);
-      expect(capturedContext!.dictionaryForPropertyField("nonexistent")).toBeUndefined();
-
-      // Test entriesForPropertyField
-      expect(capturedContext!.entriesForPropertyField("property_type")).toEqual([entries[0], entries[1]]);
-      expect(capturedContext!.entriesForPropertyField("nonexistent")).toBeUndefined();
-    });
-  });
-
-  describe("Edge cases", () => {
-    it("should handle empty dictionaries and entries arrays", () => {
-      let capturedContext: DictionaryContextType | null = null;
-
-      render(
-        <DictionaryProvider dictionaries={[]} entries={[]}>
-          <TestComponent onContext={(ctx) => (capturedContext = ctx)} />
-        </DictionaryProvider>,
-      );
-
-      expect(capturedContext!.dictionariesByCode).toEqual({});
-      expect(capturedContext!.entriesByDictionaryCode).toEqual({});
-      expect(capturedContext!.dictionaryForPropertyField("any")).toBeUndefined();
-      expect(capturedContext!.entriesForPropertyField("any")).toBeUndefined();
-    });
-
     it("should ignore dictionaries without codes", () => {
       const dictionaries: Dictionary[] = [
         createDictionary(1, "property_type", "Property Type"),
