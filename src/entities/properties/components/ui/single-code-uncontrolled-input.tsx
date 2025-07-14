@@ -17,22 +17,22 @@ import {
 import { Label } from "@/modules/shadcn/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { cn } from "@/modules/shadcn/utils/cn";
+import { useDebugRender } from "@/utils/use-debug-render";
 
 export function PropertyAreaUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyCodeUncontrolledInput field="area" locale={locale} />;
+  return <SingleCodeUncontrolledInput field="area" locale={locale} />;
 }
 export function PropertyDivisibleSaleUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyCodeUncontrolledInput field="divisible_sale" locale={locale} />;
+  return <SingleCodeUncontrolledInput field="divisible_sale" locale={locale} />;
 }
 export function PropertyOwnershipTypeUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyCodeUncontrolledInput field="ownership_type" locale={locale} />;
+  return <SingleCodeUncontrolledInput field="ownership_type" locale={locale} />;
 }
 export function PropertyPropertyTypeUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyCodeUncontrolledInput field="property_type" locale={locale} />;
+  return <SingleCodeUncontrolledInput field="property_type" locale={locale} />;
 }
 
-export function PropertyCodeUncontrolledInput({ field, locale }: { field: PropertyCodeField; locale: string }) {
-  console.log("[RENDER] PropertyMultiCodeInput");
+function SingleCodeUncontrolledInput({ field, locale }: { field: PropertyCodeField; locale: string }) {
   const { inputId, currentValue, options, title, subtitle, setValue } = useCodeField({
     field,
     locale,
@@ -41,7 +41,7 @@ export function PropertyCodeUncontrolledInput({ field, locale }: { field: Proper
 
   const [open, setOpen] = useState<boolean>(false);
 
-  console.log("[RENDER] PropertyOptionInput");
+  useDebugRender("Input" + title);
 
   return (
     <div className="*:not-first:mt-2">

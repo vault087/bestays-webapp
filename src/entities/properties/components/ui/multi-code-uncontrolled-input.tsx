@@ -1,42 +1,75 @@
 "use client";
-import React, { memo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import { useMultiCodeField } from "@/entities/properties/components/hooks/use-multi-code-field";
 import { PropertyMultiCodeField } from "@/entities/properties-sale-rent/types/property.type";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
+import { useDebugRender } from "@/utils/use-debug-render";
 
 export function PropertyHighlightsUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyMultiCodeUncontrolledInput field="highlights" locale={locale} />;
+  return <MultiCodeUncontrolledInput field="highlights" locale={locale} />;
 }
 export function PropertyLocationStrengthsUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyMultiCodeUncontrolledInput field="location_strengths" locale={locale} />;
+  return <MultiCodeUncontrolledInput field="location_strengths" locale={locale} />;
 }
 export function PropertyTransactionTypesUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyMultiCodeUncontrolledInput field="transaction_types" locale={locale} />;
+  return <MultiCodeUncontrolledInput field="transaction_types" locale={locale} />;
 }
 export function PropertyLandFeaturesUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyMultiCodeUncontrolledInput field="land_features" locale={locale} />;
+  return <MultiCodeUncontrolledInput field="land_features" locale={locale} />;
 }
 export function PropertyNearbyAttractionsUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyMultiCodeUncontrolledInput field="nearby_attractions" locale={locale} />;
+  return <MultiCodeUncontrolledInput field="nearby_attractions" locale={locale} />;
 }
 export function PropertyLandAndConstructionUncontrolledInput({ locale }: { locale: string }) {
-  return <PropertyMultiCodeUncontrolledInput field="land_and_construction" locale={locale} />;
+  return <MultiCodeUncontrolledInput field="land_and_construction" locale={locale} />;
 }
 
-export const PropertyMultiCodeUncontrolledInput = memo(function PropertyMultiCodeUncontrolledInput({
+const MultiCodeUncontrolledInput = memo(function MultiCodeUncontrolledInput({
   field,
   locale,
 }: {
   field: PropertyMultiCodeField;
   locale: string;
 }) {
-  console.log("[RENDER] PropertyMultiCodeInput");
   const { inputId, currentValues, options, title, subtitle, setValues } = useMultiCodeField({
     field,
     locale,
     variant: "input",
   });
+  useDebugRender("Input" + title);
+
+  const convertedValues: Option[] = useMemo(() => {
+    return currentValues.map((code) => ({
+      value: code,
+      label: options.find((option) => option.code === code)?.label || "",
+    }));
+  }, [currentValues, options]);
+
+  const convertedOptions: Option[] = useMemo(() => {
+    return options.map((option) => ({
+      value: option.code,
+      label: option.label,
+    }));
+  }, [options]);
+
+  const handleFilter = useCallback(
+    (value: string, search: string) => {
+      const option = options.find((opt) => opt.code === value);
+      if (!option) return 0;
+
+      const searchLower = search.toLowerCase();
+      return option.label.toLowerCase().includes(searchLower) ? 1 : 0;
+    },
+    [options],
+  );
+
+  const handleOnChange = useCallback(
+    (value: Option[]) => {
+      setValues(value.map((option) => option.value as Code));
+    },
+    [setValues],
+  );
 
   return (
     <div className="*:not-first:mt-2">
@@ -47,24 +80,11 @@ export const PropertyMultiCodeUncontrolledInput = memo(function PropertyMultiCod
         }}
         commandProps={{
           label: title,
-          filter: (value, search) => {
-            const option = options.find((opt) => opt.code === value);
-            if (!option) return 0;
-
-            const searchLower = search.toLowerCase();
-            return option.label.toLowerCase().includes(searchLower) ? 1 : 0;
-          },
+          filter: handleFilter,
         }}
-        defaultOptions={options
-          .filter((option) => !currentValues.includes(option.code))
-          .map((option) => ({
-            value: option.code,
-            label: option.label,
-          }))}
-        onChange={(value: Option[]) => {
-          console.log("onChange", value);
-          setValues(value.map((option) => option.value as Code));
-        }}
+        value={convertedValues}
+        options={convertedOptions}
+        onChange={handleOnChange}
         placeholder={title}
         hideClearAllButton
         hidePlaceholderWhenSelected
