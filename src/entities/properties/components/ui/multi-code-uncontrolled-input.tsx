@@ -3,7 +3,7 @@ import React, { memo } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import { useMultiCodeField } from "@/entities/properties/components/hooks/use-multi-code-field";
 import { PropertyMultiCodeField } from "@/entities/properties-sale-rent/types/property.type";
-import MultipleSelector from "@/modules/shadcn/components/ui/multiselect";
+import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 
 export function PropertyHighlightsUncontrolledInput({ locale }: { locale: string }) {
   return <PropertyMultiCodeUncontrolledInput field="highlights" locale={locale} />;
@@ -48,7 +48,7 @@ export const PropertyMultiCodeUncontrolledInput = memo(function PropertyMultiCod
         commandProps={{
           label: title,
           filter: (value, search) => {
-            const option = options.find((opt) => opt.value === value);
+            const option = options.find((opt) => opt.code === value);
             if (!option) return 0;
 
             const searchLower = search.toLowerCase();
@@ -56,13 +56,14 @@ export const PropertyMultiCodeUncontrolledInput = memo(function PropertyMultiCod
           },
         }}
         defaultOptions={options
-          .filter((option) => !currentValues.includes(option.value))
+          .filter((option) => !currentValues.includes(option.code))
           .map((option) => ({
-            value: option.value,
+            value: option.code,
             label: option.label,
           }))}
-        onChange={(value) => {
-          setValues(value.map((option) => option.key as Code));
+        onChange={(value: Option[]) => {
+          console.log("onChange", value);
+          setValues(value.map((option) => option.value as Code));
         }}
         placeholder={title}
         hideClearAllButton

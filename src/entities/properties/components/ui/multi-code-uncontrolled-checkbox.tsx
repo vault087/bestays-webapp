@@ -1,9 +1,11 @@
 "use client";
 import React, { memo } from "react";
+import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import { useMultiCodeField, MultiCodeOption } from "@/entities/properties/components/hooks/use-multi-code-field";
 import { PropertyMultiCodeField } from "@/entities/properties-sale-rent/types/property.type";
 import { Checkbox } from "@/modules/shadcn/components/ui/checkbox";
 import { Label } from "@/modules/shadcn/components/ui/label";
+import { useDebugRender } from "@/utils/use-debug-render";
 
 export function PropertyHighlightsUncontrolledCheckbox({ locale }: { locale: string }) {
   return <PropertyMultiCodeUncontrolledCheckbox field="highlights" locale={locale} />;
@@ -31,7 +33,7 @@ export const PropertyMultiCodeUncontrolledCheckbox = memo(function PropertyMulti
   field: PropertyMultiCodeField;
   locale: string;
 }) {
-  console.log("[RENDER] PropertyFieldMultiCodeCheckbox");
+  console.log("[RENDER] Checkbox", field);
   const { currentValues, options, title, subtitle, toggleValue } = useMultiCodeField({
     field,
     locale,
@@ -39,15 +41,40 @@ export const PropertyMultiCodeUncontrolledCheckbox = memo(function PropertyMulti
   });
 
   return (
+    <PropertyMultiCodeUncontrolledCheckboxContent
+      title={title}
+      subtitle={subtitle}
+      options={options}
+      currentValues={currentValues}
+      toggleValue={toggleValue}
+    />
+  );
+});
+
+const PropertyMultiCodeUncontrolledCheckboxContent = memo(function PropertyMultiCodeUncontrolledCheckboxContent({
+  title,
+  subtitle,
+  options,
+  currentValues,
+  toggleValue,
+}: {
+  title: string | undefined;
+  subtitle: string | undefined;
+  options: MultiCodeOption[];
+  currentValues: Code[];
+  toggleValue: (code: Code, checked: boolean) => void;
+}) {
+  useDebugRender("Checkbox" + title);
+  return (
     <div className="*:not-first:mt-2">
       <p>{title}</p>
       {options.map((option: MultiCodeOption) => (
-        <div className="flex items-center gap-2" key={option.value}>
+        <div className="flex items-center gap-2" key={option.code}>
           <Checkbox
             id={option.inputId}
-            checked={currentValues.includes(option.value || "")}
+            checked={currentValues.includes(option.code || "")}
             onCheckedChange={(checked) => {
-              toggleValue(option.value, checked as boolean);
+              toggleValue(option.code, checked as boolean);
             }}
           />
           <Label htmlFor={option.inputId}>{option.label}</Label>

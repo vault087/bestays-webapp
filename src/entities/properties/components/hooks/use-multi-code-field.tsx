@@ -10,7 +10,7 @@ import {
 import { generateInputId } from "@/utils";
 
 export type MultiCodeOption = {
-  value: Code;
+  code: Code;
   label: string;
   inputId: string;
 };
@@ -52,7 +52,7 @@ export const useMultiCodeField = ({
     const inputId = generateInputId("property", initialProperty.id, field, variant, locale);
 
     const options: MultiCodeOption[] = entries.map((entry) => ({
-      value: entry.code as Code,
+      code: entry.code as Code,
       label: entry.name?.[locale] || entry.code || "",
       inputId: generateInputId("property-option", initialProperty.id, field + "-" + entry.code, variant, locale),
     }));
@@ -84,6 +84,7 @@ export const useMultiCodeField = ({
   const setValues = useCallback(
     (values: Code[]) => {
       // Immediate UI update
+      console.log("setValues", values);
       setCurrentValues(values);
 
       // Update context for persistence

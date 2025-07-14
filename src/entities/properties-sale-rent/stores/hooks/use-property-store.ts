@@ -13,6 +13,11 @@ export function usePropertyActions(): PropertyStoreActions {
   return store.getState();
 }
 
+export function useCurrentProperties(): Property[] {
+  const store = usePropertyStoreContext();
+  return Object.values(store.getState().properties);
+}
+
 export function useProperty(id: string): Property | undefined {
   return usePropertyStore((state) => state.properties[id]);
 }
