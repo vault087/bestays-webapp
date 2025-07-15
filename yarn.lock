@@ -4847,6 +4847,7 @@ __metadata:
     tailwindcss: "npm:^4.1.11"
     tooltip: "npm:^1.6.1"
     ts-node: "npm:^10.9.2"
+    ts-transform-import-path-rewrite: "npm:^0.3.0"
     tsx: "npm:^4.20.3"
     tw-animate-css: "npm:^1.3.4"
     typescript: "npm:^5.8.3"
@@ -11597,6 +11598,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-transform-import-path-rewrite@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "ts-transform-import-path-rewrite@npm:0.3.0"
+  dependencies:
+    typescript: "npm:4"
+  checksum: 10c0/96aa4be2532a6262f35ff1c6373d99b11abdec4d90cc096a4d41576b2e184e43eb3e8e3e33fb6e2eb0a7e50c35a43d3d27b777b99668a3e61e5b133d055a50e1
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths@npm:^3.15.0":
   version: 3.15.0
   resolution: "tsconfig-paths@npm:3.15.0"
@@ -11744,6 +11754,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:4":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/5f6cad2e728a8a063521328e612d7876e12f0d8a8390d3b3aaa452a6a65e24e9ac8ea22beb72a924fd96ea0a49ea63bb4e251fb922b12eedfb7f7a26475e5c56
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
@@ -11751,6 +11771,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/5f8bb01196e542e64d44db3d16ee0e4063ce4f3e3966df6005f2588e86d91c03e1fb131c2581baf0fb65ee79669eea6e161cd448178986587e9f6844446dbb48
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A4#optional!builtin<compat/typescript>":
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/e3333f887c6829dfe0ab6c1dbe0dd1e3e2aeb56c66460cb85c5440c566f900c833d370ca34eb47558c0c69e78ced4bfe09b8f4f98b6de7afed9b84b8d1dd06a1
   languageName: node
   linkType: hard
 

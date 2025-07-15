@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useMemo } from "react";
 import { LocalizedText } from "@/entities/localized-text";
 import { useProperty, useInitialPropertyContext, DBPropertyLocalizedTextField } from "@/entities/properties-sale-rent/";

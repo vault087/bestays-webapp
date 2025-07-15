@@ -1,7 +1,6 @@
+"use client";
 import { useCallback, useMemo } from "react";
-import { useProperty } from "@/entities/properties-sale-rent";
-import { DBPropertyTextField } from "@/entities/properties-sale-rent/core/types/property.types";
-import { useInitialPropertyContext } from "@/entities/properties-sale-rent/features/edit/components/context/initial-property.context";
+import { useProperty, DBPropertyTextField, useInitialPropertyContext } from "@/entities/properties-sale-rent";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for Property localized fields
@@ -39,7 +38,7 @@ export function usePropertyTextInput(
         draft[field] = value;
       });
     },
-    [locale, updateProperty, field],
+    [updateProperty, field],
   );
 
   // Validate - field should not be empty for primary locale

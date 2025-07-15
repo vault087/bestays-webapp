@@ -1,14 +1,14 @@
 import { useStore } from "zustand";
 import {
   usePropertyStoreContext,
-  PropertyStore,
+  PropertyStoreState,
   PropertyStoreActions,
   Property,
 } from "@/entities/properties-sale-rent/";
 
-export function usePropertyStore<T>(selector: (state: PropertyStore) => T): T {
+export function usePropertyStore<T>(selector: (state: PropertyStoreState) => T): T {
   const store = usePropertyStoreContext();
-  return useStore(store, selector);
+  return useStore(store, selector as (state: unknown) => T);
 }
 
 export function usePropertyActions(): PropertyStoreActions {

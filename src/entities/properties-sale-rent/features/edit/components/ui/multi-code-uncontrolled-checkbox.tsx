@@ -1,11 +1,6 @@
 "use client";
-import { DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/core/types/property.types";
-import {
-  useMultiCodeField,
-  MultiCodeOption,
-} from "@/entities/properties-sale-rent/features/edit/components/hooks/use-multi-code-field";
-import { Checkbox } from "@/modules/shadcn/components/ui/checkbox";
-import { Label } from "@/modules/shadcn/components/ui/label";
+import { DBPropertyMultiCodeField, useMultiCodeField, MultiCodeOption } from "@/entities/properties-sale-rent/";
+import { Checkbox, Label } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export function PropertyHighlightsUncontrolledCheckbox({ locale }: { locale: string }) {

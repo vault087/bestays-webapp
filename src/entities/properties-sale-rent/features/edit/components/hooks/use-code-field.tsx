@@ -1,3 +1,4 @@
+"use client";
 import { useMemo, useState, useCallback } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
 import { LocalizedText } from "@/entities/localized-text";

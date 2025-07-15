@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useMemo } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
-import { DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/core/types/property.types";
+import { DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
 import { useMultiCodeField } from "@/entities/properties-sale-rent/features/edit/components/hooks/use-multi-code-field";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
