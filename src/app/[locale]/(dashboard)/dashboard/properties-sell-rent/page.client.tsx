@@ -1,5 +1,4 @@
 "use client";
-import { useLocale } from "next-intl";
 import { memo, useCallback, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
@@ -59,7 +58,6 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas() {
   const properties = useCurrentProperties();
-  const locale = useLocale();
 
   const updateProperty = usePropertyActions().updateProperty;
 
