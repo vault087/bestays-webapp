@@ -1,9 +1,7 @@
 import { render } from "@testing-library/react";
 import React, { ReactNode } from "react";
 import { enhancedMockDictionaries, enhancedMockEntries } from "@/entities/dictionaries/mocks/enhanced-mock-data";
-import { Property } from "@/entities/properties-sale-rent/core/types/property.types";
-import { DictionaryProvider } from "@/entities/properties-sale-rent/features/edit/components/context/dictionary.context";
-import { InitialPropertyProvider } from "@/entities/properties-sale-rent/features/edit/components/context/initial-property.context";
+import { Property, DictionaryProvider, InitialPropertyProvider } from "@/entities/properties-sale-rent/";
 import {
   createMockProperty,
   testProperty,

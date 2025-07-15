@@ -11,8 +11,7 @@ import {
   usePropertyStore,
   useCurrentProperties,
   usePropertyActions,
-} from "@/entities/properties-sale-rent/";
-import {
+  Property,
   PropertyTitleUncontrolledInput,
   PropertyDescriptionUncontrolledInput,
   PropertyNotesUncontrolledInput,
@@ -28,10 +27,9 @@ import {
   PropertyLandFeaturesUncontrolledCheckbox,
   PropertyNearbyAttractionsUncontrolledCheckbox,
   PropertyLandAndConstructionUncontrolledCheckbox,
-} from "@/entities/properties-sale-rent/features/edit/components";
-import { DictionaryProvider } from "@/entities/properties-sale-rent/features/edit/components/context/dictionary.context";
-import { InitialPropertyProvider } from "@/entities/properties-sale-rent/features/edit/components/context/initial-property.context";
-import { Property } from "@/entities/properties-sale-rent/features/edit/types/property-field.types";
+  DictionaryProvider,
+  InitialPropertyProvider,
+} from "@/entities/properties-sale-rent/";
 
 export default function PropertiesPageClient({
   properties,

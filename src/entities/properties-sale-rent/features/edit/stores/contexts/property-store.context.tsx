@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useContext } from "react";
-import { PropertyStoreApi } from "@/entities/properties-sale-rent/stores/property.store";
+import { PropertyStoreApi } from "@/entities/properties-sale-rent/";
 
 // Create context with proper type safety
 export const PropertyStoreContext = createContext<PropertyStoreApi | null>(null);

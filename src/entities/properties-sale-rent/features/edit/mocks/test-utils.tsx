@@ -1,8 +1,11 @@
 import { render } from "@testing-library/react";
 import React, { ReactNode } from "react";
-import { Property } from "@/entities/properties-sale-rent/core/types";
-import { PropertyStoreApi, createPropertyStore } from "@/entities/properties-sale-rent/stores";
-import { PropertyStoreProvider } from "@/entities/properties-sale-rent/stores/contexts/property-store.context";
+import {
+  Property,
+  PropertyStoreApi,
+  createPropertyStore,
+  PropertyStoreProvider,
+} from "@/entities/properties-sale-rent/";
 
 // Create a test dictionary store with optional initial data
 export function createTestPropertyStore(initialProperties: Record<string, Property> = {}): PropertyStoreApi {

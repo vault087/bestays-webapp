@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { memo } from "react";
-import { DBPropertyLocalizedTextField } from "@/entities/properties-sale-rent/core/types/property.types";
-import { usePropertyLocalizedTextInput } from "@/entities/properties-sale-rent/features/edit/components";
+import { DBPropertyLocalizedTextField, usePropertyLocalizedTextInput } from "@/entities/properties-sale-rent/";
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 

@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { StoreApi, createStore } from "zustand";
 import { persist } from "zustand/middleware";
-import { Property } from "@/entities/properties-sale-rent/core/types/property.types";
+import { Property } from "@/entities/properties-sale-rent/";
 import { generateUUID } from "@/utils/generate-uuid";
 
 // Dictionary Store State

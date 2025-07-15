@@ -10,7 +10,7 @@ import {
   PropertyLandFeaturesUncontrolledCheckbox,
   PropertyNearbyAttractionsUncontrolledCheckbox,
   PropertyLandAndConstructionUncontrolledCheckbox,
-} from "@/entities/properties-sale-rent/features/edit/components/ui/multi-code-uncontrolled-checkbox";
+} from "@/entities/properties-sale-rent/features/edit/components/ui";
 import {
   PropertyHighlightsUncontrolledInput,
   PropertyLocationStrengthsUncontrolledInput,

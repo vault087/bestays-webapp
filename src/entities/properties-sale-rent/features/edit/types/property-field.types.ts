@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DBPropertySchema } from "@/entities/properties-sale-rent/core/types";
+import { DBPropertySchema } from "@/entities/properties-sale-rent";
 
 // Form Schemas (extend DB schemas)
 export const PropertySchema = DBPropertySchema.omit({

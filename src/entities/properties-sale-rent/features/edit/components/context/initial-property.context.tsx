@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useMemo } from "react";
-import { Property } from "@/entities/properties-sale-rent/core/types/property.types";
+import { Property } from "@/entities/properties-sale-rent/";
 
 export type InitialPropertyContextType = {
   initialProperty: Property;

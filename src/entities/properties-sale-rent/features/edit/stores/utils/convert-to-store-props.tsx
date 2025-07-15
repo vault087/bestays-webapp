@@ -1,4 +1,4 @@
-import { Property } from "@/entities/properties-sale-rent/core/types";
+import { Property } from "@/entities/properties-sale-rent/";
 
 export const convertToPropertyStore = (properties: Property[]) => {
   return properties.reduce(
