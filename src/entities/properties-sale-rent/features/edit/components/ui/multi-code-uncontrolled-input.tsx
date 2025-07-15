@@ -1,40 +1,32 @@
 "use client";
 import { useCallback, useMemo } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
-import { DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
-import { useMultiCodeField } from "@/entities/properties-sale-rent/features/edit/components/hooks/use-multi-code-field";
+import { DBPropertyMultiCodeField, useMultiCodeField } from "@/entities/properties-sale-rent/";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export function PropertyHighlightsUncontrolledInput({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledInput field="highlights" locale={locale} />;
+export function PropertyHighlightsUncontrolledInput() {
+  return <MultiCodeUncontrolledInput field="highlights" />;
 }
-export function PropertyLocationStrengthsUncontrolledInput({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledInput field="location_strengths" locale={locale} />;
+export function PropertyLocationStrengthsUncontrolledInput() {
+  return <MultiCodeUncontrolledInput field="location_strengths" />;
 }
-export function PropertyTransactionTypesUncontrolledInput({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledInput field="transaction_types" locale={locale} />;
+export function PropertyTransactionTypesUncontrolledInput() {
+  return <MultiCodeUncontrolledInput field="transaction_types" />;
 }
-export function PropertyLandFeaturesUncontrolledInput({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledInput field="land_features" locale={locale} />;
+export function PropertyLandFeaturesUncontrolledInput() {
+  return <MultiCodeUncontrolledInput field="land_features" />;
 }
-export function PropertyNearbyAttractionsUncontrolledInput({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledInput field="nearby_attractions" locale={locale} />;
+export function PropertyNearbyAttractionsUncontrolledInput() {
+  return <MultiCodeUncontrolledInput field="nearby_attractions" />;
 }
-export function PropertyLandAndConstructionUncontrolledInput({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledInput field="land_and_construction" locale={locale} />;
+export function PropertyLandAndConstructionUncontrolledInput() {
+  return <MultiCodeUncontrolledInput field="land_and_construction" />;
 }
 
-const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
-  field,
-  locale,
-}: {
-  field: DBPropertyMultiCodeField;
-  locale: string;
-}) {
+const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({ field }: { field: DBPropertyMultiCodeField }) {
   const { inputId, currentValues, options, title, subtitle, setValues } = useMultiCodeField({
     field,
-    locale,
     variant: "input",
   });
 

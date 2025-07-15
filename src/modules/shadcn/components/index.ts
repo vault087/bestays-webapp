@@ -19,3 +19,4 @@ export * from "./ui/textarea";
 export * from "./ui/timeline";
 export * from "./ui/toggle";
 export * from "./ui/navigation-menu";
+export * from "./ui/multiselect";

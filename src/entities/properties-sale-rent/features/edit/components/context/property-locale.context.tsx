@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { ReactNode, createContext, useContext, useMemo } from "react";
 
 export type PropertyLocaleContextType = {
@@ -27,10 +28,8 @@ export const PropertyLocaleProvider = ({ children, locale }: PropertyLocaleProvi
 };
 
 // Context hook
-export function usePropertyLocaleContext(): PropertyLocaleContextType {
+export function usePropertyLocale(): string {
   const context = useContext(PropertyLocaleContext);
-  if (!context) {
-    throw new Error("usePropertyLocaleContext must be used within a PropertyLocaleProvider");
-  }
-  return context;
+  const locale = useLocale();
+  return context?.locale || locale;
 }

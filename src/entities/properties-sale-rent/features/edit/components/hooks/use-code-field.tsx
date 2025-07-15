@@ -7,6 +7,7 @@ import {
   useInitialPropertyContext,
   useDictionaryContext,
   covertPropertyFieldToDictionaryCode,
+  usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
 import { generateInputId } from "@/utils";
 
@@ -26,14 +27,13 @@ export type CodeFieldState = {
 
 export const useCodeField = ({
   field,
-  locale,
   variant = "",
 }: {
   field: DBPropertyCodeField;
-  locale: string;
   variant?: string;
 }): CodeFieldState => {
   const { dictionariesByCode, entriesByDictionaryCode } = useDictionaryContext();
+  const locale = usePropertyLocale();
   const { initialProperty, updateProperty } = useInitialPropertyContext();
 
   // Get initial value from context

@@ -19,23 +19,22 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/compon
 import { cn } from "@/modules/shadcn/utils/cn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export function PropertyAreaUncontrolledInput({ locale }: { locale: string }) {
-  return <SingleCodeUncontrolledInput field="area" locale={locale} />;
+export function PropertyAreaUncontrolledInput() {
+  return <SingleCodeUncontrolledInput field="area" />;
 }
-export function PropertyDivisibleSaleUncontrolledInput({ locale }: { locale: string }) {
-  return <SingleCodeUncontrolledInput field="divisible_sale" locale={locale} />;
+export function PropertyDivisibleSaleUncontrolledInput() {
+  return <SingleCodeUncontrolledInput field="divisible_sale" />;
 }
-export function PropertyOwnershipTypeUncontrolledInput({ locale }: { locale: string }) {
-  return <SingleCodeUncontrolledInput field="ownership_type" locale={locale} />;
+export function PropertyOwnershipTypeUncontrolledInput() {
+  return <SingleCodeUncontrolledInput field="ownership_type" />;
 }
-export function PropertyPropertyTypeUncontrolledInput({ locale }: { locale: string }) {
-  return <SingleCodeUncontrolledInput field="property_type" locale={locale} />;
+export function PropertyPropertyTypeUncontrolledInput() {
+  return <SingleCodeUncontrolledInput field="property_type" />;
 }
 
-function SingleCodeUncontrolledInput({ field, locale }: { field: DBPropertyCodeField; locale: string }) {
+function SingleCodeUncontrolledInput({ field }: { field: DBPropertyCodeField }) {
   const { inputId, currentValue, options, title, subtitle, setValue } = useCodeField({
     field,
-    locale,
     variant: "input",
   });
 

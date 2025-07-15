@@ -3,29 +3,28 @@ import { DBPropertyMultiCodeField, useMultiCodeField, MultiCodeOption } from "@/
 import { Checkbox, Label } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export function PropertyHighlightsUncontrolledCheckbox({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledCheckbox field="highlights" locale={locale} />;
+export function PropertyHighlightsUncontrolledCheckbox() {
+  return <MultiCodeUncontrolledCheckbox field="highlights" />;
 }
-export function PropertyLocationStrengthsUncontrolledCheckbox({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledCheckbox field="location_strengths" locale={locale} />;
+export function PropertyLocationStrengthsUncontrolledCheckbox() {
+  return <MultiCodeUncontrolledCheckbox field="location_strengths" />;
 }
-export function PropertyTransactionTypesUncontrolledCheckbox({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledCheckbox field="transaction_types" locale={locale} />;
+export function PropertyTransactionTypesUncontrolledCheckbox() {
+  return <MultiCodeUncontrolledCheckbox field="transaction_types" />;
 }
-export function PropertyLandFeaturesUncontrolledCheckbox({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledCheckbox field="land_features" locale={locale} />;
+export function PropertyLandFeaturesUncontrolledCheckbox() {
+  return <MultiCodeUncontrolledCheckbox field="land_features" />;
 }
-export function PropertyNearbyAttractionsUncontrolledCheckbox({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledCheckbox field="nearby_attractions" locale={locale} />;
+export function PropertyNearbyAttractionsUncontrolledCheckbox() {
+  return <MultiCodeUncontrolledCheckbox field="nearby_attractions" />;
 }
-export function PropertyLandAndConstructionUncontrolledCheckbox({ locale }: { locale: string }) {
-  return <MultiCodeUncontrolledCheckbox field="land_and_construction" locale={locale} />;
+export function PropertyLandAndConstructionUncontrolledCheckbox() {
+  return <MultiCodeUncontrolledCheckbox field="land_and_construction" />;
 }
 
-function MultiCodeUncontrolledCheckbox({ field, locale }: { field: DBPropertyMultiCodeField; locale: string }) {
+function MultiCodeUncontrolledCheckbox({ field }: { field: DBPropertyMultiCodeField }) {
   const { currentValues, options, title, subtitle, toggleValue } = useMultiCodeField({
     field,
-    locale,
     variant: "checkbox",
   });
   useDebugRender("Checkbox" + title);

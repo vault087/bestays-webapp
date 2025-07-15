@@ -4,31 +4,15 @@ import { DBPropertyTextField, usePropertyTextInput } from "@/entities/properties
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyNotesUncontrolledInput = memo(function PropertyNotesUncontrolledInput({
-  locale,
-}: {
-  locale: string;
-}) {
+export const PropertyNotesUncontrolledInput = memo(function PropertyNotesUncontrolledInput() {
   const t = useTranslations("PropertiesSaleRent.fields");
   const title = t("notes.label");
   const subtitle = t("notes.subtitle");
   const placeholder = t("notes.placeholder");
-  return (
-    <PropertyTextUncontrolledInput
-      title={title}
-      placeholder={placeholder}
-      subtitle={subtitle}
-      locale={locale}
-      field="notes"
-    />
-  );
+  return <PropertyTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="notes" />;
 });
 
-export const PropertyAdditionalInfoUncontrolledInput = memo(function PropertyAdditionalInfoUncontrolledInput({
-  locale,
-}: {
-  locale: string;
-}) {
+export const PropertyAdditionalInfoUncontrolledInput = memo(function PropertyAdditionalInfoUncontrolledInput({}) {
   const t = useTranslations("PropertiesSaleRent.fields");
   const title = t("additional_info.label");
   const placeholder = t("additional_info.placeholder");
@@ -38,7 +22,6 @@ export const PropertyAdditionalInfoUncontrolledInput = memo(function PropertyAdd
       title={title}
       placeholder={placeholder}
       subtitle={subtitle}
-      locale={locale}
       field="additional_info"
     />
   );
@@ -48,16 +31,14 @@ export const PropertyTextUncontrolledInput = memo(function PropertyTextUncontrol
   title,
   placeholder,
   subtitle,
-  locale,
   field,
 }: {
   title: string;
   placeholder: string;
   subtitle: string;
-  locale: string;
   field: DBPropertyTextField;
 }) {
-  const { inputId, value, onChange, error } = usePropertyTextInput(locale, field);
+  const { inputId, value, onChange, error } = usePropertyTextInput(field);
   useDebugRender("TextUncontrolledInput" + title);
   return (
     <div className="flex w-full flex-col bg-transparent">

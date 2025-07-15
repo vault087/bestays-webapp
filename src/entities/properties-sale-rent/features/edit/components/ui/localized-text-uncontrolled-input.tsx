@@ -4,31 +4,17 @@ import { DBPropertyLocalizedTextField, usePropertyLocalizedTextInput } from "@/e
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyTitleUncontrolledInput = memo(function PropertyTitleUncontrolledInput({
-  locale,
-}: {
-  locale: string;
-}) {
+export const PropertyTitleUncontrolledInput = memo(function PropertyTitleUncontrolledInput() {
   const t = useTranslations("PropertiesSaleRent.fields");
   const title = t("title.label");
   const subtitle = t("title.subtitle");
   const placeholder = t("title.placeholder");
   return (
-    <PropertyLocalizedTextUncontrolledInput
-      title={title}
-      placeholder={placeholder}
-      subtitle={subtitle}
-      locale={locale}
-      field="title"
-    />
+    <PropertyLocalizedTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="title" />
   );
 });
 
-export const PropertyDescriptionUncontrolledInput = memo(function PropertyDescriptionUncontrolledInput({
-  locale,
-}: {
-  locale: string;
-}) {
+export const PropertyDescriptionUncontrolledInput = memo(function PropertyDescriptionUncontrolledInput() {
   const t = useTranslations("PropertiesSaleRent.fields");
   const title = t("description.label");
   const placeholder = t("description.placeholder");
@@ -38,7 +24,6 @@ export const PropertyDescriptionUncontrolledInput = memo(function PropertyDescri
       title={title}
       placeholder={placeholder}
       subtitle={subtitle}
-      locale={locale}
       field="description"
     />
   );
@@ -48,16 +33,14 @@ export const PropertyLocalizedTextUncontrolledInput = memo(function PropertyLoca
   title,
   placeholder,
   subtitle,
-  locale,
   field,
 }: {
   title: string;
   placeholder: string;
   subtitle: string;
-  locale: string;
   field: DBPropertyLocalizedTextField;
 }) {
-  const { inputId, value, onChange, error } = usePropertyLocalizedTextInput(locale, field);
+  const { inputId, value, onChange, error } = usePropertyLocalizedTextInput(field);
   useDebugRender("LocalizedTextUncontrolledInput" + title);
   return (
     <div className="flex w-full flex-col bg-transparent">
