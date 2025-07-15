@@ -1,17 +1,32 @@
-import { Suspense } from "react";
-import { getDictionariesAction } from "@/entities/dictionaries/actions";
-import { getPropertiesAction } from "@/entities/properties-sale-rent/actions";
-import PropertiesSellRentPageContent from "./page-content";
+import { loadDictionaries } from "@/entities/dictionaries/libs";
+import { DictionaryEntry, Dictionary } from "@/entities/dictionaries/types/dictionary.types";
+import { loadPropertyDetails } from "@/entities/properties-sale-rent/features/edit/libs/load-properties";
+import { Property } from "@/entities/properties-sale-rent/features/edit/types/property-field.types";
+import PropertiesPageClient from "./page.client";
 
-export default function PropertiesSellRentPage() {
-  // Create both promises but don't await them
-  const propertiesPromise = getPropertiesAction();
-  const dictionariesPromise = getDictionariesAction();
+export default async function PropertiesSellRentPage() {
+  const dbProperties = await loadPropertyDetails();
+  const dbDictionaries = await loadDictionaries();
 
-  // Pass both promises directly to the client component
+  const properties: Property[] = dbProperties.data.map((property) => ({
+    id: property.id || "",
+    is_published: property.is_published || false,
+    ...property,
+    is_new: false,
+  }));
+
+  const dictionaries: Dictionary[] = dbDictionaries.dictionaries.map((dictionary) => ({
+    ...dictionary,
+    is_new: false,
+  }));
+  const entries: DictionaryEntry[] = dbDictionaries.entries.map((entry) => ({
+    ...entry,
+    is_new: false,
+  }));
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <PropertiesSellRentPageContent propertiesPromise={propertiesPromise} dictionariesPromise={dictionariesPromise} />
-    </Suspense>
+    <div>
+      <PropertiesPageClient properties={properties} dictionaries={dictionaries} entries={entries} />
+    </div>
   );
 }

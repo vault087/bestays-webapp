@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS properties_sale_rent;
+
 CREATE TABLE properties_sale_rent (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     title JSONB,
@@ -16,11 +18,16 @@ CREATE TABLE properties_sale_rent (
     room_counts JSONB,
     nearby_attractions VARCHAR(50)[],
     land_and_construction VARCHAR(50)[],
+    is_draft BOOLEAN DEFAULT TRUE,
 
     additional_info TEXT,
     images JSONB,
     is_published BOOLEAN DEFAULT FALSE,
+    is_featured BOOLEAN DEFAULT FALSE,
+    weight INTEGER DEFAULT 0,
 
+    preview JSONB, -- short information for listings
+    agent_id UUID REFERENCES auth.users(id) ON DELETE SET NULL ON UPDATE CASCADE,
     created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL ON UPDATE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

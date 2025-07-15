@@ -44,7 +44,6 @@ export default function DashboardNavBar() {
   // Navigation links array to be used in both desktop and mobile menus
   const navigationLinks = [
     { href: "/dashboard/properties-sell-rent", label: t("Listings") },
-    { href: "/dashboard/properties", label: t("Properties") },
     { href: "/dashboard/dictionaries", label: t("Settings") },
   ];
   return (
