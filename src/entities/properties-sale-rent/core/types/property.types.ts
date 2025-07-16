@@ -17,9 +17,10 @@ export const DBRoomCountsSchema = z.object({
   living_rooms: z.number().int().positive(),
 });
 
-export const CurrencySchema = z.enum(["thb"]);
-export const DBMoneySchema = z.number().int().positive();
+export const CurrencySchema = z.enum(["thb", "usd"]);
+export const DEFAULT_CURRENCY: DBCurrency = "thb";
 
+export const DBMoneySchema = z.number().int().positive();
 export const DBPriceSchema = z.object({
   currency: CurrencySchema.nullish(),
   rai: DBMoneySchema.nullish(),

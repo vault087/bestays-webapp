@@ -1,10 +1,12 @@
 "use client";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   DBPropertyPriceField,
   useInitialPropertyContext,
   usePropertyLocale,
   DBCurrency,
+  DEFAULT_CURRENCY,
+  CurrencySchema,
 } from "@/entities/properties-sale-rent";
 import { generateInputId } from "@/utils/generate-input-id";
 
@@ -14,9 +16,14 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
   value: string;
   onChange: (value: string) => void;
   currency: DBCurrency;
+  currencies: DBCurrency[];
+  setCurrency: (currency: DBCurrency) => void;
   error?: string;
 } {
   const { initialProperty, updateProperty } = useInitialPropertyContext();
+  const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(
+    initialProperty.price?.currency || DEFAULT_CURRENCY,
+  );
   const locale = usePropertyLocale();
 
   // Generate a unique input ID
@@ -31,16 +38,28 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
     (value: string) => {
       updateProperty((draft) => {
         if (!draft.price) {
+          // Setting currency only if price is not set
           draft.price = {
-            currency: "thb",
-            [field]: value,
+            currency: currentCurrency,
           };
-        } else {
-          draft.price[field] = Number(value);
+        }
+        draft.price[field] = Number(value);
+      });
+    },
+    [updateProperty, field, currentCurrency],
+  );
+
+  const setCurrency = useCallback(
+    (currency: DBCurrency) => {
+      setCurrentCurrency(currency);
+      updateProperty((draft) => {
+        // Changing currency only if price is already set
+        if (draft.price) {
+          draft.price.currency = currency;
         }
       });
     },
-    [updateProperty, field],
+    [updateProperty],
   );
 
   // Validate - field should not be empty for primary locale
@@ -51,7 +70,9 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
     inputId,
     value: currentValue || "",
     onChange,
-    currency: initialProperty.price?.currency || "thb",
+    currency: currentCurrency,
+    currencies: CurrencySchema.options as DBCurrency[],
+    setCurrency,
     error,
   };
 }

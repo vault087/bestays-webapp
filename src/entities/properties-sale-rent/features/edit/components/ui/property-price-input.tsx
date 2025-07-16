@@ -1,11 +1,20 @@
+import { ChevronDownIcon } from "lucide-react";
 import { memo } from "react";
 import {
   usePropertyPriceInput,
   DBPropertyPriceField,
   PropertyFieldHeader,
   PropertyFieldFooter,
+  DBCurrency,
 } from "@/entities/properties-sale-rent/";
-import { Input, Label } from "@/modules/shadcn";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Input,
+} from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export const PropertyPriceInput = function PropertyPriceInput() {
@@ -41,17 +50,13 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
   placeholder?: string | undefined;
   field: DBPropertyPriceField;
 }) {
-  const { inputId, value, onChange, error, currency } = usePropertyPriceInput(field);
+  const { inputId, value, onChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
+  console.log("currencies", currencies);
   useDebugRender("PropertyPriceUncontrolledInput" + field);
   return (
     <div className="flex w-full flex-col bg-transparent">
       {title && <PropertyFieldHeader text={title} inputId={inputId} />}
       <div className="flex flex-row items-center space-x-2">
-        {currency && (
-          <Label htmlFor={inputId} className="text-muted-foreground text-xs uppercase">
-            {currency}
-          </Label>
-        )}
         <Input
           id={inputId}
           type="text"
@@ -60,9 +65,38 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
           placeholder={placeholder}
           className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
         />
+        <DropDownCurrency currency={currency} currencies={currencies} onChange={setCurrency} />
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
       {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
     </div>
+  );
+});
+
+export const DropDownCurrency = memo(function DropDownCurrency({
+  currency,
+  currencies,
+  onChange,
+}: {
+  currency: DBCurrency;
+  currencies: DBCurrency[];
+  onChange: (currency: DBCurrency) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">
+          <span className="text-muted-foreground text-xs uppercase">{currency}</span>
+          <ChevronDownIcon className="-me-1 opacity-60" size={16} aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
+        {currencies.map((currency) => (
+          <DropdownMenuItem key={currency} onClick={() => onChange(currency)}>
+            <span className="text-muted-foreground text-xs uppercase">{currency}</span>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 });
