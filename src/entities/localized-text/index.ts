@@ -1,1 +1,2 @@
-export * from "./types/localized-text.type";
+export * from "./types";
+export * from "./utils";

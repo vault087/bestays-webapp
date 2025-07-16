@@ -79,21 +79,21 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               updateProperty={(updater) => handleUpdateProperty(property.id, updater)}
               key={property.id}
             >
-              <PropertyLocaleProvider locale={"en"}>
-                <PropertyAboutUncontrolledInput />
-                <PropertyAgentNotesUncontrolledInput />
-                <PropertyAreaUncontrolledInput />
-                <PropertyHighlightsUncontrolledInput />
-                <PropertyHighlightsUncontrolledCheckbox />
-                <PropertyDivisibleSaleUncontrolledInput />
-                <PropertyOwnershipTypeUncontrolledInput />
-                <PropertyPropertyTypeUncontrolledInput />
-                <PropertyLocationStrengthsUncontrolledCheckbox />
-                <PropertyTransactionTypesUncontrolledCheckbox />
-                <PropertyLandFeaturesUncontrolledCheckbox />
-                <PropertyNearbyAttractionsUncontrolledCheckbox />
-                <PropertyLandAndConstructionUncontrolledCheckbox />
-              </PropertyLocaleProvider>
+              {/* <PropertyLocaleProvider locale={locale}> */}
+              <PropertyAboutUncontrolledInput />
+              <PropertyAgentNotesUncontrolledInput />
+              <PropertyAreaUncontrolledInput />
+              <PropertyHighlightsUncontrolledInput />
+              <PropertyHighlightsUncontrolledCheckbox />
+              <PropertyDivisibleSaleUncontrolledInput />
+              <PropertyOwnershipTypeUncontrolledInput />
+              <PropertyPropertyTypeUncontrolledInput />
+              <PropertyLocationStrengthsUncontrolledCheckbox />
+              <PropertyTransactionTypesUncontrolledCheckbox />
+              <PropertyLandFeaturesUncontrolledCheckbox />
+              <PropertyNearbyAttractionsUncontrolledCheckbox />
+              <PropertyLandAndConstructionUncontrolledCheckbox />
+              {/* </PropertyLocaleProvider> */}
             </InitialPropertyProvider>
           ))}
         </div>

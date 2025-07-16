@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState, useCallback, useRef } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
+import { getLocalizedTextValue } from "@/entities/localized-text";
 import {
   DBPropertyMultiCodeField,
   useDictionaryContext,
@@ -52,12 +53,12 @@ export const useMultiCodeField = ({
 
     const options: MultiCodeOption[] = entries.map((entry) => ({
       code: entry.code as Code,
-      label: entry.name?.[locale] || entry.code || "",
+      label: getLocalizedTextValue(entry.name, locale) || entry.code || "",
       inputId: generateInputId("property-option", initialProperty.id, field + "-" + entry.code, variant, locale),
     }));
 
-    const title = dictionary?.name?.[locale] || dictionary?.code || "";
-    const subtitle = dictionary?.description?.[locale] || "";
+    const title = getLocalizedTextValue(dictionary?.name, locale) || dictionary?.code || "";
+    const subtitle = getLocalizedTextValue(dictionary?.description, locale) || "";
 
     return { inputId, options, title, subtitle };
   }, [dictionariesByCode, entriesByDictionaryCode, field, variant, locale, initialProperty.id]);
