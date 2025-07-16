@@ -1,6 +1,11 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { DBPropertyPriceField, useInitialPropertyContext, usePropertyLocale } from "@/entities/properties-sale-rent";
+import {
+  DBPropertyPriceField,
+  useInitialPropertyContext,
+  usePropertyLocale,
+  DBCurrency,
+} from "@/entities/properties-sale-rent";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Input hook for Property localized fields
@@ -8,6 +13,7 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
+  currency: DBCurrency;
   error?: string;
 } {
   const { initialProperty, updateProperty } = useInitialPropertyContext();
@@ -45,6 +51,7 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
     inputId,
     value: currentValue || "",
     onChange,
+    currency: initialProperty.price?.currency || "thb",
     error,
   };
 }

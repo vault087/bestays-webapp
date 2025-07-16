@@ -4,8 +4,9 @@ import {
   DBPropertyPriceField,
   PropertyFieldHeader,
   PropertyFieldFooter,
+  DBCurrency,
 } from "@/entities/properties-sale-rent/";
-import { Input } from "@/modules/shadcn";
+import { Input, Label } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export const PropertyPriceInput = function PropertyPriceInput() {
@@ -41,21 +42,28 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
   placeholder?: string | undefined;
   field: DBPropertyPriceField;
 }) {
-  const { inputId, value, onChange, error } = usePropertyPriceInput(field);
+  const { inputId, value, onChange, error, currency } = usePropertyPriceInput(field);
   useDebugRender("PropertyPriceUncontrolledInput" + field);
   return (
     <div className="flex w-full flex-col bg-transparent">
-      <PropertyFieldHeader text={title} inputId={inputId} />
-      <Input
-        id={inputId}
-        type="text"
-        defaultValue={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
-      />
+      {title && <PropertyFieldHeader text={title} inputId={inputId} />}
+      <div className="flex flex-row items-center space-x-2">
+        {currency && (
+          <Label htmlFor={inputId} className="text-muted-foreground text-xs uppercase">
+            {currency}
+          </Label>
+        )}
+        <Input
+          id={inputId}
+          type="text"
+          defaultValue={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
+        />
+      </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      <PropertyFieldFooter text={subtitle} inputId={inputId} />
+      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
     </div>
   );
 });
