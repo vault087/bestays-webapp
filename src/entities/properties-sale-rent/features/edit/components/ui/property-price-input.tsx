@@ -3,9 +3,10 @@ import { memo } from "react";
 import {
   usePropertyPriceInput,
   DBPropertyPriceField,
-  PropertyFieldHeader,
+  PropertyFieldSubHeader,
   PropertyFieldFooter,
   DBCurrency,
+  PropertyFieldHeader,
 } from "@/entities/properties-sale-rent/";
 import {
   Button,
@@ -19,10 +20,13 @@ import { useDebugRender } from "@/utils/use-debug-render";
 
 export const PropertyPriceInput = function PropertyPriceInput() {
   return (
-    <div className="flex w-full flex-row space-x-2 bg-transparent">
-      <PropertyPriceRaiInput />
-      <PropertyPriceTotalInput />
-      <PropertyPriceSaleInput />
+    <div className="flow flow-col w-full space-y-4 bg-transparent">
+      <PropertyFieldHeader text="Price" />
+      <div className="flex flex-row space-x-4 bg-transparent">
+        <PropertyPriceRaiInput />
+        <PropertyPriceTotalInput />
+        <PropertyPriceSaleInput />
+      </div>
     </div>
   );
 };
@@ -54,7 +58,7 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
   useDebugRender("PropertyPriceUncontrolledInput" + field);
   return (
     <div className="flex w-full flex-col bg-transparent">
-      {title && <PropertyFieldHeader text={title} inputId={inputId} />}
+      {title && <PropertyFieldSubHeader text={title} inputId={inputId} />}
       <div className="flex flex-row items-center space-x-2">
         <Input
           id={inputId}

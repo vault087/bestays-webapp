@@ -5,3 +5,4 @@ export * from "./single-code-uncontrolled-input";
 export * from "./text-uncontrolled-input";
 export * from "./header";
 export * from "./footer";
+export * from "./sub-header";
