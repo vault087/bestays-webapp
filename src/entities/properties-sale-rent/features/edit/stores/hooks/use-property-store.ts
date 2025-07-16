@@ -6,11 +6,6 @@ import {
   Property,
 } from "@/entities/properties-sale-rent/";
 
-export function usePropertyStore<T>(selector: (state: PropertyStoreState) => T): T {
-  const store = usePropertyStoreContext();
-  return useStore(store, selector as (state: unknown) => T);
-}
-
 export function usePropertyActions(): PropertyStoreActions {
   const store = usePropertyStoreContext();
   return store.getState();
@@ -19,6 +14,12 @@ export function usePropertyActions(): PropertyStoreActions {
 export function useCurrentProperties(): Property[] {
   const store = usePropertyStoreContext();
   return Object.values(store.getState().properties);
+}
+
+// usePropertyStore
+export function usePropertyStore<T>(selector: (state: PropertyStoreState) => T): T {
+  const store = usePropertyStoreContext();
+  return useStore(store, selector as (state: unknown) => T);
 }
 
 export function useProperty(id: string): Property | undefined {

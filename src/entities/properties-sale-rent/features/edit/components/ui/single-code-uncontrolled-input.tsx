@@ -2,7 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState, useRef } from "react";
-import { DBPropertyCodeField } from "@/entities/properties-sale-rent/";
+import { DBPropertyCodeField, PropertyFieldFooter, PropertyFieldHeader } from "@/entities/properties-sale-rent/";
 import { useCodeField } from "@/entities/properties-sale-rent/features/edit/components/hooks/use-code-field";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -14,7 +14,6 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/modules/shadcn/components/ui/command";
-import { Label } from "@/modules/shadcn/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { cn } from "@/modules/shadcn/utils/cn";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -48,7 +47,7 @@ function SingleCodeUncontrolledInput({ field }: { field: DBPropertyCodeField }) 
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={inputId}>{title}</Label>
+      <PropertyFieldHeader text={title} inputId={inputId} />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -95,9 +94,7 @@ function SingleCodeUncontrolledInput({ field }: { field: DBPropertyCodeField }) 
           </Command>
         </PopoverContent>
       </Popover>
-      <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
-        {subtitle}
-      </p>
+      <PropertyFieldFooter text={subtitle} inputId={inputId} />
     </div>
   );
 }

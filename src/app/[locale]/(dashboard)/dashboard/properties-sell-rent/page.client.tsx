@@ -27,6 +27,8 @@ import {
   DictionaryProvider,
   InitialPropertyProvider,
   PropertyLocaleProvider,
+  PropertyFieldHeader,
+  PropertyFieldFooter,
 } from "@/entities/properties-sale-rent/";
 
 export default function PropertiesPageClient({

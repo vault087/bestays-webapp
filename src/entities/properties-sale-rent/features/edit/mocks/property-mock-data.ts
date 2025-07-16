@@ -4,8 +4,7 @@ import { Property } from "@/entities/properties-sale-rent/features/edit/types/pr
 export function createMockProperty(id: string, overrides?: Partial<Property>): Property {
   const defaultProperty: Property = {
     id,
-    title: { en: "Test Property", th: "ทรัพย์สินทดสอบ" },
-    description: { en: "Test description", th: "คำอธิบายทดสอบ" },
+    about: { en: "Test description", th: "คำอธิบายทดสอบ" },
     ownership_type: "freehold",
     property_type: "house",
     area: "bangkok",
@@ -23,7 +22,7 @@ export function createMockProperty(id: string, overrides?: Partial<Property>): P
       rai: 2000000,
     },
     divisible_sale: "yes",
-    notes: "Test notes",
+    agent_notes: "Test agent notes",
     land_features: ["flat", "corner"],
     room_counts: {
       bedrooms: 3,
@@ -32,7 +31,6 @@ export function createMockProperty(id: string, overrides?: Partial<Property>): P
     },
     nearby_attractions: ["beach", "mall"],
     land_and_construction: ["new_construction", "modern"],
-    additional_info: "Additional test info",
     images: [],
     is_published: false,
     is_new: false,

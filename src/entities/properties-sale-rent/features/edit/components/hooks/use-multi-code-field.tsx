@@ -38,7 +38,7 @@ export const useMultiCodeField = ({
   const locale = usePropertyLocale();
 
   // Get initial values from context
-  const initialValues: Code[] = initialProperty[field] as Code[];
+  const initialValues: Code[] = (initialProperty[field] as Code[]) || [];
 
   // Local state for immediate UI updates
   const [currentValues, setCurrentValues] = useState<Code[]>(initialValues);

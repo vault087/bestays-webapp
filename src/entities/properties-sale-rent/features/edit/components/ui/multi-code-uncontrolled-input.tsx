@@ -1,7 +1,12 @@
 "use client";
 import { useCallback, useMemo } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
-import { DBPropertyMultiCodeField, useMultiCodeField } from "@/entities/properties-sale-rent/";
+import {
+  DBPropertyMultiCodeField,
+  PropertyFieldFooter,
+  PropertyFieldHeader,
+  useMultiCodeField,
+} from "@/entities/properties-sale-rent/";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
 
@@ -68,7 +73,7 @@ const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({ field }
   useDebugRender("MultiInput" + title);
   return (
     <div className="*:not-first:mt-2">
-      <p>{title}</p>
+      <PropertyFieldHeader text={title} inputId={inputId} />
       <MultipleSelector
         inputProps={{
           id: inputId,
@@ -85,9 +90,7 @@ const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({ field }
         hidePlaceholderWhenSelected
         emptyIndicator={<p className="text-center text-sm">No results found</p>}
       />
-      <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
-        {subtitle}
-      </p>
+      <PropertyFieldFooter text={subtitle} inputId={inputId} />
     </div>
   );
 };

@@ -1,5 +1,11 @@
 "use client";
-import { DBPropertyMultiCodeField, useMultiCodeField, MultiCodeOption } from "@/entities/properties-sale-rent/";
+import {
+  DBPropertyMultiCodeField,
+  useMultiCodeField,
+  MultiCodeOption,
+  PropertyFieldHeader,
+  PropertyFieldFooter,
+} from "@/entities/properties-sale-rent/";
 import { Checkbox, Label } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
 
@@ -31,7 +37,7 @@ function MultiCodeUncontrolledCheckbox({ field }: { field: DBPropertyMultiCodeFi
 
   return (
     <div className="*:not-first:mt-2">
-      <p>{title}</p>
+      <PropertyFieldHeader text={title} />
       {options.map((option: MultiCodeOption) => (
         <div className="flex items-center gap-2" key={option.code}>
           <Checkbox
@@ -44,9 +50,7 @@ function MultiCodeUncontrolledCheckbox({ field }: { field: DBPropertyMultiCodeFi
           <Label htmlFor={option.inputId}>{option.label}</Label>
         </div>
       ))}
-      <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
-        {subtitle}
-      </p>
+      <PropertyFieldFooter text={subtitle} />
     </div>
   );
 }

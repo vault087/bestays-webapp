@@ -22,7 +22,10 @@ export function usePropertyLocalizedTextDisplay(id: string, field: DBPropertyLoc
 }
 
 // Input hook for Property localized fields
-export function usePropertyLocalizedTextInput(field: DBPropertyLocalizedTextField): {
+export function usePropertyLocalizedTextInput(
+  field: DBPropertyLocalizedTextField,
+  variant?: string,
+): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
@@ -32,8 +35,8 @@ export function usePropertyLocalizedTextInput(field: DBPropertyLocalizedTextFiel
   const locale = usePropertyLocale();
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property", initialProperty.id.slice(-8), field, locale),
-    [initialProperty.id, locale, field],
+    () => generateInputId("property", initialProperty.id.slice(-8), field, variant, locale),
+    [initialProperty.id, locale, field, variant],
   );
 
   const currentValue = initialProperty[field] as LocalizedText | null | undefined;

@@ -9,8 +9,9 @@ import {
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for Property localized fields
-export function usePropertyTextDisplay(id: string, locale: string, field: DBPropertyTextField): string | undefined {
-  const property = useProperty(id);
+export function usePropertyTextDisplay(field: DBPropertyTextField): string | undefined {
+  const { initialProperty } = useInitialPropertyContext();
+  const property = useProperty(initialProperty.id);
   if (!property) return undefined;
 
   const value = property[field] as string | null | undefined;
