@@ -24,6 +24,7 @@ import {
   PropertyNearbyAttractionsCheckbox,
   PropertyLandAndConstructionCheckbox,
   DictionaryProvider,
+  PropertyPriceInput,
   InitialPropertyProvider,
 } from "@/entities/properties-sale-rent/";
 
@@ -76,6 +77,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               key={property.id}
             >
               {/* <PropertyLocaleProvider locale={locale}> */}
+              <PropertyPriceInput />
               <PropertyAboutInput />
               <PropertyAgentNotesInput />
               <PropertyAreaInput />

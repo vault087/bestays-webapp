@@ -14,26 +14,26 @@ export const PropertyTextUncontrolledInput = memo(function PropertyTextUncontrol
   subtitle,
   field,
 }: {
-  title: string;
-  placeholder: string;
-  subtitle: string;
+  title?: string | undefined;
+  placeholder?: string | undefined;
+  subtitle?: string | undefined;
   field: DBPropertyTextField;
 }) {
   const { inputId, value, onChange, error } = usePropertyTextInput(field);
   useDebugRender("TextUncontrolledInput" + title);
   return (
     <div className="flex w-full flex-col bg-transparent">
-      <PropertyFieldHeader text={title} inputId={inputId} />
+      {title && <PropertyFieldHeader text={title} inputId={inputId} />}
       <Input
         id={inputId}
         type="text"
         defaultValue={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
+        placeholder={placeholder || ""}
         className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
       />
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      <PropertyFieldFooter text={subtitle} inputId={inputId} />
+      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
     </div>
   );
 });

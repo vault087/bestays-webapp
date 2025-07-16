@@ -1,5 +1,5 @@
 import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
-import { DBProperty } from "./property.types";
+import { DBPrice, DBProperty, DBRoomCounts } from "./property.types";
 
 export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
 export type DBPropertyTextField = keyof Pick<DBProperty, "agent_notes">;
@@ -32,3 +32,6 @@ export const covertPropertyFieldToDictionaryCode: Record<DBPropertyMultiCodeFiel
   nearby_attractions: "nearby_attractions",
   land_and_construction: "land_and_construction",
 };
+
+export type DBPropertyPriceField = keyof Pick<DBPrice, "rai" | "total" | "sale">;
+export type DBPropertyRoomCountsField = keyof Pick<DBRoomCounts, "bedrooms" | "bathrooms" | "living_rooms">;
