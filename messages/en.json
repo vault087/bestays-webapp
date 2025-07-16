@@ -25,9 +25,18 @@
       },
       "price": {
         "label": "Price",
-        "rai": "Rai / ไร่ละ(บาท)",
-        "total": "Total",
-        "sale": "Sale / ราคาขาย"
+        "rai": {
+          "label": "Rai / ไร่ละ(บาท)",
+          "placeholder": "Enter price in rai"
+        },
+        "total": {
+          "label": "Total / ราคารวม(บาท)",
+          "placeholder": "Enter price in total"
+        },
+        "sale": {
+          "label": "Sale / ราคาขาย",
+          "placeholder": "Enter price in sale"
+        }
       },
       "size": {
         "label": "Area Size"

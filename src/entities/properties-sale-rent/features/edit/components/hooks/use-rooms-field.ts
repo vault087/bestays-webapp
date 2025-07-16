@@ -11,6 +11,8 @@ export function usePropertyRoomsInput(
   inputId: string;
   value: string;
   onChange: (value: string) => void;
+  onIncrement: () => void;
+  onDecrement: () => void;
   error?: string;
 } {
   const { initialProperty, updateProperty } = useInitialPropertyContext();
@@ -39,6 +41,13 @@ export function usePropertyRoomsInput(
     [updateProperty, field],
   );
 
+  const onIncrement = useCallback(() => {
+    onChange(String(Number(roomsValue) + 1));
+  }, [onChange, roomsValue]);
+  const onDecrement = useCallback(() => {
+    onChange(String(Number(roomsValue) - 1));
+  }, [onChange, roomsValue]);
+
   // Validate - field should not be empty for primary locale
   // This is a simplified version - a real implementation might have more validation
   const error = undefined;
@@ -47,6 +56,8 @@ export function usePropertyRoomsInput(
     inputId,
     value: roomsValue,
     onChange,
+    onIncrement,
+    onDecrement,
     error,
   };
 }

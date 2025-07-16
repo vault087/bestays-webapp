@@ -24,7 +24,7 @@ export const PropertyPriceInput = function PropertyPriceInput() {
   return (
     <div className="flow flow-col w-full space-y-4 bg-transparent">
       <PropertyFieldHeader text={t("label")} />
-      <div className="flex flex-row space-x-4 bg-transparent">
+      <div className="flex flex-col gap-4 bg-transparent">
         <PropertyPriceRaiInput />
         <PropertyPriceTotalInput />
         <PropertyPriceSaleInput />
@@ -35,17 +35,17 @@ export const PropertyPriceInput = function PropertyPriceInput() {
 
 export const PropertyPriceRaiInput = function PropertyPriceRaiInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
-  return <PropertyPriceUncontrolledInput title={t("rai")} placeholder={t("rai")} field="rai" />;
+  return <PropertyPriceUncontrolledInput title={t("rai.label")} placeholder={t("rai.placeholder")} field="rai" />;
 };
 
 export const PropertyPriceTotalInput = function PropertyPriceTotalInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
-  return <PropertyPriceUncontrolledInput title={t("total")} placeholder={t("total")} field="total" />;
+  return <PropertyPriceUncontrolledInput title={t("total.label")} placeholder={t("total.placeholder")} field="total" />;
 };
 
 export const PropertyPriceSaleInput = function PropertyPriceSaleInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
-  return <PropertyPriceUncontrolledInput title={t("sale")} placeholder={t("sale")} field="sale" />;
+  return <PropertyPriceUncontrolledInput title={t("sale.label")} placeholder={t("sale.placeholder")} field="sale" />;
 };
 
 export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontrolledInput({

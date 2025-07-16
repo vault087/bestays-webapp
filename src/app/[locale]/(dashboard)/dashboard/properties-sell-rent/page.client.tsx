@@ -72,7 +72,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
     <div className="flex flex-col gap-4 p-4">
       <p>Properties</p>
       <div className="flex flex-row gap-4">
-        <div className="flex flex-row flex-wrap gap-4">
+        <div className="grid-cols grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {properties.slice(0, 1).map((property) => (
             <InitialPropertyProvider
               initialProperty={property}
