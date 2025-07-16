@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { Code } from "@/entities/dictionaries/types/dictionary.types";
+import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
 import {
   DBPropertyMultiCodeField,
   PropertyFieldFooter,
@@ -50,7 +50,7 @@ export const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
 
   const handleOnChange = useCallback(
     (value: Option[]) => {
-      setValues(value.map((option) => option.value as Code));
+      setValues(value.map((option) => option.value as DBCode));
     },
     [setValues],
   );

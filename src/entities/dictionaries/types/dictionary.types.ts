@@ -58,5 +58,4 @@ export type DBCode = z.infer<typeof DBCodeSchema>;
 
 export type Dictionary = z.infer<typeof DictionarySchema>;
 export type DictionaryEntry = z.infer<typeof DictionaryEntrySchema>;
-export type Code = DBCode;
 export const CodeSchema = DBCodeSchema;

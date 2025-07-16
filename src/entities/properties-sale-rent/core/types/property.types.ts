@@ -6,9 +6,13 @@ import { DBImageSchema } from "@/entities/media/types/image.type";
 // Table constants
 export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
 
-export const DBSizeSchema = z.object({
+export const DBSizeEntrySchema = z.object({
   value: z.number().positive().positive(),
   unit: DBCodeSchema,
+});
+
+export const DBSizeSchema = z.object({
+  total: DBSizeEntrySchema.nullish(),
 });
 
 export const DBRoomCountsSchema = z.object({
@@ -30,6 +34,7 @@ export const DBPriceSchema = z.object({
 
 export type DBPrice = z.infer<typeof DBPriceSchema>;
 export type DBSize = z.infer<typeof DBSizeSchema>;
+export type DBSizeEntry = z.infer<typeof DBSizeEntrySchema>;
 export type DBRoomCounts = z.infer<typeof DBRoomCountsSchema>;
 export type DBCurrency = z.infer<typeof CurrencySchema>;
 export type DBMoney = z.infer<typeof DBMoneySchema>;

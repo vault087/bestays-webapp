@@ -28,15 +28,15 @@ export const PropertyPriceInput = function PropertyPriceInput() {
 };
 
 export const PropertyPriceRaiInput = function PropertyPriceRaiInput() {
-  return <PropertyPriceUncontrolledInput title="Rai" placeholder="Price" field="rai" />;
+  return <PropertyPriceUncontrolledInput title="Rai / ไร่ละ(บาท)" placeholder="Price" field="rai" />;
 };
 
 export const PropertyPriceTotalInput = function PropertyPriceTotalInput() {
-  return <PropertyPriceUncontrolledInput title="Total" placeholder="Price" field="total" />;
+  return <PropertyPriceUncontrolledInput title="Total / ราคารวม(บาท)" placeholder="Price" field="total" />;
 };
 
 export const PropertyPriceSaleInput = function PropertyPriceSaleInput() {
-  return <PropertyPriceUncontrolledInput title="Sale" placeholder="Price" field="sale" />;
+  return <PropertyPriceUncontrolledInput title="Sale / ราคาขาย" placeholder="Price" field="sale" />;
 };
 
 export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontrolledInput({
@@ -51,7 +51,6 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
   field: DBPropertyPriceField;
 }) {
   const { inputId, value, onChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
-  console.log("currencies", currencies);
   useDebugRender("PropertyPriceUncontrolledInput" + field);
   return (
     <div className="flex w-full flex-col bg-transparent">

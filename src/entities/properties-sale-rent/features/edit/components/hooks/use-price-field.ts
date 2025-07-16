@@ -11,7 +11,10 @@ import {
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Input hook for Property localized fields
-export function usePropertyPriceInput(field: DBPropertyPriceField): {
+export function usePropertyPriceInput(
+  field: DBPropertyPriceField,
+  variant?: string,
+): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
@@ -21,21 +24,24 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
   error?: string;
 } {
   const { initialProperty, updateProperty } = useInitialPropertyContext();
+  const priceFieldValue = initialProperty.price?.[field] as number | undefined;
+
   const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(
     initialProperty.price?.currency || DEFAULT_CURRENCY,
   );
+  const [priceValue, setPriceValue] = useState<string>(priceFieldValue?.toString() || "");
   const locale = usePropertyLocale();
 
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property", initialProperty.id.slice(-8), field, locale),
-    [initialProperty.id, locale, field],
+    () => generateInputId("property", initialProperty.id.slice(-8), field, variant, locale),
+    [initialProperty.id, locale, field, variant],
   );
 
-  const currentValue = initialProperty.price?.[field] as string | null | undefined;
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setPriceValue(value);
       updateProperty((draft) => {
         if (!draft.price) {
           // Setting currency only if price is not set
@@ -68,7 +74,7 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
 
   return {
     inputId,
-    value: currentValue || "",
+    value: priceValue,
     onChange,
     currency: currentCurrency,
     currencies: CurrencySchema.options as DBCurrency[],

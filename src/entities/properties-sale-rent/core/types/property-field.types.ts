@@ -1,5 +1,5 @@
 import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
-import { DBPrice, DBProperty, DBRoomCounts } from "./property.types";
+import { DBPrice, DBProperty, DBRoomCounts, DBSize } from "./property.types";
 
 export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
 export type DBPropertyTextField = keyof Pick<DBProperty, "agent_notes">;
@@ -19,7 +19,14 @@ export type DBPropertyMultiCodeField = keyof Pick<
   | "land_and_construction"
 >;
 
-export const covertPropertyFieldToDictionaryCode: Record<DBPropertyMultiCodeField | DBPropertyCodeField, DBCode> = {
+export type DBPropertySizeField = keyof DBSize;
+export type DBPropertyPriceField = keyof Pick<DBPrice, "rai" | "total" | "sale">;
+export type DBPropertyRoomCountsField = keyof Pick<DBRoomCounts, "bedrooms" | "bathrooms" | "living_rooms">;
+
+export const covertPropertyFieldToDictionaryCode: Record<
+  DBPropertyMultiCodeField | DBPropertyCodeField | "size.unit",
+  DBCode
+> = {
   // Multi-code fields
   area: "areas",
   divisible_sale: "divisible_sale_types",
@@ -31,7 +38,5 @@ export const covertPropertyFieldToDictionaryCode: Record<DBPropertyMultiCodeFiel
   land_features: "land_features",
   nearby_attractions: "nearby_attractions",
   land_and_construction: "land_and_construction",
+  "size.unit": "measurement_units",
 };
-
-export type DBPropertyPriceField = keyof Pick<DBPrice, "rai" | "total" | "sale">;
-export type DBPropertyRoomCountsField = keyof Pick<DBRoomCounts, "bedrooms" | "bathrooms" | "living_rooms">;
