@@ -1,8 +1,8 @@
 import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
 import { DBProperty } from "./property.types";
 
-export type DBPropertyLocalizedTextField = "title" | "description";
-export type DBPropertyTextField = "notes" | "additional_info";
+export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
+export type DBPropertyTextField = keyof Pick<DBProperty, "agent_notes">;
 
 export type DBPropertyCodeField = keyof Pick<
   DBProperty,

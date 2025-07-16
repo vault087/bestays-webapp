@@ -4,28 +4,13 @@ import { DBPropertyLocalizedTextField, usePropertyLocalizedTextInput } from "@/e
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyTitleUncontrolledInput = memo(function PropertyTitleUncontrolledInput() {
+export const PropertyAboutUncontrolledInput = memo(function PropertyAboutUncontrolledInput() {
   const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("title.label");
-  const subtitle = t("title.subtitle");
-  const placeholder = t("title.placeholder");
+  const title = t("about.label");
+  const placeholder = t("about.placeholder");
+  const subtitle = t("about.subtitle");
   return (
-    <PropertyLocalizedTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="title" />
-  );
-});
-
-export const PropertyDescriptionUncontrolledInput = memo(function PropertyDescriptionUncontrolledInput() {
-  const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("description.label");
-  const placeholder = t("description.placeholder");
-  const subtitle = t("description.subtitle");
-  return (
-    <PropertyLocalizedTextUncontrolledInput
-      title={title}
-      placeholder={placeholder}
-      subtitle={subtitle}
-      field="description"
-    />
+    <PropertyLocalizedTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="about" />
   );
 });
 

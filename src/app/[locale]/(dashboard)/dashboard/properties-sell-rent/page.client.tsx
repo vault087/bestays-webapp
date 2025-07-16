@@ -11,10 +11,8 @@ import {
   useCurrentProperties,
   usePropertyActions,
   Property,
-  PropertyTitleUncontrolledInput,
-  PropertyDescriptionUncontrolledInput,
-  PropertyNotesUncontrolledInput,
-  PropertyAdditionalInfoUncontrolledInput,
+  PropertyAboutUncontrolledInput,
+  PropertyAgentNotesUncontrolledInput,
   PropertyAreaUncontrolledInput,
   PropertyDivisibleSaleUncontrolledInput,
   PropertyOwnershipTypeUncontrolledInput,
@@ -80,10 +78,8 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               key={property.id}
             >
               <PropertyLocaleProvider locale={"en"}>
-                <PropertyTitleUncontrolledInput />
-                <PropertyDescriptionUncontrolledInput />
-                <PropertyNotesUncontrolledInput />
-                <PropertyAdditionalInfoUncontrolledInput />
+                <PropertyAboutUncontrolledInput />
+                <PropertyAgentNotesUncontrolledInput />
                 <PropertyAreaUncontrolledInput />
                 <PropertyHighlightsUncontrolledInput />
                 <PropertyHighlightsUncontrolledCheckbox />

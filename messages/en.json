@@ -13,25 +13,15 @@
   },
   "PropertiesSaleRent": {
     "fields": {
-      "title": {
-        "label": "Title",
-        "placeholder": "Enter title",
-        "subtitle": "Please enter a short title for the property"
+      "about": {
+        "label": "About",
+        "placeholder": "Enter about the property",
+        "subtitle": "Please enter a short about the property"
       },
-      "description": {
-        "label": "Description",
-        "placeholder": "Enter description",
-        "subtitle": "Please enter a short description of the property"
-      },
-      "notes": {
-        "label": "Notes",
-        "placeholder": "Enter notes",
-        "subtitle": "Please enter any additional notes about the property"
-      },
-      "additional_info": {
-        "label": "Additional Info",
-        "placeholder": "Enter additional info",
-        "subtitle": "Please enter any additional information about the property"
+      "agent_notes": {
+        "label": "Notes for agent",
+        "placeholder": "Enter notes for agent",
+        "subtitle": "Please enter any additional notes for agent about the property"
       }
     }
   },

@@ -4,26 +4,13 @@ import { DBPropertyTextField, usePropertyTextInput } from "@/entities/properties
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyNotesUncontrolledInput = memo(function PropertyNotesUncontrolledInput() {
+export const PropertyAgentNotesUncontrolledInput = memo(function PropertyAgentNotesUncontrolledInput() {
   const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("notes.label");
-  const subtitle = t("notes.subtitle");
-  const placeholder = t("notes.placeholder");
-  return <PropertyTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="notes" />;
-});
-
-export const PropertyAdditionalInfoUncontrolledInput = memo(function PropertyAdditionalInfoUncontrolledInput({}) {
-  const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("additional_info.label");
-  const placeholder = t("additional_info.placeholder");
-  const subtitle = t("additional_info.subtitle");
+  const title = t("agent_notes.label");
+  const subtitle = t("agent_notes.subtitle");
+  const placeholder = t("agent_notes.placeholder");
   return (
-    <PropertyTextUncontrolledInput
-      title={title}
-      placeholder={placeholder}
-      subtitle={subtitle}
-      field="additional_info"
-    />
+    <PropertyTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="agent_notes" />
   );
 });
 
