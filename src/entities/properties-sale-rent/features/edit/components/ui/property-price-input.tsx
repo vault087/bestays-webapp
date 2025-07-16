@@ -4,7 +4,6 @@ import {
   DBPropertyPriceField,
   PropertyFieldHeader,
   PropertyFieldFooter,
-  DBCurrency,
 } from "@/entities/properties-sale-rent/";
 import { Input, Label } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
