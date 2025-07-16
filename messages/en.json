@@ -22,6 +22,21 @@
         "label": "Notes for agent",
         "placeholder": "Enter notes for agent",
         "subtitle": "Please enter any additional notes for agent about the property"
+      },
+      "price": {
+        "label": "Price",
+        "rai": "Rai / ไร่ละ(บาท)",
+        "total": "Total",
+        "sale": "Sale / ราคาขาย"
+      },
+      "size": {
+        "label": "Area Size"
+      },
+      "rooms": {
+        "label": "Number of Rooms",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "living_rooms": "Living Rooms"
       }
     }
   },

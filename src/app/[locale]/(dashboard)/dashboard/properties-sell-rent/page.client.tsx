@@ -28,6 +28,7 @@ import {
   PropertySizeInput,
   InitialPropertyProvider,
 } from "@/entities/properties-sale-rent/";
+import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/edit/components/ui/property-rooms-input";
 
 export default function PropertiesPageClient({
   properties,
@@ -79,6 +80,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
             >
               {/* <PropertyLocaleProvider locale={locale}> */}
               <PropertySizeInput />
+              <PropertyRoomsInput />
               <PropertyPriceInput />
               <PropertyAboutInput />
               <PropertyAgentNotesInput />

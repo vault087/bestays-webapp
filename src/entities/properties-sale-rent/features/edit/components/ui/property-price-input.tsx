@@ -8,6 +8,7 @@ import {
   DBCurrency,
   PropertyFieldHeader,
 } from "@/entities/properties-sale-rent/";
+import { useTranslations } from "@/modules/i18n";
 import {
   Button,
   DropdownMenu,
@@ -19,9 +20,10 @@ import {
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export const PropertyPriceInput = function PropertyPriceInput() {
+  const { t } = useTranslations("PropertiesSaleRent.fields.price");
   return (
     <div className="flow flow-col w-full space-y-4 bg-transparent">
-      <PropertyFieldHeader text="Price" />
+      <PropertyFieldHeader text={t("label")} />
       <div className="flex flex-row space-x-4 bg-transparent">
         <PropertyPriceRaiInput />
         <PropertyPriceTotalInput />
@@ -32,15 +34,18 @@ export const PropertyPriceInput = function PropertyPriceInput() {
 };
 
 export const PropertyPriceRaiInput = function PropertyPriceRaiInput() {
-  return <PropertyPriceUncontrolledInput title="Rai / ไร่ละ(บาท)" placeholder="Price" field="rai" />;
+  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  return <PropertyPriceUncontrolledInput title={t("rai")} placeholder={t("rai")} field="rai" />;
 };
 
 export const PropertyPriceTotalInput = function PropertyPriceTotalInput() {
-  return <PropertyPriceUncontrolledInput title="Total / ราคารวม(บาท)" placeholder="Price" field="total" />;
+  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  return <PropertyPriceUncontrolledInput title={t("total")} placeholder={t("total")} field="total" />;
 };
 
 export const PropertyPriceSaleInput = function PropertyPriceSaleInput() {
-  return <PropertyPriceUncontrolledInput title="Sale / ราคาขาย" placeholder="Price" field="sale" />;
+  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  return <PropertyPriceUncontrolledInput title={t("sale")} placeholder={t("sale")} field="sale" />;
 };
 
 export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontrolledInput({

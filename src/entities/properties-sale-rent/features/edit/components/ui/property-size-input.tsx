@@ -6,6 +6,7 @@ import {
   SizeUnitOption,
   usePropertySizeInput,
 } from "@/entities/properties-sale-rent/features/edit/components/hooks/use-size-field";
+import { useTranslations } from "@/modules/i18n";
 import {
   Button,
   DropdownMenu,
@@ -25,7 +26,8 @@ export const PropertySizeInput = function PropertySizeInput() {
 };
 
 export const PropertySizeTotalInput = function PropertySizeTotalInput() {
-  return <PropertySizeUncontrolledInput title="Area Size" placeholder="Area Size" field="total" />;
+  const { t } = useTranslations("PropertiesSaleRent.fields.size");
+  return <PropertySizeUncontrolledInput title={t("label")} placeholder={t("label")} field="total" />;
 };
 
 export const PropertySizeUncontrolledInput = memo(function PropertySizeUncontrolledInput({

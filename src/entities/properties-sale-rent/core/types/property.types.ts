@@ -15,13 +15,13 @@ export const DBSizeSchema = z.object({
   total: DBSizeEntrySchema.nullish(),
 });
 
-export const DBRoomCountsSchema = z.object({
-  bedrooms: z.number().int().positive(),
-  bathrooms: z.number().int().positive(),
-  living_rooms: z.number().int().positive(),
+export const DBRoomsSchema = z.object({
+  bedrooms: z.number().int().positive().nullish(),
+  bathrooms: z.number().int().positive().nullish(),
+  living_rooms: z.number().int().positive().nullish(),
 });
 
-export const CurrencySchema = z.enum(["thb", "usd"]);
+export const CurrencySchema = z.enum(["thb"]);
 export const DEFAULT_CURRENCY: DBCurrency = "thb";
 
 export const DBMoneySchema = z.number().int().positive();
@@ -35,7 +35,7 @@ export const DBPriceSchema = z.object({
 export type DBPrice = z.infer<typeof DBPriceSchema>;
 export type DBSize = z.infer<typeof DBSizeSchema>;
 export type DBSizeEntry = z.infer<typeof DBSizeEntrySchema>;
-export type DBRoomCounts = z.infer<typeof DBRoomCountsSchema>;
+export type DBRooms = z.infer<typeof DBRoomsSchema>;
 export type DBCurrency = z.infer<typeof CurrencySchema>;
 export type DBMoney = z.infer<typeof DBMoneySchema>;
 
@@ -56,7 +56,7 @@ export const DBPropertySchema = z.object({
   nearby_attractions: z.array(DBCodeSchema).nullish(),
   land_and_construction: z.array(DBCodeSchema).nullish(),
 
-  room_counts: DBRoomCountsSchema.nullish(),
+  rooms: DBRoomsSchema.nullish(),
   size: DBSizeSchema.nullish(),
   price: DBPriceSchema.nullish(),
   images: z.array(DBImageSchema).nullish(),

@@ -13,7 +13,7 @@ CREATE TABLE properties_sale_rent (
     price JSONB,
     divisible_sale VARCHAR(50) REFERENCES dictionary_entries(code) ON DELETE SET NULL ON UPDATE CASCADE,
     land_features VARCHAR(50)[],
-    room_counts JSONB,
+    rooms JSONB,
     nearby_attractions VARCHAR(50)[],
     land_and_construction VARCHAR(50)[],
     is_draft BOOLEAN DEFAULT TRUE,
