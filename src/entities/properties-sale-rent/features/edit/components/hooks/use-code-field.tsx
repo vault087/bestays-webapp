@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState, useCallback } from "react";
 import { Code } from "@/entities/dictionaries/types/dictionary.types";
-import { getLocalizedTextValue } from "@/entities/localized-text";
+import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
   useInitialPropertyContext,
@@ -53,11 +53,11 @@ export const useCodeField = ({
       .filter((entry) => entry.code !== null)
       .map((entry) => ({
         code: entry.code as Code,
-        label: getLocalizedTextValue(entry.name, locale) || entry.code || "",
+        label: getAvailableLocalizedText(entry.name, locale) || entry.code || "",
       }));
 
-    const title = getLocalizedTextValue(dictionary?.name, locale) || dictionary?.code || "";
-    const subtitle = getLocalizedTextValue(dictionary?.description, locale) || "";
+    const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code || "";
+    const subtitle = getAvailableLocalizedText(dictionary?.description, locale) || "";
 
     return { inputId, options, title, subtitle };
   }, [dictionariesByCode, entriesByDictionaryCode, field, variant, locale, initialProperty.id]);
@@ -66,7 +66,7 @@ export const useCodeField = ({
   const currentValueOption = (): CodeOption => {
     const entries = entriesByDictionaryCode[covertPropertyFieldToDictionaryCode[field]];
     const dictionaryEntry = entries.find((entry) => entry.code === currentValue);
-    const label = getLocalizedTextValue(dictionaryEntry?.name, locale) || currentValue;
+    const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || currentValue;
     return {
       code: currentValue,
       label,

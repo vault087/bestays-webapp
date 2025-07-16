@@ -5,7 +5,7 @@ import { DEFAULT_LOCALE } from "@/modules/i18n/types/locale-types";
  Returns available value based on locale, default locale, first key, or undefined
  locale -> default locale -> first key -> undefined
 */
-export function getLocalizedTextValue(
+export function getAvailableLocalizedText(
   localizedText: LocalizedText | undefined | null,
   locale: string,
 ): string | undefined {
