@@ -1,1 +1,1 @@
-export * from "./get-localized-text-value";
+export * from "./get-available-localized-text";

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { memo } from "react";
 import {
   DBPropertyTextField,
@@ -8,16 +7,6 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
-
-export const PropertyAgentNotesUncontrolledInput = memo(function PropertyAgentNotesUncontrolledInput() {
-  const t = useTranslations("PropertiesSaleRent.fields");
-  const title = t("agent_notes.label");
-  const subtitle = t("agent_notes.subtitle");
-  const placeholder = t("agent_notes.placeholder");
-  return (
-    <PropertyTextUncontrolledInput title={title} placeholder={placeholder} subtitle={subtitle} field="agent_notes" />
-  );
-});
 
 export const PropertyTextUncontrolledInput = memo(function PropertyTextUncontrolledInput({
   title,

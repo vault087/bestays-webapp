@@ -11,24 +11,20 @@ import {
   useCurrentProperties,
   usePropertyActions,
   Property,
-  PropertyAboutUncontrolledInput,
-  PropertyAgentNotesUncontrolledInput,
-  PropertyAreaUncontrolledInput,
-  PropertyDivisibleSaleUncontrolledInput,
-  PropertyOwnershipTypeUncontrolledInput,
-  PropertyPropertyTypeUncontrolledInput,
-  PropertyHighlightsUncontrolledInput,
-  PropertyHighlightsUncontrolledCheckbox,
-  PropertyLocationStrengthsUncontrolledCheckbox,
-  PropertyTransactionTypesUncontrolledCheckbox,
-  PropertyLandFeaturesUncontrolledCheckbox,
-  PropertyNearbyAttractionsUncontrolledCheckbox,
-  PropertyLandAndConstructionUncontrolledCheckbox,
+  PropertyAboutInput,
+  PropertyAgentNotesInput,
+  PropertyAreaInput,
+  PropertyDivisibleSaleInput,
+  PropertyOwnershipTypeInput,
+  PropertyPropertyTypeInput,
+  PropertyHighlightsCheckbox,
+  PropertyLocationStrengthsCheckbox,
+  PropertyTransactionTypesCheckbox,
+  PropertyLandFeaturesCheckbox,
+  PropertyNearbyAttractionsCheckbox,
+  PropertyLandAndConstructionCheckbox,
   DictionaryProvider,
   InitialPropertyProvider,
-  PropertyLocaleProvider,
-  PropertyFieldHeader,
-  PropertyFieldFooter,
 } from "@/entities/properties-sale-rent/";
 
 export default function PropertiesPageClient({
@@ -80,19 +76,18 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               key={property.id}
             >
               {/* <PropertyLocaleProvider locale={locale}> */}
-              <PropertyAboutUncontrolledInput />
-              <PropertyAgentNotesUncontrolledInput />
-              <PropertyAreaUncontrolledInput />
-              <PropertyHighlightsUncontrolledInput />
-              <PropertyHighlightsUncontrolledCheckbox />
-              <PropertyDivisibleSaleUncontrolledInput />
-              <PropertyOwnershipTypeUncontrolledInput />
-              <PropertyPropertyTypeUncontrolledInput />
-              <PropertyLocationStrengthsUncontrolledCheckbox />
-              <PropertyTransactionTypesUncontrolledCheckbox />
-              <PropertyLandFeaturesUncontrolledCheckbox />
-              <PropertyNearbyAttractionsUncontrolledCheckbox />
-              <PropertyLandAndConstructionUncontrolledCheckbox />
+              <PropertyAboutInput />
+              <PropertyAgentNotesInput />
+              <PropertyAreaInput />
+              <PropertyHighlightsCheckbox />
+              <PropertyDivisibleSaleInput />
+              <PropertyOwnershipTypeInput />
+              <PropertyPropertyTypeInput />
+              <PropertyLocationStrengthsCheckbox />
+              <PropertyTransactionTypesCheckbox />
+              <PropertyLandFeaturesCheckbox />
+              <PropertyNearbyAttractionsCheckbox />
+              <PropertyLandAndConstructionCheckbox />
               {/* </PropertyLocaleProvider> */}
             </InitialPropertyProvider>
           ))}

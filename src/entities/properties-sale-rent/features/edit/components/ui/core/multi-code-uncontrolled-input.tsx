@@ -10,26 +10,11 @@ import {
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export function PropertyHighlightsUncontrolledInput() {
-  return <MultiCodeUncontrolledInput field="highlights" />;
-}
-export function PropertyLocationStrengthsUncontrolledInput() {
-  return <MultiCodeUncontrolledInput field="location_strengths" />;
-}
-export function PropertyTransactionTypesUncontrolledInput() {
-  return <MultiCodeUncontrolledInput field="transaction_types" />;
-}
-export function PropertyLandFeaturesUncontrolledInput() {
-  return <MultiCodeUncontrolledInput field="land_features" />;
-}
-export function PropertyNearbyAttractionsUncontrolledInput() {
-  return <MultiCodeUncontrolledInput field="nearby_attractions" />;
-}
-export function PropertyLandAndConstructionUncontrolledInput() {
-  return <MultiCodeUncontrolledInput field="land_and_construction" />;
-}
-
-const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({ field }: { field: DBPropertyMultiCodeField }) {
+export const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
+  field,
+}: {
+  field: DBPropertyMultiCodeField;
+}) {
   const { inputId, currentValues, options, title, subtitle, setValues } = useMultiCodeField({
     field,
     variant: "input",
