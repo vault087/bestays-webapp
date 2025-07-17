@@ -1,6 +1,8 @@
 "use client";
 import { memo, useCallback, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
+import { DictionaryStoreProvider } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
+import { createDictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
   createPropertyStore,
@@ -24,7 +26,6 @@ import {
   PropertyNearbyAttractionsCheckbox,
   PropertyImagesInput,
   PropertyLandAndConstructionCheckbox,
-  DictionaryProvider,
   PropertyPriceInput,
   PropertySizeInput,
   InitialPropertyProvider,
@@ -44,15 +45,16 @@ export default function PropertiesPageClient({
     () => createPropertyStore("properties-sell-rent", convertToPropertyStore(properties)),
     [properties],
   );
+  const dictionaryStore = useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   return (
-    <PropertyStoreProvider store={propertyStore}>
-      <DictionaryProvider dictionaries={dictionaries} entries={entries}>
+    <DictionaryStoreProvider store={dictionaryStore}>
+      <PropertyStoreProvider store={propertyStore}>
         <PropertyStoreHydrated fallback={<div>Loading...</div>}>
           <PropertyListCanvas />
         </PropertyStoreHydrated>
-      </DictionaryProvider>
-    </PropertyStoreProvider>
+      </PropertyStoreProvider>
+    </DictionaryStoreProvider>
   );
 }
 

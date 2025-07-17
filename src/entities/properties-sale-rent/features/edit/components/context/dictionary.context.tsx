@@ -1,27 +1,35 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useMemo } from "react";
-import { DictionaryEntry, Dictionary } from "@/entities/dictionaries/types/dictionary.types";
+import { useMemo } from "react";
+import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
+import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 
-export type DictionaryContextType = {
+export type PropertyDictionariesData = {
   dictionariesByCode: Record<string, Dictionary>;
   entriesByDictionaryCode: Record<string, DictionaryEntry[]>;
 };
 
-// Create context with proper type safety
-export const DictionaryContext = createContext<DictionaryContextType | null>(null);
+// Initially keep the original name for backward compatibility
+export function useDictionaryContext(): PropertyDictionariesData {
+  const store = useDictionaryStoreContext();
 
-// Store Provider props
-export interface DictionaryProviderProps {
-  children: ReactNode;
-  dictionaries: Dictionary[];
-  entries: DictionaryEntry[];
-}
+  const dictionaries = useStore(
+    store,
+    useShallow((state) => Object.values(state.dictionaries)),
+  );
 
-// Store Provider component
-export const DictionaryProvider = ({ children, dictionaries, entries }: DictionaryProviderProps) => {
-  const contextValue = useMemo(() => {
-    const dictionariesByCode = dictionaries.reduce(
+  const entries = useStore(
+    store,
+    useShallow((state) => Object.values(state.entries)),
+  );
+
+  return useMemo(() => {
+    const dictionariesArray = dictionaries as Dictionary[];
+    const entriesArray = entries as DictionaryEntry[];
+
+    const dictionariesByCode = dictionariesArray.reduce(
       (acc, dictionary) => {
         if (dictionary.code) {
           acc[dictionary.code] = dictionary;
@@ -31,7 +39,7 @@ export const DictionaryProvider = ({ children, dictionaries, entries }: Dictiona
       {} as Record<string, Dictionary>,
     );
 
-    const dictionariesByID = dictionaries.reduce(
+    const dictionariesByID = dictionariesArray.reduce(
       (acc, dictionary) => {
         if (dictionary.id) {
           acc[dictionary.id] = dictionary;
@@ -41,7 +49,7 @@ export const DictionaryProvider = ({ children, dictionaries, entries }: Dictiona
       {} as Record<string, Dictionary>,
     );
 
-    const entriesByDictionaryCode = entries.reduce(
+    const entriesByDictionaryCode = entriesArray.reduce(
       (acc, entry) => {
         const dictionary = dictionariesByID[entry.dictionary_id];
         if (dictionary?.code) {
@@ -57,15 +65,9 @@ export const DictionaryProvider = ({ children, dictionaries, entries }: Dictiona
       entriesByDictionaryCode,
     };
   }, [dictionaries, entries]);
-
-  return <DictionaryContext.Provider value={contextValue}>{children}</DictionaryContext.Provider>;
-};
-
-// Context hook
-export function useDictionaryContext(): DictionaryContextType {
-  const context = useContext(DictionaryContext);
-  if (!context) {
-    throw new Error("useDictionaryContext must be used within a DictionaryProvider");
-  }
-  return context;
 }
+
+// Later, when ready to rename:
+// export function usePropertyDictionaries(): PropertyDictionariesData {
+//   // Same implementation as above
+// }

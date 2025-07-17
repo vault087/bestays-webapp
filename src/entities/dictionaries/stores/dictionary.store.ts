@@ -23,8 +23,6 @@ export interface DictionaryStoreActions {
   updateEntry: (dictionaryId: number, entryId: number, updater: (draft: DictionaryEntry) => void) => void;
   deleteEntry: (dictionaryId: number, entryId: number) => void;
   // Validation methods (computed, no state changes)
-  validateEntryCode: (dictionaryId: number, entryId: number, code: string) => string | undefined;
-  isEntryCodeDuplicate: (dictionaryId: number, entryId: number, code: string) => boolean;
 }
 
 // Combined store type
@@ -45,7 +43,7 @@ export function createDictionaryStore(
     deletedEntryIds: [],
   };
 
-  return createStore<DictionaryStore>()((set, get) => ({
+  return createStore<DictionaryStore>()((set) => ({
     ...initialState,
 
     // Dictionary actions
@@ -133,23 +131,5 @@ export function createDictionaryStore(
           }
         }),
       ),
-
-    // Validation methods
-    isEntryCodeDuplicate: (dictionaryId: number, entryId: number, code: string) => {
-      const state = get();
-      const entries = state.entries[dictionaryId] || {};
-      return Object.values(entries).some((otherEntry) => otherEntry.id !== entryId && otherEntry.code === code);
-    },
-
-    validateEntryCode: (dictionaryId: number, entryId: number, code: string) => {
-      const state = get();
-      if (!code) {
-        return "Code cannot be empty";
-      }
-      if (state.isEntryCodeDuplicate(dictionaryId, entryId, code)) {
-        return "Code must be unique within this dictionary";
-      }
-      return undefined;
-    },
   }));
 }

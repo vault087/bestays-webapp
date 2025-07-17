@@ -49,7 +49,7 @@ export function usePropertySizeInput(
   // Memoize computed values (options, titles) separately from current value
   const { inputId, options } = useMemo(() => {
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
+    const inputId = generateInputId("property-size", initialProperty.id.slice(-8), field, variant, locale);
 
     const options: SizeUnitOption[] = entries.map((entry) => ({
       key: entry.id,

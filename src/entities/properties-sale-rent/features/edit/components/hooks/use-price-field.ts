@@ -34,7 +34,7 @@ export function usePropertyPriceInput(
 
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property", initialProperty.id.slice(-8), field, variant, locale),
+    () => generateInputId("property-price", initialProperty.id.slice(-8), field, variant, locale),
     [initialProperty.id, locale, field, variant],
   );
 

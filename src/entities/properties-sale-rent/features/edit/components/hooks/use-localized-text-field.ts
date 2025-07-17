@@ -35,7 +35,7 @@ export function usePropertyLocalizedTextInput(
   const locale = usePropertyLocale();
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property", initialProperty.id.slice(-8), field, variant, locale),
+    () => generateInputId("property-localized-text", initialProperty.id.slice(-8), field, variant, locale),
     [initialProperty.id, locale, field, variant],
   );
 

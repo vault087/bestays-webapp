@@ -23,7 +23,7 @@ export function usePropertyRoomsInput(
 
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property", initialProperty.id.slice(-8), field, variant, locale),
+    () => generateInputId("property-rooms", initialProperty.id.slice(-8), field, variant, locale),
     [initialProperty.id, locale, field, variant],
   );
 

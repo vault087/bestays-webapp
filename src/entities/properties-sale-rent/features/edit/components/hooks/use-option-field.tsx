@@ -47,7 +47,7 @@ export const useOptionField = ({
   const { inputId, options, title, subtitle } = useMemo(() => {
     const dictionary = dictionariesByCode[dictionaryCode];
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
+    const inputId = generateInputId("property-option", initialProperty.id.slice(-8), field, variant, locale);
 
     const options: OptionFieldState[] = entries.map((entry) => ({
       key: entry.id,

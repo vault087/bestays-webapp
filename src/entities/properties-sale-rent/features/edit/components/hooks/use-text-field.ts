@@ -30,7 +30,7 @@ export function usePropertyTextInput(field: DBPropertyTextField): {
 
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property", initialProperty.id.slice(-8), field, locale),
+    () => generateInputId("property-text", initialProperty.id.slice(-8), field, locale),
     [initialProperty.id, locale, field],
   );
 

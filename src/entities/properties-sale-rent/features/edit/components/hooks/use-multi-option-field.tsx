@@ -49,12 +49,12 @@ export const useMultiCodeField = ({
     const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
     const dictionary = dictionariesByCode[dictionaryCode];
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
+    const inputId = generateInputId("property-multi-option", initialProperty.id.slice(-8), field, variant, locale);
 
     const options: MultiOption[] = entries.map((entry) => ({
       key: entry.id,
       label: getAvailableLocalizedText(entry.name, locale) || "",
-      inputId: generateInputId("property-option", initialProperty.id, field + "-" + entry.id, variant, locale),
+      inputId: generateInputId("multi-option", initialProperty.id, field + "-" + entry.id, variant, locale),
     }));
 
     const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code || "";

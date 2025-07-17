@@ -1,9 +1,8 @@
-import { useMemo } from "react";
 import { useStore } from "zustand";
-import { DictionaryStore, DictionaryStoreActions, useDictionaryStoreContext } from "@/entities/dictionaries";
-import { DBCode, Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/";
+import { DictionaryStore, DictionaryStoreActions, useDictionaryStoreContext } from "@/entities/dictionaries/";
+import { DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 
-const EMPTY_ENTRIES = {};
+// const EMPTY_ENTRIES = {};
 
 export function useDictionaryStore<T>(selector: (state: DictionaryStore) => T): T {
   const store = useDictionaryStoreContext();
@@ -16,32 +15,32 @@ export function useDictionaryActions(): DictionaryStoreActions {
   return store.getState();
 }
 
-export function useDictionaryByCode(code: string): Dictionary | undefined {
-  return useDictionaryStore((state) =>
-    Object.values(state.dictionaries).find((dictionary) => dictionary.code === code),
-  );
-}
+// export function useDictionaryByCode(code: string): Dictionary | undefined {
+//   return useDictionaryStore((state) =>
+//     Object.values(state.dictionaries).find((dictionary) => dictionary.code === code),
+//   );
+// }
 
 // Access a specific entry by dictionary ID and entry ID
 export function useDictionaryEntry(dictionaryId: number, entryId: number): DictionaryEntry | undefined {
   return useDictionaryStore((state) => state.entries[dictionaryId]?.[entryId]);
 }
 
-const EMPTY_ENTRIES_ARRAY: DictionaryEntry[] = [];
-export function useDictionaryEntriesByCode(code: DBCode): DictionaryEntry[] {
-  const dictionaries = useDictionaryStore((state) => state.dictionaries);
-  const entries = useDictionaryStore((state) => state.entries);
+// const EMPTY_ENTRIES_ARRAY: DictionaryEntry[] = [];
+// export function useDictionaryEntriesByCode(code: DBCode): DictionaryEntry[] {
+//   const dictionaries = useDictionaryStore((state) => state.dictionaries);
+//   const entries = useDictionaryStore((state) => state.entries);
 
-  return useMemo(() => {
-    const matchingDictionaries = Object.values(dictionaries).filter((dictionary) => dictionary.code === code);
-    if (matchingDictionaries.length === 0) {
-      return EMPTY_ENTRIES_ARRAY;
-    }
-    const dictionaryId = matchingDictionaries[0].id;
-    return Object.values(entries[dictionaryId] || EMPTY_ENTRIES);
-  }, [dictionaries, entries, code]);
-}
+//   return useMemo(() => {
+//     const matchingDictionaries = Object.values(dictionaries).filter((dictionary) => dictionary.code === code);
+//     if (matchingDictionaries.length === 0) {
+//       return EMPTY_ENTRIES_ARRAY;
+//     }
+//     const dictionaryId = matchingDictionaries[0].id;
+//     return Object.values(entries[dictionaryId] || EMPTY_ENTRIES);
+//   }, [dictionaries, entries, code]);
+// }
 
-export function useDictionaryEntries(dictionaryId: number | undefined): Record<number, DictionaryEntry> {
-  return useDictionaryStore((state) => (dictionaryId ? state.entries[dictionaryId] || EMPTY_ENTRIES : EMPTY_ENTRIES));
-}
+// export function useDictionaryEntries(dictionaryId: number | undefined): Record<number, DictionaryEntry> {
+//   return useDictionaryStore((state) => (dictionaryId ? state.entries[dictionaryId] || EMPTY_ENTRIES : EMPTY_ENTRIES));
+// }
