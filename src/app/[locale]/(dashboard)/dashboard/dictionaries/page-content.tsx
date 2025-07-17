@@ -10,7 +10,6 @@ import {
   DictionaryCodeInput,
   DictionaryNameInput,
   DictionaryEntryNameInput,
-  DictionaryEntryCodeInput,
   useDictionaryStore,
   DictionaryDescriptionInput,
 } from "@/entities/dictionaries";
@@ -162,13 +161,6 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                           return (
                             <div key={entryId}>
                               <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale={locale} />
-                              {showCode && (
-                                <div className="space-y-1">
-                                  <div>
-                                    <DictionaryEntryCodeInput dictionaryId={dictId} entryId={entId} />
-                                  </div>
-                                </div>
-                              )}
                             </div>
                           );
                         })}
