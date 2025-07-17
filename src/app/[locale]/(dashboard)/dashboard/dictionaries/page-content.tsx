@@ -63,14 +63,6 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
     return existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
   };
 
-  // Function to generate a new entry ID
-  const getNewEntryId = () => {
-    const allEntryIds = Object.values(store.getState().entries)
-      .flatMap((entriesDict) => Object.keys(entriesDict))
-      .map(Number);
-    return allEntryIds.length > 0 ? Math.max(...allEntryIds) + 1 : 1;
-  };
-
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
     const newId = getNewDictionaryId();
@@ -86,17 +78,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
 
   // Function to handle adding a new entry to a specific dictionary
   const handleAddEntry = (dictionaryId: number) => {
-    const newId = getNewEntryId();
-    const newEntry = {
-      id: newId,
-      dictionary_id: dictionaryId,
-      code: `new_entry`,
-      name: { en: `New Entry` },
-      description: { en: `New Entry` },
-      is_new: true,
-      is_active: true,
-    };
-    store.getState().addEntry(dictionaryId, newEntry);
+    store.getState().addEntry(dictionaryId, { en: `New Entry` });
   };
 
   // Check if we have dictionaries

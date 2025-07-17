@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { createStore, StoreApi } from "zustand";
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { LocalizedText } from "@/entities/localized-text";
 
 export const EMPTY_ENTRIES: Record<number, DictionaryEntry> = {};
 
@@ -12,6 +13,8 @@ export interface DictionaryStoreState {
   hasChanged: boolean;
   deletedDictionaryIds: number[];
   deletedEntryIds: number[];
+
+  temporaryEntryId: number;
 }
 
 // Dictionary Store Actions
@@ -19,10 +22,9 @@ export interface DictionaryStoreActions {
   addDictionary: (dictionary: Dictionary) => void;
   updateDictionary: (id: number, updater: (draft: Dictionary) => void) => void;
   deleteDictionary: (id: number) => void;
-  addEntry: (dictionaryId: number, entry: DictionaryEntry) => void;
+  addEntry: (dictionaryId: number, name: LocalizedText) => void;
   updateEntry: (dictionaryId: number, entryId: number, updater: (draft: DictionaryEntry) => void) => void;
   deleteEntry: (dictionaryId: number, entryId: number) => void;
-  // Validation methods (computed, no state changes)
 }
 
 // Combined store type
@@ -41,6 +43,7 @@ export function createDictionaryStore(
     hasChanged: false,
     deletedDictionaryIds: [],
     deletedEntryIds: [],
+    temporaryEntryId: 0,
   };
 
   return createStore<DictionaryStore>()((set) => ({
@@ -94,14 +97,26 @@ export function createDictionaryStore(
       ),
 
     // Entry actions
-    addEntry: (dictionaryId: number, entry: DictionaryEntry) =>
+    addEntry: (dictionaryId: number, name: LocalizedText) =>
       set(
         produce((state: DictionaryStore) => {
           if (!state.entries[dictionaryId]) {
             state.entries[dictionaryId] = {};
           }
+
+          const id = state.temporaryEntryId - 1;
+          const entry: DictionaryEntry = {
+            id,
+            name,
+            is_active: true,
+            dictionary_id: dictionaryId,
+            is_new: true,
+          };
+          state.temporaryEntryId = id;
           state.entries[dictionaryId][entry.id] = entry;
           state.hasChanged = true;
+
+          console.log("addEntry", id, entry);
         }),
       ),
 

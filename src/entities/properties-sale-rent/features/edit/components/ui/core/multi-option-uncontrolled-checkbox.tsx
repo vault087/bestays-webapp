@@ -1,16 +1,19 @@
 "use client";
+import { useState } from "react";
+import { DBSerialID, useDictionaryActions } from "@/entities/dictionaries";
 import {
   DBPropertyMultiCodeField,
   useMultiCodeField,
   MultiOption,
   PropertyFieldHeader,
   PropertyFieldFooter,
+  usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
-import { Checkbox, Label } from "@/modules/shadcn/";
+import { Button, Checkbox, Input, Label } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export function MultiOptionUncontrolledCheckbox({ field }: { field: DBPropertyMultiCodeField }) {
-  const { currentValues, options, title, subtitle, toggleValue } = useMultiCodeField({
+  const { currentValues, options, title, subtitle, toggleValue, dictionaryId } = useMultiCodeField({
     field,
     variant: "checkbox",
   });
@@ -33,7 +36,30 @@ export function MultiOptionUncontrolledCheckbox({ field }: { field: DBPropertyMu
           </div>
         ))}
       </div>
+      <AddEntryComponent dictionaryId={dictionaryId} />
       <PropertyFieldFooter text={subtitle} />
     </div>
   );
 }
+
+const AddEntryComponent = ({ dictionaryId }: { dictionaryId: DBSerialID | undefined }) => {
+  const [value, setValue] = useState("");
+  const { addEntry } = useDictionaryActions();
+  const locale = usePropertyLocale();
+
+  if (!dictionaryId) return;
+
+  const handleAddEntry = () => {
+    const name = {
+      [locale]: value,
+    };
+    addEntry(dictionaryId, name);
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <Input value={value} onChange={(e) => setValue(e.target.value)} />
+      <Button onClick={handleAddEntry}>Add</Button>
+    </div>
+  );
+};

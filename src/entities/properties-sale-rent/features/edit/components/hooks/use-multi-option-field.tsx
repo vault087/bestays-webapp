@@ -19,6 +19,7 @@ export type MultiOption = {
 
 export type MultiCodeFieldState = {
   inputId: string;
+  dictionaryId: DBSerialID | undefined;
   currentValues: DBSerialID[];
   options: MultiOption[];
   title: string | undefined;
@@ -45,7 +46,7 @@ export const useMultiCodeField = ({
   const [currentValues, setCurrentValues] = useState<DBSerialID[]>(initialValues);
 
   // Memoize computed values (options, titles) separately from current values
-  const { inputId, options, title, subtitle } = useMemo(() => {
+  const { inputId, dictionaryId, options, title, subtitle } = useMemo(() => {
     const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
     const dictionary = dictionariesByCode[dictionaryCode];
     const entries = entriesByDictionaryCode[dictionaryCode];
@@ -60,7 +61,7 @@ export const useMultiCodeField = ({
     const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code || "";
     const subtitle = getAvailableLocalizedText(dictionary?.description, locale) || "";
 
-    return { inputId, options, title, subtitle };
+    return { inputId, dictionaryId: dictionary?.id, options, title, subtitle };
   }, [dictionariesByCode, entriesByDictionaryCode, field, variant, locale, initialProperty.id]);
 
   // Update both local state and context
@@ -97,5 +98,5 @@ export const useMultiCodeField = ({
     [updateProperty, field],
   );
 
-  return { inputId, currentValues, options, title, subtitle, toggleValue, setValues };
+  return { inputId, dictionaryId, currentValues, options, title, subtitle, toggleValue, setValues };
 };
