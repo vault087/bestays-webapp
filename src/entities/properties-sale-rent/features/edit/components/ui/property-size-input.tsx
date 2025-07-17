@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "lucide-react";
 import { memo } from "react";
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
+import { DBSerialID } from "@/entities/dictionaries/types/shared-db.types";
 import { PropertyFieldHeader, PropertyFieldFooter, DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import {
   SizeUnitOption,
@@ -70,7 +70,7 @@ export const DropDownUnit = memo(function DropDownUnit({
 }: {
   unit: SizeUnitOption;
   units: SizeUnitOption[];
-  onChange: (unit: DBCode) => void;
+  onChange: (unit: DBSerialID) => void;
 }) {
   return (
     <DropdownMenu>
@@ -82,7 +82,7 @@ export const DropDownUnit = memo(function DropDownUnit({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
         {units.map((unit) => (
-          <DropdownMenuItem key={unit.code} onClick={() => onChange(unit.code)}>
+          <DropdownMenuItem key={unit.key} onClick={() => onChange(unit.key)}>
             <span className="text-muted-foreground text-xs uppercase">{unit.label}</span>
           </DropdownMenuItem>
         ))}

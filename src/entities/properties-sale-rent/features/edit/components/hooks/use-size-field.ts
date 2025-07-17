@@ -28,7 +28,7 @@ export function usePropertySizeInput(
   onChange: (value: string) => void;
 
   unit: SizeUnitOption;
-  setUnit: (value: DBCode) => void;
+  setUnit: (value: DBSerialID) => void;
   options: SizeUnitOption[];
 
   error?: string;
@@ -41,7 +41,7 @@ export function usePropertySizeInput(
   const initialSize = (initialProperty.size as DBSize)?.[field] as DBSizeEntry;
 
   const [sizeValue, setSizeValue] = useState<string>(initialSize?.value.toString() || "");
-  const [sizeUnit, setSizeUnit] = useState<DBCode>(initialSize?.unit);
+  const [sizeUnit, setSizeUnit] = useState<DBSerialID>(initialSize?.unit);
 
   const dictionaryCode = covertPropertyFieldToDictionaryCode["size.unit"];
 
@@ -63,16 +63,16 @@ export function usePropertySizeInput(
   const unit = useMemo(() => {
     const entries = entriesByDictionaryCode[dictionaryCode];
     const dictionaryEntry = entries.find((entry) => entry.id === sizeUnit);
-    const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || sizeUnit;
+    const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || "";
     return {
       key: sizeUnit,
       label,
-    };
+    } as SizeUnitOption;
   }, [entriesByDictionaryCode, sizeUnit, dictionaryCode, locale]);
 
   // Update both local state and context
   const setUnit = useCallback(
-    (value: DBCode) => {
+    (value: DBSerialID) => {
       // Immediate UI update
       setSizeUnit(value);
 

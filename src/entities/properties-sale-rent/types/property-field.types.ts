@@ -1,4 +1,4 @@
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
+import { DBCode } from "@/entities/dictionaries/types/";
 import { DBPrice, DBProperty, DBRooms, DBSize } from "./property.types";
 
 export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;

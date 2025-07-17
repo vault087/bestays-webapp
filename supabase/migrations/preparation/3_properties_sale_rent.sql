@@ -1,21 +1,19 @@
-DROP TABLE IF EXISTS properties_sale_rent;
-
 CREATE TABLE properties_sale_rent (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     about JSONB,
-    ownership_type VARCHAR(50) REFERENCES dictionary_entries(code) ON DELETE SET NULL ON UPDATE CASCADE,
-    property_type VARCHAR(50) REFERENCES dictionary_entries(code) ON DELETE SET NULL ON UPDATE CASCADE,
-    area VARCHAR(50) REFERENCES dictionary_entries(code) ON DELETE SET NULL ON UPDATE CASCADE,
-    location_strengths VARCHAR(50)[],
-    highlights VARCHAR(50)[],
-    transaction_types VARCHAR(50)[],
+    ownership_type INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    property_type INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    area INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    location_strengths INT[],
+    highlights INT[],
+    transaction_types INT[],
     size JSONB,
     price JSONB,
-    divisible_sale VARCHAR(50) REFERENCES dictionary_entries(code) ON DELETE SET NULL ON UPDATE CASCADE,
-    land_features VARCHAR(50)[],
+    divisible_sale INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    land_features INT[],
     rooms JSONB,
-    nearby_attractions VARCHAR(50)[],
-    land_and_construction VARCHAR(50)[],
+    nearby_attractions INT[],
+    land_and_construction INT[],
     is_draft BOOLEAN DEFAULT TRUE,
 
     images JSONB,
@@ -33,4 +31,3 @@ CREATE TABLE properties_sale_rent (
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
 
-ALTER TABLE properties_sale_rent DISABLE ROW LEVEL SECURITY;

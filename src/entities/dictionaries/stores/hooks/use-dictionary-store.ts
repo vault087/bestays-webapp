@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useStore } from "zustand";
 import { DictionaryStore, DictionaryStoreActions, useDictionaryStoreContext } from "@/entities/dictionaries";
-import { DBCode, Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { DBCode, Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/";
 
 const EMPTY_ENTRIES = {};
 

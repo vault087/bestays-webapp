@@ -1,3 +1,3 @@
-export * from "./types/dictionary.types";
+export * from "./types";
 export * from "./stores";
 export * from "./components";

@@ -4,7 +4,7 @@ import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
 
 // Table constants
-export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent_2";
+export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
 
 export const DBSizeEntrySchema = z.object({
   value: z.number().positive(),
