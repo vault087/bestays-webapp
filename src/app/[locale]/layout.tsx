@@ -1,4 +1,3 @@
-import "@/app/globals.css";
 import { Open_Sans, Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
@@ -10,12 +9,16 @@ const openSans = Open_Sans({
   variable: "--font-open-sans",
   subsets: ["latin"],
   weight: ["300", "500", "600", "700", "800"],
+  display: "swap",
+  preload: false,
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["300", "500", "600", "700", "800"],
+  display: "swap",
+  preload: false,
 });
 
 export default async function LocaleLayout({
@@ -37,6 +40,7 @@ export default async function LocaleLayout({
       lang={locale}
       suppressHydrationWarning
     >
+      <head></head>
       <body>
         <NextIntlClientProvider>
           <LocalizationProvider>

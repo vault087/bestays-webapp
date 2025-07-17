@@ -21,6 +21,13 @@ const config: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // Use the correct value for cssChunking: true, false, or 'strict'
+    cssChunking: true, // default value
+
+    // If you want to disable CSS optimization entirely:
+    optimizeCss: false,
+  },
 };
 
 const withNextIntl = createNextIntlPlugin("src/modules/i18n/core/request.ts");
