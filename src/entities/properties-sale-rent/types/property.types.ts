@@ -1,14 +1,14 @@
 import { z } from "zod";
-import { DBCodeSchema } from "@/entities/dictionaries/types/dictionary.types";
+import { DBSerialIDSchema } from "@/entities/dictionaries/types/shared-db.types";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
 
 // Table constants
-export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
+export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent_2";
 
 export const DBSizeEntrySchema = z.object({
-  value: z.number().positive().positive(),
-  unit: DBCodeSchema,
+  value: z.number().positive(),
+  unit: DBSerialIDSchema,
 });
 
 export const DBSizeSchema = z.object({
@@ -44,17 +44,17 @@ export const DBPropertySchema = z.object({
   id: z.string().uuid(),
   about: LocalizedTextSchema.nullish(),
 
-  ownership_type: DBCodeSchema.nullish(),
-  property_type: DBCodeSchema.nullish(),
-  area: DBCodeSchema.nullish(),
-  divisible_sale: DBCodeSchema.nullish(),
+  ownership_type: DBSerialIDSchema.nullish(),
+  property_type: DBSerialIDSchema.nullish(),
+  area: DBSerialIDSchema.nullish(),
+  divisible_sale: DBSerialIDSchema.nullish(),
 
-  highlights: z.array(DBCodeSchema).nullish(),
-  location_strengths: z.array(DBCodeSchema).nullish(),
-  transaction_types: z.array(DBCodeSchema).nullish(),
-  land_features: z.array(DBCodeSchema).nullish(),
-  nearby_attractions: z.array(DBCodeSchema).nullish(),
-  land_and_construction: z.array(DBCodeSchema).nullish(),
+  highlights: z.array(DBSerialIDSchema).nullish(),
+  location_strengths: z.array(DBSerialIDSchema).nullish(),
+  transaction_types: z.array(DBSerialIDSchema).nullish(),
+  land_features: z.array(DBSerialIDSchema).nullish(),
+  nearby_attractions: z.array(DBSerialIDSchema).nullish(),
+  land_and_construction: z.array(DBSerialIDSchema).nullish(),
 
   rooms: DBRoomsSchema.nullish(),
   size: DBSizeSchema.nullish(),

@@ -8,7 +8,7 @@ export function listing(): ReturnType<typeof fetch> {
 
 // Additional helper functions for common field combinations
 export function loadPropertySummaries(): ReturnType<typeof fetch> {
-  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, ["id", "title", "property_type", "area", "is_published"]);
+  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, ["id", "property_type", "area", "is_published"]);
 }
 
 export function loadPropertyDetails(): ReturnType<typeof fetch> {

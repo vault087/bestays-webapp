@@ -44,7 +44,7 @@ export const DictionaryProvider = ({ children, dictionaries, entries }: Dictiona
     const entriesByDictionaryCode = entries.reduce(
       (acc, entry) => {
         const dictionary = dictionariesByID[entry.dictionary_id];
-        if (dictionary?.code && entry.code) {
+        if (dictionary?.code) {
           acc[dictionary.code] = [...(acc[dictionary.code] || []), entry];
         }
         return acc;

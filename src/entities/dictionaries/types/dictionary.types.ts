@@ -1,11 +1,10 @@
 import { z } from "zod";
 import { LocalizedTextSchema } from "@/entities/localized-text";
+import { DBCodeSchema, DBSerialIDSchema } from "./shared-db.types";
 
 // Table constants
 export const DICTIONARIES_TABLE = "dictionaries";
 export const DICTIONARY_ENTRIES_TABLE = "dictionary_entries";
-
-export const DBCodeSchema = z.string().min(1).max(50);
 
 export const DBMetadataSchema = z.object({
   info: z.string().nullish(),
@@ -13,7 +12,7 @@ export const DBMetadataSchema = z.object({
 
 // Database Schemas
 export const DBDictionarySchema = z.object({
-  id: z.number().int().positive(),
+  id: DBSerialIDSchema,
   code: DBCodeSchema,
   name: LocalizedTextSchema,
   description: LocalizedTextSchema.nullish(),
@@ -24,10 +23,9 @@ export const DBDictionarySchema = z.object({
 });
 
 export const DBDictionaryEntrySchema = z.object({
-  id: z.number().int().positive(),
+  id: DBSerialIDSchema,
   is_active: z.boolean().default(true),
-  dictionary_id: z.number().int().positive(),
-  code: DBCodeSchema.nullish(),
+  dictionary_id: DBSerialIDSchema,
   name: LocalizedTextSchema,
   created_by: z.string().nullish(),
   created_at: z.string().nullish(),
@@ -54,8 +52,6 @@ export const DictionaryEntrySchema = DBDictionaryEntrySchema.omit({
 // Types
 export type DBDictionary = z.infer<typeof DBDictionarySchema>;
 export type DBDictionaryEntry = z.infer<typeof DBDictionaryEntrySchema>;
-export type DBCode = z.infer<typeof DBCodeSchema>;
 
 export type Dictionary = z.infer<typeof DictionarySchema>;
 export type DictionaryEntry = z.infer<typeof DictionaryEntrySchema>;
-export const CodeSchema = DBCodeSchema;

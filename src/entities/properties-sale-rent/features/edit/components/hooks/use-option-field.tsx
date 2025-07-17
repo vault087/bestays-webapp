@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState, useCallback } from "react";
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
+import { DBSerialID } from "@/entities/dictionaries/types/";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
@@ -11,21 +11,21 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { generateInputId } from "@/utils";
 
-export type CodeOption = {
-  code: DBCode;
+export type OptionFieldState = {
+  key: DBSerialID;
   label: string;
 };
 
 export type CodeFieldState = {
   inputId: string;
-  currentValue: CodeOption;
-  options: CodeOption[];
+  currentValue: OptionFieldState;
+  options: OptionFieldState[];
   title: string | undefined;
   subtitle: string | undefined;
-  setValue: (value: DBCode) => void;
+  setValue: (value: DBSerialID) => void;
 };
 
-export const useCodeField = ({
+export const useOptionField = ({
   field,
   variant = "",
 }: {
@@ -37,10 +37,10 @@ export const useCodeField = ({
   const { initialProperty, updateProperty } = useInitialPropertyContext();
 
   // Get initial value from context
-  const initialValue = initialProperty[field] as DBCode;
+  const initialValue = initialProperty[field] as DBSerialID;
 
   // Local state for immediate UI updates
-  const [currentValue, setCurrentValue] = useState<DBCode>(initialValue);
+  const [currentValue, setCurrentValue] = useState<DBSerialID>(initialValue);
 
   const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
   // Memoize computed values (options, titles) separately from current value
@@ -49,12 +49,10 @@ export const useCodeField = ({
     const entries = entriesByDictionaryCode[dictionaryCode];
     const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
 
-    const options: CodeOption[] = entries
-      .filter((entry) => entry.code !== null)
-      .map((entry) => ({
-        code: entry.code as DBCode,
-        label: getAvailableLocalizedText(entry.name, locale) || entry.code || "",
-      }));
+    const options: OptionFieldState[] = entries.map((entry) => ({
+      key: entry.id,
+      label: getAvailableLocalizedText(entry.name, locale) || "",
+    }));
 
     const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code || "";
     const subtitle = getAvailableLocalizedText(dictionary?.description, locale) || "";
@@ -65,17 +63,17 @@ export const useCodeField = ({
   // Create current value option for display
   const currentValueOption = useMemo(() => {
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const dictionaryEntry = entries.find((entry) => entry.code === currentValue);
-    const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || currentValue;
+    const dictionaryEntry = entries.find((entry) => entry.id === currentValue);
+    const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || "";
     return {
-      code: currentValue,
+      key: currentValue,
       label,
-    };
+    } as OptionFieldState;
   }, [entriesByDictionaryCode, currentValue, locale, dictionaryCode]);
 
   // Update both local state and context
   const setValue = useCallback(
-    (value: DBCode) => {
+    (value: DBSerialID) => {
       // Immediate UI update
       setCurrentValue(value);
 

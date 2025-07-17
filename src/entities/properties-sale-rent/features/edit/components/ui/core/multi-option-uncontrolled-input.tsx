@@ -1,6 +1,5 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
 import {
   DBPropertyMultiCodeField,
   PropertyFieldFooter,
@@ -10,7 +9,7 @@ import {
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
+export const MultiOptionUncontrolledInput = function MultiOptionUncontrolledInput({
   field,
 }: {
   field: DBPropertyMultiCodeField;
@@ -21,25 +20,25 @@ export const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
   });
 
   // Create lookup map once
-  const optionsMap = useMemo(() => new Map(options.map((opt) => [opt.code, opt.label])), [options]);
+  const optionsMap = useMemo(() => new Map(options.map((opt) => [opt.key, opt.label])), [options]);
 
   const convertedValues: Option[] = useMemo(() => {
     return currentValues.map((code) => ({
-      value: code,
+      value: String(code),
       label: optionsMap.get(code) || "",
     }));
   }, [currentValues, optionsMap]);
 
   const convertedOptions: Option[] = useMemo(() => {
     return options.map((option) => ({
-      value: option.code,
+      value: String(option.key),
       label: option.label,
     }));
   }, [options]);
 
   const handleFilter = useCallback(
     (value: string, search: string) => {
-      const option = options.find((opt) => opt.code === value);
+      const option = options.find((opt) => opt.key === Number(value));
       if (!option) return 0;
 
       const searchLower = search.toLowerCase();
@@ -50,7 +49,7 @@ export const MultiCodeUncontrolledInput = function MultiCodeUncontrolledInput({
 
   const handleOnChange = useCallback(
     (value: Option[]) => {
-      setValues(value.map((option) => option.value as DBCode));
+      setValues(value.map((option) => Number(option.value)));
     },
     [setValues],
   );

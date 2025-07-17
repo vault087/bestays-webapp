@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
+import { DBSerialID } from "@/entities/dictionaries/types/shared-db.types";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   useInitialPropertyContext,
@@ -14,7 +14,7 @@ import {
 import { generateInputId } from "@/utils/generate-input-id";
 
 export type SizeUnitOption = {
-  code: DBCode;
+  key: DBSerialID;
   label: string;
 };
 
@@ -51,12 +51,10 @@ export function usePropertySizeInput(
     const entries = entriesByDictionaryCode[dictionaryCode];
     const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
 
-    const options: SizeUnitOption[] = entries
-      .filter((entry) => entry.code !== null)
-      .map((entry) => ({
-        code: entry.code as DBCode,
-        label: getAvailableLocalizedText(entry.name, locale) || entry.code || "",
-      }));
+    const options: SizeUnitOption[] = entries.map((entry) => ({
+      key: entry.id,
+      label: getAvailableLocalizedText(entry.name, locale) || "",
+    }));
 
     return { inputId, options };
   }, [entriesByDictionaryCode, dictionaryCode, field, variant, locale, initialProperty.id]);
@@ -64,10 +62,10 @@ export function usePropertySizeInput(
   // Create current value option for display
   const unit = useMemo(() => {
     const entries = entriesByDictionaryCode[dictionaryCode];
-    const dictionaryEntry = entries.find((entry) => entry.code === sizeUnit);
+    const dictionaryEntry = entries.find((entry) => entry.id === sizeUnit);
     const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || sizeUnit;
     return {
-      code: sizeUnit,
+      key: sizeUnit,
       label,
     };
   }, [entriesByDictionaryCode, sizeUnit, dictionaryCode, locale]);

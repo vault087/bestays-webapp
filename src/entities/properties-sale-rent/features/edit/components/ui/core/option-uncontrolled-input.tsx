@@ -3,7 +3,7 @@
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState, useRef } from "react";
 import { DBPropertyCodeField, PropertyFieldFooter, PropertyFieldHeader } from "@/entities/properties-sale-rent/";
-import { useCodeField } from "@/entities/properties-sale-rent/features/edit/components/hooks/use-code-field";
+import { useOptionField } from "@/entities/properties-sale-rent/features/edit/components/hooks/use-option-field";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
   Command,
@@ -18,8 +18,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/compon
 import { cn } from "@/modules/shadcn/utils/cn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export function SingleCodeUncontrolledInput({ field }: { field: DBPropertyCodeField }) {
-  const { inputId, currentValue, options, title, subtitle, setValue } = useCodeField({
+export function OptionUncontrolledInput({ field }: { field: DBPropertyCodeField }) {
+  const { inputId, currentValue, options, title, subtitle, setValue } = useOptionField({
     field,
     variant: "input",
   });
@@ -59,15 +59,15 @@ export function SingleCodeUncontrolledInput({ field }: { field: DBPropertyCodeFi
                 <CommandGroup>
                   {options.map((option) => (
                     <CommandItem
-                      key={option.code}
+                      key={option.key}
                       value={option.label}
                       onSelect={() => {
-                        setValue(option.code);
+                        setValue(option.key);
                         setOpen(false);
                       }}
                     >
                       {option.label}
-                      {currentValue?.code === option.code && <CheckIcon size={16} className="ml-auto" />}
+                      {currentValue?.key === option.key && <CheckIcon size={16} className="ml-auto" />}
                     </CommandItem>
                   ))}
                 </CommandGroup>

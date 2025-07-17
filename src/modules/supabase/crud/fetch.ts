@@ -36,7 +36,10 @@ export async function fetch<S extends z.ZodRawShape, K extends keyof S & string>
     const selectFields = fields.join(", ");
 
     // Fetch only the required fields from Supabase with better typing
-    const response = (await supabase.from(table).select(selectFields)) as unknown as SupabaseResponse<
+    const response = (await supabase
+      .from(table)
+      .select(selectFields)
+      .eq("id", "61c8a8c0-13d2-4cb1-9b80-5ed30107c1a9")) as unknown as SupabaseResponse<
       Pick<z.infer<z.ZodObject<S>>, K>
     >;
 
@@ -56,35 +59,19 @@ export async function fetch<S extends z.ZodRawShape, K extends keyof S & string>
       ),
     );
 
-    // Validate and filter each entity against the field schema
     const validEntities: InferFromSubset<S, K>[] = [];
 
     data.forEach((entity) => {
       try {
-        // Parse the entity against the field schema
         const validatedEntity = fieldSchema.safeParse(entity);
 
-        // Only push successful validations and unwrap the data
         if (validatedEntity.success) {
           validEntities.push(validatedEntity.data);
         }
       } catch (validationError) {
         console.log("validationError", validationError);
-        // console.error(`Failed to validate entity:`, {
-        // entity,
-        // error: validationError instanceof Error ? validationError.message : validationError,
-        // });
       }
     });
-
-    // console.log("Entities loaded from Supabase:", {
-    //   table,
-    //   totalFetched: data.length,
-    //   validEntities: validEntities.length,
-    //   invalidEntities: data.length - validEntities.length,
-    //   fields,
-    // });
-
     return {
       data: validEntities,
       error: null,

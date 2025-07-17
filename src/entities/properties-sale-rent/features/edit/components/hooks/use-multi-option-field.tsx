@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState, useCallback, useRef } from "react";
-import { DBCode } from "@/entities/dictionaries/types/dictionary.types";
+import { DBSerialID } from "@/entities/dictionaries/types/shared-db.types";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyMultiCodeField,
@@ -11,20 +11,20 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { generateInputId } from "@/utils";
 
-export type MultiCodeOption = {
-  code: DBCode;
+export type MultiOption = {
+  key: DBSerialID;
   label: string;
   inputId: string;
 };
 
 export type MultiCodeFieldState = {
   inputId: string;
-  currentValues: DBCode[];
-  options: MultiCodeOption[];
+  currentValues: DBSerialID[];
+  options: MultiOption[];
   title: string | undefined;
   subtitle: string | undefined;
-  toggleValue: (value: DBCode | null | undefined, checked: boolean) => void;
-  setValues: (values: DBCode[]) => void;
+  toggleValue: (value: DBSerialID | null | undefined, checked: boolean) => void;
+  setValues: (values: DBSerialID[]) => void;
 };
 
 export const useMultiCodeField = ({
@@ -39,10 +39,10 @@ export const useMultiCodeField = ({
   const locale = usePropertyLocale();
 
   // Get initial values from context
-  const initialValues: DBCode[] = (initialProperty[field] as DBCode[]) || [];
+  const initialValues: DBSerialID[] = (initialProperty[field] as DBSerialID[]) || [];
 
   // Local state for immediate UI updates
-  const [currentValues, setCurrentValues] = useState<DBCode[]>(initialValues);
+  const [currentValues, setCurrentValues] = useState<DBSerialID[]>(initialValues);
 
   // Memoize computed values (options, titles) separately from current values
   const { inputId, options, title, subtitle } = useMemo(() => {
@@ -51,10 +51,10 @@ export const useMultiCodeField = ({
     const entries = entriesByDictionaryCode[dictionaryCode];
     const inputId = generateInputId("property", initialProperty.id.slice(-8), field, variant, locale);
 
-    const options: MultiCodeOption[] = entries.map((entry) => ({
-      code: entry.code as DBCode,
-      label: getAvailableLocalizedText(entry.name, locale) || entry.code || "",
-      inputId: generateInputId("property-option", initialProperty.id, field + "-" + entry.code, variant, locale),
+    const options: MultiOption[] = entries.map((entry) => ({
+      key: entry.id,
+      label: getAvailableLocalizedText(entry.name, locale) || "",
+      inputId: generateInputId("property-option", initialProperty.id, field + "-" + entry.id, variant, locale),
     }));
 
     const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code || "";
@@ -69,7 +69,7 @@ export const useMultiCodeField = ({
   currentValuesRef.current = currentValues;
 
   const toggleValue = useCallback(
-    (value: DBCode | null | undefined, checked: boolean) => {
+    (value: DBSerialID | null | undefined, checked: boolean) => {
       if (!value) return;
 
       const current = currentValuesRef.current; // ← Access via ref
@@ -84,7 +84,7 @@ export const useMultiCodeField = ({
   );
 
   const setValues = useCallback(
-    (values: DBCode[]) => {
+    (values: DBSerialID[]) => {
       // Immediate UI update
       console.log("setValues", values);
       setCurrentValues(values);
