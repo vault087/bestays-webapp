@@ -20,7 +20,10 @@ export type DictionaryStore = DictionaryStoreState & DictionaryStoreActions;
 export type DictionaryStoreApi = StoreApi<DictionaryStore>;
 
 // Store creator function
-export function createDictionaryStore(dictionaries: DBDictionary[], entries: DBDictionaryEntry[]): DictionaryStoreApi {
+export function createDefaultDictionaryStore(
+  dictionaries: DBDictionary[],
+  entries: DBDictionaryEntry[],
+): DictionaryStoreApi {
   const dictionarySliceCreator = createDictionaryEditSlice(dictionaries);
   const entrySliceCreator = createEntryEditSlice(entries);
 

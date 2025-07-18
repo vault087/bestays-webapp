@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
-import { DBSerialID } from "@/entities/dictionaries/types/shared-db.types";
+import { DBSerialID } from "@/entities/common/";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   useInitialPropertyContext,

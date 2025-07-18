@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import {
   useDictionaryActions,
   useDictionaryStore,
-} from "@/entities/dictionaries/features/edit/store/hooks/use-dictionary-store";
+} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code

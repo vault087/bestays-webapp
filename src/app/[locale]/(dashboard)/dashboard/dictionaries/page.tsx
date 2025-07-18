@@ -10,7 +10,7 @@ export default async function DictionariesPage() {
   // Pass the promise directly to the client component
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <DictionariesPageContent dictionaries={dictionariesResponse.dictionaries} entries={entriesResponse.entries} />
+      <DictionariesPageContent dictionaries={dictionariesResponse.data} entries={entriesResponse.data} />
     </Suspense>
   );
 }

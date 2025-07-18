@@ -29,7 +29,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     101: {
       id: 101,
       dictionary_id: 1,
-      code: "bangkok",
       name: { en: "Bangkok", th: "กรุงเทพ", ru: "Бангкок" },
       is_new: false,
       is_active: true,
@@ -37,7 +36,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     102: {
       id: 102,
       dictionary_id: 1,
-      code: "phuket",
       name: { en: "Phuket", th: "ภูเก็ต", ru: "Пхукет" },
       is_new: false,
       is_active: true,
@@ -45,7 +43,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     103: {
       id: 103,
       dictionary_id: 1,
-      code: "chiang_mai",
       name: { en: "Chiang Mai", th: "เชียงใหม่", ru: "Чиангмай" },
       is_new: false,
       is_active: true,
@@ -57,7 +54,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     201: {
       id: 201,
       dictionary_id: 2,
-      code: "near_beach",
       name: { en: "Near Beach", th: "ใกล้ชายหาด", ru: "Рядом с пляжем" },
       is_new: false,
       is_active: true,
@@ -65,7 +61,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     202: {
       id: 202,
       dictionary_id: 2,
-      code: "city_center",
       name: { en: "City Center", th: "ใจกลางเมือง", ru: "Центр города" },
       is_new: false,
       is_active: true,
@@ -77,7 +72,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     301: {
       id: 301,
       dictionary_id: 3,
-      code: "pool",
       name: { en: "Swimming Pool", th: "สระว่ายน้ำ", ru: "Бассейн" },
       is_new: false,
       is_active: true,
@@ -85,7 +79,6 @@ export const mockEntries: Record<number, Record<number, MutableEntry>> = {
     302: {
       id: 302,
       dictionary_id: 3,
-      code: "garden",
       name: { en: "Garden", th: "สวน", ru: "Сад" },
       is_new: false,
       is_active: true,
@@ -107,13 +100,11 @@ export function createMockDictionary(id: number, code: string, name: Record<stri
 export function createMockDictionaryEntry(
   id: number,
   dictionaryId: number,
-  code: string,
   name: Record<string, string>,
 ): MutableEntry {
   return {
     id,
     dictionary_id: dictionaryId,
-    code,
     name,
     is_new: true,
     is_active: true,

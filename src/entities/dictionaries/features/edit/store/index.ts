@@ -1,3 +1,3 @@
 export * from "./dictionary.store";
-export * from "./hooks";
-export * from "./contexts";
+export * from "./dictionary-store.context";
+export * from "./use-dictionary-store";

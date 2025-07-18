@@ -2,7 +2,7 @@ import { DBDictionary, DICTIONARIES_TABLE } from "@/entities/dictionaries/types/
 import { supabase } from "@/modules/supabase/clients/client";
 
 export type DBDictionariesResponse = Promise<{
-  dictionaries: DBDictionary[];
+  data: DBDictionary[];
   error: string | null;
 }>;
 
@@ -20,14 +20,14 @@ export async function loadDictionaries(): DBDictionariesResponse {
     const dictionariesData = dictionariesResponse.data;
 
     return {
-      dictionaries: dictionariesData,
+      data: dictionariesData,
       error: null,
     };
   } catch (error) {
     console.error("Failed to load dictionaries:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return {
-      dictionaries: [],
+      data: [],
       error: errorMessage,
     };
   }

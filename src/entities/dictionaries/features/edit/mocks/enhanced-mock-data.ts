@@ -1,4 +1,4 @@
-import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/features/edit";
 
 // Enhanced mock dictionaries covering all property fields
 export const enhancedMockDictionaries: MutableDictionary[] = [
@@ -90,7 +90,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 101,
     dictionary_id: 1,
-    code: "bangkok",
     name: { en: "Bangkok", th: "กรุงเทพ", ru: "Бангкок" },
     is_new: false,
     is_active: true,
@@ -98,7 +97,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 102,
     dictionary_id: 1,
-    code: "phuket",
     name: { en: "Phuket", th: "ภูเก็ต", ru: "Пхукет" },
     is_new: false,
     is_active: true,
@@ -106,7 +104,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 103,
     dictionary_id: 1,
-    code: "chiang_mai",
     name: { en: "Chiang Mai", th: "เชียงใหม่", ru: "Чиангмай" },
     is_new: false,
     is_active: true,
@@ -116,7 +113,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 201,
     dictionary_id: 2,
-    code: "house",
     name: { en: "House", th: "บ้าน", ru: "Дом" },
     is_new: false,
     is_active: true,
@@ -124,7 +120,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 202,
     dictionary_id: 2,
-    code: "condo",
     name: { en: "Condominium", th: "คอนโดมิเนียม", ru: "Кондоминиум" },
     is_new: false,
     is_active: true,
@@ -132,7 +127,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 203,
     dictionary_id: 2,
-    code: "villa",
     name: { en: "Villa", th: "วิลล่า", ru: "Вилла" },
     is_new: false,
     is_active: true,
@@ -142,7 +136,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 301,
     dictionary_id: 3,
-    code: "freehold",
     name: { en: "Freehold", th: "โฉนดที่ดิน", ru: "Частная собственность" },
     is_new: false,
     is_active: true,
@@ -150,7 +143,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 302,
     dictionary_id: 3,
-    code: "leasehold",
     name: { en: "Leasehold", th: "สิทธิการเช่า", ru: "Арендная собственность" },
     is_new: false,
     is_active: true,
@@ -160,7 +152,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 401,
     dictionary_id: 4,
-    code: "yes",
     name: { en: "Yes", th: "ได้", ru: "Да" },
     is_new: false,
     is_active: true,
@@ -168,7 +159,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 402,
     dictionary_id: 4,
-    code: "no",
     name: { en: "No", th: "ไม่ได้", ru: "Нет" },
     is_new: false,
     is_active: true,
@@ -178,7 +168,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 501,
     dictionary_id: 5,
-    code: "near_beach",
     name: { en: "Near Beach", th: "ใกล้ชายหาด", ru: "Рядом с пляжем" },
     is_new: false,
     is_active: true,
@@ -186,7 +175,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 502,
     dictionary_id: 5,
-    code: "city_center",
     name: { en: "City Center", th: "ใจกลางเมือง", ru: "Центр города" },
     is_new: false,
     is_active: true,
@@ -194,7 +182,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 503,
     dictionary_id: 5,
-    code: "mountain_view",
     name: { en: "Mountain View", th: "วิวภูเขา", ru: "Вид на горы" },
     is_new: false,
     is_active: true,
@@ -204,7 +191,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 601,
     dictionary_id: 6,
-    code: "pool",
     name: { en: "Swimming Pool", th: "สระว่ายน้ำ", ru: "Бассейн" },
     is_new: false,
     is_active: true,
@@ -212,7 +198,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 602,
     dictionary_id: 6,
-    code: "garden",
     name: { en: "Garden", th: "สวน", ru: "Сад" },
     is_new: false,
     is_active: true,
@@ -220,7 +205,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 603,
     dictionary_id: 6,
-    code: "sea_view",
     name: { en: "Sea View", th: "วิวทะเล", ru: "Вид на море" },
     is_new: false,
     is_active: true,
@@ -230,7 +214,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 701,
     dictionary_id: 7,
-    code: "sale",
     name: { en: "Sale", th: "ขาย", ru: "Продажа" },
     is_new: false,
     is_active: true,
@@ -238,7 +221,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 702,
     dictionary_id: 7,
-    code: "rent",
     name: { en: "Rent", th: "เช่า", ru: "Аренда" },
     is_new: false,
     is_active: true,
@@ -248,7 +230,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 801,
     dictionary_id: 8,
-    code: "flat",
     name: { en: "Flat Land", th: "ที่ดินเรียบ", ru: "Ровная земля" },
     is_new: false,
     is_active: true,
@@ -256,7 +237,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 802,
     dictionary_id: 8,
-    code: "corner",
     name: { en: "Corner Plot", th: "ที่ดินหัวมุม", ru: "Угловой участок" },
     is_new: false,
     is_active: true,
@@ -266,7 +246,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 901,
     dictionary_id: 9,
-    code: "beach",
     name: { en: "Beach", th: "ชายหาด", ru: "Пляж" },
     is_new: false,
     is_active: true,
@@ -274,7 +253,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 902,
     dictionary_id: 9,
-    code: "mall",
     name: { en: "Shopping Mall", th: "ห้างสรรพสินค้า", ru: "Торговый центр" },
     is_new: false,
     is_active: true,
@@ -284,7 +262,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 1001,
     dictionary_id: 10,
-    code: "new_construction",
     name: { en: "New Construction", th: "ก่อสร้างใหม่", ru: "Новое строительство" },
     is_new: false,
     is_active: true,
@@ -292,7 +269,6 @@ export const enhancedMockEntries: MutableEntry[] = [
   {
     id: 1002,
     dictionary_id: 10,
-    code: "modern",
     name: { en: "Modern Style", th: "สไตล์โมเดิร์น", ru: "Современный стиль" },
     is_new: false,
     is_active: true,

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import {
   useDictionaryActions,
   useDictionaryEntry,
-} from "@/entities/dictionaries/features/edit/store/hooks/use-dictionary-store";
+} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary entry name
@@ -32,10 +32,7 @@ export function useDictionaryEntryNameInput(
   const { updateEntry } = useDictionaryActions();
 
   // Generate a unique input ID
-  const inputId = useMemo(
-    () => generateInputId("dictionary-entry", entryId.toString(), "name", locale),
-    [entryId, locale],
-  );
+  const inputId = useMemo(() => generateInputId("dict-ent", entryId.toString(), "name", locale), [entryId, locale]);
 
   // Handle change
   const onChange = useCallback(

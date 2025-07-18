@@ -1,12 +1,15 @@
-import { loadDictionaries } from "@/entities/dictionaries/libs";
-import { MutableEntry, MutableDictionary } from "@/entities/dictionaries/types/dictionary.types";
+import { MutableEntry, MutableDictionary } from "@/entities/dictionaries";
+import { loadDictionaries, loadEntries } from "@/entities/dictionaries/libs";
 import { loadPropertyDetails } from "@/entities/properties-sale-rent/features/edit/libs/load-properties";
 import { Property } from "@/entities/properties-sale-rent/features/edit/types/property-field.types";
 import PropertiesPageClient from "./page.client";
 
 export default async function PropertiesSellRentPage() {
-  const dbProperties = await loadPropertyDetails();
-  const dbDictionaries = await loadDictionaries();
+  const [dbProperties, dbDictionaries, dbEntries] = await Promise.all([
+    loadPropertyDetails(),
+    loadDictionaries(),
+    loadEntries(),
+  ]);
 
   const properties: Property[] = dbProperties.data.map((property) => ({
     id: property.id || "",
@@ -17,7 +20,11 @@ export default async function PropertiesSellRentPage() {
 
   return (
     <div>
-      <PropertiesPageClient properties={dbProperties} dictionaries={dbDictionaries} entries={entries} />
+      <PropertiesPageClient
+        properties={properties}
+        dictionaries={dbDictionaries.data || []}
+        entries={dbEntries.data || []}
+      />
     </div>
   );
 }

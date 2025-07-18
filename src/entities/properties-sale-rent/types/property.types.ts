@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DBSerialIDSchema } from "@/entities/dictionaries/types/shared-db.types";
+import { DBSerialIDSchema } from "@/entities/common/";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
 

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { DBSerialID, useDictionaryActions } from "@/entities/dictionaries";
+import { DBSerialID } from "@/entities/common/";
+import { useDictionaryActions } from "@/entities/dictionaries/";
 import {
   DBPropertyMultiCodeField,
   useMultiCodeField,

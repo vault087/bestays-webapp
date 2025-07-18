@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "lucide-react";
 import { memo } from "react";
-import { DBSerialID } from "@/entities/dictionaries/types/shared-db.types";
+import { DBSerialID } from "@/entities/common/";
 import { PropertyFieldHeader, PropertyFieldFooter, DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import {
   SizeUnitOption,

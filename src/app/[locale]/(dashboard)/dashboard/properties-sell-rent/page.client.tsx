@@ -1,8 +1,8 @@
 "use client";
 import { memo, useCallback, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
-import { DictionaryStoreProvider } from "@/entities/dictionaries/features/edit/store/contexts/dictionary-store.context";
-import { createDictionaryStore } from "@/entities/dictionaries/features/edit/store/dictionary.store";
+import { DictionaryStoreProvider } from "@/entities/dictionaries/features/edit/store/dictionary-store.context";
+import { createDefaultDictionaryStore } from "@/entities/dictionaries/features/edit/store/dictionary.store";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
   createPropertyStore,
@@ -45,7 +45,7 @@ export default function PropertiesPageClient({
     () => createPropertyStore("properties-sell-rent", convertToPropertyStore(properties)),
     [properties],
   );
-  const dictionaryStore = useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
+  const dictionaryStore = useMemo(() => createDefaultDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   return (
     <DictionaryStoreProvider store={dictionaryStore}>
