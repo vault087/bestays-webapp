@@ -2,8 +2,9 @@
 
 import { PlusCircle } from "lucide-react";
 import { useLocale } from "next-intl";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
   createDefaultDictionaryStore,
@@ -100,10 +101,10 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 
 const DictionaryCanvas = () => {
   const store = useDictionaryStoreContext();
-  const sorting = useStore(store, (state) => state.dictionariesSorting);
-  const dictionaries = store.getState().dictionaries;
-  const entries = store.getState().entries;
-
+  const dictionaries = useStore(
+    store,
+    useShallow((state) => state.dictionaries),
+  );
   const locale = useLocale();
 
   const handleAddEntry = (dictionaryId: number) => {
@@ -113,12 +114,11 @@ const DictionaryCanvas = () => {
   const showCode = false;
 
   console.log("dictionaries", dictionaries);
-  console.log("entries", entries);
 
   return (
     <div className="flex w-full flex-wrap gap-4">
-      {Object.values(sorting).map((dictId) => {
-        const currentEntries = entries[dictId];
+      {Object.values(dictionaries).map((dict) => {
+        const dictId = dict.id;
         return (
           <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
             <CardContent>
@@ -136,16 +136,8 @@ const DictionaryCanvas = () => {
                   <DictionaryMetaInfoInput id={dictId} />
                 </div>
                 <Separator className="my-4" />
+                <EntriesList dictionaryId={dictId} locale={locale} />
                 {/* MutableDictionary entries */}
-                {currentEntries &&
-                  Object.values(currentEntries).map((entry: MutableEntry) => {
-                    const entId = Number(entry?.id);
-                    return (
-                      <div key={entId}>
-                        <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale={locale} />
-                      </div>
-                    );
-                  })}
                 <Separator className="my-4" />
                 <Button variant="outline" className="w-full" onClick={() => handleAddEntry(dictId)}>
                   <PlusCircle className="mr-2 h-4 w-4" />
@@ -159,3 +151,27 @@ const DictionaryCanvas = () => {
     </div>
   );
 };
+
+const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; locale: string }) => {
+  const store = useDictionaryStoreContext();
+  const entries = useStore(
+    store,
+    useShallow((state) => state.entries[dictionaryId]),
+  );
+
+  return (
+    <div>
+      {entries &&
+        Object.values(entries).map((entry: MutableEntry) => {
+          const entId = Number(entry?.id);
+          return (
+            <div key={entId}>
+              <DictionaryEntryNameInput dictionaryId={dictionaryId} entryId={entId} locale={locale} />
+            </div>
+          );
+        })}
+    </div>
+  );
+});
+
+EntriesList.displayName = "EntriesList";

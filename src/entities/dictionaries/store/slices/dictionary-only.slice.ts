@@ -9,7 +9,6 @@ enablePatches();
 export interface DictionaryOnlyStoreSliceState {
   dictionaries: Record<DBSerialID, MutableDictionary>;
   dictionariesByCode: Record<DBCode, DBSerialID>;
-  dictionariesSorting: Record<number, DBSerialID>;
   deletedDictionaryIds: DBSerialID[];
   temporaryDictionaryId: DBTemporarySerialID;
 }
@@ -40,7 +39,6 @@ export const createDictionaryOnlyStoreSlice = (
   return (set) => ({
     dictionaries: convertedDictionaries,
     dictionariesByCode: convertedDictionariesByCode,
-    dictionariesSorting,
     deletedDictionaryIds: [],
     temporaryDictionaryId: -1,
 
@@ -72,7 +70,9 @@ export const createDictionaryOnlyStoreSlice = (
       set(
         produce((draft: DictionaryOnlyStoreSlice) => {
           const dictionary = draft.dictionaries[id];
-          if (dictionary && !dictionary.is_new) {
+          if (!dictionary) return;
+
+          if (!dictionary.is_new) {
             draft.deletedDictionaryIds.push(id);
           }
           delete draft.dictionaries[id];

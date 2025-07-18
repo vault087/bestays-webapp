@@ -25,11 +25,18 @@ export const createEntryEditSlice = (
   initialEntries: DBDictionaryEntry[],
 ): StateCreator<EntryStoreSlice, [], [], EntryStoreSlice> => {
   const convertedEntries: Record<DBSerialID, Record<DBSerialID, MutableEntry>> = {};
+
   initialEntries.forEach((entry) => {
-    if (!convertedEntries[entry.dictionary_id]) {
-      convertedEntries[entry.dictionary_id] = {};
+    const dictionaryId = entry.dictionary_id;
+    if (!convertedEntries[dictionaryId]) {
+      convertedEntries[dictionaryId] = {};
     }
-    convertedEntries[entry.dictionary_id][entry.id] = { ...entry, is_new: false };
+    convertedEntries[dictionaryId][entry.id] = { ...entry, is_new: false };
+  });
+
+  const entriesSorting: Record<number, DBSerialID> = {};
+  initialEntries.forEach((entry, index) => {
+    entriesSorting[index] = entry.id;
   });
 
   return (set) => ({
@@ -69,12 +76,13 @@ export const createEntryEditSlice = (
     deleteEntry: (dictionaryId: DBSerialID, entryId: DBSerialID) => {
       set(
         produce((draft: EntryStoreSlice) => {
-          if (!dictionaryId || !draft.entries[dictionaryId]) {
-            return;
-          }
+          if (!dictionaryId) return;
+          if (!draft.entries[dictionaryId]) return;
 
           const entry = draft.entries[dictionaryId][entryId];
-          if (entry && !entry.is_new) {
+          if (!entry) return;
+
+          if (!entry.is_new) {
             draft.deletedEntryIds.push(entryId);
           }
 
