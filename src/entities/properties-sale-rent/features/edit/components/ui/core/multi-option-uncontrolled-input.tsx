@@ -4,7 +4,7 @@ import {
   DBPropertyMultiCodeField,
   PropertyFieldFooter,
   PropertyFieldHeader,
-  useMultiCodeField,
+  useMultiOptionField,
 } from "@/entities/properties-sale-rent/";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -14,7 +14,7 @@ export const MultiOptionUncontrolledInput = function MultiOptionUncontrolledInpu
 }: {
   field: DBPropertyMultiCodeField;
 }) {
-  const { inputId, currentValues, options, title, subtitle, setValues } = useMultiCodeField({
+  const { inputId, currentValues, options, title, subtitle, setValues } = useMultiOptionField({
     field,
     variant: "input",
   });

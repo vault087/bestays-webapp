@@ -2,7 +2,7 @@
 import { useMemo, useState, useCallback } from "react";
 import { useStore } from "zustand";
 import { DBSerialID } from "@/entities/common/";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/features/context/dictionary.store.context";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/features/edit/context/dictionary.store.context";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyMultiCodeField,
@@ -18,7 +18,7 @@ export type MultiOption = {
   inputId: string;
 };
 
-export type MultiCodeFieldState = {
+export type MultiOptionFieldState = {
   inputId: string;
   dictionaryId: DBSerialID | undefined;
   currentValues: DBSerialID[];
@@ -29,19 +29,19 @@ export type MultiCodeFieldState = {
   setValues: (values: DBSerialID[]) => void;
 };
 
-export const useMultiCodeField = ({
+export const useMultiOptionField = ({
   field,
   variant = "",
 }: {
   field: DBPropertyMultiCodeField;
   variant?: string;
-}): MultiCodeFieldState => {
+}): MultiOptionFieldState => {
   const store = useDictionaryStoreContext();
 
   const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
   const dictionaryId = useStore(store, (state) => state.dictionariesByCode[dictionaryCode]) || 0;
   const dictionary = useStore(store, (state) => state.dictionaries[dictionaryId]);
-  const entriesRecord = useStore(store, (state) => state.entries[dictionaryId]);
+  const entriesRecord = useStore(store, (state) => state.entries?.[dictionaryId]);
 
   const { initialProperty, updateProperty } = useInitialPropertyContext();
   const propertyId = initialProperty.id;

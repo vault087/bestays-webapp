@@ -2,7 +2,7 @@
 import { useMemo, useState, useCallback } from "react";
 import { useStore } from "zustand";
 import { DBSerialID } from "@/entities/common/";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/features/context/dictionary.store.context";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/features/edit/context/dictionary.store.context";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
@@ -12,15 +12,15 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { generateInputId } from "@/utils";
 
-export type OptionFieldState = {
+export type SingleOption = {
   key: DBSerialID;
   label: string;
 };
 
-export type CodeFieldState = {
+export type OptionFieldState = {
   inputId: string;
-  currentValue: OptionFieldState;
-  options: OptionFieldState[];
+  currentValue: SingleOption;
+  options: SingleOption[];
   title: string | undefined;
   subtitle: string | undefined;
   setValue: (value: DBSerialID) => void;
@@ -32,7 +32,7 @@ export const useOptionField = ({
 }: {
   field: DBPropertyCodeField;
   variant?: string;
-}): CodeFieldState => {
+}): OptionFieldState => {
   const store = useDictionaryStoreContext();
 
   const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
@@ -55,7 +55,7 @@ export const useOptionField = ({
     const entries = Object.values(entriesRecord) || [];
     const inputId = generateInputId("property-option", propertyId.slice(-8), field, variant, locale);
 
-    const options: OptionFieldState[] = Object.values(entries).map((entry) => ({
+    const options: SingleOption[] = Object.values(entries).map((entry) => ({
       key: entry.id,
       label: getAvailableLocalizedText(entry.name, locale) || "",
     }));
@@ -74,7 +74,7 @@ export const useOptionField = ({
     return {
       key: currentValue,
       label,
-    } as OptionFieldState;
+    } as SingleOption;
   }, [entriesRecord, currentValue, locale]);
 
   // Update both local state and context

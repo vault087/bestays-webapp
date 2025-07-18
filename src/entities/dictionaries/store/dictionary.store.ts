@@ -5,7 +5,7 @@ import {
   DictionaryOnlyStoreSliceActions,
   createDictionaryOnlyStoreSlice,
 } from "./slices/dictionary-only.slice";
-import { EntryStoreSliceState, EntryStoreSliceActions, createEntryEditSlice } from "./slices/entry.slice";
+import { EntryStoreSliceState, EntryStoreSliceActions } from "./slices/entry.slice";
 
 // Combined Dictionary Store State
 export interface DictionaryStoreState extends DictionaryOnlyStoreSliceState, EntryStoreSliceState {
@@ -20,14 +20,12 @@ export function createDefaultDictionaryStore(
   dictionaries: DBDictionary[],
   entries: DBDictionaryEntry[],
 ): DictionaryStoreApi {
-  const dictionaryOnlySliceCreator = createDictionaryOnlyStoreSlice(dictionaries);
-  const entrySliceCreator = createEntryEditSlice(entries);
+  const dictionaryOnlySliceCreator = createDictionaryOnlyStoreSlice(dictionaries, entries);
 
   return createStore<DictionaryStore>()((set, get, api) => {
     return {
       hasHydrated: false,
       ...dictionaryOnlySliceCreator(set, get, api),
-      ...entrySliceCreator(set, get, api),
     };
   });
 }

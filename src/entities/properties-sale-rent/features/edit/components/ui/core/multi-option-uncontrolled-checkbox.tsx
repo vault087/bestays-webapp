@@ -4,7 +4,7 @@ import { DBSerialID } from "@/entities/common/";
 import { useEntrySliceActions } from "@/entities/dictionaries/store/hooks";
 import {
   DBPropertyMultiCodeField,
-  useMultiCodeField,
+  useMultiOptionField,
   MultiOption,
   PropertyFieldHeader,
   PropertyFieldFooter,
@@ -14,7 +14,7 @@ import { Button, Checkbox, Input, Label } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export function MultiOptionUncontrolledCheckbox({ field }: { field: DBPropertyMultiCodeField }) {
-  const { currentValues, options, title, subtitle, toggleValue, dictionaryId } = useMultiCodeField({
+  const { currentValues, options, title, subtitle, toggleValue, dictionaryId } = useMultiOptionField({
     field,
     variant: "checkbox",
   });
