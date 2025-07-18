@@ -14,7 +14,6 @@ import {
   DictionaryEntryNameInput,
   DictionaryDescriptionInput,
   DBDictionary,
-  MutableEntry,
   DBDictionaryEntry,
   useDictionaryStoreContext,
   useDictionaryOnlySlice,
@@ -124,19 +123,20 @@ const DictionaryCanvas = () => {
 
 const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; locale: string }) => {
   const store = useDictionaryStoreContext();
-  const entries = useStore(
+  const entriesIds = useStore(
     store,
-    useShallow((state) => state.entries[dictionaryId]),
+    useShallow((state) => Object.keys(state.entries[dictionaryId]).map(Number)),
   );
+
+  console.log("entries");
 
   return (
     <div>
-      {entries &&
-        Object.values(entries).map((entry: MutableEntry) => {
-          const entId = Number(entry?.id);
+      {entriesIds &&
+        entriesIds.map((entryId) => {
           return (
-            <div key={entId}>
-              <DictionaryEntryNameInput dictionaryId={dictionaryId} entryId={entId} locale={locale} />
+            <div key={entryId}>
+              <DictionaryEntryNameInput dictionaryId={dictionaryId} entryId={entryId} locale={locale} />
             </div>
           );
         })}

@@ -1,8 +1,8 @@
 "use client";
 import { memo, useCallback, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
-import { DictionaryStoreProvider } from "@/entities/dictionaries/store/dictionary.store.context";
 import { createDefaultDictionaryStore } from "@/entities/dictionaries/store/dictionary.store";
+import { DictionaryStoreProvider } from "@/entities/dictionaries/store/dictionary.store.context";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
   createPropertyStore,
