@@ -1,7 +1,7 @@
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/types/dictionary.types";
 
 // Enhanced mock dictionaries covering all property fields
-export const enhancedMockDictionaries: Dictionary[] = [
+export const enhancedMockDictionaries: MutableDictionary[] = [
   // Areas
   {
     id: 1,
@@ -85,7 +85,7 @@ export const enhancedMockDictionaries: Dictionary[] = [
 ];
 
 // Enhanced mock dictionary entries covering all property fields
-export const enhancedMockEntries: DictionaryEntry[] = [
+export const enhancedMockEntries: MutableEntry[] = [
   // Areas (id: 1)
   {
     id: 101,

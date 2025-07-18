@@ -32,26 +32,26 @@ export const DBDictionaryEntrySchema = z.object({
   updated_at: z.string().nullish(),
 });
 
-// Form Schemas (extend DB schemas)
-export const DictionarySchema = DBDictionarySchema.omit({
-  created_by: true,
-  created_at: true,
-  updated_at: true,
-}).extend({
-  is_new: z.boolean().default(false),
-});
-
-export const DictionaryEntrySchema = DBDictionaryEntrySchema.omit({
-  created_by: true,
-  created_at: true,
-  updated_at: true,
-}).extend({
-  is_new: z.boolean().default(false),
-});
-
 // Types
 export type DBDictionary = z.infer<typeof DBDictionarySchema>;
 export type DBDictionaryEntry = z.infer<typeof DBDictionaryEntrySchema>;
 
-export type Dictionary = z.infer<typeof DictionarySchema>;
-export type DictionaryEntry = z.infer<typeof DictionaryEntrySchema>;
+// Form Schemas (extend DB schemas)
+export const EditDictionarySchema = DBDictionarySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+}).extend({
+  is_new: z.boolean().default(false),
+});
+
+export const EditDictionaryEntrySchema = DBDictionaryEntrySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+}).extend({
+  is_new: z.boolean().default(false),
+});
+
+export type MutableDictionary = z.infer<typeof EditDictionarySchema>;
+export type MutableEntry = z.infer<typeof EditDictionaryEntrySchema>;

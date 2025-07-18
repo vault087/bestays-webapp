@@ -1,12 +1,12 @@
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
-import { createDictionaryStore } from "@/entities/dictionaries/stores/-dictionary.store";
+import { createDictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
 
-describe("Dictionary Store", () => {
-  describe("Dictionary Operations", () => {
+describe("MutableDictionary Store", () => {
+  describe("MutableDictionary Operations", () => {
     test("should add a dictionary", () => {
       // Arrange
       const store = createDictionaryStore({}, {});
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
 
       // Act
       store.getState().addDictionary(dictionary);
@@ -18,7 +18,7 @@ describe("Dictionary Store", () => {
 
     test("should update a dictionary", () => {
       // Arrange
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
       const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
@@ -33,7 +33,7 @@ describe("Dictionary Store", () => {
 
     test("should delete a dictionary", () => {
       // Arrange
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
       const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
@@ -46,7 +46,7 @@ describe("Dictionary Store", () => {
 
     test("should track deleted dictionary IDs", () => {
       // Arrange
-      const dictionary = { ...createMockDictionary(1, "test_type", { en: "Test Dictionary" }), is_new: false };
+      const dictionary = { ...createMockDictionary(1, "test_type", { en: "Test MutableDictionary" }), is_new: false };
       const store = createDictionaryStore({ 1: dictionary }, {});
 
       // Act
@@ -57,10 +57,10 @@ describe("Dictionary Store", () => {
     });
   });
 
-  describe("Dictionary Entry Operations", () => {
+  describe("MutableDictionary Entry Operations", () => {
     test("should add an entry", () => {
       // Arrange
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
       const entry = createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" });
       const store = createDictionaryStore({ 1: dictionary }, {});
 
@@ -74,7 +74,7 @@ describe("Dictionary Store", () => {
 
     test("should update an entry", () => {
       // Arrange
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
       const entry = createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" });
       const store = createDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
 
@@ -90,7 +90,7 @@ describe("Dictionary Store", () => {
 
     test("should delete an entry", () => {
       // Arrange
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
       const entry = createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" });
       const store = createDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
 
@@ -104,7 +104,7 @@ describe("Dictionary Store", () => {
 
     test("should track deleted entry IDs", () => {
       // Arrange
-      const dictionary = createMockDictionary(1, "test_type", { en: "Test Dictionary" });
+      const dictionary = createMockDictionary(1, "test_type", { en: "Test MutableDictionary" });
       const entry = { ...createMockDictionaryEntry(101, 1, "test_code", { en: "Test Entry" }), is_new: false };
       const store = createDictionaryStore({ 1: dictionary }, { 1: { 101: entry } });
 

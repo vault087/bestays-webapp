@@ -1,7 +1,7 @@
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries";
+import { MutableDictionary, MutableEntry } from "@/entities/dictionaries";
 
 // Mock dictionaries
-export const mockDictionaries: Record<number, Dictionary> = {
+export const mockDictionaries: Record<number, MutableDictionary> = {
   1: {
     id: 1,
     code: "PROPERTY_TYPES",
@@ -23,7 +23,7 @@ export const mockDictionaries: Record<number, Dictionary> = {
 };
 
 // Mock dictionary entries
-export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
+export const mockEntries: Record<number, Record<number, MutableEntry>> = {
   // Areas
   1: {
     101: {
@@ -94,7 +94,7 @@ export const mockEntries: Record<number, Record<number, DictionaryEntry>> = {
 };
 
 // Helper function to create a new dictionary
-export function createMockDictionary(id: number, code: string, name: Record<string, string>): Dictionary {
+export function createMockDictionary(id: number, code: string, name: Record<string, string>): MutableDictionary {
   return {
     id,
     code,
@@ -109,7 +109,7 @@ export function createMockDictionaryEntry(
   dictionaryId: number,
   code: string,
   name: Record<string, string>,
-): DictionaryEntry {
+): MutableEntry {
   return {
     id,
     dictionary_id: dictionaryId,

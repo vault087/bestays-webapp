@@ -1,7 +1,7 @@
 import { DBDictionary, DICTIONARIES_TABLE } from "@/entities/dictionaries/types/dictionary.types";
 import { supabase } from "@/modules/supabase/clients/client";
 
-export type DictionariesResponse = Promise<{
+export type DBDictionariesResponse = Promise<{
   dictionaries: DBDictionary[];
   error: string | null;
 }>;
@@ -9,7 +9,7 @@ export type DictionariesResponse = Promise<{
 /**
  * Loads all dictionaries and their entries from Supabase
  */
-export async function loadDictionaries(): DictionariesResponse {
+export async function loadDictionaries(): DBDictionariesResponse {
   try {
     // Fetch dictionaries and entries in parallel
     const dictionariesResponse = await supabase.from(DICTIONARIES_TABLE).select("*");

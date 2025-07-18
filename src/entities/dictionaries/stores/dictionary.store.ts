@@ -1,51 +1,30 @@
 import { createStore, StoreApi } from "zustand";
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
-  DictionaryEditStoreActions,
-  DictionaryEditStoreState,
-  DictionaryEditStoreStateInternal,
+  DictionaryStoreSliceState,
+  DictionaryStoreSliceActions,
   createDictionaryEditSlice,
 } from "./store-slices/dictionary.store-slice";
-import {
-  EntryEditStoreActions,
-  EntryEditStoreState,
-  EntryEditStoreStateInternal,
-  createEntryEditSlice,
-} from "./store-slices/entry.store-slice";
+import { EntryStoreSliceState, EntryStoreSliceActions, createEntryEditSlice } from "./store-slices/entry.store-slice";
 
-export const EMPTY_ENTRIES: Record<number, DictionaryEntry> = {};
-
-// Dictionary Store State
-export interface DictionaryStoreState
-  extends DictionaryEditStoreState,
-    EntryEditStoreState,
-    DictionaryEditStoreStateInternal,
-    EntryEditStoreStateInternal {
+// Combined Dictionary Store State
+export interface DictionaryStoreState extends DictionaryStoreSliceState, EntryStoreSliceState {
   hasHydrated: boolean;
 }
-
-// Dictionary Store Actions
-export interface DictionaryStoreActions extends DictionaryEditStoreActions, EntryEditStoreActions {}
-
-// Combined store type
+export interface DictionaryStoreActions extends DictionaryStoreSliceActions, EntryStoreSliceActions {}
 export type DictionaryStore = DictionaryStoreState & DictionaryStoreActions;
 export type DictionaryStoreApi = StoreApi<DictionaryStore>;
 
 // Store creator function
-export function createDictionaryStore(dictionaries: Dictionary[], entries: DictionaryEntry[]): DictionaryStoreApi {
-  const initialState = {
-    dictionaries,
-    entries,
-    hasHydrated: false,
-    deletedDictionaryIds: [],
-    deletedEntryIds: [],
-    temporaryDictionaryId: -1,
-    temporaryEntryId: -1,
-  };
+export function createDictionaryStore(dictionaries: DBDictionary[], entries: DBDictionaryEntry[]): DictionaryStoreApi {
+  const dictionarySliceCreator = createDictionaryEditSlice(dictionaries);
+  const entrySliceCreator = createEntryEditSlice(entries);
 
-  return createStore<DictionaryStore>()((set, get, store) => ({
-    ...createDictionaryEditSlice(dictionaries)(set, get, store),
-    ...createEntryEditSlice(entries)(set, get, store),
-    ...initialState,
-  }));
+  return createStore<DictionaryStore>()((set, get, api) => {
+    return {
+      hasHydrated: false,
+      ...dictionarySliceCreator(set, get, api),
+      ...entrySliceCreator(set, get, api),
+    };
+  });
 }

@@ -4,7 +4,7 @@ import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
 export function useDictionaryNameDisplay(id: number, locale: string): string | undefined {
-  return useDictionaryStore((state) => state.dictionaries[id].name?.[locale]);
+  return useDictionaryStore((state) => state.dictionaries[id]?.name?.[locale]);
 }
 
 // Input hook for dictionary name

@@ -4,7 +4,7 @@ import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
 export function useDictionaryMetaInfoDisplay(id: number): string | undefined {
-  const dictionary = useDictionaryStore((state) => state.dictionaries[id].metadata?.info);
+  const dictionary = useDictionaryStore((state) => state.dictionaries[id]?.metadata?.info);
   return dictionary === null ? undefined : dictionary;
 }
 

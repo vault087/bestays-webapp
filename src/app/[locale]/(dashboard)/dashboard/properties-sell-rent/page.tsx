@@ -1,5 +1,5 @@
 import { loadDictionaries } from "@/entities/dictionaries/libs";
-import { DictionaryEntry, Dictionary } from "@/entities/dictionaries/types/dictionary.types";
+import { MutableEntry, MutableDictionary } from "@/entities/dictionaries/types/dictionary.types";
 import { loadPropertyDetails } from "@/entities/properties-sale-rent/features/edit/libs/load-properties";
 import { Property } from "@/entities/properties-sale-rent/features/edit/types/property-field.types";
 import PropertiesPageClient from "./page.client";
@@ -15,18 +15,9 @@ export default async function PropertiesSellRentPage() {
     is_new: false,
   }));
 
-  const dictionaries: Dictionary[] = dbDictionaries.dictionaries.map((dictionary) => ({
-    ...dictionary,
-    is_new: false,
-  }));
-  const entries: DictionaryEntry[] = dbDictionaries.entries.map((entry) => ({
-    ...entry,
-    is_new: false,
-  }));
-
   return (
     <div>
-      <PropertiesPageClient properties={properties} dictionaries={dictionaries} entries={entries} />
+      <PropertiesPageClient properties={dbProperties} dictionaries={dbDictionaries} entries={entries} />
     </div>
   );
 }

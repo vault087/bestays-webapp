@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import React, { ReactNode } from "react";
 import { DictionaryStoreProvider } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
-import { createDictionaryStore, DictionaryStoreApi } from "@/entities/dictionaries/stores/-dictionary.store";
+import { createDictionaryStore, DictionaryStoreApi } from "@/entities/dictionaries/stores/dictionary.store";
 import { mockDictionaries, mockEntries } from "./dictionary-mock-data";
 
 // Test Provider component for tests (matches test expectations)
@@ -20,7 +20,7 @@ export function renderWithDictionaryProviders(ui: ReactNode, store?: DictionaryS
   };
 }
 
-// Dictionary Provider wrapper for renderHook
+// MutableDictionary Provider wrapper for renderHook
 export function withDictionaryProvider(store?: DictionaryStoreApi) {
   const testStore = store || createDictionaryStore(mockDictionaries, mockEntries);
 

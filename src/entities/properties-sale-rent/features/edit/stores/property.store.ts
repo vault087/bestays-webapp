@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 import { Property } from "@/entities/properties-sale-rent/";
 import { generateUUID } from "@/utils/generate-uuid";
 
-// Dictionary Store State
+// MutableDictionary Store State
 export interface PropertyStoreState {
   dbProperties: Record<string, Property>;
   properties: Record<string, Property>;
@@ -14,7 +14,7 @@ export interface PropertyStoreState {
   resetKey: string;
 }
 
-// Dictionary Store Actions
+// MutableDictionary Store Actions
 export interface PropertyStoreActions {
   addProperty: (property: Property) => void;
   updateProperty: (id: string, updater: (draft: Property) => void) => void;

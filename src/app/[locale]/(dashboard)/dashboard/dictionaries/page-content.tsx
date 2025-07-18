@@ -2,7 +2,7 @@
 
 import { PlusCircle } from "lucide-react";
 import { useLocale } from "next-intl";
-import React, { use } from "react";
+import { useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
   createDictionaryStore,
@@ -12,14 +12,17 @@ import {
   DictionaryEntryNameInput,
   useDictionaryStore,
   DictionaryDescriptionInput,
+  DBDictionary,
+  MutableEntry,
+  DBDictionaryEntry,
 } from "@/entities/dictionaries";
-import { GetDictionariesActionResponse } from "@/entities/dictionaries/actions";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
-  dictionariesPromise: GetDictionariesActionResponse;
+  dictionaries: DBDictionary[];
+  entries: DBDictionaryEntry[];
 }
 
 function ReactiveDebugCard() {
@@ -30,50 +33,15 @@ function ReactiveDebugCard() {
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
 
-export default function DictionariesPageContent({ dictionariesPromise }: DictionariesPageContentProps) {
-  // Use React's 'use' hook to resolve the promise
-  const { dictionaries, entries, error } = use(dictionariesPromise);
+export default function DictionariesPageContent({ dictionaries, entries }: DictionariesPageContentProps) {
   const locale = useLocale();
 
   // Create store with the resolved data
-  const store = React.useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
-
-  // Error handling
-  if (error) {
-    return (
-      <div className="flex gap-6 p-4">
-        <div className="flex-1">
-          <h1 className="mb-6 text-2xl font-bold">Error Loading Dictionaries</h1>
-          <Card className="bg-red-50">
-            <CardContent className="p-4">
-              <p className="text-red-600">{error}</p>
-              <Button className="mt-4" onClick={() => window.location.reload()}>
-                Retry
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  // Function to generate a new dictionary ID
-  const getNewDictionaryId = () => {
-    const existingIds = Object.keys(store.getState().dictionaries).map(Number);
-    return existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
-  };
+  const store = useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
-    const newId = getNewDictionaryId();
-    const newDictionary = {
-      id: newId,
-      code: `new_dictionary`,
-      name: { en: `New Dictionary` },
-      description: { en: `New Dictionary` },
-      is_new: true,
-    };
-    store.getState().addDictionary(newDictionary);
+    store.getState().addDictionary({ en: `New Dictionary` });
   };
 
   // Function to handle adding a new entry to a specific dictionary
@@ -87,14 +55,14 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
     return (
       <div className="flex gap-6 p-4">
         <div className="flex-1">
-          <h1 className="mb-4 text-2xl font-bold">Dictionary System Demo</h1>
+          <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
           <Card>
             <CardContent className="p-4">
               <p className="text-center text-gray-500">No dictionaries found</p>
               <div className="mt-8 text-center">
                 <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Add new Dictionary
+                  Add new MutableDictionary
                 </Button>
               </div>
             </CardContent>
@@ -105,20 +73,25 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
       </div>
     );
   }
+  const entriesByDictionaryId = store.getState().entries;
 
   const showCode = false;
 
+  console.log(
+    "dictionaries",
+    dictionaries.map((d) => d.id),
+  );
   return (
     <DictionaryStoreProvider store={store}>
       <div className="flex gap-6 p-4">
         <div className="flex-1">
-          <h1 className="mb-4 text-2xl font-bold">Dictionary System Demo</h1>
+          <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
 
           <div className="flex flex-wrap gap-4">
-            {Object.entries(dictionaries).map(([dictionaryId]) => {
-              const dictId = Number(dictionaryId);
+            {Object.values(dictionaries).map((dictionary) => {
+              const dictId = dictionary.id;
               return (
-                <Card key={dictionaryId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
                   <CardContent>
                     <div className="space-y-1">
                       {showCode && (
@@ -133,22 +106,18 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
                         <DictionaryDescriptionInput id={dictId} locale={locale} />
                         <DictionaryMetaInfoInput id={dictId} />
                       </div>
-
                       <Separator className="my-4" />
-
-                      {/* Dictionary entries */}
+                      {/* MutableDictionary entries */}
                       {entries[dictId] &&
-                        Object.entries(entries[dictId]).map(([entryId]) => {
-                          const entId = Number(entryId);
+                        Object.values(entriesByDictionaryId[dictId]).map((entry: MutableEntry) => {
+                          const entId = Number(entry?.id);
                           return (
-                            <div key={entryId}>
+                            <div key={entId}>
                               <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale={locale} />
                             </div>
                           );
                         })}
-
                       <Separator className="my-4" />
-
                       <Button variant="outline" className="w-full" onClick={() => handleAddEntry(dictId)}>
                         <PlusCircle className="mr-2 h-4 w-4" />
                         Add new entry
@@ -163,7 +132,7 @@ export default function DictionariesPageContent({ dictionariesPromise }: Diction
           <div className="mt-8 text-center">
             <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add new Dictionary
+              Add new MutableDictionary
             </Button>
           </div>
         </div>

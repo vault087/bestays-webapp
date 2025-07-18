@@ -1,51 +1,41 @@
 import { produce, enablePatches } from "immer";
 import { StateCreator } from "zustand";
-import { Dictionary } from "@/entities/dictionaries/types/dictionary.types";
+import { DBDictionary, MutableDictionary } from "@/entities/dictionaries/types/dictionary.types";
 import { DBSerialID, DBTemporarySerialID } from "@/entities/dictionaries/types/shared-db.types";
 import { LocalizedText } from "@/entities/localized-text";
 
 enablePatches();
 
-export interface DictionaryEditStoreState {
-  dictionaries: Record<DBSerialID, Dictionary>;
+export interface DictionaryStoreSliceState {
+  dictionaries: Record<DBSerialID, MutableDictionary>;
   deletedDictionaryIds: DBSerialID[];
-}
-
-export interface DictionaryEditStoreStateInternal {
   temporaryDictionaryId: DBTemporarySerialID;
 }
 
-// Dictionary Store Actions
-export interface DictionaryEditStoreActions {
+export interface DictionaryStoreSliceActions {
   addDictionary: (name: LocalizedText) => void;
-  updateDictionary: (id: DBSerialID, updater: (draft: Dictionary) => void) => void;
+  updateDictionary: (id: DBSerialID, updater: (draft: MutableDictionary) => void) => void;
   deleteDictionary: (id: DBSerialID) => void;
 }
 
-export interface DictionaryEditStore
-  extends DictionaryEditStoreState,
-    DictionaryEditStoreActions,
-    DictionaryEditStoreStateInternal {}
+export interface DictionaryStoreSlice extends DictionaryStoreSliceState, DictionaryStoreSliceActions {}
 
 export const createDictionaryEditSlice = (
-  initialDictionaries: Dictionary[],
-): StateCreator<DictionaryEditStore, [], [], DictionaryEditStore> => {
-  const convertedDictionaries: Record<number, Dictionary> = {};
+  initialDictionaries: DBDictionary[],
+): StateCreator<DictionaryStoreSlice, [], [], DictionaryStoreSlice> => {
+  const convertedDictionaries: Record<DBSerialID, MutableDictionary> = {};
   initialDictionaries.forEach((dict) => {
     convertedDictionaries[dict.id] = { ...dict, is_new: false };
   });
 
-  // Return the StateCreator function
   return (set) => ({
-    // Initial state
     dictionaries: convertedDictionaries,
     deletedDictionaryIds: [],
     temporaryDictionaryId: -1,
 
-    // Actions
     addDictionary: (name: LocalizedText) =>
       set(
-        produce((draft: DictionaryEditStore) => {
+        produce((draft: DictionaryStoreSlice) => {
           const newDictionary = {
             id: draft.temporaryDictionaryId,
             code: "",
@@ -57,9 +47,9 @@ export const createDictionaryEditSlice = (
         }),
       ),
 
-    updateDictionary: (id: DBSerialID, updater: (draft: Dictionary) => void) => {
+    updateDictionary: (id: DBSerialID, updater: (draft: MutableDictionary) => void) => {
       set(
-        produce((draft: DictionaryEditStore) => {
+        produce((draft: DictionaryStoreSlice) => {
           if (draft.dictionaries[id]) {
             updater(draft.dictionaries[id]);
           }
@@ -69,7 +59,7 @@ export const createDictionaryEditSlice = (
 
     deleteDictionary: (id: DBSerialID) =>
       set(
-        produce((draft: DictionaryEditStore) => {
+        produce((draft: DictionaryStoreSlice) => {
           const dictionary = draft.dictionaries[id];
           if (dictionary && !dictionary.is_new) {
             draft.deletedDictionaryIds.push(id);

@@ -1,11 +1,16 @@
 import { useStore } from "zustand";
-import { DictionaryStore, DictionaryStoreActions, useDictionaryStoreContext } from "@/entities/dictionaries/";
-import { DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import {
+  DictionaryStore,
+  DictionaryStoreActions,
+  DictionaryStoreApi,
+  useDictionaryStoreContext,
+} from "@/entities/dictionaries/";
+import { MutableEntry } from "@/entities/dictionaries/types/dictionary.types";
 
 // const EMPTY_ENTRIES = {};
 
 export function useDictionaryStore<T>(selector: (state: DictionaryStore) => T): T {
-  const store = useDictionaryStoreContext();
+  const store = useDictionaryStoreContext() as DictionaryStoreApi;
   return useStore(store, selector);
 }
 
@@ -15,19 +20,19 @@ export function useDictionaryActions(): DictionaryStoreActions {
   return store.getState();
 }
 
-// export function useDictionaryByCode(code: string): Dictionary | undefined {
+// export function useDictionaryByCode(code: string): MutableDictionary | undefined {
 //   return useDictionaryStore((state) =>
 //     Object.values(state.dictionaries).find((dictionary) => dictionary.code === code),
 //   );
 // }
 
 // Access a specific entry by dictionary ID and entry ID
-export function useDictionaryEntry(dictionaryId: number, entryId: number): DictionaryEntry | undefined {
+export function useDictionaryEntry(dictionaryId: number, entryId: number): MutableEntry | undefined {
   return useDictionaryStore((state) => state.entries[dictionaryId]?.[entryId]);
 }
 
-// const EMPTY_ENTRIES_ARRAY: DictionaryEntry[] = [];
-// export function useDictionaryEntriesByCode(code: DBCode): DictionaryEntry[] {
+// const EMPTY_ENTRIES_ARRAY: MutableEntry[] = [];
+// export function useDictionaryEntriesByCode(code: DBCode): MutableEntry[] {
 //   const dictionaries = useDictionaryStore((state) => state.dictionaries);
 //   const entries = useDictionaryStore((state) => state.entries);
 
@@ -41,6 +46,6 @@ export function useDictionaryEntry(dictionaryId: number, entryId: number): Dicti
 //   }, [dictionaries, entries, code]);
 // }
 
-// export function useDictionaryEntries(dictionaryId: number | undefined): Record<number, DictionaryEntry> {
+// export function useDictionaryEntries(dictionaryId: number | undefined): Record<number, MutableEntry> {
 //   return useDictionaryStore((state) => (dictionaryId ? state.entries[dictionaryId] || EMPTY_ENTRIES : EMPTY_ENTRIES));
 // }

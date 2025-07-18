@@ -4,11 +4,11 @@ import { useMemo } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { useDictionaryStoreContext } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
-import { Dictionary, DictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
+import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/types/dictionary.types";
 
 export type PropertyDictionariesData = {
-  dictionariesByCode: Record<string, Dictionary>;
-  entriesByDictionaryCode: Record<string, DictionaryEntry[]>;
+  dictionariesByCode: Record<string, MutableDictionary>;
+  entriesByDictionaryCode: Record<string, MutableEntry[]>;
 };
 
 // Initially keep the original name for backward compatibility
@@ -26,8 +26,8 @@ export function useDictionaryContext(): PropertyDictionariesData {
   );
 
   return useMemo(() => {
-    const dictionariesArray = dictionaries as Dictionary[];
-    const entriesArray = entries as DictionaryEntry[];
+    const dictionariesArray = dictionaries as MutableDictionary[];
+    const entriesArray = entries as MutableEntry[];
 
     const dictionariesByCode = dictionariesArray.reduce(
       (acc, dictionary) => {
@@ -36,7 +36,7 @@ export function useDictionaryContext(): PropertyDictionariesData {
         }
         return acc;
       },
-      {} as Record<string, Dictionary>,
+      {} as Record<string, MutableDictionary>,
     );
 
     const dictionariesByID = dictionariesArray.reduce(
@@ -46,7 +46,7 @@ export function useDictionaryContext(): PropertyDictionariesData {
         }
         return acc;
       },
-      {} as Record<string, Dictionary>,
+      {} as Record<string, MutableDictionary>,
     );
 
     const entriesByDictionaryCode = entriesArray.reduce(
@@ -57,7 +57,7 @@ export function useDictionaryContext(): PropertyDictionariesData {
         }
         return acc;
       },
-      {} as Record<string, DictionaryEntry[]>,
+      {} as Record<string, MutableEntry[]>,
     );
 
     return {

@@ -28,7 +28,7 @@ export function renderWithPropertyProviders(ui: ReactNode, store?: PropertyStore
   };
 }
 
-// Dictionary Provider wrapper for renderHook
+// MutableDictionary Provider wrapper for renderHook
 export function withPropertyProvider(store?: PropertyStoreApi) {
   const testStore = store || createTestPropertyStore();
 
