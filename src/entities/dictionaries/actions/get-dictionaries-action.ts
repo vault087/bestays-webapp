@@ -1,9 +1,9 @@
 import { Dictionary, DictionaryEntry } from "@/entities/dictionaries";
-import { loadAndConvertAllDictionaries } from "@/entities/dictionaries/libs";
+import { loadAndConvertAllDictionaries, loadEntries, loadDictionaries } from "@/entities/dictionaries/libs";
 
 export type GetDictionariesActionResponse = Promise<{
-  dictionaries: Record<number, Dictionary>;
-  entries: Record<number, Record<number, DictionaryEntry>>;
+  dictionaries: Dictionary[];
+  entries: DictionaryEntry[];
   error: string | null;
 }>;
 
@@ -13,13 +13,19 @@ export type GetDictionariesActionResponse = Promise<{
  */
 export async function getDictionariesAction(): GetDictionariesActionResponse {
   try {
-    return await loadAndConvertAllDictionaries();
+    const [dictionariesResponse, entriesResponse] = await Promise.all([loadDictionaries(), loadEntries()]);
+
+    return {
+      dictionaries: dictionariesResponse.dictionaries || [],
+      entries: entriesResponse.entries || [],
+      error: null,
+    };
   } catch (error) {
     console.error("Failed to load dictionaries:", error);
 
     return {
-      dictionaries: {},
-      entries: {},
+      dictionaries: [],
+      entries: [],
       error: error instanceof Error ? error.message : "Unknown error occurred",
     };
   }

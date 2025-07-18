@@ -1,5 +1,5 @@
 import { createMockDictionary, createMockDictionaryEntry } from "@/entities/dictionaries/mocks/dictionary-mock-data";
-import { createDictionaryStore } from "@/entities/dictionaries/stores/dictionary.store";
+import { createDictionaryStore } from "@/entities/dictionaries/stores/-dictionary.store";
 
 describe("Dictionary Store", () => {
   describe("Dictionary Operations", () => {

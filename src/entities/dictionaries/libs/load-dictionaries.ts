@@ -1,14 +1,8 @@
-import {
-  DBDictionary,
-  DBDictionaryEntry,
-  DICTIONARIES_TABLE,
-  DICTIONARY_ENTRIES_TABLE,
-} from "@/entities/dictionaries/types/dictionary.types";
+import { DBDictionary, DICTIONARIES_TABLE } from "@/entities/dictionaries/types/dictionary.types";
 import { supabase } from "@/modules/supabase/clients/client";
 
 export type DictionariesResponse = Promise<{
   dictionaries: DBDictionary[];
-  entries: DBDictionaryEntry[];
   error: string | null;
 }>;
 
@@ -18,21 +12,15 @@ export type DictionariesResponse = Promise<{
 export async function loadDictionaries(): DictionariesResponse {
   try {
     // Fetch dictionaries and entries in parallel
-    const [dictionariesResponse, entriesResponse] = await Promise.all([
-      supabase.from(DICTIONARIES_TABLE).select("*"),
-      supabase.from(DICTIONARY_ENTRIES_TABLE).select("*"),
-    ]);
+    const dictionariesResponse = await supabase.from(DICTIONARIES_TABLE).select("*");
 
     // Check for errors
     if (dictionariesResponse.error) throw dictionariesResponse.error;
-    if (entriesResponse.error) throw entriesResponse.error;
 
     const dictionariesData = dictionariesResponse.data;
-    const entriesData = entriesResponse.data;
 
     return {
       dictionaries: dictionariesData,
-      entries: entriesData,
       error: null,
     };
   } catch (error) {
@@ -40,7 +28,6 @@ export async function loadDictionaries(): DictionariesResponse {
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return {
       dictionaries: [],
-      entries: [],
       error: errorMessage,
     };
   }
