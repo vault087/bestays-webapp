@@ -13,9 +13,8 @@ import {
   DictionaryDescriptionInput,
   DBDictionary,
   DBDictionaryEntry,
-  useDictionarySlice,
   useDictionarySliceSelector,
-  useDictionarySlice
+  useDictionarySlice,
   useEntrySliceSelector,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/form/components/dictionary-meta-info";
