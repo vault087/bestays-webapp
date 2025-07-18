@@ -1,24 +1,24 @@
 import { useCallback, useMemo, useState } from "react";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/features/edit/context/dictionary.store.context";
-import { useDictionaryOnlySlice } from "@/entities/dictionaries/store/hooks";
+import { DBSerialID } from "@/entities/common";
+import { useDictionarySliceSelector, useDictionarySliceGetState } from "@/entities/dictionaries/stores";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
-export function useDictionaryCodeDisplay(id: number): string | undefined {
-  return useDictionaryOnlySlice((state) => state.dictionaries[id]?.code);
+export function useDictionaryCodeDisplay(id: DBSerialID): string | undefined {
+  return useDictionarySliceSelector((state) => state.dictionaries[id]?.code);
 }
 
 // Input hook for dictionary code
-export function useDictionaryCodeInput(id: number): {
+export function useDictionaryCodeInput(id: DBSerialID): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
   error?: string;
 } {
-  const store = useDictionaryStoreContext();
-  const { updateDictionary } = store.getState();
-  const dictionary = store.getState().dictionaries[id];
+  const storeGetState = useDictionarySliceGetState();
+  const { updateDictionary } = storeGetState;
+  const dictionary = storeGetState.dictionaries[id];
   const [value, setValue] = useState<string>(dictionary?.code || "");
 
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "code"), [id]);

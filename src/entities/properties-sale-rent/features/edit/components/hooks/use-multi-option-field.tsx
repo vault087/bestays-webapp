@@ -2,7 +2,7 @@
 import { useMemo, useState, useCallback } from "react";
 import { useStore } from "zustand";
 import { DBSerialID } from "@/entities/common/";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/features/edit/context/dictionary.store.context";
+import { useDictionarySlice } from "@/entities/dictionaries/features/edit/context/dictionary.store.context";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyMultiCodeField,

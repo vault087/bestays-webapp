@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { DBSerialID } from "@/entities/common/";
-import { useEntrySliceActions } from "@/entities/dictionaries/store/hooks";
+import { useEntrySliceGetState } from "@/entities/dictionaries/store/hooks";
 import {
   DBPropertyMultiCodeField,
   useMultiOptionField,
@@ -51,7 +51,7 @@ const AddEntryComponent = ({
   toggleValue: (value: DBSerialID | null | undefined, checked: boolean) => void;
 }) => {
   const [value, setValue] = useState("");
-  const { addEntry } = useEntrySliceActions();
+  const { addEntry } = useEntrySliceGetState();
   const locale = usePropertyLocale();
 
   if (!dictionaryId) return;

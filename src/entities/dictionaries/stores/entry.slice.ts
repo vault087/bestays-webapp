@@ -19,7 +19,7 @@ export interface EntryStoreSliceActions {
 
 export interface EntryStoreSlice extends EntryStoreSliceState, EntryStoreSliceActions {}
 
-export const createEntryEditSlice = (
+export const createEntryStoreSlice = (
   initialEntries: DBDictionaryEntry[],
 ): StateCreator<EntryStoreSlice, [], [], EntryStoreSlice> => {
   const convertedEntries: Record<DBSerialID, Record<DBSerialID, MutableEntry>> = {};

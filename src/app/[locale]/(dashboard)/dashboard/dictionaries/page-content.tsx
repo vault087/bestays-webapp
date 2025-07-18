@@ -13,9 +13,10 @@ import {
   DictionaryDescriptionInput,
   DBDictionary,
   DBDictionaryEntry,
-  useDictionaryStoreContext,
-  useDictionaryOnlySlice,
-  useEntrySlice,
+  useDictionarySlice,
+  useDictionarySliceSelector,
+  useDictionarySlice
+  useEntrySliceSelector,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/edit/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
@@ -30,8 +31,8 @@ interface DictionariesPageContentProps {
 
 function ReactiveDebugCard() {
   // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
-  const dictionaries = useDictionaryOnlySlice((state) => state.dictionaries);
-  const entries = useEntrySlice((state) => state.entries);
+  const dictionaries = useDictionarySliceSelector((state) => state.dictionaries);
+  const entries = useEntrySliceSelector((state) => state.entries);
 
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
@@ -70,7 +71,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 }
 
 const DictionaryCanvas = () => {
-  const store = useDictionaryStoreContext();
+  const store = useDictionarySlice();
   const dictionaryIDs = useStore(
     store,
     useShallow((state) => Object.keys(state.dictionaries).map(Number)),
@@ -122,7 +123,7 @@ const DictionaryCanvas = () => {
 };
 
 const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; locale: string }) => {
-  const store = useDictionaryStoreContext();
+  const store = useDictionarySlice();
   const entriesIds = useStore(
     store,
     useShallow((state) => Object.keys(state.entries[dictionaryId]).map(Number)),

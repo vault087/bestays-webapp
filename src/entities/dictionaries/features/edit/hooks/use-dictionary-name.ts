@@ -1,20 +1,17 @@
 import { useCallback, useMemo, useState } from "react";
-import {
-  useDictionaryOnlySlice,
-  useDictionaryOnlySliceActions,
-  useDictionaryOnlySliceContext,
-} from "@/entities/dictionaries/store/hooks";
+import { DBSerialID } from "@/entities/common";
+import { useDictionarySliceSelector, useDictionarySliceGetState } from "@/entities/dictionaries/stores";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
-export function useDictionaryNameDisplay(id: number, locale: string): string | undefined {
-  return useDictionaryOnlySlice((state) => getAvailableLocalizedText(state.dictionaries[id]?.name, locale));
+export function useDictionaryNameDisplay(id: DBSerialID, locale: string): string | undefined {
+  return useDictionarySliceSelector((state) => getAvailableLocalizedText(state.dictionaries[id]?.name, locale));
 }
 
 // Input hook for dictionary name
 export function useDictionaryNameInput(
-  id: number,
+  id: DBSerialID,
   locale: string,
 ): {
   inputId: string;
@@ -23,9 +20,9 @@ export function useDictionaryNameInput(
   placeholder: string;
   error?: string;
 } {
-  const store = useDictionaryOnlySliceContext();
-  const { updateDictionary } = useDictionaryOnlySliceActions();
-  const name = store.getState().dictionaries[id]?.name;
+  const storeGetState = useDictionarySliceGetState();
+  const { updateDictionary } = storeGetState;
+  const name = storeGetState.dictionaries[id]?.name;
   const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale) || "");
 
   // Generate a unique input ID

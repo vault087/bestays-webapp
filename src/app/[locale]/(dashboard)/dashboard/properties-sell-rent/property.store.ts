@@ -4,10 +4,10 @@ import { persist } from "zustand/middleware";
 import {
   EntryStoreSliceActions,
   EntryStoreSliceState,
-  DictionaryOnlyStoreSliceActions,
-  DictionaryOnlyStoreSliceState,
-  createDictionaryOnlyStoreSlice,
-  createEntryEditSlice,
+  DictionaryStoreSliceActions,
+  DictionaryStoreSliceState,
+  createDictionaryStoreSlice,
+  createEntryStoreSlice,
 } from "@/entities/dictionaries/store/slices";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { Property } from "@/entities/properties-sale-rent/";
