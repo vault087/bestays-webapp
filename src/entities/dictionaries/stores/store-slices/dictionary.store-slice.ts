@@ -1,13 +1,15 @@
 import { produce, enablePatches } from "immer";
 import { StateCreator } from "zustand";
 import { DBDictionary, MutableDictionary } from "@/entities/dictionaries/types/dictionary.types";
-import { DBSerialID, DBTemporarySerialID } from "@/entities/dictionaries/types/shared-db.types";
+import { DBCode, DBSerialID, DBTemporarySerialID } from "@/entities/dictionaries/types/shared-db.types";
 import { LocalizedText } from "@/entities/localized-text";
 
 enablePatches();
 
 export interface DictionaryStoreSliceState {
   dictionaries: Record<DBSerialID, MutableDictionary>;
+  dictionariesByCode: Record<DBCode, DBSerialID>;
+  dictionariesSorting: Record<number, DBSerialID>;
   deletedDictionaryIds: DBSerialID[];
   temporaryDictionaryId: DBTemporarySerialID;
 }
@@ -24,12 +26,21 @@ export const createDictionaryEditSlice = (
   initialDictionaries: DBDictionary[],
 ): StateCreator<DictionaryStoreSlice, [], [], DictionaryStoreSlice> => {
   const convertedDictionaries: Record<DBSerialID, MutableDictionary> = {};
+  const convertedDictionariesByCode: Record<DBCode, DBSerialID> = {};
   initialDictionaries.forEach((dict) => {
     convertedDictionaries[dict.id] = { ...dict, is_new: false };
+    convertedDictionariesByCode[dict.code] = dict.id;
+  });
+
+  const dictionariesSorting: Record<number, DBSerialID> = {};
+  initialDictionaries.forEach((dict, index) => {
+    dictionariesSorting[index] = dict.id;
   });
 
   return (set) => ({
     dictionaries: convertedDictionaries,
+    dictionariesByCode: convertedDictionariesByCode,
+    dictionariesSorting,
     deletedDictionaryIds: [],
     temporaryDictionaryId: -1,
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LocaleLayout from "@/components/layout/locale-layout";
+import LocaleLayout from "@/components/layout/root-layout";
 
 export const metadata: Metadata = {
   title: "Bestays",

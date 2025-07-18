@@ -22,7 +22,7 @@ const montserrat = Montserrat({
   preload: false,
 });
 
-export default async function LocaleLayout({
+export default async function RootLayout({
   children,
   params,
 }: {

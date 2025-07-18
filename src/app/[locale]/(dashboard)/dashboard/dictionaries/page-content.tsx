@@ -3,6 +3,7 @@
 import { PlusCircle } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useMemo } from "react";
+import { useStore } from "zustand";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
   createDictionaryStore,
@@ -15,6 +16,7 @@ import {
   DBDictionary,
   MutableEntry,
   DBDictionaryEntry,
+  useDictionaryStoreContext,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
@@ -34,19 +36,12 @@ function ReactiveDebugCard() {
 }
 
 export default function DictionariesPageContent({ dictionaries, entries }: DictionariesPageContentProps) {
-  const locale = useLocale();
-
   // Create store with the resolved data
   const store = useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
     store.getState().addDictionary({ en: `New Dictionary` });
-  };
-
-  // Function to handle adding a new entry to a specific dictionary
-  const handleAddEntry = (dictionaryId: number) => {
-    store.getState().addEntry(dictionaryId, { en: `New Entry` });
   };
 
   // Check if we have dictionaries
@@ -73,9 +68,6 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
       </div>
     );
   }
-  const entriesByDictionaryId = store.getState().entries;
-
-  const showCode = false;
 
   console.log(
     "dictionaries",
@@ -87,46 +79,8 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
         <div className="flex-1">
           <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
 
-          <div className="flex flex-wrap gap-4">
-            {Object.values(dictionaries).map((dictionary) => {
-              const dictId = dictionary.id;
-              return (
-                <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
-                  <CardContent>
-                    <div className="space-y-1">
-                      {showCode && (
-                        <div>
-                          <DictionaryCodeInput id={dictId} />
-                        </div>
-                      )}
-                      <div>
-                        <DictionaryNameInput id={dictId} locale={locale} />
-                      </div>
-                      <div>
-                        <DictionaryDescriptionInput id={dictId} locale={locale} />
-                        <DictionaryMetaInfoInput id={dictId} />
-                      </div>
-                      <Separator className="my-4" />
-                      {/* MutableDictionary entries */}
-                      {entries[dictId] &&
-                        Object.values(entriesByDictionaryId[dictId]).map((entry: MutableEntry) => {
-                          const entId = Number(entry?.id);
-                          return (
-                            <div key={entId}>
-                              <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale={locale} />
-                            </div>
-                          );
-                        })}
-                      <Separator className="my-4" />
-                      <Button variant="outline" className="w-full" onClick={() => handleAddEntry(dictId)}>
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Add new entry
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="w-">
+            <DictionaryCanvas />
           </div>
 
           <div className="mt-8 text-center">
@@ -142,3 +96,65 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
     </DictionaryStoreProvider>
   );
 }
+
+const DictionaryCanvas = () => {
+  const store = useDictionaryStoreContext();
+  const sorting = useStore(store, (state) => state.dictionariesSorting);
+  const dictionaries = store.getState().dictionaries;
+  const entries = store.getState().entries;
+
+  const locale = useLocale();
+
+  const handleAddEntry = (dictionaryId: number) => {
+    store.getState().addEntry(dictionaryId, { en: `New Entry` });
+  };
+
+  const showCode = false;
+
+  console.log("dictionaries", dictionaries);
+  console.log("entries", entries);
+
+  return (
+    <div className="flex w-full flex-wrap gap-4">
+      {Object.values(sorting).map((dictId) => {
+        const currentEntries = entries[dictId];
+        return (
+          <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+            <CardContent>
+              <div className="space-y-1">
+                {showCode && (
+                  <div>
+                    <DictionaryCodeInput id={dictId} />
+                  </div>
+                )}
+                <div>
+                  <DictionaryNameInput id={dictId} locale={locale} />
+                </div>
+                <div>
+                  <DictionaryDescriptionInput id={dictId} locale={locale} />
+                  <DictionaryMetaInfoInput id={dictId} />
+                </div>
+                <Separator className="my-4" />
+                {/* MutableDictionary entries */}
+                {currentEntries &&
+                  Object.values(currentEntries).map((entry: MutableEntry) => {
+                    const entId = Number(entry?.id);
+                    return (
+                      <div key={entId}>
+                        <DictionaryEntryNameInput dictionaryId={dictId} entryId={entId} locale={locale} />
+                      </div>
+                    );
+                  })}
+                <Separator className="my-4" />
+                <Button variant="outline" className="w-full" onClick={() => handleAddEntry(dictId)}>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add new entry
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+};

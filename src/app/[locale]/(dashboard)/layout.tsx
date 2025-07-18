@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
-import LocaleLayout from "@/components/layout/locale-layout";
+import RootLayout from "@/components/layout/root-layout";
 import { ProtectedProvider } from "./provider";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Best Stays App",
 };
 
-export default async function RootLayout({
+export default async function DashboardLayout({
   params,
   children,
 }: Readonly<{
@@ -16,13 +16,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <LocaleLayout params={params}>
+    <RootLayout params={params}>
       <ProtectedProvider>
         <div className="flex min-h-screen flex-col">
           <DashboardNavBarComponent />
           {children}
         </div>
       </ProtectedProvider>
-    </LocaleLayout>
+    </RootLayout>
   );
 }
