@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import {
   useDictionaryEntryNameDisplay,
   useDictionaryEntryNameInput,
-} from "@/entities/dictionaries/features/edit/hooks/use-dictionary-entry-name";
+} from "@/entities/dictionaries/features/edit/hooks/use-entry-name";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
 export const DictionaryEntryNameDisplay = memo(function DictionaryEntryNameDisplay({

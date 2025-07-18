@@ -1,13 +1,11 @@
-import { useCallback, useMemo } from "react";
-import {
-  useDictionaryActions,
-  useDictionaryStore,
-} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
+import { useCallback, useMemo, useState } from "react";
+import { useDictionaryOnlySliceContext } from "@/entities/dictionaries";
+import { useDictionaryOnlySlice } from "@/entities/dictionaries/store/hooks";
+import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { generateInputId } from "@/utils/generate-input-id";
-
 // Display hook for dictionary name
 export function useDictionaryDescriptionDisplay(id: number, locale: string): string | undefined {
-  return useDictionaryStore((state) => state.dictionaries[id]?.description?.[locale]);
+  return useDictionaryOnlySlice((state) => getAvailableLocalizedText(state.dictionaries[id]?.description, locale));
 }
 
 // Input hook for dictionary name
@@ -21,8 +19,10 @@ export function useDictionaryDescriptionInput(
   placeholder: string;
   error?: string;
 } {
-  const value = useDictionaryDescriptionDisplay(id, locale);
-  const { updateDictionary } = useDictionaryActions();
+  const store = useDictionaryOnlySliceContext();
+  const { updateDictionary } = store.getState();
+  const dictionary = store.getState().dictionaries[id];
+  const [value, setValue] = useState<string>(getAvailableLocalizedText(dictionary?.description, locale) || "");
 
   // Generate a unique input ID
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "desc", locale), [id, locale]);
@@ -30,11 +30,12 @@ export function useDictionaryDescriptionInput(
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateDictionary(id, (draft) => {
-        if (!draft.name) {
-          draft.name = {};
+        if (!draft.description) {
+          draft.description = {};
         }
-        draft.name[locale] = value;
+        draft.description[locale] = value;
       });
     },
     [id, locale, updateDictionary],
@@ -48,7 +49,7 @@ export function useDictionaryDescriptionInput(
     inputId,
     value: value || "",
     onChange,
-    placeholder: `Enter dictionary name (${locale})`,
+    placeholder: `Description (${locale})`,
     error,
   };
 }

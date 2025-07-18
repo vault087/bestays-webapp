@@ -1,8 +1,6 @@
-import { useCallback, useMemo } from "react";
-import {
-  useDictionaryActions,
-  useDictionaryEntry,
-} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
+import { useCallback, useMemo, useState } from "react";
+import { useEntrySliceActions, useEntrySlice, useEntrySliceContext } from "@/entities/dictionaries/";
+import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary entry name
@@ -11,9 +9,8 @@ export function useDictionaryEntryNameDisplay(
   entryId: number,
   locale: string,
 ): string | undefined {
-  const entry = useDictionaryEntry(dictionaryId, entryId);
-  const name = entry?.name?.[locale];
-  return name === null ? undefined : name;
+  const entry = useEntrySlice((state) => state.entries[dictionaryId]?.[entryId]);
+  return getAvailableLocalizedText(entry?.name, locale);
 }
 
 // Input hook for dictionary entry name
@@ -28,8 +25,10 @@ export function useDictionaryEntryNameInput(
   placeholder: string;
   error?: string;
 } {
-  const entry = useDictionaryEntry(dictionaryId, entryId);
-  const { updateEntry } = useDictionaryActions();
+  const store = useEntrySliceContext();
+  const { updateEntry } = useEntrySliceActions();
+  const name = store.getState().entries[dictionaryId]?.[entryId]?.name;
+  const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale) || "");
 
   // Generate a unique input ID
   const inputId = useMemo(() => generateInputId("dict-ent", entryId.toString(), "name", locale), [entryId, locale]);
@@ -37,6 +36,7 @@ export function useDictionaryEntryNameInput(
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateEntry(dictionaryId, entryId, (draft) => {
         if (!draft.name) {
           draft.name = {};
@@ -52,9 +52,9 @@ export function useDictionaryEntryNameInput(
 
   return {
     inputId,
-    value: entry?.name?.[locale] || "",
+    value,
     onChange,
-    placeholder: `Enter entry name (${locale})`,
+    placeholder: `Option name (${locale})`,
     error,
   };
 }

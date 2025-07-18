@@ -1,13 +1,15 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
-  useDictionaryActions,
-  useDictionaryStore,
-} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
+  useDictionaryOnlySlice,
+  useDictionaryOnlySliceActions,
+  useDictionaryOnlySliceContext,
+} from "@/entities/dictionaries/store/hooks";
+import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
 export function useDictionaryNameDisplay(id: number, locale: string): string | undefined {
-  return useDictionaryStore((state) => state.dictionaries[id]?.name?.[locale]);
+  return useDictionaryOnlySlice((state) => getAvailableLocalizedText(state.dictionaries[id]?.name, locale));
 }
 
 // Input hook for dictionary name
@@ -21,8 +23,10 @@ export function useDictionaryNameInput(
   placeholder: string;
   error?: string;
 } {
-  const value = useDictionaryNameDisplay(id, locale);
-  const { updateDictionary } = useDictionaryActions();
+  const store = useDictionaryOnlySliceContext();
+  const { updateDictionary } = useDictionaryOnlySliceActions();
+  const name = store.getState().dictionaries[id]?.name;
+  const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale) || "");
 
   // Generate a unique input ID
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "name", locale), [id, locale]);
@@ -30,6 +34,7 @@ export function useDictionaryNameInput(
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateDictionary(id, (draft) => {
         if (!draft.name) {
           draft.name = {};
@@ -46,9 +51,9 @@ export function useDictionaryNameInput(
 
   return {
     inputId,
-    value: value || "",
+    value,
     onChange,
-    placeholder: `Enter dictionary name (${locale})`,
+    placeholder: `Name (${locale})`,
     error,
   };
 }

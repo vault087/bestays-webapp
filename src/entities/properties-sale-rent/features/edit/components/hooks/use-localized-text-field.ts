@@ -1,6 +1,7 @@
 "use client";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { LocalizedText } from "@/entities/localized-text";
+import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import {
   useProperty,
   useInitialPropertyContext,
@@ -33,16 +34,19 @@ export function usePropertyLocalizedTextInput(
 } {
   const { initialProperty, updateProperty } = useInitialPropertyContext();
   const locale = usePropertyLocale();
+  const initialValue = initialProperty[field] as LocalizedText | null | undefined;
+  const [value, setValue] = useState<string>(getAvailableLocalizedText(initialValue, locale) || "");
+
   // Generate a unique input ID
   const inputId = useMemo(
-    () => generateInputId("property-localized-text", initialProperty.id.slice(-8), field, variant, locale),
+    () => generateInputId("prop-loc-text", initialProperty.id.slice(-8), field, variant, locale),
     [initialProperty.id, locale, field, variant],
   );
 
-  const currentValue = initialProperty[field] as LocalizedText | null | undefined;
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateProperty((draft) => {
         const currentField = draft[field] as LocalizedText | null | undefined;
         if (!currentField) {
@@ -60,7 +64,7 @@ export function usePropertyLocalizedTextInput(
 
   return {
     inputId,
-    value: currentValue?.[locale] || "",
+    value,
     onChange,
     error,
   };

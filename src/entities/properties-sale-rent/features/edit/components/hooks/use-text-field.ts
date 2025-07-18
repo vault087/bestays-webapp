@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   useProperty,
   DBPropertyTextField,
@@ -26,7 +26,9 @@ export function usePropertyTextInput(field: DBPropertyTextField): {
   error?: string;
 } {
   const { initialProperty, updateProperty } = useInitialPropertyContext();
+  const initialValue = initialProperty[field] as string | null | undefined;
   const locale = usePropertyLocale();
+  const [value, setValue] = useState<string>(initialValue || "");
 
   // Generate a unique input ID
   const inputId = useMemo(
@@ -34,10 +36,10 @@ export function usePropertyTextInput(field: DBPropertyTextField): {
     [initialProperty.id, locale, field],
   );
 
-  const currentValue = initialProperty[field] as string | null | undefined;
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateProperty((draft) => {
         draft[field] = value;
       });
@@ -51,7 +53,7 @@ export function usePropertyTextInput(field: DBPropertyTextField): {
 
   return {
     inputId,
-    value: currentValue || "",
+    value,
     onChange,
     error,
   };

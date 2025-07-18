@@ -6,17 +6,18 @@ import { useMemo } from "react";
 import { useStore } from "zustand";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
-  createDictionaryStore,
+  createDefaultDictionaryStore,
   DictionaryStoreProvider,
   DictionaryCodeInput,
   DictionaryNameInput,
   DictionaryEntryNameInput,
-  useDictionaryStore,
   DictionaryDescriptionInput,
   DBDictionary,
   MutableEntry,
   DBDictionaryEntry,
   useDictionaryStoreContext,
+  useDictionaryOnlySlice,
+  useEntrySlice,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/edit/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
@@ -29,15 +30,15 @@ interface DictionariesPageContentProps {
 
 function ReactiveDebugCard() {
   // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
-  const dictionaries = useDictionaryStore((state) => state.dictionaries);
-  const entries = useDictionaryStore((state) => state.entries);
+  const dictionaries = useDictionaryOnlySlice((state) => state.dictionaries);
+  const entries = useEntrySlice((state) => state.entries);
 
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
 
 export default function DictionariesPageContent({ dictionaries, entries }: DictionariesPageContentProps) {
   // Create store with the resolved data
-  const store = useMemo(() => createDictionaryStore(dictionaries, entries), [dictionaries, entries]);
+  const store = useMemo(() => createDefaultDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {

@@ -1,13 +1,11 @@
-import { useCallback, useMemo } from "react";
-import {
-  useDictionaryActions,
-  useDictionaryStore,
-} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
+import { useCallback, useMemo, useState } from "react";
+import { useDictionaryOnlySliceContext } from "@/entities/dictionaries";
+import { useDictionaryOnlySlice } from "@/entities/dictionaries/store/hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
 export function useDictionaryMetaInfoDisplay(id: number): string | undefined {
-  const dictionary = useDictionaryStore((state) => state.dictionaries[id]?.metadata?.info);
+  const dictionary = useDictionaryOnlySlice((state) => state.dictionaries[id]?.metadata?.info);
   return dictionary === null ? undefined : dictionary;
 }
 
@@ -19,14 +17,18 @@ export function useDictionaryMetaInfoInput(id: number): {
   placeholder: string;
   error?: string;
 } {
-  const { updateDictionary } = useDictionaryActions();
-  const value = useDictionaryMetaInfoDisplay(id);
+  const store = useDictionaryOnlySliceContext();
+  const { updateDictionary } = store.getState();
+  const dictionary = store.getState().dictionaries[id];
+  const [value, setValue] = useState<string>(dictionary?.metadata?.info || "");
+
   // Generate a unique input ID
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "meta-info"), [id]);
 
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateDictionary(id, (draft) => {
         if (!draft.metadata) {
           draft.metadata = { info: value };
@@ -39,9 +41,9 @@ export function useDictionaryMetaInfoInput(id: number): {
 
   return {
     inputId,
-    value: value || "",
+    value,
     onChange,
-    placeholder: `Enter dictionary description`,
+    placeholder: `Meta info`,
     error: undefined,
   };
 }

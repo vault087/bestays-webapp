@@ -1,13 +1,11 @@
-import { useCallback, useMemo } from "react";
-import {
-  useDictionaryActions,
-  useDictionaryStore,
-} from "@/entities/dictionaries/features/edit/store/use-dictionary-store";
+import { useCallback, useMemo, useState } from "react";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/store/dictionary-store.context";
+import { useDictionaryOnlySlice } from "@/entities/dictionaries/store/hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: number): string | undefined {
-  return useDictionaryStore((state) => state.dictionaries[id]?.code);
+  return useDictionaryOnlySlice((state) => state.dictionaries[id]?.code);
 }
 
 // Input hook for dictionary code
@@ -18,14 +16,17 @@ export function useDictionaryCodeInput(id: number): {
   placeholder: string;
   error?: string;
 } {
-  const { updateDictionary } = useDictionaryActions();
-  const dictionaryCode = useDictionaryCodeDisplay(id);
+  const store = useDictionaryStoreContext();
+  const { updateDictionary } = store.getState();
+  const dictionary = store.getState().dictionaries[id];
+  const [value, setValue] = useState<string>(dictionary?.code || "");
 
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "code"), [id]);
 
   // Handle change
   const onChange = useCallback(
     (value: string) => {
+      setValue(value);
       updateDictionary(id, (draft) => {
         draft.code = value;
       });
@@ -37,9 +38,9 @@ export function useDictionaryCodeInput(id: number): {
 
   return {
     inputId,
-    value: dictionaryCode || "",
+    value,
     onChange,
-    placeholder: "Enter dictionary code",
+    placeholder: "Code",
     error,
   };
 }

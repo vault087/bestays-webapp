@@ -1,4 +1,3 @@
-import { MutableEntry, MutableDictionary } from "@/entities/dictionaries";
 import { loadDictionaries, loadEntries } from "@/entities/dictionaries/libs";
 import { loadPropertyDetails } from "@/entities/properties-sale-rent/features/edit/libs/load-properties";
 import { Property } from "@/entities/properties-sale-rent/features/edit/types/property-field.types";

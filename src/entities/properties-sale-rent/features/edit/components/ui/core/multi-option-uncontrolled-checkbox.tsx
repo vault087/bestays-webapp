@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { DBSerialID } from "@/entities/common/";
-import { useDictionaryActions } from "@/entities/dictionaries/";
+import { useEntrySliceActions } from "@/entities/dictionaries/store/hooks";
 import {
   DBPropertyMultiCodeField,
   useMultiCodeField,
@@ -45,7 +45,7 @@ export function MultiOptionUncontrolledCheckbox({ field }: { field: DBPropertyMu
 
 const AddEntryComponent = ({ dictionaryId }: { dictionaryId: DBSerialID | undefined }) => {
   const [value, setValue] = useState("");
-  const { addEntry } = useDictionaryActions();
+  const { addEntry } = useEntrySliceActions();
   const locale = usePropertyLocale();
 
   if (!dictionaryId) return;

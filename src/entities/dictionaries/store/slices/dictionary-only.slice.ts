@@ -6,7 +6,7 @@ import { LocalizedText } from "@/entities/localized-text";
 
 enablePatches();
 
-export interface DictionaryStoreSliceState {
+export interface DictionaryOnlyStoreSliceState {
   dictionaries: Record<DBSerialID, MutableDictionary>;
   dictionariesByCode: Record<DBCode, DBSerialID>;
   dictionariesSorting: Record<number, DBSerialID>;
@@ -14,17 +14,17 @@ export interface DictionaryStoreSliceState {
   temporaryDictionaryId: DBTemporarySerialID;
 }
 
-export interface DictionaryStoreSliceActions {
+export interface DictionaryOnlyStoreSliceActions {
   addDictionary: (name: LocalizedText) => void;
   updateDictionary: (id: DBSerialID, updater: (draft: MutableDictionary) => void) => void;
   deleteDictionary: (id: DBSerialID) => void;
 }
 
-export interface DictionaryStoreSlice extends DictionaryStoreSliceState, DictionaryStoreSliceActions {}
+export interface DictionaryOnlyStoreSlice extends DictionaryOnlyStoreSliceState, DictionaryOnlyStoreSliceActions {}
 
-export const createDictionaryEditSlice = (
+export const createDictionaryOnlyStoreSlice = (
   initialDictionaries: DBDictionary[],
-): StateCreator<DictionaryStoreSlice, [], [], DictionaryStoreSlice> => {
+): StateCreator<DictionaryOnlyStoreSlice, [], [], DictionaryOnlyStoreSlice> => {
   const convertedDictionaries: Record<DBSerialID, MutableDictionary> = {};
   const convertedDictionariesByCode: Record<DBCode, DBSerialID> = {};
   initialDictionaries.forEach((dict) => {
@@ -46,7 +46,7 @@ export const createDictionaryEditSlice = (
 
     addDictionary: (name: LocalizedText) =>
       set(
-        produce((draft: DictionaryStoreSlice) => {
+        produce((draft: DictionaryOnlyStoreSlice) => {
           const newDictionary = {
             id: draft.temporaryDictionaryId,
             code: "",
@@ -60,7 +60,7 @@ export const createDictionaryEditSlice = (
 
     updateDictionary: (id: DBSerialID, updater: (draft: MutableDictionary) => void) => {
       set(
-        produce((draft: DictionaryStoreSlice) => {
+        produce((draft: DictionaryOnlyStoreSlice) => {
           if (draft.dictionaries[id]) {
             updater(draft.dictionaries[id]);
           }
@@ -70,7 +70,7 @@ export const createDictionaryEditSlice = (
 
     deleteDictionary: (id: DBSerialID) =>
       set(
-        produce((draft: DictionaryStoreSlice) => {
+        produce((draft: DictionaryOnlyStoreSlice) => {
           const dictionary = draft.dictionaries[id];
           if (dictionary && !dictionary.is_new) {
             draft.deletedDictionaryIds.push(id);
