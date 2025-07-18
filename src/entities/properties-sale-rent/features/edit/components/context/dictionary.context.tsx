@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/stores/contexts/dictionary-store.context";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/features/edit/store/contexts/dictionary-store.context";
 import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/types/dictionary.types";
 
 export type PropertyDictionariesData = {

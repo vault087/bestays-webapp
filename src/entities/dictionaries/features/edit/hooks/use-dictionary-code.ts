@@ -1,5 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { useDictionaryActions, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import {
+  useDictionaryActions,
+  useDictionaryStore,
+} from "@/entities/dictionaries/features/edit/store/hooks/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
@@ -18,7 +21,7 @@ export function useDictionaryCodeInput(id: number): {
   const { updateDictionary } = useDictionaryActions();
   const dictionaryCode = useDictionaryCodeDisplay(id);
 
-  const inputId = useMemo(() => generateInputId("dictionary", id.toString(), "code"), [id]);
+  const inputId = useMemo(() => generateInputId("dict", id.toString(), "code"), [id]);
 
   // Handle change
   const onChange = useCallback(

@@ -1,5 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { useDictionaryActions, useDictionaryStore } from "@/entities/dictionaries/stores/hooks/use-dictionary-store";
+import {
+  useDictionaryActions,
+  useDictionaryStore,
+} from "@/entities/dictionaries/features/edit/store/hooks/use-dictionary-store";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
@@ -19,7 +22,7 @@ export function useDictionaryMetaInfoInput(id: number): {
   const { updateDictionary } = useDictionaryActions();
   const value = useDictionaryMetaInfoDisplay(id);
   // Generate a unique input ID
-  const inputId = useMemo(() => generateInputId("dictionary", id.toString(), "metadata.info"), [id]);
+  const inputId = useMemo(() => generateInputId("dict", id.toString(), "meta-info"), [id]);
 
   // Handle change
   const onChange = useCallback(

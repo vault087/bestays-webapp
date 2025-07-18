@@ -1,22 +1,28 @@
 import React, { memo } from "react";
 import {
-  useDictionaryMetaInfoDisplay,
-  useDictionaryMetaInfoInput,
-} from "@/entities/dictionaries/hooks/use-dictionary-meta-info";
+  useDictionaryNameDisplay,
+  useDictionaryNameInput,
+} from "@/entities/dictionaries/features/edit/hooks/use-dictionary-name";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
-export const DictionaryMetaInfoDisplay = memo(function DictionaryMetaInfoDisplay({ id }: { id: number }) {
-  const description = useDictionaryMetaInfoDisplay(id);
+export const DictionaryNameDisplay = memo(function DictionaryNameDisplay({
+  id,
+  locale,
+}: {
+  id: number;
+  locale: string;
+}) {
+  const name = useDictionaryNameDisplay(id, locale);
 
-  if (!description) {
-    return <span className="text-gray-400">No description</span>;
+  if (!name) {
+    return <span className="text-gray-400">No name ({locale})</span>;
   }
 
-  return <span>{description}</span>;
+  return <span>{name}</span>;
 });
 
-export const DictionaryMetaInfoInput = memo(function DictionaryMetaInfoInput({ id }: { id: number }) {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryMetaInfoInput(id);
+export const DictionaryNameInput = memo(function DictionaryNameInput({ id, locale }: { id: number; locale: string }) {
+  const { inputId, value, onChange, placeholder, error } = useDictionaryNameInput(id, locale);
 
   return (
     <div className="relative space-y-1">

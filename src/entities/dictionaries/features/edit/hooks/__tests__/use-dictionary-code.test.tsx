@@ -1,7 +1,10 @@
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
-import { useDictionaryCodeDisplay, useDictionaryCodeInput } from "@/entities/dictionaries/hooks/use-dictionary-code";
-import { DictionaryStoreTestProvider } from "@/entities/dictionaries/mocks/test-utils";
+import {
+  useDictionaryCodeDisplay,
+  useDictionaryCodeInput,
+} from "@/entities/dictionaries/features/edit/hooks/use-dictionary-code";
+import { DictionaryStoreTestProvider } from "@/entities/dictionaries/features/edit/mocks/test-utils";
 
 describe("useDictionaryCodeDisplay", () => {
   it("should return dictionary code for existing dictionary", () => {

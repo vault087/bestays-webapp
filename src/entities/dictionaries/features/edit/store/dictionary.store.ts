@@ -1,11 +1,15 @@
 import { createStore, StoreApi } from "zustand";
-import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
   DictionaryStoreSliceState,
   DictionaryStoreSliceActions,
   createDictionaryEditSlice,
-} from "./store-slices/dictionary.store-slice";
-import { EntryStoreSliceState, EntryStoreSliceActions, createEntryEditSlice } from "./store-slices/entry.store-slice";
+} from "@/entities/dictionaries/store-slices/dictionary.store-slice";
+import {
+  EntryStoreSliceState,
+  EntryStoreSliceActions,
+  createEntryEditSlice,
+} from "@/entities/dictionaries/store-slices/entry.store-slice";
+import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 
 // Combined Dictionary Store State
 export interface DictionaryStoreState extends DictionaryStoreSliceState, EntryStoreSliceState {

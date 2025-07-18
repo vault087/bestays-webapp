@@ -18,7 +18,7 @@ import {
   DBDictionaryEntry,
   useDictionaryStoreContext,
 } from "@/entities/dictionaries";
-import { DictionaryMetaInfoInput } from "@/entities/dictionaries/components/dictionary-meta-info";
+import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/edit/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component

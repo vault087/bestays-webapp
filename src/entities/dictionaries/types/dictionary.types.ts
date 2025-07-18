@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { DBCodeSchema, DBSerialIDSchema } from "@/entities/common";
 import { LocalizedTextSchema } from "@/entities/localized-text";
-import { DBCodeSchema, DBSerialIDSchema } from "./shared-db.types";
 
 // Table constants
 export const DICTIONARIES_TABLE = "dictionaries";
@@ -35,23 +35,3 @@ export const DBDictionaryEntrySchema = z.object({
 // Types
 export type DBDictionary = z.infer<typeof DBDictionarySchema>;
 export type DBDictionaryEntry = z.infer<typeof DBDictionaryEntrySchema>;
-
-// Form Schemas (extend DB schemas)
-export const EditDictionarySchema = DBDictionarySchema.omit({
-  created_by: true,
-  created_at: true,
-  updated_at: true,
-}).extend({
-  is_new: z.boolean().default(false),
-});
-
-export const EditDictionaryEntrySchema = DBDictionaryEntrySchema.omit({
-  created_by: true,
-  created_at: true,
-  updated_at: true,
-}).extend({
-  is_new: z.boolean().default(false),
-});
-
-export type MutableDictionary = z.infer<typeof EditDictionarySchema>;
-export type MutableEntry = z.infer<typeof EditDictionaryEntrySchema>;

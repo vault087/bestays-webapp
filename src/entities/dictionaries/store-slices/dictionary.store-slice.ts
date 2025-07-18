@@ -1,7 +1,7 @@
 import { produce, enablePatches } from "immer";
 import { StateCreator } from "zustand";
-import { DBDictionary, MutableDictionary } from "@/entities/dictionaries/types/dictionary.types";
-import { DBCode, DBSerialID, DBTemporarySerialID } from "@/entities/dictionaries/types/shared-db.types";
+import { DBCode, DBSerialID, DBTemporarySerialID } from "@/entities/common";
+import { DBDictionary, MutableDictionary } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
 
 enablePatches();
