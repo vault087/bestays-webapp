@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/store/dictionary-store.context";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/store/dictionary.store.context";
 
 export type PropertyDictionariesData = {
   dictionariesByCode: Record<string, MutableDictionary>;

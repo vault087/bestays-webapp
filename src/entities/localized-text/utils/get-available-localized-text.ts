@@ -15,7 +15,6 @@ export function getAvailableLocalizedText(
   if (localizedText[locale]) return localizedText[locale];
   if (localizedText[DEFAULT_LOCALE]) return localizedText[DEFAULT_LOCALE];
 
-  console.log("--- localizedText", localizedText, locale);
   const keys = Object.keys(localizedText);
   if (keys.length === 0) return undefined;
 

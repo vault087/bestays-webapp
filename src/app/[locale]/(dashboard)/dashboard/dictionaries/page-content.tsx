@@ -46,35 +46,6 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
     store.getState().addDictionary({ en: `New Dictionary` });
   };
 
-  // Check if we have dictionaries
-  const dictionaryCount = Object.keys(dictionaries).length;
-  if (dictionaryCount === 0) {
-    return (
-      <div className="flex gap-6 p-4">
-        <div className="flex-1">
-          <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-center text-gray-500">No dictionaries found</p>
-              <div className="mt-8 text-center">
-                <Button variant="outline" className="px-8" onClick={handleAddDictionary}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add new MutableDictionary
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <ReactiveDebugCard />
-      </div>
-    );
-  }
-
-  console.log(
-    "dictionaries",
-    dictionaries.map((d) => d.id),
-  );
   return (
     <DictionaryStoreProvider store={store}>
       <div className="flex gap-6 p-4">
@@ -101,9 +72,9 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 
 const DictionaryCanvas = () => {
   const store = useDictionaryStoreContext();
-  const dictionaries = useStore(
+  const dictionaryIDs = useStore(
     store,
-    useShallow((state) => state.dictionaries),
+    useShallow((state) => Object.keys(state.dictionaries).map(Number)),
   );
   const locale = useLocale();
 
@@ -113,12 +84,11 @@ const DictionaryCanvas = () => {
 
   const showCode = false;
 
-  console.log("dictionaries", dictionaries);
+  console.log("dictionaryIDs", dictionaryIDs);
 
   return (
     <div className="flex w-full flex-wrap gap-4">
-      {Object.values(dictionaries).map((dict) => {
-        const dictId = dict.id;
+      {dictionaryIDs.map((dictId) => {
         return (
           <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
             <CardContent>

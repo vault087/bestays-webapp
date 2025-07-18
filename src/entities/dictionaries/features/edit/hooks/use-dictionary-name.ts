@@ -35,6 +35,7 @@ export function useDictionaryNameInput(
   const onChange = useCallback(
     (value: string) => {
       setValue(value);
+
       updateDictionary(id, (draft) => {
         if (!draft.name) {
           draft.name = {};
