@@ -7,8 +7,6 @@ import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
-  createDefaultDictionaryStore,
-  DictionaryStoreProvider,
   DictionaryCodeInput,
   DictionaryNameInput,
   DictionaryEntryNameInput,
@@ -21,6 +19,8 @@ import {
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/edit/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
+import { StoreProvider } from "@/stores";
+import { createMemoryDictionaryStore } from "./dictionary.store";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
@@ -38,7 +38,7 @@ function ReactiveDebugCard() {
 
 export default function DictionariesPageContent({ dictionaries, entries }: DictionariesPageContentProps) {
   // Create store with the resolved data
-  const store = useMemo(() => createDefaultDictionaryStore(dictionaries, entries), [dictionaries, entries]);
+  const store = useMemo(() => createMemoryDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
@@ -46,7 +46,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
   };
 
   return (
-    <DictionaryStoreProvider store={store}>
+    <StoreProvider store={store}>
       <div className="flex gap-6 p-4">
         <div className="flex-1">
           <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
@@ -65,7 +65,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 
         <ReactiveDebugCard />
       </div>
-    </DictionaryStoreProvider>
+    </StoreProvider>
   );
 }
 
@@ -127,8 +127,6 @@ const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; loca
     store,
     useShallow((state) => Object.keys(state.entries[dictionaryId]).map(Number)),
   );
-
-  console.log("entries");
 
   return (
     <div>

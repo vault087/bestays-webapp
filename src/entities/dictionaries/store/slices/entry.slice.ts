@@ -1,10 +1,8 @@
-import { produce, enablePatches } from "immer";
+import { produce } from "immer";
 import { StateCreator } from "zustand";
 import { DBSerialID, DBTemporarySerialID } from "@/entities/common/";
 import { DBDictionaryEntry, MutableEntry } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
-
-enablePatches();
 
 export interface EntryStoreSliceState {
   entries: Record<DBSerialID, Record<DBSerialID, MutableEntry>>;

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function DashboardPage() {
-  redirect("/dashboard/properties-sell-rent");
+  return <div>Dashboard</div>;
+  // redirect("/dashboard/properties-sell-rent");
 }

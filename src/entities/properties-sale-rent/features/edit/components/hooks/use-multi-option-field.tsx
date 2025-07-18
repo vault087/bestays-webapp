@@ -29,6 +29,7 @@ export type MultiOptionFieldState = {
   setValues: (values: DBSerialID[]) => void;
 };
 
+const EMPTY_OBJECT = {};
 export const useMultiOptionField = ({
   field,
   variant = "",
@@ -36,13 +37,14 @@ export const useMultiOptionField = ({
   field: DBPropertyMultiCodeField;
   variant?: string;
 }): MultiOptionFieldState => {
-  const store = useDictionaryStoreContext();
+  const store = useDictionaryStoreSlice();
 
   const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
   const dictionaryId = useStore(store, (state) => state.dictionariesByCode[dictionaryCode]) || 0;
   const dictionary = useStore(store, (state) => state.dictionaries[dictionaryId]);
-  const entriesRecord = useStore(store, (state) => state.entries?.[dictionaryId]);
+  const entriesRecord = useStore(store, (state) => state.entries?.[dictionaryId] || EMPTY_OBJECT);
 
+  console.log("entriesRecord", dictionary, store.getState());
   const { initialProperty, updateProperty } = useInitialPropertyContext();
   const propertyId = initialProperty.id;
   const locale = usePropertyLocale();

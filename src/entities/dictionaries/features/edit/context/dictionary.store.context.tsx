@@ -1,27 +1,31 @@
 "use client";
 
-import { ReactNode, createContext, useContext } from "react";
-import { DictionaryStoreApi } from "@/entities/dictionaries/store/dictionary.store";
+import { StoreApi } from "zustand";
+import { DictionaryOnlyStoreSlice } from "@/entities/dictionaries/store";
+import { useStoreContext } from "@/stores";
 
-// Create context with proper type safety
-export const DictionaryStoreContext = createContext<DictionaryStoreApi | null>(null);
+// import { ReactNode, createContext, useContext } from "react";
+// import { DictionaryStoreApi } from "@/entities/dictionaries/store/dictionary.store";
 
-// Store Provider props
-export interface DictionaryStoreProviderProps {
-  children: ReactNode;
-  store: DictionaryStoreApi;
-}
+// // Create context with proper type safety
+// export const DictionaryStoreContext = createContext<DictionaryStoreApi | null>(null);
 
-// Store Provider component
-export const DictionaryStoreProvider = ({ children, store }: DictionaryStoreProviderProps) => {
-  return <DictionaryStoreContext.Provider value={store}>{children}</DictionaryStoreContext.Provider>;
-};
+// // Store Provider props
+// export interface DictionaryStoreProviderProps {
+//   children: ReactNode;
+//   store: DictionaryStoreApi;
+// }
+
+// // Store Provider component
+// export const DictionaryStoreProvider = ({ children, store }: DictionaryStoreProviderProps) => {
+//   return <DictionaryStoreContext.Provider value={store}>{children}</DictionaryStoreContext.Provider>;
+// };
 
 // Context hook
-export function useDictionaryStoreContext(): DictionaryStoreApi {
-  const context = useContext(DictionaryStoreContext);
-  if (!context) {
+export function useDictionaryStoreContext(): StoreApi<DictionaryOnlyStoreSlice> {
+  const store = useStoreContext() as StoreApi<DictionaryOnlyStoreSlice>;
+  if (!store) {
     throw new Error("useDictionaryStoreContext must be used within a DictionaryStoreProvider");
   }
-  return context;
+  return store;
 }

@@ -1,2 +1,2 @@
-export * from "./use-dictionary-only-slice";
+export * from "./use-dictionary-slice";
 export * from "./use-entry-slice";
