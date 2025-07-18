@@ -1,12 +1,11 @@
 "use client";
 import { memo, useCallback, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
+import { DictionaryStoreProvider } from "@/entities/dictionaries/features/context/dictionary.store.context";
 import { createDefaultDictionaryStore } from "@/entities/dictionaries/store/dictionary.store";
-import { DictionaryStoreProvider } from "@/entities/dictionaries/store/dictionary.store.context";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
   createPropertyStore,
-  convertToPropertyStore,
   PropertyStoreProvider,
   PropertyStoreHydrated,
   usePropertyStore,
@@ -41,10 +40,7 @@ export default function PropertiesPageClient({
   dictionaries: DBDictionary[];
   entries: DBDictionaryEntry[];
 }) {
-  const propertyStore = useMemo(
-    () => createPropertyStore("properties-sell-rent", convertToPropertyStore(properties)),
-    [properties],
-  );
+  const propertyStore = useMemo(() => createPropertyStore("properties-sell-rent", properties), [properties]);
   const dictionaryStore = useMemo(() => createDefaultDictionaryStore(dictionaries, entries), [dictionaries, entries]);
 
   return (
@@ -81,23 +77,24 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               updateProperty={(updater) => handleUpdateProperty(property.id, updater)}
               key={property.id}
             >
+              {/* <PropertyAreaInput /> */}
+              <PropertyHighlightsCheckbox />
+              {/* <PropertyDivisibleSaleInput /> */}
+              {/* <PropertyOwnershipTypeInput /> */}
+              {/* <PropertyPropertyTypeInput /> */}
               {/* <PropertyLocaleProvider locale={locale}> */}
-              <PropertyImagesInput />
+              {/* <PropertyImagesInput />
               <PropertySizeInput />
               <PropertyRoomsInput />
               <PropertyPriceInput />
               <PropertyAboutInput />
               <PropertyAgentNotesInput />
               <PropertyAreaInput />
-              <PropertyHighlightsCheckbox />
-              <PropertyDivisibleSaleInput />
-              <PropertyOwnershipTypeInput />
-              <PropertyPropertyTypeInput />
               <PropertyLocationStrengthsCheckbox />
               <PropertyTransactionTypesCheckbox />
               <PropertyLandFeaturesCheckbox />
               <PropertyNearbyAttractionsCheckbox />
-              <PropertyLandAndConstructionCheckbox />
+              <PropertyLandAndConstructionCheckbox /> */}
               {/* </PropertyLocaleProvider> */}
             </InitialPropertyProvider>
           ))}

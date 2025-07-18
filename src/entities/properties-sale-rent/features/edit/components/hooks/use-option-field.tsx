@@ -1,11 +1,12 @@
 "use client";
 import { useMemo, useState, useCallback } from "react";
+import { useStore } from "zustand";
 import { DBSerialID } from "@/entities/common/";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/features/context/dictionary.store.context";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
   useInitialPropertyContext,
-  useDictionaryContext,
   covertPropertyFieldToDictionaryCode,
   usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
@@ -32,24 +33,29 @@ export const useOptionField = ({
   field: DBPropertyCodeField;
   variant?: string;
 }): CodeFieldState => {
-  const { dictionariesByCode, entriesByDictionaryCode } = useDictionaryContext();
+  const store = useDictionaryStoreContext();
+
+  const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
+  const dictionaryId = useStore(store, (state) => state.dictionariesByCode[dictionaryCode]) || 0;
+  const dictionary = useStore(store, (state) => state.dictionaries[dictionaryId]);
+  const entriesRecord = useStore(store, (state) => state.entries[dictionaryId]);
+
   const locale = usePropertyLocale();
   const { initialProperty, updateProperty } = useInitialPropertyContext();
 
+  const propertyId = initialProperty.id;
   // Get initial value from context
   const initialValue = initialProperty[field] as DBSerialID;
 
   // Local state for immediate UI updates
   const [currentValue, setCurrentValue] = useState<DBSerialID>(initialValue);
 
-  const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
   // Memoize computed values (options, titles) separately from current value
   const { inputId, options, title, subtitle } = useMemo(() => {
-    const dictionary = dictionariesByCode[dictionaryCode];
-    const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property-option", initialProperty.id.slice(-8), field, variant, locale);
+    const entries = Object.values(entriesRecord) || [];
+    const inputId = generateInputId("property-option", propertyId.slice(-8), field, variant, locale);
 
-    const options: OptionFieldState[] = entries.map((entry) => ({
+    const options: OptionFieldState[] = Object.values(entries).map((entry) => ({
       key: entry.id,
       label: getAvailableLocalizedText(entry.name, locale) || "",
     }));
@@ -58,18 +64,18 @@ export const useOptionField = ({
     const subtitle = getAvailableLocalizedText(dictionary?.description, locale) || "";
 
     return { inputId, options, title, subtitle };
-  }, [dictionariesByCode, entriesByDictionaryCode, dictionaryCode, field, variant, locale, initialProperty.id]);
+  }, [dictionary, entriesRecord, field, variant, locale, propertyId]);
 
   // Create current value option for display
   const currentValueOption = useMemo(() => {
-    const entries = entriesByDictionaryCode[dictionaryCode];
+    const entries = Object.values(entriesRecord) || [];
     const dictionaryEntry = entries.find((entry) => entry.id === currentValue);
     const label = getAvailableLocalizedText(dictionaryEntry?.name, locale) || "";
     return {
       key: currentValue,
       label,
     } as OptionFieldState;
-  }, [entriesByDictionaryCode, currentValue, locale, dictionaryCode]);
+  }, [entriesRecord, currentValue, locale]);
 
   // Update both local state and context
   const setValue = useCallback(

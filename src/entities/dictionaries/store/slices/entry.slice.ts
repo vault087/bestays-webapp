@@ -14,7 +14,7 @@ export interface EntryStoreSliceState {
 
 // Entry Store Actions
 export interface EntryStoreSliceActions {
-  addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => void;
+  addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => MutableEntry;
   updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => void;
   deleteEntry: (dictionaryId: DBSerialID, entryId: DBSerialID) => void;
 }
@@ -44,16 +44,18 @@ export const createEntryEditSlice = (
     deletedEntryIds: [],
     temporaryEntryId: -1,
 
-    addEntry: (dictionaryId: DBSerialID, name: LocalizedText) =>
+    addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => {
+      const newEntry = {
+        id: -1, // Will be updated in set
+        is_active: true,
+        dictionary_id: dictionaryId,
+        name,
+        is_new: true,
+      };
+
       set(
         produce((draft: EntryStoreSlice) => {
-          const newEntry = {
-            id: draft.temporaryEntryId,
-            is_active: true,
-            dictionary_id: dictionaryId,
-            name,
-            is_new: true,
-          };
+          newEntry.id = draft.temporaryEntryId;
 
           if (!draft.entries[dictionaryId]) {
             draft.entries[dictionaryId] = {};
@@ -61,7 +63,10 @@ export const createEntryEditSlice = (
           draft.entries[dictionaryId][newEntry.id] = newEntry;
           draft.temporaryEntryId--;
         }),
-      ),
+      );
+
+      return newEntry;
+    },
 
     updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => {
       set(

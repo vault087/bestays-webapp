@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useContext } from "react";
-import { DictionaryStoreApi } from "./dictionary.store";
+import { DictionaryStoreApi } from "@/entities/dictionaries/store/dictionary.store";
 
 // Create context with proper type safety
 export const DictionaryStoreContext = createContext<DictionaryStoreApi | null>(null);

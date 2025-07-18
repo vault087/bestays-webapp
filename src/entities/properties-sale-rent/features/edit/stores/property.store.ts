@@ -1,8 +1,18 @@
 import { produce } from "immer";
 import { StoreApi, createStore } from "zustand";
 import { persist } from "zustand/middleware";
+import {
+  EntryStoreSliceActions,
+  EntryStoreSliceState,
+  DictionaryOnlyStoreSliceActions,
+  DictionaryOnlyStoreSliceState,
+  createDictionaryOnlyStoreSlice,
+  createEntryEditSlice,
+} from "@/entities/dictionaries/store/slices";
+import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { Property } from "@/entities/properties-sale-rent/";
 import { generateUUID } from "@/utils/generate-uuid";
+import { convertToPropertyStore } from "./utils/convert-to-store-props";
 
 // MutableDictionary Store State
 export interface PropertyStoreState {
@@ -23,10 +33,11 @@ export interface PropertyStoreActions {
 
 // Combined store type
 export type PropertyStore = PropertyStoreState & PropertyStoreActions;
+
 export type PropertyStoreApi = StoreApi<PropertyStore>;
 
 // Store creator function
-export function createPropertyStore(store_id: string, properties: Record<string, Property>): PropertyStoreApi {
+export function createPropertyStore(store_id: string, properties: Property[]): PropertyStoreApi {
   function buildInitialState(initialProperties: Record<string, Property>): PropertyStoreState {
     return {
       dbProperties: initialProperties,
@@ -41,7 +52,7 @@ export function createPropertyStore(store_id: string, properties: Record<string,
   return createStore<PropertyStore>()(
     persist(
       (set) => ({
-        ...buildInitialState(properties),
+        ...buildInitialState(convertToPropertyStore(properties)),
 
         // Property actions
         addProperty: (property: Property) =>

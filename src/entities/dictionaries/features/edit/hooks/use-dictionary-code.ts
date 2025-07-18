@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useDictionaryStoreContext } from "@/entities/dictionaries/store/dictionary.store.context";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/features/context/dictionary.store.context";
 import { useDictionaryOnlySlice } from "@/entities/dictionaries/store/hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 

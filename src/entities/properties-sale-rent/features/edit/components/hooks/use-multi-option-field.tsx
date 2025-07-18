@@ -1,10 +1,11 @@
 "use client";
-import { useMemo, useState, useCallback, useRef } from "react";
+import { useMemo, useState, useCallback } from "react";
+import { useStore } from "zustand";
 import { DBSerialID } from "@/entities/common/";
+import { useDictionaryStoreContext } from "@/entities/dictionaries/features/context/dictionary.store.context";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyMultiCodeField,
-  useDictionaryContext,
   useInitialPropertyContext,
   covertPropertyFieldToDictionaryCode,
   usePropertyLocale,
@@ -35,8 +36,15 @@ export const useMultiCodeField = ({
   field: DBPropertyMultiCodeField;
   variant?: string;
 }): MultiCodeFieldState => {
-  const { dictionariesByCode, entriesByDictionaryCode } = useDictionaryContext();
+  const store = useDictionaryStoreContext();
+
+  const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
+  const dictionaryId = useStore(store, (state) => state.dictionariesByCode[dictionaryCode]) || 0;
+  const dictionary = useStore(store, (state) => state.dictionaries[dictionaryId]);
+  const entriesRecord = useStore(store, (state) => state.entries[dictionaryId]);
+
   const { initialProperty, updateProperty } = useInitialPropertyContext();
+  const propertyId = initialProperty.id;
   const locale = usePropertyLocale();
 
   // Get initial values from context
@@ -46,34 +54,27 @@ export const useMultiCodeField = ({
   const [currentValues, setCurrentValues] = useState<DBSerialID[]>(initialValues);
 
   // Memoize computed values (options, titles) separately from current values
-  const { inputId, dictionaryId, options, title, subtitle } = useMemo(() => {
-    const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
-    const dictionary = dictionariesByCode[dictionaryCode];
-    const entries = entriesByDictionaryCode[dictionaryCode];
-    const inputId = generateInputId("property-multi-option", initialProperty.id.slice(-8), field, variant, locale);
+  const { inputId, options, title, subtitle } = useMemo(() => {
+    const entries = Object.values(entriesRecord) || [];
+    const inputId = generateInputId("property-multi-option", propertyId.slice(-8), field, variant, locale);
 
     const options: MultiOption[] = entries.map((entry) => ({
       key: entry.id,
       label: getAvailableLocalizedText(entry.name, locale) || "",
-      inputId: generateInputId("multi-option", initialProperty.id, field + "-" + entry.id, variant, locale),
+      inputId: generateInputId("multi-option", propertyId, field + "-" + entry.id, variant, locale),
     }));
 
     const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code || "";
     const subtitle = getAvailableLocalizedText(dictionary?.description, locale) || "";
 
     return { inputId, dictionaryId: dictionary?.id, options, title, subtitle };
-  }, [dictionariesByCode, entriesByDictionaryCode, field, variant, locale, initialProperty.id]);
-
-  // Update both local state and context
-  // ✅ OPTIMIZED - Stable callback with ref
-  const currentValuesRef = useRef(currentValues);
-  currentValuesRef.current = currentValues;
+  }, [dictionary, entriesRecord, field, variant, locale, propertyId]);
 
   const toggleValue = useCallback(
     (value: DBSerialID | null | undefined, checked: boolean) => {
       if (!value) return;
 
-      const current = currentValuesRef.current; // ← Access via ref
+      const current = currentValues; // ← Access via ref
       const newValues = checked ? [...current, value] : current.filter((v) => v !== value);
 
       setCurrentValues(newValues);
@@ -81,7 +82,7 @@ export const useMultiCodeField = ({
         draft[field] = newValues;
       });
     },
-    [updateProperty, field], // ← No currentValues dependency
+    [updateProperty, field, currentValues], // ← No currentValues dependency
   );
 
   const setValues = useCallback(

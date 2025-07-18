@@ -37,13 +37,19 @@ export function MultiOptionUncontrolledCheckbox({ field }: { field: DBPropertyMu
           </div>
         ))}
       </div>
-      <AddEntryComponent dictionaryId={dictionaryId} />
+      <AddEntryComponent dictionaryId={dictionaryId} toggleValue={toggleValue} />
       <PropertyFieldFooter text={subtitle} />
     </div>
   );
 }
 
-const AddEntryComponent = ({ dictionaryId }: { dictionaryId: DBSerialID | undefined }) => {
+const AddEntryComponent = ({
+  dictionaryId,
+  toggleValue,
+}: {
+  dictionaryId: DBSerialID | undefined;
+  toggleValue: (value: DBSerialID | null | undefined, checked: boolean) => void;
+}) => {
   const [value, setValue] = useState("");
   const { addEntry } = useEntrySliceActions();
   const locale = usePropertyLocale();
@@ -54,7 +60,9 @@ const AddEntryComponent = ({ dictionaryId }: { dictionaryId: DBSerialID | undefi
     const name = {
       [locale]: value,
     };
-    addEntry(dictionaryId, name);
+    const entry = addEntry(dictionaryId, name);
+    toggleValue(entry.id, true);
+    setValue("");
   };
 
   return (
