@@ -20,7 +20,7 @@ import {
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/edit/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 import { StoreProvider } from "@/stores";
-import { createMemoryDictionaryStore } from "./dictionary.store";
+import { createDictionaryPageStore } from "./store";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
@@ -38,7 +38,7 @@ function ReactiveDebugCard() {
 
 export default function DictionariesPageContent({ dictionaries, entries }: DictionariesPageContentProps) {
   // Create store with the resolved data
-  const store = useMemo(() => createMemoryDictionaryStore(dictionaries, entries), [dictionaries, entries]);
+  const store = useMemo(() => createDictionaryPageStore(dictionaries, entries), [dictionaries, entries]);
 
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
