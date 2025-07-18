@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import {
   useDictionaryCodeDisplay,
   useDictionaryCodeInput,
-} from "@/entities/dictionaries/features/edit/hooks/use-dictionary-code";
+} from "@/entities/dictionaries/features/form/hooks/use-dictionary-code";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn/components/ui/floating-label-input";
 
 export const DictionaryCodeInput = memo(function DictionaryCodeInput({ id }: { id: number }) {

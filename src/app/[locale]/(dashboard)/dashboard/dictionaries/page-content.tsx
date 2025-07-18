@@ -18,7 +18,7 @@ import {
   useDictionarySlice
   useEntrySliceSelector,
 } from "@/entities/dictionaries";
-import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/edit/components/dictionary-meta-info";
+import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/form/components/dictionary-meta-info";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 import { StoreProvider } from "@/stores";
 import { createDictionaryPageStore } from "./store";

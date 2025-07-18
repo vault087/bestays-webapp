@@ -1,18 +1,20 @@
 import React, { memo } from "react";
 import {
-  useDictionaryNameDisplay,
-  useDictionaryNameInput,
-} from "@/entities/dictionaries/features/edit/hooks/use-dictionary-name";
+  useDictionaryEntryNameDisplay,
+  useDictionaryEntryNameInput,
+} from "@/entities/dictionaries/features/form/hooks/use-entry-name";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
-export const DictionaryNameDisplay = memo(function DictionaryNameDisplay({
-  id,
+export const DictionaryEntryNameDisplay = memo(function DictionaryEntryNameDisplay({
+  dictionaryId,
+  entryId,
   locale,
 }: {
-  id: number;
+  dictionaryId: number;
+  entryId: number;
   locale: string;
 }) {
-  const name = useDictionaryNameDisplay(id, locale);
+  const name = useDictionaryEntryNameDisplay(dictionaryId, entryId, locale);
 
   if (!name) {
     return <span className="text-gray-400">No name ({locale})</span>;
@@ -21,9 +23,17 @@ export const DictionaryNameDisplay = memo(function DictionaryNameDisplay({
   return <span>{name}</span>;
 });
 
-export const DictionaryNameInput = memo(function DictionaryNameInput({ id, locale }: { id: number; locale: string }) {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryNameInput(id, locale);
-
+export const DictionaryEntryNameInput = memo(function DictionaryEntryNameInput({
+  dictionaryId,
+  entryId,
+  locale,
+}: {
+  dictionaryId: number;
+  entryId: number;
+  locale: string;
+}) {
+  const { inputId, value, onChange, placeholder, error } = useDictionaryEntryNameInput(dictionaryId, entryId, locale);
+  console.log("value", value);
   return (
     <div className="relative space-y-1">
       <FloatingInput

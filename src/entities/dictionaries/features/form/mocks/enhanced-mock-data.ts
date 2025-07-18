@@ -1,4 +1,4 @@
-import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/features/edit";
+import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/features/form";
 
 // Enhanced mock dictionaries covering all property fields
 export const enhancedMockDictionaries: MutableDictionary[] = [
