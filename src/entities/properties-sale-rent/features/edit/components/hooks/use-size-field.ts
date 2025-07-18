@@ -9,7 +9,7 @@ import {
   useDictionaryContext,
   DBSizeEntry,
   DBSize,
-  covertPropertyFieldToDictionaryCode,
+  PropertyFieldToDictionaryCodeMap,
 } from "@/entities/properties-sale-rent";
 import { generateInputId } from "@/utils/generate-input-id";
 
@@ -43,7 +43,7 @@ export function usePropertySizeInput(
   const [sizeValue, setSizeValue] = useState<string>(initialSize?.value.toString() || "");
   const [sizeUnit, setSizeUnit] = useState<DBSerialID>(initialSize?.unit);
 
-  const dictionaryCode = covertPropertyFieldToDictionaryCode["size.unit"];
+  const dictionaryCode = PropertyFieldToDictionaryCodeMap["size.unit"] || "";
 
   console.log("initialSize", initialProperty);
   // Memoize computed values (options, titles) separately from current value

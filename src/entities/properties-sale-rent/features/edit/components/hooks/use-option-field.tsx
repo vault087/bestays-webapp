@@ -7,7 +7,7 @@ import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
   useInitialPropertyContext,
-  covertPropertyFieldToDictionaryCode,
+  PropertyFieldToDictionaryCodeMap,
   usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
 import { generateInputId } from "@/utils";
@@ -35,7 +35,7 @@ export const useOptionField = ({
 }): OptionFieldState => {
   const store = useDictionarySlice();
 
-  const dictionaryCode = covertPropertyFieldToDictionaryCode[field];
+  const dictionaryCode = PropertyFieldToDictionaryCodeMap[field] || "";
   const dictionaryId = useStore(store, (state) => state.dictionariesByCode[dictionaryCode]) || 0;
   const dictionary = useStore(store, (state) => state.dictionaries[dictionaryId]);
   const entriesRecord = useStore(store, (state) => state.entries[dictionaryId]);

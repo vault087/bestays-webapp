@@ -23,7 +23,7 @@ export type DBPropertySizeField = keyof DBSize;
 export type DBPropertyPriceField = keyof Pick<DBPrice, "rai" | "total" | "sale">;
 export type DBPropertyRoomsField = keyof DBRooms;
 
-export const covertPropertyFieldToDictionaryCode: Record<
+export const PropertyFieldToDictionaryCodeMap: Record<
   DBPropertyMultiCodeField | DBPropertyCodeField | "size.unit",
   DBCode
 > = {

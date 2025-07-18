@@ -1,2 +1,2 @@
 export * from "./property.types";
-export * from "./property-field.types";
+export * from "./property-fields.types";
