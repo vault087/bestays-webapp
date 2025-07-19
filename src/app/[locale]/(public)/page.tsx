@@ -52,7 +52,7 @@ export default async function HomePage() {
           <h2 className="mb-8 text-center text-3xl font-bold text-gray-900">For Rent</h2>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {/* Featured Property Card */}
+            {/* Featured MutableProperty Card */}
             <div className="col-span-1 overflow-hidden rounded-xl bg-white shadow-md lg:col-span-2">
               <div className="relative h-64 w-full">
                 <Image
@@ -120,7 +120,7 @@ export default async function HomePage() {
           <h2 className="mb-8 text-center text-3xl font-bold text-gray-900">For Sale</h2>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {/* Featured Property Card */}
+            {/* Featured MutableProperty Card */}
             <div className="col-span-1 overflow-hidden rounded-xl bg-white shadow-md lg:col-span-2">
               <div className="relative h-64 w-full">
                 <Image

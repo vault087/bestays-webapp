@@ -29,7 +29,7 @@ export function useDictionaryEntryNameInput(
   const staticState = useDictionaryFormStaticStore();
   const { updateEntry } = staticState;
   const name = staticState.entries[dictionaryId]?.[entryId]?.name;
-  const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale) || "");
+  const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale));
 
   // Generate a unique input ID
   const inputId = useMemo(() => generateInputId("dict-ent", entryId.toString(), "name", locale), [entryId, locale]);

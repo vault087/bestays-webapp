@@ -6,7 +6,7 @@ import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/d
 import { createDictionaryStoreSlice, DictionaryStoreSlice } from "./slices/dictionary.slice";
 import { EntryStoreSlice } from "./slices/entry.slice";
 
-export type DictionaryPageStore = DictionaryStoreSlice &
+export type DictionaryFormStore = DictionaryStoreSlice &
   EntryStoreSlice & {
     hydrated: boolean;
   };
@@ -15,10 +15,10 @@ export type DictionaryPageStore = DictionaryStoreSlice &
 export function createDictionaryFormStore(
   dictionaries: DBDictionary[],
   entries: DBDictionaryEntry[],
-): StoreApi<DictionaryPageStore> {
+): StoreApi<DictionaryFormStore> {
   const dictionarySliceCreator = createDictionaryStoreSlice(dictionaries, entries);
 
-  return createStore<DictionaryPageStore>()(
+  return createStore<DictionaryFormStore>()(
     persist(
       (set, get, api) => {
         return {
@@ -36,7 +36,6 @@ export function createDictionaryFormStore(
           dictionaryIds: state.dictionaryIds,
           entriesIds: state.entriesIds,
           entries: state.entries,
-          hydrated: state.hydrated,
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {

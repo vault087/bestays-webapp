@@ -9,7 +9,7 @@ export interface DictionaryStoreSliceState extends EntryStoreSliceState {
   dbDictionaries: DBDictionary[];
   dictionaries: Record<DBSerialID, MutableDictionary>;
   dictionaryIds: DBSerialID[]; // dictionaryIds
-  dictionariesByCode: Record<DBCode, DBSerialID>;
+  dictionaryByCode: Record<DBCode, DBSerialID>;
   deletedDictionaryIds: DBSerialID[];
   temporaryDictionaryId: DBTemporarySerialID;
 }
@@ -40,7 +40,7 @@ export const createDictionaryStoreSlice = (
     dbDictionaries: initialDictionaries,
     dictionaries: convertedDictionaries,
     dictionaryIds: dictionaryIds,
-    dictionariesByCode: convertedDictionariesByCode,
+    dictionaryByCode: convertedDictionariesByCode,
     deletedDictionaryIds: [],
     temporaryDictionaryId: -1,
 

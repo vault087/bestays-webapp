@@ -2,17 +2,17 @@
 
 import { ReactNode, createContext } from "react";
 import { StoreApi } from "zustand";
-import { DictionaryPageStore } from "./dictionary-form.store";
+import { DictionaryFormStore } from "./dictionary-form.store";
 import { useDictionaryFormStore } from "./dictionary-form.store.hooks";
 
-export const DictionaryFormStoreContext = createContext<StoreApi<DictionaryPageStore> | null>(null);
+export const DictionaryFormStoreContext = createContext<StoreApi<DictionaryFormStore> | null>(null);
 
 export const DictionaryFormStoreProvider = ({
   children,
   store,
 }: {
   children: ReactNode;
-  store: StoreApi<DictionaryPageStore>;
+  store: StoreApi<DictionaryFormStore>;
 }) => {
   return <DictionaryFormStoreContext.Provider value={store}>{children}</DictionaryFormStoreContext.Provider>;
 };
@@ -24,9 +24,9 @@ export function DictionaryFormStoreHydrated({
   children: React.ReactNode;
   fallback?: React.ReactNode;
 }) {
-  const hasHydrated = useDictionaryFormStore((state) => state.hydrated);
+  const hydrated = useDictionaryFormStore((state) => state.hydrated);
 
-  if (!hasHydrated) {
+  if (!hydrated) {
     return <>{fallback}</>;
   }
 

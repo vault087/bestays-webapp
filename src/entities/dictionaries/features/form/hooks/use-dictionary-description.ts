@@ -25,7 +25,7 @@ export function useDictionaryDescriptionInput(
   const staticState = useDictionaryFormStaticStore();
   const { updateDictionary } = staticState;
   const dictionary = staticState.dictionaries[id];
-  const [value, setValue] = useState<string>(getAvailableLocalizedText(dictionary?.description, locale) || "");
+  const [value, setValue] = useState<string>(getAvailableLocalizedText(dictionary?.description, locale));
 
   // Generate a unique input ID
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "desc", locale), [id, locale]);

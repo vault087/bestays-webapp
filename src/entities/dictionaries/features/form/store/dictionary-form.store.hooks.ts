@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { StoreApi, useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { DictionaryPageStore } from "./dictionary-form.store";
+import { DictionaryFormStore } from "./dictionary-form.store";
 import { DictionaryFormStoreContext } from "./dictionary-form.store.provider";
 
-export function useDictionaryFormStoreContext(): StoreApi<DictionaryPageStore> {
+export function useDictionaryFormStoreContext(): StoreApi<DictionaryFormStore> {
   const context = useContext(DictionaryFormStoreContext);
   if (!context) {
     throw new Error("useStoreContext must be used within a StoreProvider");
@@ -12,12 +12,12 @@ export function useDictionaryFormStoreContext(): StoreApi<DictionaryPageStore> {
   return context;
 }
 
-export function useDictionaryFormStore<T>(selector: (state: DictionaryPageStore) => T): T {
+export function useDictionaryFormStore<T>(selector: (state: DictionaryFormStore) => T): T {
   const store = useDictionaryFormStoreContext();
   return useStore(store, useShallow(selector));
 }
 
-export function useDictionaryFormStaticStore(): DictionaryPageStore {
+export function useDictionaryFormStaticStore(): DictionaryFormStore {
   const store = useDictionaryFormStoreContext();
   return store.getState();
 }

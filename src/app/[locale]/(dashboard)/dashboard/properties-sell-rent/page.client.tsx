@@ -5,63 +5,62 @@ import { createDictionaryFormStore } from "@/entities/dictionaries/features/form
 import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
-  createPropertyStore,
-  PropertyStoreProvider,
-  PropertyStoreHydrated,
-  usePropertyStore,
-  useCurrentProperties,
-  usePropertyActions,
-  Property,
-  PropertyAboutInput,
+  PropertyFormStoreProvider,
+  PropertyFormStoreHydrated,
+  MutableProperty,
+  // PropertyAboutInput,
   PropertyAgentNotesInput,
-  PropertyAreaInput,
-  PropertyDivisibleSaleInput,
-  PropertyOwnershipTypeInput,
-  PropertyPropertyTypeInput,
-  PropertyHighlightsCheckbox,
-  PropertyLocationStrengthsCheckbox,
-  PropertyTransactionTypesCheckbox,
-  PropertyLandFeaturesCheckbox,
-  PropertyNearbyAttractionsCheckbox,
-  PropertyImagesInput,
-  PropertyLandAndConstructionCheckbox,
-  PropertyPriceInput,
-  PropertySizeInput,
-  InitialPropertyProvider,
+  // PropertyAreaInput,
+  // PropertyDivisibleSaleInput,
+  // PropertyOwnershipTypeInput,
+  // PropertyPropertyTypeInput,
+  // PropertyHighlightsCheckbox,
+  // PropertyLocationStrengthsCheckbox,
+  // PropertyTransactionTypesCheckbox,
+  // PropertyLandFeaturesCheckbox,
+  // PropertyNearbyAttractionsCheckbox,
+  // PropertyImagesInput,
+  // PropertyLandAndConstructionCheckbox,
+  // PropertyPriceInput,
+  // PropertySizeInput,
+  usePropertyFormStore,
+  createPropertyFormStore,
+  usePropertyFormStaticStore,
 } from "@/entities/properties-sale-rent/";
-import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/edit/components/ui/property-rooms-input";
+// import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/components/rooms-input";
+import { InitialPropertyProvider } from "@/entities/properties-sale-rent/features/form/context/initial-property.context";
 
 export default function PropertiesPageClient({
   properties,
   dictionaries,
   entries,
 }: {
-  properties: Property[];
+  properties: MutableProperty[];
   dictionaries: DBDictionary[];
   entries: DBDictionaryEntry[];
 }) {
-  const propertyStore = useMemo(() => createPropertyStore("properties-sell-rent", properties), [properties]);
+  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", properties[0]), [properties]);
   const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
 
   return (
     <DictionaryFormStoreProvider store={dictionaryStore}>
-      <PropertyStoreProvider store={propertyStore}>
-        <PropertyStoreHydrated fallback={<div>Loading...</div>}>
+      <PropertyFormStoreProvider store={propertyStore}>
+        <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
           <PropertyListCanvas />
-        </PropertyStoreHydrated>
-      </PropertyStoreProvider>
+        </PropertyFormStoreHydrated>
+      </PropertyFormStoreProvider>
     </DictionaryFormStoreProvider>
   );
 }
 
 const PropertyListCanvas = memo(function PropertyListCanvas() {
-  const properties = useCurrentProperties();
+  const property = usePropertyFormStore((state) => state.property);
 
-  const updateProperty = usePropertyActions().updateProperty;
+  const { updateProperty } = usePropertyFormStaticStore();
 
   const handleUpdateProperty = useCallback(
-    (id: string, updater: (draft: Property) => void) => {
-      updateProperty(id, updater);
+    (updater: (draft: MutableProperty) => void) => {
+      updateProperty(updater);
     },
     [updateProperty],
   );
@@ -71,33 +70,28 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
       <p>Properties</p>
       <div className="flex flex-row gap-4">
         <div className="grid-cols grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {properties.slice(0, 1).map((property) => (
-            <InitialPropertyProvider
-              initialProperty={property}
-              updateProperty={(updater) => handleUpdateProperty(property.id, updater)}
-              key={property.id}
-            >
-              {/* <PropertyAreaInput /> */}
-              <PropertyHighlightsCheckbox />
-              {/* <PropertyDivisibleSaleInput /> */}
-              {/* <PropertyOwnershipTypeInput /> */}
-              {/* <PropertyPropertyTypeInput /> */}
-              {/* <PropertyLocaleProvider locale={locale}> */}
-              {/* <PropertyImagesInput />
+          <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}>
+            <PropertyAgentNotesInput />
+
+            {/* <PropertyAreaInput /> */}
+            {/* <PropertyHighlightsCheckbox /> */}
+            {/* <PropertyDivisibleSaleInput /> */}
+            {/* <PropertyOwnershipTypeInput /> */}
+            {/* <PropertyPropertyTypeInput /> */}
+            {/* <PropertyLocaleProvider locale={locale}> */}
+            {/* <PropertyImagesInput />
               <PropertySizeInput />
               <PropertyRoomsInput />
               <PropertyPriceInput />
               <PropertyAboutInput />
-              <PropertyAgentNotesInput />
               <PropertyAreaInput />
               <PropertyLocationStrengthsCheckbox />
               <PropertyTransactionTypesCheckbox />
               <PropertyLandFeaturesCheckbox />
               <PropertyNearbyAttractionsCheckbox />
               <PropertyLandAndConstructionCheckbox /> */}
-              {/* </PropertyLocaleProvider> */}
-            </InitialPropertyProvider>
-          ))}
+            {/* </PropertyLocaleProvider> */}
+          </InitialPropertyProvider>
         </div>
         <ReactiveDebugCard />
       </div>
@@ -107,11 +101,11 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
 
 function ReactiveDebugCard() {
   // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
-  const properties = usePropertyStore((state) => state.properties);
+  const property = usePropertyFormStore((state) => state.property);
   const debug = useMemo(() => {
     return {
-      property: Object.values(properties).slice(0, 1),
+      property,
     };
-  }, [properties]);
+  }, [property]);
   return <DebugCard label="Error State Debug" json={debug} />;
 }

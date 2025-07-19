@@ -5,7 +5,7 @@ export const mockDictionaries: Record<number, MutableDictionary> = {
   1: {
     id: 1,
     code: "PROPERTY_TYPES",
-    name: { en: "Property Types", th: "ประเภทอสังหาริมทรัพย์", ru: "Типы недвижимости" },
+    name: { en: "MutableProperty Types", th: "ประเภทอสังหาริมทรัพย์", ru: "Типы недвижимости" },
     is_new: false,
   },
   2: {

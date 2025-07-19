@@ -1,6 +1,6 @@
 import { loadDictionaries, loadEntries } from "@/entities/dictionaries/libs";
-import { loadPropertyDetails } from "@/entities/properties-sale-rent/features/edit/libs/load-properties";
-import { Property } from "@/entities/properties-sale-rent/features/edit/types/property-field.types";
+import { loadPropertyDetails } from "@/entities/properties-sale-rent/libs/load-properties";
+import { MutableProperty } from "@/entities/properties-sale-rent/features/form/types/mutable-property.types";
 import PropertiesPageClient from "./page.client";
 
 export default async function PropertiesSellRentPage() {
@@ -10,7 +10,7 @@ export default async function PropertiesSellRentPage() {
     loadEntries(),
   ]);
 
-  const properties: Property[] = dbProperties.data.map((property) => ({
+  const properties: MutableProperty[] = dbProperties.data.map((property) => ({
     id: property.id || "",
     is_published: property.is_published || false,
     ...property,

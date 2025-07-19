@@ -7,14 +7,14 @@ export const enhancedMockDictionaries: MutableDictionary[] = [
     id: 1,
     code: "areas",
     name: { en: "Areas", th: "พื้นที่", ru: "Области" },
-    description: { en: "Property areas", th: "พื้นที่อสังหาริมทรัพย์" },
+    description: { en: "MutableProperty areas", th: "พื้นที่อสังหาริมทรัพย์" },
     is_new: false,
   },
-  // Property Types
+  // MutableProperty Types
   {
     id: 2,
     code: "property_types",
-    name: { en: "Property Types", th: "ประเภทอสังหาริมทรัพย์", ru: "Типы недвижимости" },
+    name: { en: "MutableProperty Types", th: "ประเภทอสังหาริมทรัพย์", ru: "Типы недвижимости" },
     description: { en: "Types of properties", th: "ประเภทของอสังหาริมทรัพย์" },
     is_new: false,
   },
@@ -47,7 +47,7 @@ export const enhancedMockDictionaries: MutableDictionary[] = [
     id: 6,
     code: "highlights",
     name: { en: "Highlights", th: "จุดเด่น", ru: "Особенности" },
-    description: { en: "Property highlights", th: "จุดเด่นของอสังหาริมทรัพย์" },
+    description: { en: "MutableProperty highlights", th: "จุดเด่นของอสังหาริมทรัพย์" },
     is_new: false,
   },
   // Transaction Types
@@ -109,7 +109,7 @@ export const enhancedMockEntries: MutableEntry[] = [
     is_active: true,
   },
 
-  // Property Types (id: 2)
+  // MutableProperty Types (id: 2)
   {
     id: 201,
     dictionary_id: 2,
