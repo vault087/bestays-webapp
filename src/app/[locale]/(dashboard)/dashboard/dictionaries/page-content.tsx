@@ -84,8 +84,6 @@ const DictionaryCanvas = () => {
 
   const showCode = false;
 
-  console.log("dictionaryIDs", dictionaryIDs);
-
   return (
     <div className="flex w-full flex-wrap gap-4">
       {dictionaryIDs?.map((dictId) => {
