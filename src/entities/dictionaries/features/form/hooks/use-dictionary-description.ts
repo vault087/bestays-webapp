@@ -1,11 +1,13 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useId } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
   useDictionaryFormStore,
   useDictionaryFormStoreActions,
+  useDictionaryFormStaticStore,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
-import { generateInputId } from "@/utils/generate-input-id";
+import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
+
 // Display hook for dictionary name
 export function useDictionaryDescriptionDisplay(id: DBSerialID, locale: string): string | undefined {
   return useDictionaryFormStore((state) => getAvailableLocalizedText(state.dictionaries[id]?.description, locale));
@@ -15,19 +17,24 @@ export function useDictionaryDescriptionDisplay(id: DBSerialID, locale: string):
 export function useDictionaryDescriptionInput(
   id: DBSerialID,
   locale: string,
+  maxLength: number,
 ): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
+  characterCount: number;
   error?: string;
 } {
   const { updateDictionary } = useDictionaryFormStoreActions();
-  const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]);
-  const [value, setValue] = useState<string>(getAvailableLocalizedText(dictionary?.description, locale));
+  const { dictionaries } = useDictionaryFormStaticStore();
+  const dictionary = dictionaries[id];
+  const { value, setValue, characterCount } = useCharacterLimit({
+    maxLength,
+    initialValue: dictionary?.description?.[locale] || "",
+  });
 
-  // Generate a unique input ID
-  const inputId = useMemo(() => generateInputId("dict", id.toString(), "desc", locale), [id, locale]);
+  const inputId = useId();
 
   // Handle change
   const onChange = useCallback(
@@ -40,7 +47,7 @@ export function useDictionaryDescriptionInput(
         draft.description[locale] = value;
       });
     },
-    [id, locale, updateDictionary],
+    [id, locale, setValue, updateDictionary],
   );
 
   // Validate - name should not be empty for primary locale
@@ -52,6 +59,7 @@ export function useDictionaryDescriptionInput(
     value: value || "",
     onChange,
     placeholder: `Description (${locale})`,
+    characterCount,
     error,
   };
 }

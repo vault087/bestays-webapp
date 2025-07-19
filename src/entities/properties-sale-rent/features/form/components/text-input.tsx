@@ -7,6 +7,7 @@ import {
   PropertyFieldFooter,
   PropertyFieldHeader,
   usePropertyTextInput,
+  PROPERTY_AGENT_NOTES_MAX,
 } from "@/entities/properties-sale-rent/";
 import { Textarea } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -17,23 +18,31 @@ export const PropertyAgentNotesInput = function PropertyAgentNotesInput() {
   const title = t("agent_notes.label");
   const subtitle = t("agent_notes.subtitle");
   const placeholder = t("agent_notes.placeholder");
-  return <PropertyTextInput title={title} placeholder={placeholder} subtitle={subtitle} field="agent_notes" />;
+  return (
+    <PropertyTextInput
+      title={title}
+      placeholder={placeholder}
+      subtitle={subtitle}
+      field="agent_notes"
+      maxLength={PROPERTY_AGENT_NOTES_MAX}
+    />
+  );
 };
 
 // Base Input
 export const PropertyTextInput = memo(function PropertyTextInput({
   title,
   placeholder,
+  maxLength,
   subtitle,
   field,
 }: {
   title?: string | undefined;
   placeholder?: string | undefined;
+  maxLength: number;
   subtitle?: string | undefined;
   field: DBPropertyTextField;
 }) {
-  const maxLength = 180;
-
   const { inputId, value, onChange, error, characterCount } = usePropertyTextInput(field, maxLength);
 
   const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {

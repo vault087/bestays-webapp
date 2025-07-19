@@ -39,10 +39,13 @@ export type DBRooms = z.infer<typeof DBRoomsSchema>;
 export type DBCurrency = z.infer<typeof CurrencySchema>;
 export type DBMoney = z.infer<typeof DBMoneySchema>;
 
+export const PROPERTY_ABOUT_MAX = 5000;
+export const PROPERTY_AGENT_NOTES_MAX = 5000;
+
 // Database Schemas
 export const DBPropertySchema = z.object({
   id: z.string().uuid(),
-  about: LocalizedTextSchema.nullish(),
+  about: LocalizedTextSchema(PROPERTY_ABOUT_MAX).nullish(),
 
   ownership_type: DBSerialIDSchema.nullish(),
   property_type: DBSerialIDSchema.nullish(),
@@ -61,7 +64,7 @@ export const DBPropertySchema = z.object({
   price: DBPriceSchema.nullish(),
   images: z.array(DBImageSchema).nullish(),
 
-  agent_notes: z.string().nullish(),
+  agent_notes: z.string().max(PROPERTY_AGENT_NOTES_MAX).nullish(),
   agent_id: z.string().uuid().nullish(),
 
   is_published: z.boolean().default(false),

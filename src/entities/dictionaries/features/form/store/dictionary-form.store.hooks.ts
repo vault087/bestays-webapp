@@ -18,6 +18,11 @@ export function useDictionaryFormStore<T>(selector: (state: DictionaryFormStore)
   return useStore(store, useShallow(selector));
 }
 
+export function useDictionaryFormStaticStore(): DictionaryFormStore {
+  const store = useDictionaryFormStoreContext();
+  return store.getState();
+}
+
 export function useDictionaryFormStoreActions(): DictionaryFormStoreActions {
   const store = useDictionaryFormStoreContext();
   const timeout = 300;

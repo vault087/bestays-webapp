@@ -1,7 +1,7 @@
 export * from "./ui";
 // export * from "./multi-option-input";
 // export * from "./images-input";
-// export * from "./localized-text-input";
+export * from "./localized-text-input";
 // export * from "./multi-option-checkbox";
 // export * from "./option-input";
 // export * from "./price-input";

@@ -1,8 +1,7 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState, useId } from "react";
 import { DBSerialID } from "@/entities/common";
 import { useDictionaryFormStore, useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
-import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary entry name
 export function useDictionaryEntryNameDisplay(
@@ -29,9 +28,7 @@ export function useDictionaryEntryNameInput(
   const { updateEntry } = useDictionaryFormStoreActions();
   const name = useDictionaryFormStore((state) => state.entries[dictionaryId]?.[entryId]?.name);
   const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale));
-
-  // Generate a unique input ID
-  const inputId = useMemo(() => generateInputId("dict-ent", entryId.toString(), "name", locale), [entryId, locale]);
+  const inputId = useId();
 
   // Handle change
   const onChange = useCallback(

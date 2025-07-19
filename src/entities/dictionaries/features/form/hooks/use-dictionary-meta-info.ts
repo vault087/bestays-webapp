@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useId } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
+  useDictionaryFormStaticStore,
   useDictionaryFormStore,
   useDictionaryFormStoreActions,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
-import { generateInputId } from "@/utils/generate-input-id";
+import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
 
 // Display hook for dictionary name
 export function useDictionaryMetaInfoDisplay(id: DBSerialID): string | undefined {
@@ -13,19 +14,26 @@ export function useDictionaryMetaInfoDisplay(id: DBSerialID): string | undefined
 }
 
 // Input hook for dictionary name
-export function useDictionaryMetaInfoInput(id: DBSerialID): {
+export function useDictionaryMetaInfoInput(
+  id: DBSerialID,
+  maxLength: number,
+): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
+  characterCount: number;
   error?: string;
 } {
   const { updateDictionary } = useDictionaryFormStoreActions();
-  const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]);
-  const [value, setValue] = useState<string>(dictionary?.metadata?.info || "");
+  const { dictionaries } = useDictionaryFormStaticStore();
+  const dictionary = dictionaries[id];
+  const { value, setValue, characterCount } = useCharacterLimit({
+    maxLength,
+    initialValue: dictionary?.metadata?.info || "",
+  });
 
-  // Generate a unique input ID
-  const inputId = useMemo(() => generateInputId("dict", id.toString(), "meta-info"), [id]);
+  const inputId = useId();
 
   // Handle change
   const onChange = useCallback(
@@ -38,7 +46,7 @@ export function useDictionaryMetaInfoInput(id: DBSerialID): {
         draft.metadata.info = value;
       });
     },
-    [id, updateDictionary],
+    [id, setValue, updateDictionary],
   );
 
   return {
@@ -46,6 +54,7 @@ export function useDictionaryMetaInfoInput(id: DBSerialID): {
     value,
     onChange,
     placeholder: `Meta info`,
+    characterCount,
     error: undefined,
   };
 }

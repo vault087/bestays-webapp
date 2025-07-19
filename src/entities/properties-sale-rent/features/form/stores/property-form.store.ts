@@ -17,6 +17,7 @@ export interface PropertyFormStoreState {
 // MutableDictionary Store Actions
 export interface PropertyFormStoreActions {
   updateProperty: (updater: (draft: MutableProperty) => void) => void;
+  reset: () => void;
 }
 
 // Combined store type

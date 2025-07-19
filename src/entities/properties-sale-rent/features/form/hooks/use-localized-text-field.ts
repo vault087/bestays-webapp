@@ -1,47 +1,41 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useId } from "react";
 import { LocalizedText } from "@/entities/localized-text";
-import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import {
-  useProperty,
   usePropertyFormStaticStore,
   DBPropertyLocalizedTextField,
+  usePropertyFormStoreActions,
   usePropertyLocale,
+  usePropertyFormStore,
 } from "@/entities/properties-sale-rent/";
-import { generateInputId } from "@/utils/generate-input-id";
+import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
 
 // Display hook for MutableProperty localized fields
-export function usePropertyLocalizedTextDisplay(id: string, field: DBPropertyLocalizedTextField): string | undefined {
-  const property = useProperty(id);
+export function usePropertyLocalizedTextDisplay(field: DBPropertyLocalizedTextField): string | undefined {
   const locale = usePropertyLocale();
-
-  if (!property) return undefined;
-
-  const localizedField = property[field] as LocalizedText | null | undefined;
-  const value = localizedField?.[locale];
-  return value === null ? undefined : value;
+  return usePropertyFormStore((state) => state.property[field]?.[locale] as string | undefined);
 }
 
 // Input hook for MutableProperty localized fields
 export function usePropertyLocalizedTextInput(
   field: DBPropertyLocalizedTextField,
-  variant?: string,
+  maxLength: number,
 ): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
+  characterCount: number;
   error?: string;
 } {
-  const { initialProperty, updateProperty } = usePropertyFormStaticStore();
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreActions();
   const locale = usePropertyLocale();
-  const initialValue = initialProperty[field] as LocalizedText | null | undefined;
-  const [value, setValue] = useState<string>(getAvailableLocalizedText(initialValue, locale));
-
-  // Generate a unique input ID
-  const inputId = useMemo(
-    () => generateInputId("prop-loc-text", initialProperty.id.slice(-8), field, variant, locale),
-    [initialProperty.id, locale, field, variant],
-  );
+  const initialValue = property[field] as LocalizedText | null | undefined;
+  const { value, setValue, characterCount } = useCharacterLimit({
+    maxLength,
+    initialValue: initialValue?.[locale] || "",
+  });
+  const inputId = useId();
 
   // Handle change
   const onChange = useCallback(
@@ -55,17 +49,16 @@ export function usePropertyLocalizedTextInput(
         (draft[field] as LocalizedText)[locale] = value;
       });
     },
-    [locale, updateProperty, field],
+    [locale, updateProperty, field, setValue],
   );
 
-  // Validate - field should not be empty for primary locale
-  // This is a simplified version - a real implementation might have more validation
   const error = undefined;
 
   return {
     inputId,
     value,
     onChange,
+    characterCount,
     error,
   };
 }

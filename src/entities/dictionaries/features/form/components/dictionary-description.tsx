@@ -1,9 +1,11 @@
-import React, { memo } from "react";
+import { useTranslations } from "next-intl";
+import React, { memo, ChangeEvent } from "react";
 import {
   useDictionaryDescriptionDisplay,
   useDictionaryDescriptionInput,
 } from "@/entities/dictionaries/features/form/hooks/use-dictionary-description";
-import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
+import { DICTIONARY_DESCRIPTION_MAX } from "@/entities/dictionaries/types/dictionary.types";
+import { Textarea, Label } from "@/modules/shadcn";
 
 export const DictionaryDescriptionDisplay = memo(function DictionaryDescriptionDisplay({
   id,
@@ -28,18 +30,49 @@ export const DictionaryDescriptionInput = memo(function DictionaryDescriptionInp
   id: number;
   locale: string;
 }) {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryDescriptionInput(id, locale);
+  const t = useTranslations("Dictionaries.fields.description");
+  const title = t("label");
+  const subtitle = t("subtitle");
+  const maxLength = DICTIONARY_DESCRIPTION_MAX;
+  const { inputId, value, onChange, placeholder, error, characterCount } = useDictionaryDescriptionInput(
+    id,
+    locale,
+    maxLength,
+  );
+  const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    onChange(e.target.value);
+  };
+
   return (
-    <div className="relative space-y-1">
-      <FloatingInput
+    <div className="flex w-full flex-col space-y-1 bg-transparent">
+      {title && (
+        <Label htmlFor={inputId} className="font-open-sans text-sm font-semibold">
+          {title}
+        </Label>
+      )}
+      {subtitle && (
+        <Label htmlFor={inputId} className="font-montserrat text-muted-foreground text-xs">
+          {subtitle}
+        </Label>
+      )}
+
+      <Textarea
         id={inputId}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="selection:bg-primary border-b-0 bg-transparent not-placeholder-shown:translate-y-2 focus:translate-y-2 dark:bg-transparent"
+        maxLength={maxLength}
+        onChange={onTextAreaChange}
+        placeholder={placeholder || ""}
+        aria-describedby={`${inputId}-description`}
       />
-      <FloatingLabel htmlFor={inputId} className="start-0 max-w-[calc(100%-0.5rem)]">
-        {placeholder}
-      </FloatingLabel>
+      <p
+        id={`${inputId}-description`}
+        className="text-muted-foreground mt-2 text-right text-xs"
+        role="status"
+        aria-live="polite"
+      >
+        <span className="tabular-nums">{characterCount}</span> / {maxLength}
+      </p>
+
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   );

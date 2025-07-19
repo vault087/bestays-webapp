@@ -1,14 +1,12 @@
 "use client";
-import { useCallback, useMemo } from "react";
+import { useCallback, useId } from "react";
 import {
   DBPropertyTextField,
   usePropertyFormStaticStore,
   usePropertyFormStore,
   usePropertyFormStoreActions,
 } from "@/entities/properties-sale-rent";
-import { usePropertyLocale } from "@/entities/properties-sale-rent/features/form/context/property-locale.context";
 import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
-import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for MutableProperty localized fields
 export function usePropertyTextDisplay(field: DBPropertyTextField): string | undefined {
@@ -29,17 +27,9 @@ export function usePropertyTextInput(
   const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
   const initialValue = property[field] as string | null | undefined;
-  const locale = usePropertyLocale();
-
   const { value, setValue, characterCount } = useCharacterLimit({ maxLength, initialValue: initialValue || "" });
+  const inputId = useId();
 
-  // Generate a unique input ID
-  const inputId = useMemo(
-    () => generateInputId("property-text", property.id.slice(-8), field, locale),
-    [property.id, locale, field],
-  );
-
-  // Handle change
   const onChange = useCallback(
     (value: string) => {
       setValue(value);
@@ -50,8 +40,6 @@ export function usePropertyTextInput(
     [updateProperty, field, setValue],
   );
 
-  // Validate - field should not be empty for primary locale
-  // This is a simplified version - a real implementation might have more validation
   const error = undefined;
 
   return {

@@ -11,6 +11,18 @@
     "Dashboard": "Dashboard",
     "LogIn": "Log In"
   },
+  "Dictionaries": {
+    "fields": {
+      "description": {
+        "label": "Description",
+        "subtitle": "Please enter a short description of the dictionary"
+      },
+      "meta_info": {
+        "label": "AI Context",
+        "subtitle": "Please enter a short additional info for AI to use"
+      }
+    }
+  },
   "PropertiesSaleRent": {
     "fields": {
       "about": {

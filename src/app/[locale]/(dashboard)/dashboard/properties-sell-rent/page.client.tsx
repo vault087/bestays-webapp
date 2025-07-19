@@ -28,7 +28,7 @@ import {
   usePropertyFormStaticStore,
 } from "@/entities/properties-sale-rent/";
 // import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/components/rooms-input";
-import { InitialPropertyProvider } from "@/entities/properties-sale-rent/features/form/context/initial-property.context";
+import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
 
 export default function PropertiesPageClient({
   properties,
@@ -39,8 +39,8 @@ export default function PropertiesPageClient({
   dictionaries: DBDictionary[];
   entries: DBDictionaryEntry[];
 }) {
-  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", properties[0]), [properties]);
   const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
+  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", properties[0]), [properties]);
 
   return (
     <DictionaryFormStoreProvider store={dictionaryStore}>
@@ -70,28 +70,27 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
       <p>Properties</p>
       <div className="flex flex-row gap-4">
         <div className="grid-cols grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}>
-            <PropertyAgentNotesInput />
-
-            {/* <PropertyAreaInput /> */}
-            {/* <PropertyHighlightsCheckbox /> */}
-            {/* <PropertyDivisibleSaleInput /> */}
-            {/* <PropertyOwnershipTypeInput /> */}
-            {/* <PropertyPropertyTypeInput /> */}
-            {/* <PropertyLocaleProvider locale={locale}> */}
-            {/* <PropertyImagesInput />
+          {/* <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}> */}
+          <PropertyAgentNotesInput />
+          <PropertyAboutInput />
+          {/* <PropertyAreaInput /> */}
+          {/* <PropertyHighlightsCheckbox /> */}
+          {/* <PropertyDivisibleSaleInput /> */}
+          {/* <PropertyOwnershipTypeInput /> */}
+          {/* <PropertyPropertyTypeInput /> */}
+          {/* <PropertyLocaleProvider locale={locale}> */}
+          {/* <PropertyImagesInput />
               <PropertySizeInput />
               <PropertyRoomsInput />
               <PropertyPriceInput />
-              <PropertyAboutInput />
               <PropertyAreaInput />
               <PropertyLocationStrengthsCheckbox />
               <PropertyTransactionTypesCheckbox />
               <PropertyLandFeaturesCheckbox />
               <PropertyNearbyAttractionsCheckbox />
               <PropertyLandAndConstructionCheckbox /> */}
-            {/* </PropertyLocaleProvider> */}
-          </InitialPropertyProvider>
+          {/* </PropertyLocaleProvider> */}
+          {/* </InitialPropertyProvider> */}
         </div>
         <ReactiveDebugCard />
       </div>

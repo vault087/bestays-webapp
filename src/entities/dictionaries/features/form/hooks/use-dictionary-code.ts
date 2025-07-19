@@ -1,10 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useId, useState } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
   useDictionaryFormStore,
   useDictionaryFormStoreActions,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
-import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: DBSerialID): string | undefined {
@@ -23,7 +22,7 @@ export function useDictionaryCodeInput(id: DBSerialID): {
   const { updateDictionary } = useDictionaryFormStoreActions();
   const [value, setValue] = useState<string>(dictionary?.code || "");
 
-  const inputId = useMemo(() => generateInputId("dict", id.toString(), "code"), [id]);
+  const inputId = useId();
 
   // Handle change
   const onChange = useCallback(
