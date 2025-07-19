@@ -2,7 +2,7 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { memo } from "react";
 import {
   PropertyFieldSubHeader,
-  PropertyFieldFooter,
+  PropertyFieldDecription,
   PropertyFieldHeader,
   DBPropertyRoomsField,
 } from "@/entities/properties-sale-rent/";
@@ -76,7 +76,7 @@ export const PropertyRoomsUncontrolledInput = memo(function PropertyRoomsUncontr
         </div>
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
+      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
     </div>
   );
 });

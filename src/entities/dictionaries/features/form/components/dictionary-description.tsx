@@ -44,7 +44,7 @@ export const DictionaryDescriptionInput = memo(function DictionaryDescriptionInp
   };
 
   return (
-    <div className="flex w-full flex-col space-y-1 bg-transparent">
+    <div className="flex w-full flex-col space-y-2 bg-transparent">
       {title && (
         <Label htmlFor={inputId} className="font-open-sans text-sm font-semibold">
           {title}

@@ -2,7 +2,7 @@
 import { useCallback, useMemo } from "react";
 import {
   DBPropertyMultiCodeField,
-  PropertyFieldFooter,
+  PropertyFieldDecription,
   PropertyFieldHeader,
   useMultiOptionField,
 } from "@/entities/properties-sale-rent/";
@@ -90,7 +90,7 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
         hidePlaceholderWhenSelected
         emptyIndicator={<p className="text-center text-sm">No results found</p>}
       />
-      <PropertyFieldFooter text={subtitle} inputId={inputId} />
+      <PropertyFieldDecription text={subtitle} inputId={inputId} />
     </div>
   );
 };

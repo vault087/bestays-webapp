@@ -12,7 +12,7 @@ export function PropertyFieldHeader({
 }) {
   if (!text) return null;
   return (
-    <Label htmlFor={inputId} className={cn("font-open-sans text-md items-center border-0 font-bold", className)}>
+    <Label htmlFor={inputId} className={cn("font-open-sans text-sm font-semibold", className)}>
       {text}
     </Label>
   );

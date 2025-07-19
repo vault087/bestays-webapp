@@ -2,7 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState, useRef } from "react";
-import { DBPropertyCodeField, PropertyFieldFooter, PropertyFieldHeader } from "@/entities/properties-sale-rent/";
+import { DBPropertyCodeField, PropertyFieldDecription, PropertyFieldHeader } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -97,7 +97,7 @@ export function OptionInput({ field }: { field: DBPropertyCodeField }) {
           </PopoverContent>
         </Popover>
       </div>
-      <PropertyFieldFooter text={subtitle} inputId={inputId} />
+      <PropertyFieldDecription text={subtitle} inputId={inputId} />
     </div>
   );
 }

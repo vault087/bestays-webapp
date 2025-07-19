@@ -1,7 +1,7 @@
 import { Label } from "@/modules/shadcn/components/ui/label";
 import { cn } from "@/modules/shadcn/utils/cn";
 
-export function PropertyFieldFooter({
+export function PropertyFieldDecription({
   text,
   inputId = undefined,
   className = "",
@@ -14,7 +14,7 @@ export function PropertyFieldFooter({
   return (
     <Label
       htmlFor={inputId}
-      className={cn("text-muted-foreground text-xs", className)}
+      className={cn("font-montserrat text-muted-foreground text-xs", className)}
       role="region"
       aria-live="polite"
     >

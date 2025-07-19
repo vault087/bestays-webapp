@@ -3,7 +3,7 @@ import { ChangeEvent, memo } from "react";
 import {
   DBPropertyLocalizedTextField,
   PROPERTY_ABOUT_MAX,
-  PropertyFieldFooter,
+  PropertyFieldDecription,
   PropertyFieldHeader,
   usePropertyLocalizedTextInput,
 } from "@/entities/properties-sale-rent/";
@@ -45,8 +45,9 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
   useDebugRender("LocalizedTextUncontrolledInput" + title);
 
   return (
-    <div className="flex w-full flex-col bg-transparent">
+    <div className="flex w-full flex-col space-y-2 bg-transparent">
       {title && <PropertyFieldHeader text={title} inputId={inputId} />}
+      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
 
       <Textarea
         id={inputId}
@@ -66,7 +67,6 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
       </p>
 
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
     </div>
   );
 });

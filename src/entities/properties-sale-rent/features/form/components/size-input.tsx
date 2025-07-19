@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from "lucide-react";
 import { memo } from "react";
 import { DBSerialID } from "@/entities/common/";
-import { PropertyFieldHeader, PropertyFieldFooter, DBPropertySizeField } from "@/entities/properties-sale-rent/";
+import { PropertyFieldHeader, PropertyFieldDecription, DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import {
   SizeUnitOption,
   usePropertySizeInput,
@@ -58,7 +58,7 @@ export const PropertySizeUncontrolledInput = memo(function PropertySizeUncontrol
         <DropDownUnit unit={unit} units={options} onChange={setUnit} />
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
+      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
     </div>
   );
 });

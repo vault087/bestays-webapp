@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { ChangeEvent, memo } from "react";
 import {
   DBPropertyTextField,
-  PropertyFieldFooter,
+  PropertyFieldDecription,
   PropertyFieldHeader,
   usePropertyTextInput,
   PROPERTY_AGENT_NOTES_MAX,
@@ -51,8 +51,9 @@ export const PropertyTextInput = memo(function PropertyTextInput({
 
   useDebugRender("TextUncontrolledInput" + title);
   return (
-    <div className="flex w-full flex-col bg-transparent">
+    <div className="flex w-full flex-col space-y-2 bg-transparent">
       {title && <PropertyFieldHeader text={title} inputId={inputId} />}
+      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
 
       <Textarea
         id={inputId}
@@ -72,7 +73,6 @@ export const PropertyTextInput = memo(function PropertyTextInput({
       </p>
 
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
     </div>
   );
 });

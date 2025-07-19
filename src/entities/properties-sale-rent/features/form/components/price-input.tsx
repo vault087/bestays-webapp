@@ -4,7 +4,7 @@ import {
   usePropertyPriceInput,
   DBPropertyPriceField,
   PropertyFieldSubHeader,
-  PropertyFieldFooter,
+  PropertyFieldDecription,
   DBCurrency,
   PropertyFieldHeader,
 } from "@/entities/properties-sale-rent/";
@@ -76,7 +76,7 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
         <DropDownCurrency currency={currency} currencies={currencies} onChange={setCurrency} />
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldFooter text={subtitle} inputId={inputId} />}
+      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
     </div>
   );
 });

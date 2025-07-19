@@ -7,7 +7,7 @@ import {
   useMultiOptionField,
   MultiOption,
   PropertyFieldHeader,
-  PropertyFieldFooter,
+  PropertyFieldDecription,
   usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
 import { Button, Checkbox, Input, Label } from "@/modules/shadcn/";
@@ -58,7 +58,7 @@ export function MultiOptionCheckbox({ field }: { field: DBPropertyMultiCodeField
         ))}
       </div>
       <AddEntryComponent dictionaryId={dictionaryId} toggleValue={toggleValue} />
-      <PropertyFieldFooter text={subtitle} />
+      <PropertyFieldDecription text={subtitle} />
     </div>
   );
 }
