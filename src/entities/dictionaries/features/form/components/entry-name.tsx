@@ -3,7 +3,7 @@ import {
   useDictionaryEntryNameDisplay,
   useDictionaryEntryNameInput,
 } from "@/entities/dictionaries/features/form/hooks/use-entry-name";
-import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
+import { Input } from "@/modules/shadcn";
 
 export const DictionaryEntryNameDisplay = memo(function DictionaryEntryNameDisplay({
   dictionaryId,
@@ -32,19 +32,17 @@ export const DictionaryEntryNameInput = memo(function DictionaryEntryNameInput({
   entryId: number;
   locale: string;
 }) {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryEntryNameInput(dictionaryId, entryId, locale);
+  const { inputId, value, onChange, placeholder } = useDictionaryEntryNameInput(dictionaryId, entryId, locale);
   return (
     <div className="relative space-y-1">
-      <FloatingInput
+      <Input
         id={inputId}
+        type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="selection:bg-primary border-b-0 bg-transparent not-placeholder-shown:translate-y-2 focus:translate-y-2 dark:bg-transparent"
+        placeholder={placeholder || ""}
+        className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
       />
-      <FloatingLabel htmlFor={inputId} className="start-0 max-w-[calc(100%-0.5rem)]">
-        {placeholder}
-      </FloatingLabel>
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   );
 });

@@ -15,7 +15,10 @@ import {
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/form/components/dictionary-meta-info";
 import { createDictionaryFormStore, useDictionaryFormStaticStore } from "@/entities/dictionaries/features/form/store";
-import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
+import {
+  DictionaryFormStoreHydrated,
+  DictionaryFormStoreProvider,
+} from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
@@ -24,7 +27,7 @@ interface DictionariesPageContentProps {
   entries: DBDictionaryEntry[];
 }
 
-function ReactiveDebugCard() {
+export function ReactiveDebugCard() {
   const { dictionaries, entries } = useDictionaryFormStore((state) => ({
     dictionaries: state.dictionaries,
     entries: state.entries,
@@ -42,14 +45,17 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
     store.getState().addDictionary({ en: `New Dictionary` });
   };
 
+  console.log("DictionariesPageContent rendered");
   return (
     <DictionaryFormStoreProvider store={store}>
       <div className="flex gap-6 p-4">
         <div className="flex-1">
-          <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
+          <h1 className="mb-4 text-2xl font-bold">Settings</h1>
 
           <div className="w-">
-            <DictionaryCanvas />
+            <DictionaryFormStoreHydrated fallback={<div>Loading...</div>}>
+              <DictionaryCanvas />
+            </DictionaryFormStoreHydrated>
           </div>
 
           <div className="mt-8 text-center">
@@ -60,7 +66,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
           </div>
         </div>
 
-        <ReactiveDebugCard />
+        {/* <ReactiveDebugCard /> */}
       </div>
     </DictionaryFormStoreProvider>
   );
@@ -68,7 +74,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 
 const DictionaryCanvas = () => {
   const { addEntry } = useDictionaryFormStaticStore();
-  const dictionaryIDs = useDictionaryFormStore((state) => Object.keys(state.dictionaries).map(Number));
+  const dictionaryIDs = useDictionaryFormStore((state) => state.dictionaryIds);
   const locale = useLocale();
 
   const handleAddEntry = (dictionaryId: number) => {
@@ -120,7 +126,6 @@ const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; loca
     return Object.keys(state.entries[dictionaryId]).map(Number);
   });
 
-  console.log("EntriesList rendered", dictionaryId);
   return (
     <div>
       {entriesIds &&
