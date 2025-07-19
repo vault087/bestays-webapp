@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
   useDictionaryFormStore,
-  useDictionaryFormStoreDebounced,
+  useDictionaryFormStoreActions,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
@@ -20,7 +20,7 @@ export function useDictionaryMetaInfoInput(id: DBSerialID): {
   placeholder: string;
   error?: string;
 } {
-  const { updateDictionary } = useDictionaryFormStoreDebounced();
+  const { updateDictionary } = useDictionaryFormStoreActions();
   const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]);
   const [value, setValue] = useState<string>(dictionary?.metadata?.info || "");
 

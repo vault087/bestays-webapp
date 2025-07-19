@@ -18,7 +18,7 @@ export function useDictionaryFormStore<T>(selector: (state: DictionaryFormStore)
   return useStore(store, useShallow(selector));
 }
 
-export function useDictionaryFormStoreDebounced(): DictionaryFormStoreActions {
+export function useDictionaryFormStoreActions(): DictionaryFormStoreActions {
   const store = useDictionaryFormStoreContext();
   const timeout = 300;
   return {
@@ -28,5 +28,6 @@ export function useDictionaryFormStoreDebounced(): DictionaryFormStoreActions {
     addEntry: useDebouncedCallback(store.getState().addEntry, timeout),
     updateEntry: useDebouncedCallback(store.getState().updateEntry, timeout),
     deleteEntry: useDebouncedCallback(store.getState().deleteEntry, timeout),
+    deleteEntries: useDebouncedCallback(store.getState().deleteEntries, timeout),
   } as DictionaryFormStoreActions;
 }

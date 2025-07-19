@@ -4,7 +4,7 @@ import {
   DBPropertyTextField,
   usePropertyFormStaticStore,
   usePropertyFormStore,
-  usePropertyFormStoreDebounced,
+  usePropertyFormStoreActions,
 } from "@/entities/properties-sale-rent";
 import { usePropertyLocale } from "@/entities/properties-sale-rent/features/form/context/property-locale.context";
 import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
@@ -27,7 +27,7 @@ export function usePropertyTextInput(
   error?: string;
 } {
   const { property } = usePropertyFormStaticStore();
-  const { updateProperty } = usePropertyFormStoreDebounced();
+  const { updateProperty } = usePropertyFormStoreActions();
   const initialValue = property[field] as string | null | undefined;
   const locale = usePropertyLocale();
 

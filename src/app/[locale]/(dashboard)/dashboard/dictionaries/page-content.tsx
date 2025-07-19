@@ -14,10 +14,7 @@ import {
   useDictionaryFormStore,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/form/components/dictionary-meta-info";
-import {
-  createDictionaryFormStore,
-  useDictionaryFormStoreDebounced,
-} from "@/entities/dictionaries/features/form/store";
+import { createDictionaryFormStore, useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import {
   DictionaryFormStoreHydrated,
   DictionaryFormStoreProvider,
@@ -74,7 +71,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 }
 
 const DictionaryCanvas = () => {
-  const { addEntry } = useDictionaryFormStoreDebounced();
+  const { addEntry } = useDictionaryFormStoreActions();
   const dictionaryIDs = useDictionaryFormStore((state) => state.dictionaryIds);
   const locale = useLocale();
 

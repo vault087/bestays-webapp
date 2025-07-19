@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
-import { useDictionaryFormStore, useDictionaryFormStoreDebounced } from "@/entities/dictionaries/features/form/store";
+import { useDictionaryFormStore, useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { generateInputId } from "@/utils/generate-input-id";
 
@@ -26,7 +26,7 @@ export function useDictionaryEntryNameInput(
   placeholder: string;
   error?: string;
 } {
-  const { updateEntry } = useDictionaryFormStoreDebounced();
+  const { updateEntry } = useDictionaryFormStoreActions();
   const name = useDictionaryFormStore((state) => state.entries[dictionaryId]?.[entryId]?.name);
   const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale));
 
