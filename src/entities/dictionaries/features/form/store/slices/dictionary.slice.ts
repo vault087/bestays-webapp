@@ -6,7 +6,9 @@ import { LocalizedText } from "@/entities/localized-text";
 import { EntryStoreSliceActions, EntryStoreSliceState, createEntryStoreSlice } from "./entry.slice";
 
 export interface DictionaryStoreSliceState extends EntryStoreSliceState {
+  dbDictionaries: DBDictionary[];
   dictionaries: Record<DBSerialID, MutableDictionary>;
+  dictionaryIds: DBSerialID[]; // dictionaryIds
   dictionariesByCode: Record<DBCode, DBSerialID>;
   deletedDictionaryIds: DBSerialID[];
   temporaryDictionaryId: DBTemporarySerialID;
@@ -25,19 +27,19 @@ export const createDictionaryStoreSlice = (
   initialEntries: DBDictionaryEntry[],
 ): StateCreator<DictionaryStoreSlice, [], [], DictionaryStoreSlice> => {
   const convertedDictionaries: Record<DBSerialID, MutableDictionary> = {};
+  const dictionaryIds: DBSerialID[] = [];
+
   const convertedDictionariesByCode: Record<DBCode, DBSerialID> = {};
   initialDictionaries.forEach((dict) => {
     convertedDictionaries[dict.id] = { ...dict, is_new: false };
     convertedDictionariesByCode[dict.code] = dict.id;
-  });
-
-  const dictionariesSorting: Record<number, DBSerialID> = {};
-  initialDictionaries.forEach((dict, index) => {
-    dictionariesSorting[index] = dict.id;
+    dictionaryIds.push(dict.id);
   });
 
   return (set, get, api) => ({
+    dbDictionaries: initialDictionaries,
     dictionaries: convertedDictionaries,
+    dictionaryIds: dictionaryIds,
     dictionariesByCode: convertedDictionariesByCode,
     deletedDictionaryIds: [],
     temporaryDictionaryId: -1,
@@ -53,6 +55,7 @@ export const createDictionaryStoreSlice = (
             is_new: true,
           };
           draft.dictionaries[newDictionary.id] = newDictionary;
+          draft.dictionaryIds.push(newDictionary.id);
           draft.temporaryDictionaryId--;
         }),
       ),
@@ -77,6 +80,7 @@ export const createDictionaryStoreSlice = (
             draft.deletedDictionaryIds.push(id);
           }
           delete draft.dictionaries[id];
+          draft.dictionaryIds = draft.dictionaryIds.filter((id) => id !== id);
         }),
       ),
   });

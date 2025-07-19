@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
-import { useDictionarySliceGetState, useDictionarySliceSelector } from "@/entities/dictionaries/stores";
+import {
+  useDictionaryFormStore,
+  useDictionaryFormStaticStore,
+} from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { generateInputId } from "@/utils/generate-input-id";
 // Display hook for dictionary name
 export function useDictionaryDescriptionDisplay(id: DBSerialID, locale: string): string | undefined {
-  return useDictionarySliceSelector((state) => getAvailableLocalizedText(state.dictionaries[id]?.description, locale));
+  return useDictionaryFormStore((state) => getAvailableLocalizedText(state.dictionaries[id]?.description, locale));
 }
 
 // Input hook for dictionary name
@@ -19,9 +22,9 @@ export function useDictionaryDescriptionInput(
   placeholder: string;
   error?: string;
 } {
-  const storeGetState = useDictionarySliceGetState();
-  const { updateDictionary } = storeGetState;
-  const dictionary = storeGetState.dictionaries[id];
+  const staticState = useDictionaryFormStaticStore();
+  const { updateDictionary } = staticState;
+  const dictionary = staticState.dictionaries[id];
   const [value, setValue] = useState<string>(getAvailableLocalizedText(dictionary?.description, locale) || "");
 
   // Generate a unique input ID

@@ -5,7 +5,9 @@ import { DBDictionaryEntry, MutableEntry } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
 
 export interface EntryStoreSliceState {
-  entries: Record<DBSerialID, Record<DBSerialID, MutableEntry>>;
+  dbEntries: DBDictionaryEntry[];
+  entries: Record<DBSerialID, Record<DBSerialID, MutableEntry>>; // dictionaryId -> entryId -> entry
+  entriesIds: Record<DBSerialID, DBSerialID[]>; // dictionaryId -> entryIds
   deletedEntryIds: DBSerialID[];
   temporaryEntryId: DBTemporarySerialID;
 }
@@ -23,22 +25,24 @@ export const createEntryStoreSlice = (
   initialEntries: DBDictionaryEntry[],
 ): StateCreator<EntryStoreSlice, [], [], EntryStoreSlice> => {
   const convertedEntries: Record<DBSerialID, Record<DBSerialID, MutableEntry>> = {};
+  const entriesIds: Record<DBSerialID, DBSerialID[]> = {};
 
   initialEntries.forEach((entry) => {
     const dictionaryId = entry.dictionary_id;
     if (!convertedEntries[dictionaryId]) {
       convertedEntries[dictionaryId] = {};
     }
+    if (!entriesIds[dictionaryId]) {
+      entriesIds[dictionaryId] = [];
+    }
+    entriesIds[dictionaryId].push(entry.id);
     convertedEntries[dictionaryId][entry.id] = { ...entry, is_new: false };
   });
 
-  const entriesSorting: Record<number, DBSerialID> = {};
-  initialEntries.forEach((entry, index) => {
-    entriesSorting[index] = entry.id;
-  });
-
   return (set) => ({
+    dbEntries: initialEntries,
     entries: convertedEntries,
+    entriesIds: entriesIds,
     deletedEntryIds: [],
     temporaryEntryId: -1,
 
@@ -58,6 +62,11 @@ export const createEntryStoreSlice = (
           if (!draft.entries[dictionaryId]) {
             draft.entries[dictionaryId] = {};
           }
+          // Add new entry id to entriesIds
+          if (!draft.entriesIds[dictionaryId]) {
+            draft.entriesIds[dictionaryId] = [];
+          }
+          draft.entriesIds[dictionaryId].push(newEntry.id);
           draft.entries[dictionaryId][newEntry.id] = newEntry;
           draft.temporaryEntryId--;
         }),
@@ -90,6 +99,8 @@ export const createEntryStoreSlice = (
           }
 
           delete draft.entries[dictionaryId][entryId];
+          // Remove entry id from entriesIds
+          draft.entriesIds[dictionaryId] = draft.entriesIds[dictionaryId].filter((id) => id !== entryId);
         }),
       );
     },

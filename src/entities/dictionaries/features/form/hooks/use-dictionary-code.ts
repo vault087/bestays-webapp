@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
-import { useDictionarySliceSelector, useDictionarySliceGetState } from "@/entities/dictionaries/stores";
+import {
+  useDictionaryFormStore,
+  useDictionaryFormStaticStore,
+} from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: DBSerialID): string | undefined {
-  return useDictionarySliceSelector((state) => state.dictionaries[id]?.code);
+  return useDictionaryFormStore((state) => state.dictionaries[id]?.code);
 }
 
 // Input hook for dictionary code
@@ -16,9 +19,9 @@ export function useDictionaryCodeInput(id: DBSerialID): {
   placeholder: string;
   error?: string;
 } {
-  const storeGetState = useDictionarySliceGetState();
-  const { updateDictionary } = storeGetState;
-  const dictionary = storeGetState.dictionaries[id];
+  const staticState = useDictionaryFormStaticStore();
+  const { updateDictionary } = staticState;
+  const dictionary = staticState.dictionaries[id];
   const [value, setValue] = useState<string>(dictionary?.code || "");
 
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "code"), [id]);

@@ -3,8 +3,6 @@
 import { PlusCircle } from "lucide-react";
 import { useLocale } from "next-intl";
 import { memo, useMemo } from "react";
-import { useStore } from "zustand";
-import { useShallow } from "zustand/react/shallow";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import {
   DictionaryCodeInput,
@@ -13,14 +11,12 @@ import {
   DictionaryDescriptionInput,
   DBDictionary,
   DBDictionaryEntry,
-  useDictionarySliceSelector,
-  useDictionarySlice,
-  useEntrySliceSelector,
+  useDictionaryFormStore,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/form/components/dictionary-meta-info";
+import { createDictionaryFormStore, useDictionaryFormStaticStore } from "@/entities/dictionaries/features/form/store";
+import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
 import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
-import { StoreProvider } from "@/stores";
-import { createDictionaryPageStore } from "./store";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
@@ -29,16 +25,17 @@ interface DictionariesPageContentProps {
 }
 
 function ReactiveDebugCard() {
-  // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
-  const dictionaries = useDictionarySliceSelector((state) => state.dictionaries);
-  const entries = useEntrySliceSelector((state) => state.entries);
+  const { dictionaries, entries } = useDictionaryFormStore((state) => ({
+    dictionaries: state.dictionaries,
+    entries: state.entries,
+  }));
 
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
 
 export default function DictionariesPageContent({ dictionaries, entries }: DictionariesPageContentProps) {
   // Create store with the resolved data
-  const store = useMemo(() => createDictionaryPageStore(dictionaries, entries), [dictionaries, entries]);
+  const store = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
 
   // Function to handle adding a new dictionary
   const handleAddDictionary = () => {
@@ -46,7 +43,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
   };
 
   return (
-    <StoreProvider store={store}>
+    <DictionaryFormStoreProvider store={store}>
       <div className="flex gap-6 p-4">
         <div className="flex-1">
           <h1 className="mb-4 text-2xl font-bold">MutableDictionary System Demo</h1>
@@ -65,20 +62,17 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 
         <ReactiveDebugCard />
       </div>
-    </StoreProvider>
+    </DictionaryFormStoreProvider>
   );
 }
 
 const DictionaryCanvas = () => {
-  const store = useDictionarySlice();
-  const dictionaryIDs = useStore(
-    store,
-    useShallow((state) => Object.keys(state.dictionaries).map(Number)),
-  );
+  const { addEntry } = useDictionaryFormStaticStore();
+  const dictionaryIDs = useDictionaryFormStore((state) => Object.keys(state.dictionaries).map(Number));
   const locale = useLocale();
 
   const handleAddEntry = (dictionaryId: number) => {
-    store.getState().addEntry(dictionaryId, { en: `New Entry` });
+    addEntry(dictionaryId, { en: `New Entry` });
   };
 
   const showCode = false;
@@ -122,12 +116,11 @@ const DictionaryCanvas = () => {
 };
 
 const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; locale: string }) => {
-  const store = useDictionarySlice();
-  const entriesIds = useStore(
-    store,
-    useShallow((state) => Object.keys(state.entries[dictionaryId]).map(Number)),
-  );
+  const entriesIds = useDictionaryFormStore((state) => {
+    return Object.keys(state.entries[dictionaryId]).map(Number);
+  });
 
+  console.log("EntriesList rendered", dictionaryId);
   return (
     <div>
       {entriesIds &&

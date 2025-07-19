@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
-import { useDictionarySliceGetState, useDictionarySliceSelector } from "@/entities/dictionaries/stores";
+import {
+  useDictionaryFormStaticStore,
+  useDictionaryFormStore,
+} from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
 // Display hook for dictionary name
 export function useDictionaryMetaInfoDisplay(id: DBSerialID): string | undefined {
-  const dictionary = useDictionarySliceSelector((state) => state.dictionaries[id]?.metadata?.info);
+  const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]?.metadata?.info);
   return dictionary === null ? undefined : dictionary;
 }
 
@@ -17,9 +20,9 @@ export function useDictionaryMetaInfoInput(id: DBSerialID): {
   placeholder: string;
   error?: string;
 } {
-  const storeGetState = useDictionarySliceGetState();
-  const { updateDictionary } = storeGetState;
-  const dictionary = storeGetState.dictionaries[id];
+  const staticState = useDictionaryFormStaticStore();
+  const { updateDictionary } = staticState;
+  const dictionary = staticState.dictionaries[id];
   const [value, setValue] = useState<string>(dictionary?.metadata?.info || "");
 
   // Generate a unique input ID
