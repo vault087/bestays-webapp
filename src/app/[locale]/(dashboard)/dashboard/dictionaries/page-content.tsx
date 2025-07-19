@@ -14,7 +14,10 @@ import {
   useDictionaryFormStore,
 } from "@/entities/dictionaries";
 import { DictionaryMetaInfoInput } from "@/entities/dictionaries/features/form/components/dictionary-meta-info";
-import { createDictionaryFormStore, useDictionaryFormStaticStore } from "@/entities/dictionaries/features/form/store";
+import {
+  createDictionaryFormStore,
+  useDictionaryFormStoreDebounced,
+} from "@/entities/dictionaries/features/form/store";
 import {
   DictionaryFormStoreHydrated,
   DictionaryFormStoreProvider,
@@ -28,10 +31,8 @@ interface DictionariesPageContentProps {
 }
 
 export function ReactiveDebugCard() {
-  const { dictionaries, entries } = useDictionaryFormStore((state) => ({
-    dictionaries: state.dictionaries,
-    entries: state.entries,
-  }));
+  const dictionaries = useDictionaryFormStore((state) => state.dictionaries);
+  const entries = useDictionaryFormStore((state) => state.entries);
 
   return <DebugCard label="Error State Debug" json={{ dictionaries, entries }} />;
 }
@@ -73,7 +74,7 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
 }
 
 const DictionaryCanvas = () => {
-  const { addEntry } = useDictionaryFormStaticStore();
+  const { addEntry } = useDictionaryFormStoreDebounced();
   const dictionaryIDs = useDictionaryFormStore((state) => state.dictionaryIds);
   const locale = useLocale();
 
@@ -87,7 +88,7 @@ const DictionaryCanvas = () => {
 
   return (
     <div className="flex w-full flex-wrap gap-4">
-      {dictionaryIDs.map((dictId) => {
+      {dictionaryIDs?.map((dictId) => {
         return (
           <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
             <CardContent>

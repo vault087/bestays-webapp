@@ -3,11 +3,17 @@
 import { createStore, StoreApi } from "zustand";
 import { persist } from "zustand/middleware";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
-import { createDictionaryStoreSlice, DictionaryStoreSlice } from "./slices/dictionary.slice";
-import { EntryStoreSlice } from "./slices/entry.slice";
+import {
+  createDictionaryStoreSlice,
+  DictionaryStoreSlice,
+  DictionaryStoreSliceActions,
+} from "./slices/dictionary.slice";
 
-export type DictionaryFormStore = DictionaryStoreSlice &
-  EntryStoreSlice & {
+export type DictionaryFormStoreState = DictionaryStoreSlice;
+export type DictionaryFormStoreActions = DictionaryStoreSliceActions;
+
+export type DictionaryFormStore = DictionaryFormStoreState &
+  DictionaryFormStoreActions & {
     hydrated: boolean;
   };
 

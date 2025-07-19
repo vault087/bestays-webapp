@@ -17,6 +17,7 @@ export interface EntryStoreSliceActions {
   addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => MutableEntry;
   updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => void;
   deleteEntry: (dictionaryId: DBSerialID, entryId: DBSerialID) => void;
+  deleteEntries: (dictionaryId: DBSerialID) => void;
 }
 
 export interface EntryStoreSlice extends EntryStoreSliceState, EntryStoreSliceActions {}
@@ -78,7 +79,7 @@ export const createEntryStoreSlice = (
     updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => {
       set(
         produce((draft: EntryStoreSlice) => {
-          if (dictionaryId && draft.entries[dictionaryId]) {
+          if (dictionaryId && draft.entries[dictionaryId] && draft.entries[dictionaryId][entryId]) {
             updater(draft.entries[dictionaryId][entryId]);
           }
         }),
@@ -101,6 +102,23 @@ export const createEntryStoreSlice = (
           delete draft.entries[dictionaryId][entryId];
           // Remove entry id from entriesIds
           draft.entriesIds[dictionaryId] = draft.entriesIds[dictionaryId].filter((id) => id !== entryId);
+        }),
+      );
+    },
+
+    deleteEntries: (dictionaryId: DBSerialID) => {
+      set(
+        produce((draft: EntryStoreSlice) => {
+          if (!draft.entries[dictionaryId]) return;
+
+          Object.values(draft.entries[dictionaryId]).forEach((entry) => {
+            if (!entry.is_new) {
+              draft.deletedEntryIds.push(entry.id);
+            }
+          });
+
+          delete draft.entries[dictionaryId];
+          draft.entriesIds[dictionaryId] = [];
         }),
       );
     },

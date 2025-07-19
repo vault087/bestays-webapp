@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
   useDictionaryFormStore,
-  useDictionaryFormStaticStore,
+  useDictionaryFormStoreDebounced,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
@@ -19,9 +19,8 @@ export function useDictionaryCodeInput(id: DBSerialID): {
   placeholder: string;
   error?: string;
 } {
-  const staticState = useDictionaryFormStaticStore();
-  const { updateDictionary } = staticState;
-  const dictionary = staticState.dictionaries[id];
+  const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]);
+  const { updateDictionary } = useDictionaryFormStoreDebounced();
   const [value, setValue] = useState<string>(dictionary?.code || "");
 
   const inputId = useMemo(() => generateInputId("dict", id.toString(), "code"), [id]);

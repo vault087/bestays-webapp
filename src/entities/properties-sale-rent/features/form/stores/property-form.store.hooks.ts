@@ -1,9 +1,10 @@
 "use client";
 
 import { useContext } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { StoreApi, useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { PropertyFormStore } from "./property-form.store";
+import { PropertyFormStore, PropertyFormStoreActions } from "./property-form.store";
 import { PropertyFormStoreContext } from "./property-form.store.provider";
 
 export function usePropertyFormStoreContext(): StoreApi<PropertyFormStore> {
@@ -22,4 +23,11 @@ export function usePropertyFormStore<T>(selector: (state: PropertyFormStore) => 
 export function usePropertyFormStaticStore(): PropertyFormStore {
   const store = usePropertyFormStoreContext();
   return store.getState();
+}
+
+export function usePropertyFormStoreDebounced(): PropertyFormStoreActions {
+  const store = usePropertyFormStoreContext();
+  return {
+    updateProperty: useDebouncedCallback(store.getState().updateProperty, 300),
+  };
 }

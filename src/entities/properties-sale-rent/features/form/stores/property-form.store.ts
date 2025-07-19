@@ -41,6 +41,7 @@ export function createPropertyFormStore(store_id: string, property: DBProperty):
         updateProperty: (updater: (draft: MutableProperty) => void) =>
           set(
             produce((state: PropertyFormStore) => {
+              console.log("updateProperty store");
               updater(state.property);
             }),
           ),

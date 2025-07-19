@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
-  useDictionaryFormStaticStore,
   useDictionaryFormStore,
+  useDictionaryFormStoreDebounced,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
 import { generateInputId } from "@/utils/generate-input-id";
 
@@ -20,9 +20,8 @@ export function useDictionaryMetaInfoInput(id: DBSerialID): {
   placeholder: string;
   error?: string;
 } {
-  const staticState = useDictionaryFormStaticStore();
-  const { updateDictionary } = staticState;
-  const dictionary = staticState.dictionaries[id];
+  const { updateDictionary } = useDictionaryFormStoreDebounced();
+  const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]);
   const [value, setValue] = useState<string>(dictionary?.metadata?.info || "");
 
   // Generate a unique input ID

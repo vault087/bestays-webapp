@@ -80,6 +80,7 @@ export const createDictionaryStoreSlice = (
             draft.deletedDictionaryIds.push(id);
           }
           delete draft.dictionaries[id];
+          draft.deleteEntries(id);
           draft.dictionaryIds = draft.dictionaryIds.filter((id) => id !== id);
         }),
       ),

@@ -1,6 +1,11 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { DBPropertyTextField, usePropertyFormStaticStore, usePropertyFormStore } from "@/entities/properties-sale-rent";
+import {
+  DBPropertyTextField,
+  usePropertyFormStaticStore,
+  usePropertyFormStore,
+  usePropertyFormStoreDebounced,
+} from "@/entities/properties-sale-rent";
 import { usePropertyLocale } from "@/entities/properties-sale-rent/features/form/context/property-locale.context";
 import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
 import { generateInputId } from "@/utils/generate-input-id";
@@ -21,7 +26,8 @@ export function usePropertyTextInput(
   onChange: (value: string) => void;
   error?: string;
 } {
-  const { property, updateProperty } = usePropertyFormStaticStore();
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreDebounced();
   const initialValue = property[field] as string | null | undefined;
   const locale = usePropertyLocale();
 
