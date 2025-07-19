@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { DB_CODE_MAX } from "@/entities/common/types/common-db.types";
 import {
   useDictionaryCodeDisplay,
   useDictionaryCodeInput,
@@ -14,6 +15,7 @@ export const DictionaryCodeInput = memo(function DictionaryCodeInput({ id }: { i
         id={inputId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        maxLength={DB_CODE_MAX}
         className="selection:bg-primary border-b-0 bg-transparent not-placeholder-shown:translate-y-2 focus:translate-y-2 dark:bg-transparent"
       />
       <FloatingLabel htmlFor={inputId} className="start-0 max-w-[calc(100%-0.5rem)]">

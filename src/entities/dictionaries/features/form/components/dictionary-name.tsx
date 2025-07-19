@@ -3,6 +3,7 @@ import {
   useDictionaryNameDisplay,
   useDictionaryNameInput,
 } from "@/entities/dictionaries/features/form/hooks/use-dictionary-name";
+import { DICTIONARY_NAME_MAX } from "@/entities/dictionaries/types/dictionary.types";
 import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
 export const DictionaryNameDisplay = memo(function DictionaryNameDisplay({
@@ -29,6 +30,7 @@ export const DictionaryNameInput = memo(function DictionaryNameInput({ id, local
       <FloatingInput
         id={inputId}
         value={value}
+        maxLength={DICTIONARY_NAME_MAX}
         onChange={(e) => onChange(e.target.value)}
         className="selection:bg-primary border-b-0 bg-transparent not-placeholder-shown:translate-y-2 focus:translate-y-2 dark:bg-transparent"
       />
