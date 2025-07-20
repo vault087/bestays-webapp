@@ -67,23 +67,24 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
   );
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <p>Properties</p>
-      <div className="flex flex-row gap-4">
-        <div className="flex flex-1 flex-col gap-4">
-          {/* <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}> */}
-          <PropertyPriceInputGroup />
-          <PropertyAgentNotesInput />
-          <PropertyAboutInput />
+    <div className="bg-accent flex flex-col flex-row gap-4 p-4">
+      <div className="bg-background flex flex-col gap-4 rounded-md p-4">
+        <p>Properties</p>
+        <div className="flex flex-row gap-4">
+          <div className="flex flex-1 flex-col gap-4">
+            {/* <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}> */}
+            <PropertyPriceInputGroup />
+            <PropertyAgentNotesInput />
+            <PropertyAboutInput />
 
-          <div className="flex flex-1"></div>
-          {/* <PropertyAreaInput /> */}
-          {/* <PropertyHighlightsCheckbox /> */}
-          {/* <PropertyDivisibleSaleInput /> */}
-          {/* <PropertyOwnershipTypeInput /> */}
-          {/* <PropertyPropertyTypeInput /> */}
-          {/* <PropertyLocaleProvider locale={locale}> */}
-          {/* <PropertyImagesInput />
+            <div className="flex flex-1"></div>
+            {/* <PropertyAreaInput /> */}
+            {/* <PropertyHighlightsCheckbox /> */}
+            {/* <PropertyDivisibleSaleInput /> */}
+            {/* <PropertyOwnershipTypeInput /> */}
+            {/* <PropertyPropertyTypeInput /> */}
+            {/* <PropertyLocaleProvider locale={locale}> */}
+            {/* <PropertyImagesInput />
               <PropertySizeInput />
               <PropertyRoomsInput />
               <PropertyAreaInput />
@@ -92,11 +93,12 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               <PropertyLandFeaturesCheckbox />
               <PropertyNearbyAttractionsCheckbox />
               <PropertyLandAndConstructionCheckbox /> */}
-          {/* </PropertyLocaleProvider> */}
-          {/* </InitialPropertyProvider> */}
+            {/* </PropertyLocaleProvider> */}
+            {/* </InitialPropertyProvider> */}
+          </div>
         </div>
-        <ReactiveDebugCard />
       </div>
+      <ReactiveDebugCard />
     </div>
   );
 });
