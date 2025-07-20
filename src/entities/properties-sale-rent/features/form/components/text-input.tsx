@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ChangeEvent, memo } from "react";
+import { FormTextArea } from "@/components/form/inputs/form-text-area";
 import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import { DBPropertyTextField, usePropertyTextInput, PROPERTY_AGENT_NOTES_MAX } from "@/entities/properties-sale-rent/";
 import { Textarea } from "@/modules/shadcn/";
@@ -40,29 +41,18 @@ export const PropertyTextInput = memo(function PropertyTextInput({
 }) {
   const { inputId, value, onChange, error, characterCount } = usePropertyTextInput(field, maxLength);
 
-  const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-    onChange(e.target.value);
-  };
-
   useDebugRender("PropertyTextInput" + title);
   return (
     <FormFieldLayout title={title} description={description} error={error} inputId={inputId}>
-      <Textarea
-        id={inputId}
+      <FormTextArea
+        inputId={inputId}
         value={value}
+        onChange={onChange}
+        characterCount={characterCount}
         maxLength={maxLength}
-        onChange={onTextAreaChange}
         placeholder={placeholder || ""}
-        aria-describedby={`${inputId}-description`}
+        arialInvalid={!!error}
       />
-      <p
-        id={`${inputId}-description`}
-        className="text-muted-foreground mt-2 text-right text-xs"
-        role="status"
-        aria-live="polite"
-      >
-        <span className="tabular-nums">{maxLength - characterCount}</span> characters left
-      </p>
     </FormFieldLayout>
   );
 });

@@ -11,6 +11,7 @@ export const FormTextArea = memo(function FormTextArea({
   characterCount,
   maxLength,
   placeholder,
+  arialInvalid = false,
   className,
 }: {
   inputId: string;
@@ -19,6 +20,7 @@ export const FormTextArea = memo(function FormTextArea({
   characterCount: number;
   maxLength: number;
   placeholder: string;
+  arialInvalid?: boolean;
   className?: string;
 }) {
   const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -33,7 +35,8 @@ export const FormTextArea = memo(function FormTextArea({
         maxLength={maxLength}
         onChange={onTextAreaChange}
         placeholder={placeholder || ""}
-        aria-describedby={`${inputId}-description`}
+        aria-invalid={arialInvalid}
+        aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
       />
       <p
         id={`${inputId}-description`}
@@ -41,7 +44,7 @@ export const FormTextArea = memo(function FormTextArea({
         role="status"
         aria-live="polite"
       >
-        <span className="tabular-nums">{maxLength - characterCount}</span> characters left
+        <span className="tabular-nums">{characterCount}</span> / {maxLength}
       </p>
     </div>
   );
