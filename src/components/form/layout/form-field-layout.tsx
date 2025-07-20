@@ -2,17 +2,17 @@ import { memo } from "react";
 import { cn } from "@/modules/shadcn/utils/cn";
 import { FormFieldDescription } from "./form-field-description";
 import { FormFieldError } from "./form-field-error";
-import { FormFieldTitle } from "./form-field-title";
+import { FormFieldTitle, FormFieldTitleVariant } from "./form-field-title";
 
 export type FormFieldLayoutConfig = {
   title: {
-    variant: "bold" | "normal";
+    variant: FormFieldTitleVariant;
   };
 };
 
 const DefaultFormFieldConfig: FormFieldLayoutConfig = {
   title: {
-    variant: "bold",
+    variant: "h1",
   },
 };
 

@@ -1,5 +1,5 @@
 import { memo, useId } from "react";
-import { FormFieldLayout, FormPriceInput } from "@/components/form";
+import { FormFieldLayout, FormPriceInput, FormFieldLayoutConfig } from "@/components/form";
 import { usePropertyPriceInput, DBPropertyPriceField } from "@/entities/properties-sale-rent/";
 import { useTranslations } from "@/modules/i18n";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -44,8 +44,18 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
 }) {
   const { inputId, value, onChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
   useDebugRender("PropertyPriceInput" + field);
+
   return (
-    <FormFieldLayout title={title} inputId={inputId} error={error}>
+    <FormFieldLayout
+      title={title}
+      inputId={inputId}
+      error={error}
+      config={{
+        title: {
+          variant: "h2",
+        },
+      }}
+    >
       <FormPriceInput
         inputId={inputId}
         value={value}

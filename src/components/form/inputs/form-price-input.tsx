@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
-import React, { memo } from "react";
-import { DBCurrency } from "@/entities/common";
+import React, { memo, useMemo } from "react";
+import { DBCurrency, getCurrencySymbol } from "@/entities/common";
 import {
   Input,
   DropdownMenu,
@@ -32,14 +32,19 @@ export const FormPriceInput = memo(function FormPriceInput({
   currencies: DBCurrency[];
   onCurrencyChange: (currency: DBCurrency) => void;
 }) {
+  const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   return (
     <div className={cn("relative flex rounded-md shadow-xs", className)}>
-      <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm">
-        €
+      <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
+        {currencySymbol}
       </span>
       <Input
         id={inputId}
-        className="-me-px rounded-e-none ps-6 shadow-none"
+        className={cn(
+          "-me-px rounded-e-none ps-6 shadow-none",
+          "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+        )}
+        name="price"
         placeholder="0.00"
         type="number"
         max={max}
@@ -66,7 +71,7 @@ export const DropDownCurrency = memo(function DropDownCurrency({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="border-input bg-background text-muted-foreground inline-flex items-center rounded-s-none rounded-e-md border">
-          <Button variant="text" className="flex flex-row space-x-0">
+          <Button variant="text" className="flex flex-row items-center justify-center space-x-0">
             <span className="px-0 text-sm uppercase">{currency}</span>
             <ChevronDown className="size-4" />
           </Button>
