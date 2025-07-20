@@ -14,26 +14,26 @@
   "Dictionaries": {
     "fields": {
       "description": {
-        "label": "Description",
-        "subtitle": "Please enter a short description of the dictionary"
+        "title": "Description",
+        "description": "Please enter a short description of the dictionary"
       },
       "meta_info": {
-        "label": "AI Context",
-        "subtitle": "Please enter a short additional info for AI to use"
+        "title": "AI Context",
+        "description": "Please enter a short additional info for AI to use"
       }
     }
   },
   "PropertiesSaleRent": {
     "fields": {
       "about": {
-        "label": "About",
-        "placeholder": "Enter about the property",
-        "subtitle": "Please enter a short about the property"
+        "title": "About",
+        "description": "Please enter a short about the property",
+        "placeholder": "Enter about the property"
       },
       "agent_notes": {
-        "label": "Notes for agent",
-        "placeholder": "Enter notes for agent",
-        "subtitle": "Please enter any additional notes for agent about the property"
+        "title": "Notes for agent",
+        "description": "Please enter any additional notes for agent about the property",
+        "placeholder": "Enter notes for agent"
       },
       "price": {
         "label": "Price",

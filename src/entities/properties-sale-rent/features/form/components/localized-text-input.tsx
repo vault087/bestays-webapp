@@ -1,10 +1,9 @@
 import { useTranslations } from "next-intl";
 import { ChangeEvent, memo } from "react";
+import { FormFieldLayout } from "@/components/form/form-field-layout";
 import {
   DBPropertyLocalizedTextField,
   PROPERTY_ABOUT_MAX,
-  PropertyFieldDecription,
-  PropertyFieldHeader,
   usePropertyLocalizedTextInput,
 } from "@/entities/properties-sale-rent/";
 import { Textarea } from "@/modules/shadcn";
@@ -15,9 +14,9 @@ export const PropertyAboutInput = function PropertyAboutInput() {
   const t = useTranslations("PropertiesSaleRent.fields.about");
   return (
     <PropertyLocalizedTextInput
-      title={t("label")}
+      title={t("title")}
       placeholder={t("placeholder")}
-      subtitle={t("subtitle")}
+      description={t("description")}
       field="about"
       maxLength={PROPERTY_ABOUT_MAX}
     />
@@ -26,14 +25,14 @@ export const PropertyAboutInput = function PropertyAboutInput() {
 
 export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInput({
   title,
-  subtitle,
+  description,
   maxLength,
   placeholder,
   field,
 }: {
   title: string | undefined;
   placeholder: string | undefined;
-  subtitle: string | undefined;
+  description: string | undefined;
   maxLength: number;
   field: DBPropertyLocalizedTextField;
 }) {
@@ -42,13 +41,10 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
     onChange(e.target.value);
   };
 
-  useDebugRender("LocalizedTextUncontrolledInput" + title);
+  useDebugRender("PropertyLocalizedTextInput" + title);
 
   return (
-    <div className="flex w-full flex-col space-y-2 bg-transparent">
-      {title && <PropertyFieldHeader text={title} inputId={inputId} />}
-      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
-
+    <FormFieldLayout title={title} description={description} error={error} inputId={inputId}>
       <Textarea
         id={inputId}
         value={value}
@@ -65,8 +61,6 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
       >
         <span className="tabular-nums">{maxLength - characterCount}</span> characters left
       </p>
-
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-    </div>
+    </FormFieldLayout>
   );
 });
