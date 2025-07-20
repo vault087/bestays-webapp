@@ -2,8 +2,8 @@
 import { useCallback, useMemo } from "react";
 import {
   DBPropertyMultiCodeField,
-  PropertyFieldDecription,
-  PropertyFieldHeader,
+  FormFieldDescription,
+  FormFieldTitle,
   useMultiOptionField,
 } from "@/entities/properties-sale-rent/";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
@@ -73,7 +73,7 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
   useDebugRender("MultiInput" + title);
   return (
     <div className="*:not-first:mt-2">
-      <PropertyFieldHeader text={title} inputId={inputId} />
+      <FormFieldTitle text={title} inputId={inputId} />
       <MultipleSelector
         inputProps={{
           id: inputId,
@@ -90,7 +90,7 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
         hidePlaceholderWhenSelected
         emptyIndicator={<p className="text-center text-sm">No results found</p>}
       />
-      <PropertyFieldDecription text={subtitle} inputId={inputId} />
+      <FormFieldDescription text={subtitle} inputId={inputId} />
     </div>
   );
 };

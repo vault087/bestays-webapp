@@ -6,8 +6,8 @@ import {
   DBPropertyMultiCodeField,
   useMultiOptionField,
   MultiOption,
-  PropertyFieldHeader,
-  PropertyFieldDecription,
+  FormFieldTitle,
+  FormFieldDescription,
   usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
 import { Button, Checkbox, Input, Label } from "@/modules/shadcn/";
@@ -42,7 +42,7 @@ export function MultiOptionCheckbox({ field }: { field: DBPropertyMultiCodeField
 
   return (
     <div className="flex flex-col space-y-2">
-      <PropertyFieldHeader text={title} />
+      <FormFieldTitle text={title} />
       <div className="grid grid-cols-2 gap-2">
         {options.map((option: MultiOption) => (
           <div className="flex items-center gap-2" key={option.key}>
@@ -58,7 +58,7 @@ export function MultiOptionCheckbox({ field }: { field: DBPropertyMultiCodeField
         ))}
       </div>
       <AddEntryComponent dictionaryId={dictionaryId} toggleValue={toggleValue} />
-      <PropertyFieldDecription text={subtitle} />
+      <FormFieldDescription text={subtitle} />
     </div>
   );
 }

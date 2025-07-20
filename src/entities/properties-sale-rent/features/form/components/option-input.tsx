@@ -2,7 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState, useRef } from "react";
-import { DBPropertyCodeField, PropertyFieldDecription, PropertyFieldHeader } from "@/entities/properties-sale-rent/";
+import { DBPropertyCodeField, FormFieldDescription, FormFieldTitle } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -48,7 +48,7 @@ export function OptionInput({ field }: { field: DBPropertyCodeField }) {
 
   return (
     <div className="flex flex-col space-y-2">
-      <PropertyFieldHeader text={title} inputId={inputId} />
+      <FormFieldTitle text={title} inputId={inputId} />
       <div>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -97,7 +97,7 @@ export function OptionInput({ field }: { field: DBPropertyCodeField }) {
           </PopoverContent>
         </Popover>
       </div>
-      <PropertyFieldDecription text={subtitle} inputId={inputId} />
+      <FormFieldDescription text={subtitle} inputId={inputId} />
     </div>
   );
 }

@@ -16,7 +16,7 @@ export function FormFieldTitle({
   return (
     <Label
       htmlFor={inputId}
-      className={cn("font-open-sans text-sm", variant === "bold" ? "font-semibold" : "font-normal", className)}
+      className={cn("font-open-sans text-md", variant === "bold" ? "font-semibold" : "font-normal", className)}
     >
       {text}
     </Label>

@@ -1,7 +1,8 @@
-import { useCallback, useId, useState } from "react";
+import { useCallback, useId } from "react";
 import { DBSerialID } from "@/entities/common";
 import { useDictionaryFormStore, useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
+import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
 
 // Display hook for dictionary name
 export function useDictionaryNameDisplay(id: DBSerialID, locale: string): string | undefined {
@@ -12,16 +13,21 @@ export function useDictionaryNameDisplay(id: DBSerialID, locale: string): string
 export function useDictionaryNameInput(
   id: DBSerialID,
   locale: string,
+  maxLength: number,
 ): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
-  placeholder: string;
+  characterCount: number;
+  maxLength: number;
   error?: string;
 } {
   const { updateDictionary } = useDictionaryFormStoreActions();
   const name = useDictionaryFormStore((state) => state.dictionaries[id]?.name);
-  const [value, setValue] = useState<string>(getAvailableLocalizedText(name, locale));
+  const { value, setValue, characterCount } = useCharacterLimit({
+    maxLength,
+    initialValue: name?.[locale] || "",
+  });
 
   const inputId = useId();
 
@@ -37,7 +43,7 @@ export function useDictionaryNameInput(
         draft.name[locale] = value;
       });
     },
-    [id, locale, updateDictionary],
+    [id, locale, setValue, updateDictionary],
   );
 
   // Validate - name should not be empty for primary locale
@@ -48,7 +54,8 @@ export function useDictionaryNameInput(
     inputId,
     value,
     onChange,
-    placeholder: `Name (${locale})`,
+    characterCount,
+    maxLength,
     error,
   };
 }

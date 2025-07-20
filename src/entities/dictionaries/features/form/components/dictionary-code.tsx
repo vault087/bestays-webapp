@@ -1,27 +1,34 @@
+import { useTranslations } from "next-intl";
 import React, { memo } from "react";
+import { FormFieldError } from "@/components/form";
+import { FormFloatingInput } from "@/components/form/inputs/form-floating-input";
 import { DB_CODE_MAX } from "@/entities/common/types/common-db.types";
 import {
   useDictionaryCodeDisplay,
   useDictionaryCodeInput,
 } from "@/entities/dictionaries/features/form/hooks/use-dictionary-code";
-import { FloatingInput, FloatingLabel } from "@/modules/shadcn/components/ui/floating-label-input";
 
 export const DictionaryCodeInput = memo(function DictionaryCodeInput({ id }: { id: number }) {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryCodeInput(id);
+  const { inputId, value, onChange, characterCount, error } = useDictionaryCodeInput(id, DB_CODE_MAX);
+  const t = useTranslations("Dictionaries.entries.code");
+  const placeholder = t("placeholder");
 
   return (
-    <div className="relative space-y-1">
-      <FloatingInput
-        id={inputId}
+    <div className="flex flex-col space-y-2">
+      <FormFloatingInput
+        inputId={inputId}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
+        characterCount={characterCount}
+        placeholder={placeholder}
         maxLength={DB_CODE_MAX}
-        className="selection:bg-primary border-b-0 bg-transparent not-placeholder-shown:translate-y-2 focus:translate-y-2 dark:bg-transparent"
+        config={{
+          characterCount: {
+            always_show: false,
+          },
+        }}
       />
-      <FloatingLabel htmlFor={inputId} className="start-0 max-w-[calc(100%-0.5rem)]">
-        {placeholder}
-      </FloatingLabel>
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <FormFieldError error={error} inputId={inputId} />}
     </div>
   );
 });
@@ -32,6 +39,5 @@ export const DictionaryCodeDisplay = memo(function DictionaryCodeDisplay({ id }:
   if (!code) {
     return <span className="text-gray-400">No code</span>;
   }
-
   return <span>{code}</span>;
 });

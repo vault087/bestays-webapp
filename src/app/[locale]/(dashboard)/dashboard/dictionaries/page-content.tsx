@@ -19,7 +19,7 @@ import {
   DictionaryFormStoreHydrated,
   DictionaryFormStoreProvider,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
-import { Button, Card, CardContent, Separator } from "@/modules/shadcn/";
+import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from "@/modules/shadcn/";
 
 // Define props for the client component
 interface DictionariesPageContentProps {
@@ -79,23 +79,20 @@ const DictionaryCanvas = () => {
     addEntry(dictionaryId, { en: `New Entry` });
   };
 
-  const showCode = false;
+  const showCode = true;
 
   return (
     <div className="flex w-full flex-wrap gap-4">
       {dictionaryIDs?.map((dictId) => {
         return (
           <Card key={dictId} className="w-full gap-1 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+            <CardHeader>
+              <CardTitle className="font-open-sans text-2xl font-light tracking-tight">Dictionary {dictId}</CardTitle>
+            </CardHeader>
             <CardContent>
-              <div className="space-y-1">
-                {showCode && (
-                  <div>
-                    <DictionaryCodeInput id={dictId} />
-                  </div>
-                )}
-                <div>
-                  <DictionaryNameInput id={dictId} locale={locale} />
-                </div>
+              <div className="flex flex-col space-y-4">
+                {showCode && <DictionaryCodeInput id={dictId} />}
+                <DictionaryNameInput id={dictId} locale={locale} />
                 <div>
                   <DictionaryDescriptionInput id={dictId} locale={locale} />
                   <DictionaryMetaInfoInput id={dictId} />

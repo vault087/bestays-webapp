@@ -3,10 +3,10 @@ import { memo } from "react";
 import {
   usePropertyPriceInput,
   DBPropertyPriceField,
-  PropertyFieldSubHeader,
-  PropertyFieldDecription,
+  FormFieldTitle,
+  FormFieldDescription,
   DBCurrency,
-  PropertyFieldHeader,
+  FormFieldTitle,
 } from "@/entities/properties-sale-rent/";
 import { useTranslations } from "@/modules/i18n";
 import {
@@ -23,7 +23,7 @@ export const PropertyPriceInput = function PropertyPriceInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
   return (
     <div className="flow flow-col w-full space-y-4 bg-transparent">
-      <PropertyFieldHeader text={t("label")} />
+      <FormFieldTitle text={t("label")} />
       <div className="flex flex-col gap-4 bg-transparent">
         <PropertyPriceRaiInput />
         <PropertyPriceTotalInput />
@@ -63,7 +63,7 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
   useDebugRender("PropertyPriceUncontrolledInput" + field);
   return (
     <div className="flex w-full flex-col bg-transparent">
-      {title && <PropertyFieldSubHeader text={title} inputId={inputId} />}
+      {title && <FormFieldTitle variant="normal" text={title} inputId={inputId} />}
       <div className="flex flex-row items-center space-x-2">
         <Input
           id={inputId}
@@ -76,7 +76,7 @@ export const PropertyPriceUncontrolledInput = memo(function PropertyPriceUncontr
         <DropDownCurrency currency={currency} currencies={currencies} onChange={setCurrency} />
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
+      {subtitle && <FormFieldDescription text={subtitle} inputId={inputId} />}
     </div>
   );
 });

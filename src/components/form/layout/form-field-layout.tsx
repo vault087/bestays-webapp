@@ -26,7 +26,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   className,
 }: {
   children: React.ReactNode;
-  inputId?: string | undefined;
+  inputId: string;
   title?: string | undefined;
   description?: string | undefined;
   error?: string | undefined;
@@ -36,11 +36,11 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   return (
     <div className={cn("flex w-full flex-col space-y-2", className)}>
       {title && <FormFieldTitle text={title} inputId={inputId} variant={config.title?.variant} />}
-      {description && <FormFieldDescription id={`${inputId}-description`} text={description} inputId={inputId} />}
+      {description && <FormFieldDescription text={description} inputId={inputId} />}
 
       {children}
 
-      {error && <FormFieldError id={`${inputId}-error`} error={error} inputId={inputId} className="mt-1" />}
+      {error && <FormFieldError error={error} inputId={inputId} className="mt-1" />}
     </div>
   );
 });

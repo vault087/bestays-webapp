@@ -13,6 +13,10 @@
   },
   "Dictionaries": {
     "fields": {
+      "name": {
+        "title": "Name",
+        "placeholder": "Enter name"
+      },
       "description": {
         "title": "Description",
         "description": "Please enter a short description of the dictionary"
@@ -20,6 +24,14 @@
       "meta_info": {
         "title": "AI Context",
         "description": "Please enter a short additional info for AI to use"
+      }
+    },
+    "entries": {
+      "name": {
+        "placeholder": "Enter name"
+      },
+      "code": {
+        "placeholder": "Enter code"
       }
     }
   },

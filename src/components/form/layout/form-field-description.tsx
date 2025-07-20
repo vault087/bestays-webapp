@@ -2,22 +2,20 @@ import { Label } from "@/modules/shadcn/components/ui/label";
 import { cn } from "@/modules/shadcn/utils/cn";
 
 export function FormFieldDescription({
-  id,
   text,
-  inputId = undefined,
+  inputId,
   className = "",
 }: {
-  id: string;
   text: string | undefined | null;
-  inputId?: string | undefined;
+  inputId: string;
   className?: string;
 }) {
   if (!text) return null;
   return (
     <Label
-      id={id}
+      id={`${inputId}-description`}
       htmlFor={inputId}
-      className={cn("font-open-sans text-muted-foreground text-xs", className)}
+      className={cn("font-open-sans text-muted-foreground text-", className)}
       role="region"
       aria-live="polite"
     >

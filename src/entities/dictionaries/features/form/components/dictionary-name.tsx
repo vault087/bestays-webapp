@@ -1,10 +1,12 @@
+import { useTranslations } from "next-intl";
 import React, { memo } from "react";
+import { FormInput } from "@/components/form/inputs/form-input";
+import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   useDictionaryNameDisplay,
   useDictionaryNameInput,
 } from "@/entities/dictionaries/features/form/hooks/use-dictionary-name";
 import { DICTIONARY_NAME_MAX } from "@/entities/dictionaries/types/dictionary.types";
-import { FloatingInput, FloatingLabel } from "@/modules/shadcn";
 
 export const DictionaryNameDisplay = memo(function DictionaryNameDisplay({
   id,
@@ -23,21 +25,21 @@ export const DictionaryNameDisplay = memo(function DictionaryNameDisplay({
 });
 
 export const DictionaryNameInput = memo(function DictionaryNameInput({ id, locale }: { id: number; locale: string }) {
-  const { inputId, value, onChange, placeholder, error } = useDictionaryNameInput(id, locale);
-
+  const { inputId, value, onChange, error, characterCount } = useDictionaryNameInput(id, locale, DICTIONARY_NAME_MAX);
+  const t = useTranslations("Dictionaries.fields.name");
+  const title = t("title");
+  const placeholder = t("placeholder");
   return (
-    <div className="relative space-y-1">
-      <FloatingInput
-        id={inputId}
+    <FormFieldLayout title={title} error={error} inputId={inputId}>
+      <FormInput
+        inputId={inputId}
         value={value}
+        onChange={onChange}
         maxLength={DICTIONARY_NAME_MAX}
-        onChange={(e) => onChange(e.target.value)}
-        className="selection:bg-primary border-b-0 bg-transparent not-placeholder-shown:translate-y-2 focus:translate-y-2 dark:bg-transparent"
+        placeholder={placeholder || ""}
+        className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
+        characterCount={characterCount}
       />
-      <FloatingLabel htmlFor={inputId} className="start-0 max-w-[calc(100%-0.5rem)]">
-        {placeholder}
-      </FloatingLabel>
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-    </div>
+    </FormFieldLayout>
   );
 });

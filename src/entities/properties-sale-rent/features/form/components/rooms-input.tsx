@@ -1,9 +1,9 @@
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { memo } from "react";
 import {
-  PropertyFieldSubHeader,
-  PropertyFieldDecription,
-  PropertyFieldHeader,
+  FormFieldTitle,
+  FormFieldDescription,
+  FormFieldTitle,
   DBPropertyRoomsField,
 } from "@/entities/properties-sale-rent/";
 import { usePropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/hooks/use-rooms-field";
@@ -15,7 +15,7 @@ export const PropertyRoomsInput = function PropertyRoomsInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.rooms");
   return (
     <div className="flow flow-col w-full space-y-4 bg-transparent">
-      <PropertyFieldHeader text={t("label")} />
+      <FormFieldTitle text={t("label")} />
       <div className="flex flex-col gap-4 bg-transparent">
         <PropertyRoomsBedroomsInput />
         <PropertyRoomsBathroomsInput />
@@ -56,7 +56,7 @@ export const PropertyRoomsUncontrolledInput = memo(function PropertyRoomsUncontr
   return (
     <div className="flex w-full flex-col bg-transparent">
       <div className="flex w-full flex-row items-center justify-between space-x-2">
-        {title && <PropertyFieldSubHeader text={title} inputId={inputId} />}
+        {title && <FormFieldTitle variant="normal" text={title} inputId={inputId} />}
         <div className="flex w-full flex-row items-center justify-end space-x-0">
           <Button variant="outline" size="icon" className="rounded-full" onClick={onDecrement}>
             <MinusIcon className="h-4 w-4" />
@@ -76,7 +76,7 @@ export const PropertyRoomsUncontrolledInput = memo(function PropertyRoomsUncontr
         </div>
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-      {subtitle && <PropertyFieldDecription text={subtitle} inputId={inputId} />}
+      {subtitle && <FormFieldDescription text={subtitle} inputId={inputId} />}
     </div>
   );
 });

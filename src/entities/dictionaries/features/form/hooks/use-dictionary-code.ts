@@ -1,9 +1,10 @@
-import { useCallback, useId, useState } from "react";
+import { useCallback, useId } from "react";
 import { DBSerialID } from "@/entities/common";
 import {
   useDictionaryFormStore,
   useDictionaryFormStoreActions,
 } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
+import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
 
 // Display hook for dictionary code
 export function useDictionaryCodeDisplay(id: DBSerialID): string | undefined {
@@ -11,17 +12,23 @@ export function useDictionaryCodeDisplay(id: DBSerialID): string | undefined {
 }
 
 // Input hook for dictionary code
-export function useDictionaryCodeInput(id: DBSerialID): {
+export function useDictionaryCodeInput(
+  id: DBSerialID,
+  maxLength: number,
+): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
-  placeholder: string;
+  characterCount: number;
+  maxLength: number;
   error?: string;
 } {
   const dictionary = useDictionaryFormStore((state) => state.dictionaries[id]);
   const { updateDictionary } = useDictionaryFormStoreActions();
-  const [value, setValue] = useState<string>(dictionary?.code || "");
-
+  const { value, setValue, characterCount } = useCharacterLimit({
+    maxLength,
+    initialValue: dictionary?.code || "",
+  });
   const inputId = useId();
 
   // Handle change
@@ -32,7 +39,7 @@ export function useDictionaryCodeInput(id: DBSerialID): {
         draft.code = value;
       });
     },
-    [id, updateDictionary],
+    [id, setValue, updateDictionary],
   );
 
   const error = undefined;
@@ -41,7 +48,8 @@ export function useDictionaryCodeInput(id: DBSerialID): {
     inputId,
     value,
     onChange,
-    placeholder: "Code",
+    characterCount,
+    maxLength,
     error,
   };
 }
