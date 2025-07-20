@@ -1,11 +1,12 @@
 import { useTranslations } from "next-intl";
-import React, { memo, ChangeEvent } from "react";
+import React, { memo } from "react";
+import { FormTextArea } from "@/components/form/inputs/form-text-area";
+import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   useDictionaryMetaInfoDisplay,
   useDictionaryMetaInfoInput,
 } from "@/entities/dictionaries/features/form/hooks/use-dictionary-meta-info";
 import { DICTIONARY_META_INFO_MAX } from "@/entities/dictionaries/types/dictionary.types";
-import { Textarea, Label } from "@/modules/shadcn";
 
 export const DictionaryMetaInfoDisplay = memo(function DictionaryMetaInfoDisplay({ id }: { id: number }) {
   const description = useDictionaryMetaInfoDisplay(id);
@@ -19,45 +20,22 @@ export const DictionaryMetaInfoDisplay = memo(function DictionaryMetaInfoDisplay
 
 export const DictionaryMetaInfoInput = memo(function DictionaryMetaInfoInput({ id }: { id: number }) {
   const t = useTranslations("Dictionaries.fields.meta_info");
-  const title = t("label");
-  const subtitle = t("subtitle");
+  const title = t("title");
+  const description = t("description");
   const maxLength = DICTIONARY_META_INFO_MAX;
   const { inputId, value, onChange, placeholder, error, characterCount } = useDictionaryMetaInfoInput(id, maxLength);
-  const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-    onChange(e.target.value);
-  };
 
   return (
-    <div className="flex w-full flex-col space-y-2 bg-transparent">
-      {title && (
-        <Label htmlFor={inputId} className="font-open-sans text-sm font-semibold">
-          {title}
-        </Label>
-      )}
-      {subtitle && (
-        <Label htmlFor={inputId} className="font-montserrat text-muted-foreground text-xs">
-          {subtitle}
-        </Label>
-      )}
-
-      <Textarea
-        id={inputId}
+    <FormFieldLayout title={title} description={description} error={error} inputId={inputId}>
+      <FormTextArea
+        inputId={inputId}
         value={value}
+        onChange={onChange}
+        characterCount={characterCount}
         maxLength={maxLength}
-        onChange={onTextAreaChange}
         placeholder={placeholder || ""}
-        aria-describedby={`${inputId}-description`}
+        arialInvalid={!!error}
       />
-      <p
-        id={`${inputId}-description`}
-        className="text-muted-foreground mt-2 text-right text-xs"
-        role="status"
-        aria-live="polite"
-      >
-        <span className="tabular-nums">{characterCount}</span> / {maxLength}
-      </p>
-
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
-    </div>
+    </FormFieldLayout>
   );
 });

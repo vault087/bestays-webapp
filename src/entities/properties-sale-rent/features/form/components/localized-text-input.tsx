@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { ChangeEvent, memo } from "react";
+import { memo } from "react";
 import { FormTextArea } from "@/components/form/inputs/form-text-area";
 import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
@@ -7,7 +7,6 @@ import {
   PROPERTY_ABOUT_MAX,
   usePropertyLocalizedTextInput,
 } from "@/entities/properties-sale-rent/";
-import { Textarea } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 // Localized Text Uncontrolled Input
@@ -38,9 +37,6 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
   field: DBPropertyLocalizedTextField;
 }) {
   const { inputId, value, onChange, error, characterCount } = usePropertyLocalizedTextInput(field, maxLength);
-  const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-    onChange(e.target.value);
-  };
 
   useDebugRender("PropertyLocalizedTextInput" + title);
 
