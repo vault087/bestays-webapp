@@ -49,7 +49,7 @@ export const PropertyTextInput = memo(function PropertyTextInput({
     onChange(e.target.value);
   };
 
-  useDebugRender("TextUncontrolledInput" + title);
+  useDebugRender("PropertyTextInput" + title);
   return (
     <div className="flex w-full flex-col space-y-2 bg-transparent">
       {title && <PropertyFieldHeader text={title} inputId={inputId} />}
