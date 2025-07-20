@@ -24,6 +24,7 @@ export function useDictionaryDescriptionInput(
   onChange: (value: string) => void;
   placeholder: string;
   characterCount: number;
+  maxLength: number;
   error?: string;
 } {
   const { updateDictionary } = useDictionaryFormStoreActions();
@@ -60,6 +61,7 @@ export function useDictionaryDescriptionInput(
     onChange,
     placeholder: `Description (${locale})`,
     characterCount,
+    maxLength,
     error,
   };
 }

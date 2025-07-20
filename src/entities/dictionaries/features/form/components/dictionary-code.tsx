@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { FormFieldError } from "@/components/form";
 import { FormFloatingInput } from "@/components/form/inputs/form-floating-input";
 import { DB_CODE_MAX } from "@/entities/common/types/common-db.types";
@@ -13,6 +13,15 @@ export const DictionaryCodeInput = memo(function DictionaryCodeInput({ id }: { i
   const t = useTranslations("Dictionaries.entries.code");
   const placeholder = t("placeholder");
 
+  const config = useMemo(
+    () => ({
+      characterCount: {
+        always_show: false,
+      },
+    }),
+    [],
+  );
+
   return (
     <div className="flex flex-col space-y-2">
       <FormFloatingInput
@@ -22,11 +31,7 @@ export const DictionaryCodeInput = memo(function DictionaryCodeInput({ id }: { i
         characterCount={characterCount}
         placeholder={placeholder}
         maxLength={DB_CODE_MAX}
-        config={{
-          characterCount: {
-            always_show: false,
-          },
-        }}
+        config={config}
       />
       {error && <FormFieldError error={error} inputId={inputId} />}
     </div>

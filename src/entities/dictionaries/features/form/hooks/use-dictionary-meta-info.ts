@@ -23,6 +23,7 @@ export function useDictionaryMetaInfoInput(
   onChange: (value: string) => void;
   placeholder: string;
   characterCount: number;
+  maxLength: number;
   error?: string;
 } {
   const { updateDictionary } = useDictionaryFormStoreActions();
@@ -55,6 +56,7 @@ export function useDictionaryMetaInfoInput(
     onChange,
     placeholder: `Meta info`,
     characterCount,
+    maxLength,
     error: undefined,
   };
 }
