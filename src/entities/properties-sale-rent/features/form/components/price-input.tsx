@@ -1,5 +1,5 @@
 import { memo, useId } from "react";
-import { FormFieldLayout, FormPriceInput, FormFieldLayoutConfig } from "@/components/form";
+import { FormFieldLayout, FormPriceInput } from "@/components/form";
 import { usePropertyPriceInput, DBPropertyPriceField } from "@/entities/properties-sale-rent/";
 import { useTranslations } from "@/modules/i18n";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -10,7 +10,7 @@ export const PropertyPriceInputGroup = function PropertyPriceInputGroup() {
   const title = t("title");
   return (
     <FormFieldLayout title={title} inputId={inputId}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-row gap-4">
         <PropertyPriceRaiInput />
         <PropertyPriceTotalInput />
         <PropertyPriceSaleInput />

@@ -34,25 +34,27 @@ export const FormPriceInput = memo(function FormPriceInput({
 }) {
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   return (
-    <div className={cn("relative flex rounded-md shadow-xs", className)}>
-      <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
-        {currencySymbol}
-      </span>
-      <Input
-        id={inputId}
-        className={cn(
-          "-me-px rounded-e-none ps-6 shadow-none",
-          "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
-        )}
-        name="price"
-        placeholder="0.00"
-        type="number"
-        max={max}
-        aria-invalid={arialInvalid}
-        aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+    <div className={cn("relative flex", className)}>
+      <div className="rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
+        <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
+          {currencySymbol}
+        </span>
+        <Input
+          id={inputId}
+          className={cn(
+            "-me-px rounded-none border-none ps-6 shadow-none",
+            "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+          )}
+          name="price"
+          placeholder="0.00"
+          type="number"
+          max={max}
+          aria-invalid={arialInvalid}
+          aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
       <DropDownCurrency currency={currency} currencies={currencies} onCurrencyChange={onCurrencyChange} />
     </div>
   );
