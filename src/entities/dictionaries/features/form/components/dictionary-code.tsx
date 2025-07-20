@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import React, { memo, useMemo } from "react";
 import { FormFieldError } from "@/components/form";
 import { FormFloatingInput } from "@/components/form/inputs/form-floating-input";
-import { DB_CODE_MAX } from "@/entities/common/types/common-db.types";
+import { DB_CODE_MAX } from "@/entities/common/code";
 import {
   useDictionaryCodeDisplay,
   useDictionaryCodeInput,

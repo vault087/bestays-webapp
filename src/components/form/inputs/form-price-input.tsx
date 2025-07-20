@@ -1,0 +1,86 @@
+import { ChevronDown } from "lucide-react";
+import React, { memo } from "react";
+import { DBCurrency } from "@/entities/common";
+import {
+  Input,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Button,
+} from "@/modules/shadcn";
+import { cn } from "@/modules/shadcn/utils/cn";
+
+export const FormPriceInput = memo(function FormPriceInput({
+  inputId,
+  value,
+  onChange,
+  max,
+  arialInvalid = false,
+  className,
+  currency,
+  currencies,
+  onCurrencyChange,
+}: {
+  inputId: string;
+  value: string;
+  onChange: (value: string) => void;
+  max?: number | undefined;
+  arialInvalid?: boolean;
+  className?: string;
+  currency: DBCurrency;
+  currencies: DBCurrency[];
+  onCurrencyChange: (currency: DBCurrency) => void;
+}) {
+  return (
+    <div className={cn("relative flex rounded-md shadow-xs", className)}>
+      <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm">
+        €
+      </span>
+      <Input
+        id={inputId}
+        className="-me-px rounded-e-none ps-6 shadow-none"
+        placeholder="0.00"
+        type="number"
+        max={max}
+        aria-invalid={arialInvalid}
+        aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      <DropDownCurrency currency={currency} currencies={currencies} onCurrencyChange={onCurrencyChange} />
+    </div>
+  );
+});
+
+export const DropDownCurrency = memo(function DropDownCurrency({
+  currency,
+  currencies,
+  onCurrencyChange,
+}: {
+  currency: DBCurrency;
+  currencies: DBCurrency[];
+  onCurrencyChange: (currency: DBCurrency) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <div className="border-input bg-background text-muted-foreground inline-flex items-center rounded-s-none rounded-e-md border">
+          <Button variant="text" className="flex flex-row space-x-0">
+            <span className="px-0 text-sm uppercase">{currency}</span>
+            <ChevronDown className="size-4" />
+          </Button>
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
+        {currencies.map((currency) => (
+          <div key={currency}>
+            <DropdownMenuItem onClick={() => onCurrencyChange(currency)} className="flex justify-center">
+              <span className="text-muted-foreground text-sm uppercase">{currency}</span>
+            </DropdownMenuItem>
+          </div>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+});

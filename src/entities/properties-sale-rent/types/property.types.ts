@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { DBSerialIDSchema } from "@/entities/common/";
+import { DBCurrencySchema, DBMoneySchema, DBSerialIDSchema } from "@/entities/common";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
-
 // Table constants
 export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
 
@@ -21,12 +20,8 @@ export const DBRoomsSchema = z.object({
   living_rooms: z.number().int().positive().nullish(),
 });
 
-export const CurrencySchema = z.enum(["thb"]);
-export const DEFAULT_CURRENCY: DBCurrency = "thb";
-
-export const DBMoneySchema = z.number().int().positive();
 export const DBPriceSchema = z.object({
-  currency: CurrencySchema.nullish(),
+  currency: DBCurrencySchema.nullish(),
   rai: DBMoneySchema.nullish(),
   total: DBMoneySchema.nullish(),
   sale: DBMoneySchema.nullish(),
@@ -36,8 +31,6 @@ export type DBPrice = z.infer<typeof DBPriceSchema>;
 export type DBSize = z.infer<typeof DBSizeSchema>;
 export type DBSizeEntry = z.infer<typeof DBSizeEntrySchema>;
 export type DBRooms = z.infer<typeof DBRoomsSchema>;
-export type DBCurrency = z.infer<typeof CurrencySchema>;
-export type DBMoney = z.infer<typeof DBMoneySchema>;
 
 export const PROPERTY_ABOUT_MAX = 5000;
 export const PROPERTY_AGENT_NOTES_MAX = 5000;

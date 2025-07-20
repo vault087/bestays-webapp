@@ -1,20 +1,14 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useId, useState } from "react";
+import { DEFAULT_CURRENCY, DBCurrency, DBCurrencySchema } from "@/entities/common";
 import {
   DBPropertyPriceField,
   usePropertyFormStaticStore,
-  usePropertyLocale,
-  DBCurrency,
-  DEFAULT_CURRENCY,
-  CurrencySchema,
+  usePropertyFormStoreActions,
 } from "@/entities/properties-sale-rent";
-import { generateInputId } from "@/utils/generate-input-id";
 
 // Input hook for MutableProperty localized fields
-export function usePropertyPriceInput(
-  field: DBPropertyPriceField,
-  variant?: string,
-): {
+export function usePropertyPriceInput(field: DBPropertyPriceField): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
@@ -23,20 +17,14 @@ export function usePropertyPriceInput(
   setCurrency: (currency: DBCurrency) => void;
   error?: string;
 } {
-  const { initialProperty, updateProperty } = usePropertyFormStaticStore();
-  const priceFieldValue = initialProperty.price?.[field] as number | undefined;
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreActions();
+  const inputId = useId();
 
-  const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(
-    initialProperty.price?.currency || DEFAULT_CURRENCY,
-  );
+  const priceFieldValue = property.price?.[field] as number | undefined;
+
+  const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(property.price?.currency || DEFAULT_CURRENCY);
   const [priceValue, setPriceValue] = useState<string>(priceFieldValue?.toString() || "");
-  const locale = usePropertyLocale();
-
-  // Generate a unique input ID
-  const inputId = useMemo(
-    () => generateInputId("property-price", initialProperty.id.slice(-8), field, variant, locale),
-    [initialProperty.id, locale, field, variant],
-  );
 
   // Handle change
   const onChange = useCallback(
@@ -68,8 +56,6 @@ export function usePropertyPriceInput(
     [updateProperty],
   );
 
-  // Validate - field should not be empty for primary locale
-  // This is a simplified version - a real implementation might have more validation
   const error = undefined;
 
   return {
@@ -77,7 +63,7 @@ export function usePropertyPriceInput(
     value: priceValue,
     onChange,
     currency: currentCurrency,
-    currencies: CurrencySchema.options as DBCurrency[],
+    currencies: DBCurrencySchema.options,
     setCurrency,
     error,
   };

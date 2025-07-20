@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import React, { memo } from "react";
-import { FormInput } from "@/components/form/inputs/form-input";
+import { FormTextInput } from "@/components/form/inputs/form-text-input";
 import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   useDictionaryNameDisplay,
@@ -31,7 +31,7 @@ export const DictionaryNameInput = memo(function DictionaryNameInput({ id, local
   const placeholder = t("placeholder");
   return (
     <FormFieldLayout title={title} error={error} inputId={inputId}>
-      <FormInput
+      <FormTextInput
         inputId={inputId}
         value={value}
         onChange={onChange}

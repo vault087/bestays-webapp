@@ -21,11 +21,12 @@ import {
   // PropertyNearbyAttractionsCheckbox,
   // PropertyImagesInput,
   // PropertyLandAndConstructionCheckbox,
-  // PropertyPriceInput,
+  // PropertyPriceInputGroup,
   // PropertySizeInput,
   usePropertyFormStore,
   createPropertyFormStore,
   usePropertyFormStaticStore,
+  PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 // import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/components/rooms-input";
 import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
@@ -71,8 +72,10 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
       <div className="flex flex-row gap-4">
         <div className="flex flex-1 flex-col gap-4">
           {/* <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}> */}
+          <PropertyPriceInputGroup />
           <PropertyAgentNotesInput />
           <PropertyAboutInput />
+
           <div className="flex flex-1"></div>
           {/* <PropertyAreaInput /> */}
           {/* <PropertyHighlightsCheckbox /> */}
@@ -83,7 +86,6 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
           {/* <PropertyImagesInput />
               <PropertySizeInput />
               <PropertyRoomsInput />
-              <PropertyPriceInput />
               <PropertyAreaInput />
               <PropertyLocationStrengthsCheckbox />
               <PropertyTransactionTypesCheckbox />

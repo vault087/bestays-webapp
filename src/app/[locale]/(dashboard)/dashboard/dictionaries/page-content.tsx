@@ -120,7 +120,7 @@ const EntriesList = memo(({ dictionaryId, locale }: { dictionaryId: number; loca
   });
 
   return (
-    <div>
+    <div className="flex flex-col space-y-4">
       {entriesIds &&
         entriesIds.map((entryId) => {
           return (

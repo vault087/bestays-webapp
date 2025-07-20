@@ -1,6 +1,6 @@
 import { loadDictionaries, loadEntries } from "@/entities/dictionaries/libs";
-import { loadPropertyDetails } from "@/entities/properties-sale-rent/libs/load-properties";
 import { MutableProperty } from "@/entities/properties-sale-rent/features/form/types/mutable-property.types";
+import { loadPropertyDetails } from "@/entities/properties-sale-rent/libs/load-properties";
 import PropertiesPageClient from "./page.client";
 
 export default async function PropertiesSellRentPage() {

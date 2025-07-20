@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import React, { memo } from "react";
 import { FormFieldError } from "@/components/form";
-import { FormInput } from "@/components/form/inputs/form-input";
+import { FormTextInput } from "@/components/form/inputs/form-text-input";
 import {
   useDictionaryEntryNameDisplay,
   useDictionaryEntryNameInput,
@@ -46,7 +46,7 @@ export const DictionaryEntryNameInput = memo(function DictionaryEntryNameInput({
 
   return (
     <div className="flex flex-col space-y-2">
-      <FormInput
+      <FormTextInput
         inputId={inputId}
         value={value}
         onChange={onChange}
