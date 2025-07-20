@@ -27,9 +27,9 @@ export const FormFieldLayout = memo(function FormFieldLayout({
 }: {
   children: React.ReactNode;
   inputId: string;
-  title?: string | undefined;
-  description?: string | undefined;
-  error?: string | undefined;
+  title?: string | undefined | null;
+  description?: string | undefined | null;
+  error?: string | undefined | null;
   config?: FormFieldLayoutConfig;
   className?: string;
 }) {

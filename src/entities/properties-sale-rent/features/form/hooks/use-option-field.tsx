@@ -53,10 +53,8 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
     [updateProperty, field],
   );
 
-  const selectedOption = useMemo(
-    () => (initialEntry ? entryToDropDownOption(initialEntry) : null),
-    [initialEntry, entryToDropDownOption],
-  );
+  const selectedOption = initialEntry ? entryToDropDownOption(initialEntry) : null;
+
   const options = useMemo(
     () => Object.values(entries || {}).map(entryToDropDownOption),
     [entries, entryToDropDownOption],

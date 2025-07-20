@@ -3,3 +3,4 @@ export * from "./form-text-input";
 export * from "./form-text-area";
 export * from "./form-price-input";
 export * from "./form-dropdown";
+export * from "./form-option-input";
