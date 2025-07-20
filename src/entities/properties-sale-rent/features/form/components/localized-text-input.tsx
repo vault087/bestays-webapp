@@ -10,7 +10,7 @@ import {
 import { useDebugRender } from "@/utils/use-debug-render";
 
 // Localized Text Uncontrolled Input
-export const PropertyAboutInput = function PropertyAboutInput() {
+export const PropertyAboutInput = function PropertyAboutInput({ className }: { className?: string }) {
   const t = useTranslations("PropertiesSaleRent.fields.about");
   return (
     <PropertyLocalizedTextInput
@@ -19,6 +19,7 @@ export const PropertyAboutInput = function PropertyAboutInput() {
       description={t("description")}
       field="about"
       maxLength={PROPERTY_ABOUT_MAX}
+      className={className}
     />
   );
 };
@@ -29,19 +30,21 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
   maxLength,
   placeholder,
   field,
+  className,
 }: {
   title: string | undefined;
   placeholder: string | undefined;
   description: string | undefined;
   maxLength: number;
   field: DBPropertyLocalizedTextField;
+  className?: string;
 }) {
   const { inputId, value, onChange, error, characterCount } = usePropertyLocalizedTextInput(field, maxLength);
 
   useDebugRender("PropertyLocalizedTextInput" + title);
 
   return (
-    <FormFieldLayout title={title} description={description} error={error} inputId={inputId}>
+    <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
       <FormTextArea
         inputId={inputId}
         value={value}

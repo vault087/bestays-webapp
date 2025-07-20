@@ -67,15 +67,18 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
   );
 
   return (
-    <div className="bg-accent flex flex-col flex-row gap-4 p-4">
+    <div className="bg-accent flex flex-col gap-4 p-4">
       <div className="bg-background flex flex-col gap-4 rounded-md p-4">
         <p>Properties</p>
         <div className="flex flex-row gap-4">
           <div className="flex flex-1 flex-col gap-4">
             {/* <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}> */}
-            <PropertyPriceInputGroup />
-            <PropertyAgentNotesInput />
-            <PropertyAboutInput />
+            <div className="flex flex-row items-center gap-4">
+              <PropertyPriceInputGroup className="flex w-1/3 flex-col" />
+
+              <PropertyAgentNotesInput />
+              <PropertyAboutInput />
+            </div>
 
             <div className="flex flex-1"></div>
             {/* <PropertyAreaInput /> */}
@@ -98,7 +101,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
           </div>
         </div>
       </div>
-      <ReactiveDebugCard />
+      {/* <ReactiveDebugCard /> */}
     </div>
   );
 });

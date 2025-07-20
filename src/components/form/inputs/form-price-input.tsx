@@ -35,7 +35,7 @@ export const FormPriceInput = memo(function FormPriceInput({
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   return (
     <div className={cn("relative flex", className)}>
-      <div className="rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
+      <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
         <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
           {currencySymbol}
         </span>

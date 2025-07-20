@@ -2,19 +2,18 @@ import { memo, useId } from "react";
 import { FormFieldLayout, FormPriceInput } from "@/components/form";
 import { usePropertyPriceInput, DBPropertyPriceField } from "@/entities/properties-sale-rent/";
 import { useTranslations } from "@/modules/i18n";
+import { cn } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyPriceInputGroup = function PropertyPriceInputGroup() {
+export const PropertyPriceInputGroup = function PropertyPriceInputGroup({ className }: { className?: string }) {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
   const inputId = useId();
   const title = t("title");
   return (
-    <FormFieldLayout title={title} inputId={inputId}>
-      <div className="flex flex-row gap-4">
-        <PropertyPriceRaiInput />
-        <PropertyPriceTotalInput />
-        <PropertyPriceSaleInput />
-      </div>
+    <FormFieldLayout title={title} inputId={inputId} className={cn("flex flex-row gap-2", className)}>
+      <PropertyPriceRaiInput />
+      <PropertyPriceTotalInput />
+      <PropertyPriceSaleInput />
     </FormFieldLayout>
   );
 };
@@ -37,10 +36,12 @@ export const PropertyPriceSaleInput = function PropertyPriceSaleInput() {
 export const PropertyPriceInput = memo(function PropertyPriceInput({
   title,
   field,
+  className,
 }: {
   title: string;
   subtitle?: string | undefined;
   field: DBPropertyPriceField;
+  className?: string;
 }) {
   const { inputId, value, onChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
   useDebugRender("PropertyPriceInput" + field);
@@ -50,6 +51,7 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
       title={title}
       inputId={inputId}
       error={error}
+      className={className}
       config={{
         title: {
           variant: "h2",

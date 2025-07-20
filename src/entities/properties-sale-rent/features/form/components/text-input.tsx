@@ -8,7 +8,7 @@ import { DBPropertyTextField, usePropertyTextInput, PROPERTY_AGENT_NOTES_MAX } f
 import { useDebugRender } from "@/utils/use-debug-render";
 
 // Text Uncontrolled Input
-export const PropertyAgentNotesInput = function PropertyAgentNotesInput() {
+export const PropertyAgentNotesInput = function PropertyAgentNotesInput({ className }: { className?: string }) {
   const t = useTranslations("PropertiesSaleRent.fields");
   const title = t("agent_notes.title");
   const description = t("agent_notes.description");
@@ -20,6 +20,7 @@ export const PropertyAgentNotesInput = function PropertyAgentNotesInput() {
       description={description}
       field="agent_notes"
       maxLength={PROPERTY_AGENT_NOTES_MAX}
+      className={className}
     />
   );
 };
@@ -31,18 +32,20 @@ export const PropertyTextInput = memo(function PropertyTextInput({
   maxLength,
   description,
   field,
+  className,
 }: {
   title?: string | undefined;
   placeholder?: string | undefined;
   maxLength: number;
   description?: string | undefined;
   field: DBPropertyTextField;
+  className?: string;
 }) {
   const { inputId, value, onChange, error, characterCount } = usePropertyTextInput(field, maxLength);
 
   useDebugRender("PropertyTextInput" + title);
   return (
-    <FormFieldLayout title={title} description={description} error={error} inputId={inputId}>
+    <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
       <FormTextArea
         inputId={inputId}
         value={value}
