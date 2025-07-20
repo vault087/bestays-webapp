@@ -26,14 +26,23 @@ export const FormPriceInput = memo(function FormPriceInput({
   onCurrencyChange: (currency: DBCurrency) => void;
 }) {
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
-  const currencyToDropDownOption = (currency: DBCurrency): FormDropDownOption => ({
-    key: currency,
-    label: currency,
-  });
+  const currencyToDropDownOption = useCallback(
+    (currency: DBCurrency): FormDropDownOption => ({
+      key: currency,
+      label: currency,
+    }),
+    [],
+  );
 
-  const dropdownValue = useMemo(() => currencyToDropDownOption(currency), [currency]);
-  const dropdownValues = useMemo(() => currencies.map(currencyToDropDownOption), [currencies]);
-  const dropdownOnChanged = useCallback((value: string) => onCurrencyChange(value as DBCurrency), [onCurrencyChange]);
+  const dropdownValue = useMemo(() => currencyToDropDownOption(currency), [currency, currencyToDropDownOption]);
+  const dropdownValues = useMemo(
+    () => currencies.map(currencyToDropDownOption),
+    [currencies, currencyToDropDownOption],
+  );
+  const dropdownOnChanged = useCallback(
+    (option: FormDropDownOption) => onCurrencyChange(option.key as DBCurrency),
+    [onCurrencyChange],
+  );
 
   return (
     <div className={cn("relative flex", className)}>
@@ -57,7 +66,7 @@ export const FormPriceInput = memo(function FormPriceInput({
           onChange={(e) => onChange(e.target.value)}
         />
       </div>
-      <FormDropDown value={dropdownValue} options={dropdownValues} onChanged={dropdownOnChanged} />
+      <FormDropDown selectedOption={dropdownValue} options={dropdownValues} selectOption={dropdownOnChanged} />
     </div>
   );
 });

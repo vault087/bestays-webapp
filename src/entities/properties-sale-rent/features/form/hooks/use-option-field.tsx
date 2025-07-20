@@ -1,29 +1,24 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
-import { useStore } from "zustand";
+import { useMemo, useId, useState, useCallback } from "react";
+import { FormDropDownOption } from "@/components/form/inputs/form-dropdown";
 import { DBSerialID } from "@/entities/common/";
-import { useDictionarySlice } from "@/entities/dictionaries/features/edit/context/dictionary.store.context";
+import { DBDictionaryEntry, useDictionaryFormStore } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
   usePropertyFormStaticStore,
   PropertyFieldToDictionaryCodeMap,
+  usePropertyFormStoreActions,
   usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
-import { generateInputId } from "@/utils";
-
-export type SingleOption = {
-  key: DBSerialID;
-  label: string;
-};
 
 export type OptionFieldState = {
   inputId: string;
-  currentValue: SingleOption;
-  options: SingleOption[];
+  selectedOption: FormDropDownOption;
+  dropdownOptions: FormDropDownOption[];
+  onOptionChanged: (value: string) => void;
   title: string | undefined;
   subtitle: string | undefined;
-  setValue: (value: DBSerialID) => void;
 };
 
 export const useOptionField = ({
@@ -33,57 +28,28 @@ export const useOptionField = ({
   field: DBPropertyCodeField;
   variant?: string;
 }): OptionFieldState => {
-  const store = useDictionarySlice();
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreActions();
+  const initialValue = property[field] as DBSerialID | null | undefined;
+  const inputId = useId();
+  const locale = usePropertyLocale();
 
   const dictionaryCode = PropertyFieldToDictionaryCodeMap[field] || "";
-  const dictionaryId = useStore(store, (state) => state.dictionaryByCode[dictionaryCode]) || 0;
-  const dictionary = useStore(store, (state) => state.dictionaries[dictionaryId]);
-  const entriesRecord = useStore(store, (state) => state.entries[dictionaryId]);
+  const dictionaryId = useDictionaryFormStore((state) => state.dictionaryByCode[dictionaryCode]);
+  const dictionary = useDictionaryFormStore((state) => (dictionaryId ? state.dictionaries[dictionaryId] : undefined));
+  const entries = useDictionaryFormStore((state) => (dictionaryId ? state.entries[dictionaryId] : undefined));
 
-  const locale = usePropertyLocale();
-  const { initialProperty, updateProperty } = usePropertyFormStaticStore();
+  const entryToDropDownOption = useCallback(
+    (entry?: DBDictionaryEntry | null): FormDropDownOption =>
+      entry ? { key: String(entry.id), label: getAvailableLocalizedText(entry.name, locale) } : null,
+    [locale],
+  );
 
-  const propertyId = initialProperty.id;
-  // Get initial value from context
-  const initialValue = initialProperty[field] as DBSerialID;
+  const initialEntry = initialValue ? entries?.[initialValue] : null;
 
-  // Local state for immediate UI updates
-  const [currentValue, setCurrentValue] = useState<DBSerialID>(initialValue);
-
-  // Memoize computed values (options, titles) separately from current value
-  const { inputId, options, title, subtitle } = useMemo(() => {
-    const entries = Object.values(entriesRecord) || [];
-    const inputId = generateInputId("property-option", propertyId.slice(-8), field, variant, locale);
-
-    const options: SingleOption[] = Object.values(entries).map((entry) => ({
-      key: entry.id,
-      label: getAvailableLocalizedText(entry.name, locale)",
-    }));
-
-    const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code;
-    const subtitle = getAvailableLocalizedText(dictionary?.description, locale);
-
-    return { inputId, options, title, subtitle };
-  }, [dictionary, entriesRecord, field, variant, locale, propertyId]);
-
-  // Create current value option for display
-  const currentValueOption = useMemo(() => {
-    const entries = Object.values(entriesRecord) || [];
-    const dictionaryEntry = entries.find((entry) => entry.id === currentValue);
-    const label = getAvailableLocalizedText(dictionaryEntry?.name, locale);
-    return {
-      key: currentValue,
-      label,
-    } as SingleOption;
-  }, [entriesRecord, currentValue, locale]);
-
-  // Update both local state and context
   const setValue = useCallback(
     (value: DBSerialID) => {
-      // Immediate UI update
       setCurrentValue(value);
-
-      // Update context for persistence
       updateProperty((draft) => {
         draft[field] = value;
       });
@@ -91,5 +57,20 @@ export const useOptionField = ({
     [updateProperty, field],
   );
 
-  return { inputId, currentValue: currentValueOption, options, title, subtitle, setValue };
+  const dropdownValue = useMemo(() => entryToDropDownOption(initialEntry), [initialEntry, entryToDropDownOption]);
+  const dropdownValues = useMemo(
+    () => Object.values(entries || {}).map(entryToDropDownOption),
+    [entries, entryToDropDownOption],
+  );
+  const dropdownOnChanged = useCallback((value: string) => setValue(Number(value) as DBSerialID), [setValue]);
+
+  const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code;
+  const subtitle = getAvailableLocalizedText(dictionary?.description, locale);
+
+  // Local state for immediate UI updates
+  const [currentValue, setCurrentValue] = useState<DBSerialID | null>(initialValue || null);
+
+  // Update both local state and context
+
+  return { inputId, currentValue: dropdownValue, dropdownValues, title, subtitle, dropdownOnChanged };
 };
