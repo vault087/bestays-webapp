@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import { createDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
@@ -25,7 +25,6 @@ import {
   // PropertySizeInput,
   usePropertyFormStore,
   createPropertyFormStore,
-  usePropertyFormStaticStore,
   PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 // import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/components/rooms-input";
@@ -55,24 +54,12 @@ export default function PropertiesPageClient({
 }
 
 const PropertyListCanvas = memo(function PropertyListCanvas() {
-  const property = usePropertyFormStore((state) => state.property);
-
-  const { updateProperty } = usePropertyFormStaticStore();
-
-  const handleUpdateProperty = useCallback(
-    (updater: (draft: MutableProperty) => void) => {
-      updateProperty(updater);
-    },
-    [updateProperty],
-  );
-
   return (
     <div className="bg-accent flex flex-col gap-4 p-4">
       <div className="bg-background flex flex-col gap-4 rounded-md p-4">
         <p>Properties</p>
         <div className="flex flex-row gap-4">
           <div className="flex flex-1 flex-col gap-4">
-            {/* <InitialPropertyProvider initialProperty={property} updateProperty={handleUpdateProperty} key={property.id}> */}
             <div className="flex flex-row items-center gap-4">
               <PropertyPriceInputGroup className="flex w-1/3 flex-col" />
 
@@ -111,7 +98,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
   );
 });
 
-function ReactiveDebugCard() {
+export function ReactiveDebugCard() {
   // ✅ FIXED: Single subscription instead of multiple to prevent infinite loops
   const property = usePropertyFormStore((state) => state.property);
   const debug = useMemo(() => {
