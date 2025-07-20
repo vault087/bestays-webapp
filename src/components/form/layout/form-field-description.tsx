@@ -17,7 +17,7 @@ export function FormFieldDescription({
     <Label
       id={id}
       htmlFor={inputId}
-      className={cn("font-montserrat text-muted-foreground text-xs", className)}
+      className={cn("font-open-sans text-muted-foreground text-xs", className)}
       role="region"
       aria-live="polite"
     >

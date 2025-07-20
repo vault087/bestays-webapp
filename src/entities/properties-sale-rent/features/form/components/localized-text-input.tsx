@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { ChangeEvent, memo } from "react";
+import { FormTextArea } from "@/components/form/inputs/form-text-area";
 import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   DBPropertyLocalizedTextField,
@@ -45,22 +46,15 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
 
   return (
     <FormFieldLayout title={title} description={description} error={error} inputId={inputId}>
-      <Textarea
-        id={inputId}
+      <FormTextArea
+        inputId={inputId}
         value={value}
+        onChange={onChange}
+        characterCount={characterCount}
         maxLength={maxLength}
-        onChange={onTextAreaChange}
         placeholder={placeholder || ""}
-        aria-describedby={`${inputId}-description`}
+        arialInvalid={!!error}
       />
-      <p
-        id={`${inputId}-description`}
-        className="text-muted-foreground mt-2 text-right text-xs"
-        role="status"
-        aria-live="polite"
-      >
-        <span className="tabular-nums">{maxLength - characterCount}</span> characters left
-      </p>
     </FormFieldLayout>
   );
 });
