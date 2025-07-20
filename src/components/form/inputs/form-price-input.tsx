@@ -1,15 +1,8 @@
-import { ChevronDown } from "lucide-react";
-import React, { memo, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { DBCurrency, getCurrencySymbol } from "@/entities/common";
-import {
-  Input,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Button,
-} from "@/modules/shadcn";
+import { Input } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
+import { FormDropDown, FormDropDownOption } from "./form-dropdown";
 
 export const FormPriceInput = memo(function FormPriceInput({
   inputId,
@@ -33,6 +26,15 @@ export const FormPriceInput = memo(function FormPriceInput({
   onCurrencyChange: (currency: DBCurrency) => void;
 }) {
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
+  const currencyToDropDownOption = (currency: DBCurrency): FormDropDownOption => ({
+    key: currency,
+    label: currency,
+  });
+
+  const dropdownValue = useMemo(() => currencyToDropDownOption(currency), [currency]);
+  const dropdownValues = useMemo(() => currencies.map(currencyToDropDownOption), [currencies]);
+  const dropdownOnChanged = useCallback((value: string) => onCurrencyChange(value as DBCurrency), [onCurrencyChange]);
+
   return (
     <div className={cn("relative flex", className)}>
       <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
@@ -55,39 +57,7 @@ export const FormPriceInput = memo(function FormPriceInput({
           onChange={(e) => onChange(e.target.value)}
         />
       </div>
-      <DropDownCurrency currency={currency} currencies={currencies} onCurrencyChange={onCurrencyChange} />
+      <FormDropDown value={dropdownValue} options={dropdownValues} onChanged={dropdownOnChanged} />
     </div>
-  );
-});
-
-export const DropDownCurrency = memo(function DropDownCurrency({
-  currency,
-  currencies,
-  onCurrencyChange,
-}: {
-  currency: DBCurrency;
-  currencies: DBCurrency[];
-  onCurrencyChange: (currency: DBCurrency) => void;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="border-input bg-background text-muted-foreground inline-flex items-center rounded-s-none rounded-e-md border">
-          <Button variant="text" className="flex flex-row items-center justify-center space-x-0">
-            <span className="px-0 text-sm uppercase">{currency}</span>
-            <ChevronDown className="size-4" />
-          </Button>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
-        {currencies.map((currency) => (
-          <div key={currency}>
-            <DropdownMenuItem onClick={() => onCurrencyChange(currency)} className="flex justify-center">
-              <span className="text-muted-foreground text-sm uppercase">{currency}</span>
-            </DropdownMenuItem>
-          </div>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 });
