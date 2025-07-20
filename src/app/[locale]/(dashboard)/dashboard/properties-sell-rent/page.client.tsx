@@ -10,10 +10,10 @@ import {
   MutableProperty,
   // PropertyAboutInput,
   PropertyAgentNotesInput,
-  // PropertyAreaInput,
-  // PropertyDivisibleSaleInput,
-  // PropertyOwnershipTypeInput,
-  // PropertyPropertyTypeInput,
+  PropertyAreaInput,
+  PropertyDivisibleSaleInput,
+  PropertyOwnershipTypeInput,
+  PropertyPropertyTypeInput,
   // PropertyHighlightsCheckbox,
   // PropertyLocationStrengthsCheckbox,
   // PropertyTransactionTypesCheckbox,
@@ -80,12 +80,17 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               <PropertyAboutInput />
             </div>
 
-            <div className="flex flex-1"></div>
-            {/* <PropertyAreaInput /> */}
+            <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-1 flex-col gap-4">
+                <PropertyAreaInput />
+                <PropertyDivisibleSaleInput />
+              </div>
+              <div className="flex flex-1 flex-col gap-4">
+                <PropertyOwnershipTypeInput />
+                <PropertyPropertyTypeInput />
+              </div>
+            </div>
             {/* <PropertyHighlightsCheckbox /> */}
-            {/* <PropertyDivisibleSaleInput /> */}
-            {/* <PropertyOwnershipTypeInput /> */}
-            {/* <PropertyPropertyTypeInput /> */}
             {/* <PropertyLocaleProvider locale={locale}> */}
             {/* <PropertyImagesInput />
               <PropertySizeInput />

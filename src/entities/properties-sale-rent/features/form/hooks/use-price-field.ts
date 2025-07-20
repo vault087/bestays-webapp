@@ -17,14 +17,13 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
   setCurrency: (currency: DBCurrency) => void;
   error?: string;
 } {
-  const { property } = usePropertyFormStaticStore();
-  const { updateProperty } = usePropertyFormStoreActions();
   const inputId = useId();
 
-  const priceFieldValue = property.price?.[field] as number | undefined;
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreActions();
 
   const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(property.price?.currency || DEFAULT_CURRENCY);
-  const [priceValue, setPriceValue] = useState<string>(priceFieldValue?.toString() || "");
+  const [priceValue, setPriceValue] = useState<string>(property.price?.[field]?.toString() || "");
 
   // Handle change
   const onChange = useCallback(
@@ -32,7 +31,6 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
       setPriceValue(value);
       updateProperty((draft) => {
         if (!draft.price) {
-          // Setting currency only if price is not set
           draft.price = {
             currency: currentCurrency,
           };
@@ -47,7 +45,6 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
     (currency: DBCurrency) => {
       setCurrentCurrency(currency);
       updateProperty((draft) => {
-        // Changing currency only if price is already set
         if (draft.price) {
           draft.price.currency = currency;
         }

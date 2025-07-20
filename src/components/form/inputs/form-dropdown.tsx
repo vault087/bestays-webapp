@@ -8,18 +8,25 @@ export type FormDropDownOption = {
 };
 
 export interface FormDropDownProps {
-  selectedOption: FormDropDownOption;
+  selectedOption: FormDropDownOption | null;
   options: FormDropDownOption[];
   selectOption: (option: FormDropDownOption) => void;
+  placeholder?: string | undefined | null;
 }
 
-export const FormDropDown = memo(function FormDropDown({ selectedOption, options, selectOption }: FormDropDownProps) {
+export const FormDropDown = memo(function FormDropDown({
+  selectedOption,
+  options,
+  selectOption,
+  placeholder,
+}: FormDropDownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="border-input bg-background text-muted-foreground inline-flex items-center rounded-s-none rounded-e-md border">
           <Button variant="text" className="flex flex-row items-center justify-center space-x-0">
-            <span className="px-0 text-sm uppercase">{selectedOption.label}</span>
+            {selectedOption && <span className="px-0 text-sm uppercase">{selectedOption.label}</span>}
+            {!selectedOption && placeholder && <span className="px-0 text-sm uppercase">{placeholder}</span>}
             <ChevronDown className="size-4" />
           </Button>
         </div>
