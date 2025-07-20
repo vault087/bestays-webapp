@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { ChangeEvent, memo } from "react";
-import { FormFieldLayout } from "@/components/form/form-field-layout";
+import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   DBPropertyLocalizedTextField,
   PROPERTY_ABOUT_MAX,

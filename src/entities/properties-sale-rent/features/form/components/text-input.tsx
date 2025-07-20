@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ChangeEvent, memo } from "react";
-import { FormFieldLayout } from "@/components/form/form-field-layout";
+import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import { DBPropertyTextField, usePropertyTextInput, PROPERTY_AGENT_NOTES_MAX } from "@/entities/properties-sale-rent/";
 import { Textarea } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
