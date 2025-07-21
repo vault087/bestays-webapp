@@ -6,7 +6,6 @@ import { DBDictionaryEntry, useDictionaryFormStore } from "@/entities/dictionari
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
-  usePropertyFormStoreContext,
   PropertyFieldToDictionaryCodeMap,
   usePropertyFormStoreActions,
   usePropertyLocale,
