@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useId, useState, useCallback } from "react";
-import { FormDropDownOption, FormDropDownProps } from "@/components/form/inputs/form-dropdown";
+import { FormOption, FormSingleOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import { DBDictionaryEntry, useDictionaryFormStore } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
@@ -12,7 +12,7 @@ import {
   usePropertyFormStaticStore,
 } from "@/entities/properties-sale-rent/";
 
-export type OptionFieldState = FormDropDownProps & {
+export type OptionFieldState = FormSingleOptionProps & {
   inputId: string;
   title: string | undefined;
   subtitle: string | undefined;
@@ -34,7 +34,7 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
   const [currentValue, setCurrentValue] = useState<DBSerialID | null>(property[field] as DBSerialID);
 
   const entryToDropDownOption = useCallback(
-    (entry: DBDictionaryEntry): FormDropDownOption => ({
+    (entry: DBDictionaryEntry): FormOption => ({
       key: String(entry.id),
       label: getAvailableLocalizedText(entry.name, locale),
     }),
@@ -59,10 +59,7 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
     () => Object.values(entries || {}).map(entryToDropDownOption),
     [entries, entryToDropDownOption],
   );
-  const selectOption = useCallback(
-    (option: FormDropDownOption) => setValue(Number(option.key) as DBSerialID),
-    [setValue],
-  );
+  const selectOption = useCallback((option: FormOption) => setValue(Number(option.key) as DBSerialID), [setValue]);
 
   const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code;
   const subtitle = getAvailableLocalizedText(dictionary?.description, locale);
