@@ -1,18 +1,16 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import { DBSerialID } from "@/entities/common/";
-import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/store/dictionary-form.store.hooks";
+import { useDictionaryFormStore } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   usePropertyFormStaticStore,
-  usePropertyLocale,
+  usePropertyFormStoreActions,
   DBPropertySizeField,
-  useDictionaryContext,
   DBSizeEntry,
   DBSize,
-  PropertyFieldToDictionaryCodeMap,
+  usePropertyLocale,
 } from "@/entities/properties-sale-rent";
-import { generateInputId } from "@/utils/generate-input-id";
 
 export type SizeUnitOption = {
   key: DBSerialID;
@@ -20,84 +18,55 @@ export type SizeUnitOption = {
 };
 
 // Input hook for MutableProperty localized fields
-export function usePropertySizeInput(
-  field: DBPropertySizeField,
-  variant?: string,
-): {
+export function usePropertySizeInput(field: DBPropertySizeField): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
-
   unit: SizeUnitOption;
   setUnit: (value: DBSerialID) => void;
   options: SizeUnitOption[];
-
   error?: string;
 } {
-  const dictionaryCode = PropertyFieldToDictionaryCodeMap["size.unit"] || "";
-  const { dictionaryId, dictionary, entries } = useDictionaryFormStore((state) => {
-    const dictionaryId = state.dictionaryByCode[dictionaryCode];
-    return {
-      dictionaryId,
-      dictionary: state.dictionaries[dictionaryId],
-      entries: state.entries[dictionaryId],
-    };
-  });
-  const { initialProperty, updateProperty } = usePropertyFormStaticStore();
+  const inputId = useId();
   const locale = usePropertyLocale();
 
-  // Get initial value from context
-  const initialSize = (initialProperty.size as DBSize)?.[field] as DBSizeEntry;
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreActions();
 
-  const [sizeValue, setSizeValue] = useState<string>(initialSize?.value.toString() || "");
+  const dictionaryId = useDictionaryFormStore((state) => state.dictionaryByCode["measurement_units"]);
+  const entries = useDictionaryFormStore((state) => (dictionaryId ? state.entries[dictionaryId] : {}));
+
+  // Get initial value from property
+  const initialSize = (property.size as DBSize)?.[field] as DBSizeEntry;
+
+  const [sizeValue, setSizeValue] = useState<string>(initialSize?.value?.toString() || "");
   const [sizeUnit, setSizeUnit] = useState<DBSerialID>(initialSize?.unit);
 
-  console.log("initialSize", initialProperty);
-  // Memoize computed values (options, titles) separately from current value
-  const { inputId, options } = useMemo(() => {
-    const inputId = generateInputId("property-size", initialProperty.id.slice(-8), field, variant, locale);
-
-    const options: SizeUnitOption[] = Object.values(entries).map((entry) => ({
-      key: entry.id,
-      label: getAvailableLocalizedText(entry.name, locale),
-    }));
-
-    return { inputId, options };
-  }, [entries, field, variant, locale, initialProperty.id]);
-
-  // Create current value option for display
-  const unit = useMemo(() => {
-    const entry = entries[sizeUnit];
-    const label = getAvailableLocalizedText(entry?.name, locale);
-    return {
-      key: sizeUnit,
-      label,
-    } as SizeUnitOption;
-  }, [entries, sizeUnit, locale]);
-
-  // Update both local state and context
-  const setUnit = useCallback(
-    (value: DBSerialID) => {
-      // Immediate UI update
-      setSizeUnit(value);
-
-      // Update context for persistence
-      updateProperty((draft) => {
-        if (draft.size && draft.size[field]) {
-          draft.size[field].unit = value;
-        }
-      });
-    },
-    [updateProperty, field],
+  // Create options from dictionary entries
+  const options: SizeUnitOption[] = useMemo(
+    () =>
+      Object.values(entries || {}).map((entry) => ({
+        key: entry.id,
+        label: getAvailableLocalizedText(entry.name, locale),
+      })),
+    [entries, locale],
   );
 
-  // Handle change
-  const onValueChange = useCallback(
+  // Create current unit option for display
+  const unit: SizeUnitOption = useMemo(() => {
+    const entry = entries?.[sizeUnit];
+    return {
+      key: sizeUnit,
+      label: entry ? getAvailableLocalizedText(entry.name, locale) : "",
+    };
+  }, [entries, sizeUnit, locale]);
+
+  // Handle value change
+  const onChange = useCallback(
     (value: string) => {
       setSizeValue(value);
       updateProperty((draft) => {
         if (!draft.size) {
-          // Setting currency only if price is not set
           draft.size = {};
         }
         draft.size[field] = {
@@ -109,5 +78,36 @@ export function usePropertySizeInput(
     [updateProperty, field, sizeUnit],
   );
 
-  return { inputId, value: sizeValue, onChange: onValueChange, unit, setUnit, options };
+  // Handle unit change
+  const setUnit = useCallback(
+    (value: DBSerialID) => {
+      setSizeUnit(value);
+      updateProperty((draft) => {
+        if (!draft.size) {
+          draft.size = {};
+        }
+        if (!draft.size[field]) {
+          draft.size[field] = {
+            value: Number(sizeValue) || 0,
+            unit: value,
+          };
+        } else {
+          draft.size[field].unit = value;
+        }
+      });
+    },
+    [updateProperty, field, sizeValue],
+  );
+
+  const error = undefined;
+
+  return {
+    inputId,
+    value: sizeValue,
+    onChange,
+    unit,
+    setUnit,
+    options,
+    error,
+  };
 }

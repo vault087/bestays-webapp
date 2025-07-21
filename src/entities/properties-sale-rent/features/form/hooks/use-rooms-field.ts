@@ -1,13 +1,13 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
-import { usePropertyFormStaticStore, usePropertyLocale, DBPropertyRoomsField } from "@/entities/properties-sale-rent";
-import { generateInputId } from "@/utils/generate-input-id";
+import { useCallback, useId, useState } from "react";
+import {
+  DBPropertyRoomsField,
+  usePropertyFormStaticStore,
+  usePropertyFormStoreActions,
+} from "@/entities/properties-sale-rent";
 
 // Input hook for MutableProperty localized fields
-export function usePropertyRoomsInput(
-  field: DBPropertyRoomsField,
-  variant?: string,
-): {
+export function usePropertyRoomsInput(field: DBPropertyRoomsField): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
@@ -15,17 +15,12 @@ export function usePropertyRoomsInput(
   onDecrement: () => void;
   error?: string;
 } {
-  const { initialProperty, updateProperty } = usePropertyFormStaticStore();
-  const roomsFieldValue = initialProperty.rooms?.[field] as number | undefined;
+  const inputId = useId();
 
-  const [roomsValue, setRoomsValue] = useState<string>(roomsFieldValue?.toString() || "");
-  const locale = usePropertyLocale();
+  const { property } = usePropertyFormStaticStore();
+  const { updateProperty } = usePropertyFormStoreActions();
 
-  // Generate a unique input ID
-  const inputId = useMemo(
-    () => generateInputId("property-rooms", initialProperty.id.slice(-8), field, variant, locale),
-    [initialProperty.id, locale, field, variant],
-  );
+  const [roomsValue, setRoomsValue] = useState<string>(property.rooms?.[field]?.toString() || "");
 
   // Handle change
   const onChange = useCallback(
@@ -35,21 +30,22 @@ export function usePropertyRoomsInput(
         if (!draft.rooms) {
           draft.rooms = {};
         }
-        draft.rooms[field] = Number(value);
+        draft.rooms[field] = parseInt(value) || 0;
       });
     },
     [updateProperty, field],
   );
 
   const onIncrement = useCallback(() => {
-    onChange(String(Number(roomsValue) + 1));
-  }, [onChange, roomsValue]);
-  const onDecrement = useCallback(() => {
-    onChange(String(Number(roomsValue) - 1));
+    const newValue = String((parseInt(roomsValue) || 0) + 1);
+    onChange(newValue);
   }, [onChange, roomsValue]);
 
-  // Validate - field should not be empty for primary locale
-  // This is a simplified version - a real implementation might have more validation
+  const onDecrement = useCallback(() => {
+    const newValue = String(Math.max((parseInt(roomsValue) || 0) - 1, 0));
+    onChange(newValue);
+  }, [onChange, roomsValue]);
+
   const error = undefined;
 
   return {
