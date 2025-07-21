@@ -17,18 +17,19 @@ export const PropertySizeInput = function PropertySizeInput() {
 
 export const PropertySizeTotalInput = function PropertySizeTotalInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.size");
-  return <PropertySizeFieldInput title={t("title")} placeholder={t("title")} field="total" />;
+  const description = t("description");
+  return <PropertySizeFieldInput title={t("title")} description={description} placeholder={t("title")} field="total" />;
 };
 
 export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
   title,
-  subtitle,
+  description,
   placeholder,
   field,
   className,
 }: {
   title: string;
-  subtitle?: string | undefined;
+  description?: string | undefined;
   placeholder?: string | undefined;
   field: DBPropertySizeField;
   className?: string;
@@ -36,7 +37,7 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
   const { inputId, value, onChange, error, unit, setUnit, units } = usePropertySizeInput(field);
   useDebugRender("PropertySizeFieldInput" + field);
   return (
-    <FormFieldLayout title={title} description={subtitle} error={error} inputId={inputId} className={className}>
+    <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
       <div className="flex flex-row items-center space-x-2">
         <Input
           id={inputId}

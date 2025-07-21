@@ -68,10 +68,12 @@
         }
       },
       "size": {
-        "title": "Area Size"
+        "title": "Area Size",
+        "description": "Please enter the area size of the property"
       },
       "rooms": {
         "title": "Number of Rooms",
+        "description": "Please enter the number of rooms in the property",
         "bedrooms": "Bedrooms",
         "bathrooms": "Bathrooms",
         "living_rooms": "Living Rooms"

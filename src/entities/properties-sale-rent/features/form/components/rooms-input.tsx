@@ -19,8 +19,9 @@ export const PropertyRoomsInputGroup = function PropertyRoomsInputGroup({
   const { t } = useTranslations("PropertiesSaleRent.fields.rooms");
   const inputId = useId();
   const title = t("title");
+  const description = t("description");
   return (
-    <FormFieldLayout title={title} inputId={inputId} className={className}>
+    <FormFieldLayout title={title} description={description} inputId={inputId} className={className}>
       <div className={cn(direction === "vertical" ? "flex flex-col gap-4" : "flex flex-row gap-4")}>
         <PropertyRoomsBedroomsInput />
         <PropertyRoomsBathroomsInput />
