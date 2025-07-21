@@ -1,11 +1,7 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import {
-  DBPropertyMultiCodeField,
-  FormFieldDescription,
-  FormFieldTitle,
-  useMultiOptionField,
-} from "@/entities/properties-sale-rent/";
+import { FormFieldLayout } from "@/components/form";
+import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
 
@@ -30,21 +26,9 @@ export function PropertyLandAndConstructionInput() {
 }
 
 export const MultiOptionInput = function MultiOptionInput({ field }: { field: DBPropertyMultiCodeField }) {
-  const { inputId, currentValues, options, title, subtitle, setValues } = useMultiOptionField({
-    field,
-    variant: "input",
-  });
+  const { inputId, selectedOptions, options, title, subtitle, toggleOption, error } = useMultiOptionField({ field });
 
-  // Create lookup map once
-  const optionsMap = useMemo(() => new Map(options.map((opt) => [opt.key, opt.label])), [options]);
-
-  const convertedValues: Option[] = useMemo(() => {
-    return currentValues.map((code) => ({
-      value: String(code),
-      label: optionsMap.get(code) || "",
-    }));
-  }, [currentValues, optionsMap]);
-
+  // Convert options to MultipleSelector format
   const convertedOptions: Option[] = useMemo(() => {
     return options.map((option) => ({
       value: String(option.key),
@@ -52,9 +36,19 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
     }));
   }, [options]);
 
+  // Convert selected options to MultipleSelector format
+  const convertedValues: Option[] = useMemo(() => {
+    return (
+      selectedOptions?.map((option) => ({
+        value: String(option.key),
+        label: option.label,
+      })) || []
+    );
+  }, [selectedOptions]);
+
   const handleFilter = useCallback(
     (value: string, search: string) => {
-      const option = options.find((opt) => opt.key === Number(value));
+      const option = options.find((opt) => String(opt.key) === value);
       if (!option) return 0;
 
       const searchLower = search.toLowerCase();
@@ -65,15 +59,33 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
 
   const handleOnChange = useCallback(
     (value: Option[]) => {
-      setValues(value.map((option) => Number(option.value)));
+      // Find options that were added or removed
+      const newKeys = value.map((opt) => String(opt.key));
+      const currentKeys = selectedOptions?.map((opt) => String(opt.key));
+
+      // Handle additions
+      newKeys.forEach((key) => {
+        if (!currentKeys?.includes(key)) {
+          const option = options.find((opt) => String(opt.key) === key);
+          if (option) toggleOption(option, true);
+        }
+      });
+
+      // Handle removals
+      currentKeys?.forEach((key) => {
+        if (!newKeys.includes(key)) {
+          const option = options.find((opt) => String(opt.key) === key);
+          if (option) toggleOption(option, false);
+        }
+      });
     },
-    [setValues],
+    [options, selectedOptions, toggleOption],
   );
 
   useDebugRender("MultiInput" + title);
+
   return (
-    <div className="*:not-first:mt-2">
-      <FormFieldTitle text={title} inputId={inputId} />
+    <FormFieldLayout inputId={inputId} title={title} description={subtitle} error={error}>
       <MultipleSelector
         inputProps={{
           id: inputId,
@@ -90,7 +102,6 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
         hidePlaceholderWhenSelected
         emptyIndicator={<p className="text-center text-sm">No results found</p>}
       />
-      <FormFieldDescription text={subtitle} inputId={inputId} />
-    </div>
+    </FormFieldLayout>
   );
 };

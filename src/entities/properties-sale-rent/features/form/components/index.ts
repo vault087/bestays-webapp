@@ -1,4 +1,4 @@
-// export * from "./multi-option-input";
+export * from "./multi-option-input";
 // export * from "./images-input";
 export * from "./localized-text-input";
 export * from "./multi-option-checkbox";

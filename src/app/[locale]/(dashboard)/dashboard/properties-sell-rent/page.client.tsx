@@ -14,6 +14,7 @@ import {
   PropertyDivisibleSaleInput,
   PropertyOwnershipTypeInput,
   PropertyPropertyTypeInput,
+  PropertyHighlightsInput,
   PropertyHighlightsCheckbox,
   PropertyLocationStrengthsCheckbox,
   PropertyTransactionTypesCheckbox,
@@ -63,6 +64,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
           {/* Fields Container */}
           <div className="flex flex-1 flex-col space-y-8">
             <div className="grid grid-cols-2 gap-4">
+              <PropertyHighlightsInput />
               <PropertyHighlightsCheckbox />
               <PropertyLocationStrengthsCheckbox />
               <PropertyTransactionTypesCheckbox />

@@ -45,37 +45,6 @@ export function MultiOptionCheckbox({ field, className }: { field: DBPropertyMul
           </div>
         ))}
       </div>
-      {/* <AddEntryComponent dictionaryId={dictionaryId} toggleValue={toggleValue} /> */}
     </FormFieldLayout>
   );
 }
-
-// const AddEntryComponent = ({
-//   dictionaryId,
-//   toggleValue,
-// }: {
-//   dictionaryId: DBSerialID | undefined;
-//   toggleValue: (value: DBSerialID | null | undefined, checked: boolean) => void;
-// }) => {
-//   const [value, setValue] = useState("");
-//   const { addEntry } = useEntrySliceGetState();
-//   const locale = usePropertyLocale();
-
-//   if (!dictionaryId) return;
-
-//   const handleAddEntry = () => {
-//     const name = {
-//       [locale]: value,
-//     };
-//     const entry = addEntry(dictionaryId, name);
-//     toggleValue(entry.id, true);
-//     setValue("");
-//   };
-
-//   return (
-//     <div className="flex items-center gap-2">
-//       <Input value={value} onChange={(e) => setValue(e.target.value)} />
-//       <Button onClick={handleAddEntry}>Add</Button>
-//     </div>
-//   );
-// };
