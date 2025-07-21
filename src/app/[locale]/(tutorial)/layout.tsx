@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import LocaleLayout from "@/components/layout/root-layout";
+import RootLayout from "@/components/layout/root-layout";
 
 export const metadata: Metadata = {
   title: "Bestays",
   description: "Best Stays App",
 };
 
-export default async function RootLayout({
+export default async function Layout({
   params,
   children,
 }: Readonly<{
@@ -14,8 +14,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <LocaleLayout params={params}>
+    <RootLayout params={params}>
       <main>{children}</main>
-    </LocaleLayout>
+    </RootLayout>
   );
 }

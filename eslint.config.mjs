@@ -63,11 +63,6 @@ const eslintConfig = [
               group: "sibling",
               position: "after",
             },
-            {
-              pattern: "@/form-kit/**",
-              group: "internal",
-              position: "after",
-            },
           ],
           pathGroupsExcludedImportTypes: ["builtin"],
           "newlines-between": "never",

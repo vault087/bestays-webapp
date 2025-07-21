@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+
 import { Open_Sans, Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
