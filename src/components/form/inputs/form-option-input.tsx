@@ -2,7 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState, memo } from "react";
-import { FormDropDownProps } from "@/components/form";
+import { FormSingleOptionProps } from "@/components/form";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
   Command,
@@ -17,11 +17,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/compon
 import { cn } from "@/modules/shadcn/utils/cn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export type FormOptionState = FormDropDownProps & {
+export type FormOptionState = FormSingleOptionProps & {
   inputId: string;
   title: string | undefined | null;
-  addOptionLabel?: string | undefined | null;
-  onAddOption?: () => void | undefined | null;
 };
 
 export const FormOptionInput = memo(function FormOptionInput({
@@ -30,8 +28,7 @@ export const FormOptionInput = memo(function FormOptionInput({
   options,
   selectOption,
   title,
-  addOptionLabel,
-  onAddOption,
+  addOption,
 }: FormOptionState) {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -73,13 +70,13 @@ export const FormOptionInput = memo(function FormOptionInput({
                 </CommandItem>
               ))}
             </CommandGroup>
-            {addOptionLabel && (
+            {addOption && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <Button variant="ghost" className="w-full justify-start font-normal" onClick={onAddOption}>
+                  <Button variant="ghost" className="w-full justify-start font-normal" onClick={addOption.onClick}>
                     <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
-                    {addOptionLabel}
+                    {addOption.label}
                   </Button>
                 </CommandGroup>
               </>

@@ -1,25 +1,14 @@
 import { CheckIcon, ChevronDown } from "lucide-react";
 import { memo } from "react";
+import { FormSingleOptionProps } from "@/components/form/types";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Button } from "@/modules/shadcn";
-
-export type FormDropDownOption = {
-  key: string;
-  label: string;
-};
-
-export interface FormDropDownProps {
-  selectedOption: FormDropDownOption | null;
-  options: FormDropDownOption[];
-  selectOption: (option: FormDropDownOption) => void;
-  placeholder?: string | undefined | null;
-}
 
 export const FormDropDown = memo(function FormDropDown({
   selectedOption,
   options,
   selectOption,
   placeholder,
-}: FormDropDownProps) {
+}: FormSingleOptionProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
