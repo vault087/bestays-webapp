@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useId, useMemo, useState } from "react";
+import { FormOption } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import { useDictionaryFormStore } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
@@ -12,19 +13,14 @@ import {
   usePropertyLocale,
 } from "@/entities/properties-sale-rent";
 
-export type SizeUnitOption = {
-  key: DBSerialID;
-  label: string;
-};
-
 // Input hook for MutableProperty localized fields
 export function usePropertySizeInput(field: DBPropertySizeField): {
   inputId: string;
   value: string;
   onChange: (value: string) => void;
-  unit: SizeUnitOption;
-  setUnit: (value: DBSerialID) => void;
-  options: SizeUnitOption[];
+  unit: FormOption | null;
+  setUnit: (value: FormOption) => void;
+  units: FormOption[];
   error?: string;
 } {
   const inputId = useId();
@@ -36,27 +32,33 @@ export function usePropertySizeInput(field: DBPropertySizeField): {
   const dictionaryId = useDictionaryFormStore((state) => state.dictionaryByCode["measurement_units"]);
   const entries = useDictionaryFormStore((state) => (dictionaryId ? state.entries[dictionaryId] : {}));
 
+  const defaultUnit = useMemo(() => {
+    const entry = entries?.[0];
+    return entry ? entry.id : undefined;
+  }, [entries]);
+
   // Get initial value from property
   const initialSize = (property.size as DBSize)?.[field] as DBSizeEntry;
 
   const [sizeValue, setSizeValue] = useState<string>(initialSize?.value?.toString() || "");
-  const [sizeUnit, setSizeUnit] = useState<DBSerialID>(initialSize?.unit);
+  const [sizeUnit, setSizeUnit] = useState<DBSerialID | undefined | null>(initialSize?.unit || defaultUnit);
 
   // Create options from dictionary entries
-  const options: SizeUnitOption[] = useMemo(
+  const units: FormOption[] = useMemo(
     () =>
       Object.values(entries || {}).map((entry) => ({
-        key: entry.id,
+        key: entry.id.toString(),
         label: getAvailableLocalizedText(entry.name, locale),
       })),
     [entries, locale],
   );
 
   // Create current unit option for display
-  const unit: SizeUnitOption = useMemo(() => {
+  const unit: FormOption | null = useMemo(() => {
+    if (!sizeUnit) return null;
     const entry = entries?.[sizeUnit];
     return {
-      key: sizeUnit,
+      key: sizeUnit.toString(),
       label: entry ? getAvailableLocalizedText(entry.name, locale) : "",
     };
   }, [entries, sizeUnit, locale]);
@@ -69,6 +71,9 @@ export function usePropertySizeInput(field: DBPropertySizeField): {
         if (!draft.size) {
           draft.size = {};
         }
+
+        if (!sizeUnit) return;
+
         draft.size[field] = {
           value: Number(value),
           unit: sizeUnit,
@@ -80,7 +85,10 @@ export function usePropertySizeInput(field: DBPropertySizeField): {
 
   // Handle unit change
   const setUnit = useCallback(
-    (value: DBSerialID) => {
+    (unit: FormOption) => {
+      const value = Number(unit.key) as DBSerialID;
+      if (!value) return;
+
       setSizeUnit(value);
       updateProperty((draft) => {
         if (!draft.size) {
@@ -107,7 +115,7 @@ export function usePropertySizeInput(field: DBPropertySizeField): {
     onChange,
     unit,
     setUnit,
-    options,
+    units,
     error,
   };
 }

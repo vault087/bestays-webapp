@@ -8,28 +8,24 @@ import {
   PropertyFormStoreProvider,
   PropertyFormStoreHydrated,
   MutableProperty,
-  // PropertyAboutInput,
   PropertyAgentNotesInput,
   PropertyAreaInput,
   PropertyDivisibleSaleInput,
   PropertyOwnershipTypeInput,
   PropertyPropertyTypeInput,
   PropertyHighlightsInput,
-  PropertyHighlightsCheckbox,
   PropertyLocationStrengthsCheckbox,
   PropertyTransactionTypesCheckbox,
   PropertyLandFeaturesCheckbox,
   PropertyNearbyAttractionsCheckbox,
-  // PropertyImagesInput,
-  // PropertyLandAndConstructionCheckbox,
-  // PropertyPriceInputGroup,
-  // PropertySizeInput,
+  PropertySizeInput,
+  PropertyRoomsInputGroup,
   usePropertyFormStore,
   createPropertyFormStore,
   PropertyPriceInputGroup,
   PropertyLandAndConstructionCheckbox,
 } from "@/entities/properties-sale-rent/";
-// import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/components/rooms-input";
+import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
 
 export default function PropertiesPageClient({
@@ -63,18 +59,23 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
         <div className="flex flex-row gap-8 pt-4">
           {/* Fields Container */}
           <div className="flex flex-1 flex-col space-y-8">
+            <PropertyImagesInput />
+
+            <div className="grid grid-cols-2 items-center gap-4">
+              <PropertySizeInput />
+              <PropertyRoomsInputGroup />
+            </div>
+            <div className="flex w-1/2 flex-row items-start gap-4">
+              <PropertyPriceInputGroup direction="vertical" />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <PropertyHighlightsInput />
-              <PropertyHighlightsCheckbox />
               <PropertyLocationStrengthsCheckbox />
               <PropertyTransactionTypesCheckbox />
               <PropertyLandFeaturesCheckbox />
               <PropertyNearbyAttractionsCheckbox />
               <PropertyLandAndConstructionCheckbox />
-            </div>
-
-            <div className="flex w-1/2 flex-row items-start gap-4">
-              <PropertyPriceInputGroup direction="vertical" />
             </div>
 
             <div className="flex w-full flex-row space-x-4">
@@ -88,14 +89,6 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
               <PropertyOwnershipTypeInput />
               <PropertyPropertyTypeInput />
             </div>
-
-            {/* <PropertyLocaleProvider locale={locale}> */}
-            {/* <PropertyImagesInput />
-              <PropertySizeInput />
-              <PropertyRoomsInput />
-              <PropertyAreaInput />
-            {/* </PropertyLocaleProvider> */}
-            {/* </InitialPropertyProvider> */}
           </div>
         </div>
       </div>

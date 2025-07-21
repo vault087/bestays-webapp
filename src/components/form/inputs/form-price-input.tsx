@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
+import { FormOption } from "@/components/form";
 import { DBCurrency, getCurrencySymbol } from "@/entities/common";
 import { Input } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
-import { FormDropDown, FormDropDownOption } from "./form-dropdown";
+import { FormDropDown } from "./form-dropdown";
 
 export const FormPriceInput = memo(function FormPriceInput({
   inputId,
@@ -27,7 +28,7 @@ export const FormPriceInput = memo(function FormPriceInput({
 }) {
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
   const currencyToDropDownOption = useCallback(
-    (currency: DBCurrency): FormDropDownOption => ({
+    (currency: DBCurrency): FormOption => ({
       key: currency,
       label: currency,
     }),
@@ -40,7 +41,7 @@ export const FormPriceInput = memo(function FormPriceInput({
     [currencies, currencyToDropDownOption],
   );
   const dropdownOnChanged = useCallback(
-    (option: FormDropDownOption) => onCurrencyChange(option.key as DBCurrency),
+    (option: FormOption) => onCurrencyChange(option.key as DBCurrency),
     [onCurrencyChange],
   );
 
@@ -66,7 +67,12 @@ export const FormPriceInput = memo(function FormPriceInput({
           onChange={(e) => onChange(e.target.value)}
         />
       </div>
-      <FormDropDown selectedOption={dropdownValue} options={dropdownValues} selectOption={dropdownOnChanged} />
+      <FormDropDown
+        selectedOption={dropdownValue}
+        options={dropdownValues}
+        selectOption={dropdownOnChanged}
+        className="rounded-s-none rounded-e-md"
+      />
     </div>
   );
 });
