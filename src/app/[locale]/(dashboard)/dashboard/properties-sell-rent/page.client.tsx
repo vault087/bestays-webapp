@@ -14,11 +14,11 @@ import {
   PropertyDivisibleSaleInput,
   PropertyOwnershipTypeInput,
   PropertyPropertyTypeInput,
-  // PropertyHighlightsCheckbox,
-  // PropertyLocationStrengthsCheckbox,
-  // PropertyTransactionTypesCheckbox,
-  // PropertyLandFeaturesCheckbox,
-  // PropertyNearbyAttractionsCheckbox,
+  PropertyHighlightsCheckbox,
+  PropertyLocationStrengthsCheckbox,
+  PropertyTransactionTypesCheckbox,
+  PropertyLandFeaturesCheckbox,
+  PropertyNearbyAttractionsCheckbox,
   // PropertyImagesInput,
   // PropertyLandAndConstructionCheckbox,
   // PropertyPriceInputGroup,
@@ -26,6 +26,7 @@ import {
   usePropertyFormStore,
   createPropertyFormStore,
   PropertyPriceInputGroup,
+  PropertyLandAndConstructionCheckbox,
 } from "@/entities/properties-sale-rent/";
 // import { PropertyRoomsInput } from "@/entities/properties-sale-rent/features/form/components/rooms-input";
 import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
@@ -79,17 +80,19 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
                 <PropertyPropertyTypeInput />
               </div>
             </div>
-            {/* <PropertyHighlightsCheckbox /> */}
+
+            <PropertyHighlightsCheckbox />
+            <PropertyLocationStrengthsCheckbox />
+            <PropertyTransactionTypesCheckbox />
+            <PropertyLandFeaturesCheckbox />
+            <PropertyNearbyAttractionsCheckbox />
+            <PropertyLandAndConstructionCheckbox />
+
             {/* <PropertyLocaleProvider locale={locale}> */}
             {/* <PropertyImagesInput />
               <PropertySizeInput />
               <PropertyRoomsInput />
               <PropertyAreaInput />
-              <PropertyLocationStrengthsCheckbox />
-              <PropertyTransactionTypesCheckbox />
-              <PropertyLandFeaturesCheckbox />
-              <PropertyNearbyAttractionsCheckbox />
-              <PropertyLandAndConstructionCheckbox /> */}
             {/* </PropertyLocaleProvider> */}
             {/* </InitialPropertyProvider> */}
           </div>

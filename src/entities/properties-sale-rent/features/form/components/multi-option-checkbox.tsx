@@ -1,94 +1,81 @@
 "use client";
-import { useState } from "react";
-import { DBSerialID } from "@/entities/common/";
-import { useEntrySliceGetState } from "@/entities/dictionaries/features/form/store/hooks";
-import {
-  DBPropertyMultiCodeField,
-  useMultiOptionField,
-  MultiOption,
-  FormFieldTitle,
-  FormFieldDescription,
-  usePropertyLocale,
-} from "@/entities/properties-sale-rent/";
-import { Button, Checkbox, Input, Label } from "@/modules/shadcn/";
+import { FormFieldLayout, FormOption } from "@/components/form";
+import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
+import { Checkbox, Label } from "@/modules/shadcn/";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 // Multi Code Uncontrolled Checkbox
-export function PropertyHighlightsCheckbox() {
-  return <MultiOptionCheckbox field="highlights" />;
+export function PropertyHighlightsCheckbox({ className }: { className?: string }) {
+  return <MultiOptionCheckbox field="highlights" className={className} />;
 }
-export function PropertyLocationStrengthsCheckbox() {
-  return <MultiOptionCheckbox field="location_strengths" />;
+export function PropertyLocationStrengthsCheckbox({ className }: { className?: string }) {
+  return <MultiOptionCheckbox field="location_strengths" className={className} />;
 }
-export function PropertyTransactionTypesCheckbox() {
-  return <MultiOptionCheckbox field="transaction_types" />;
+export function PropertyTransactionTypesCheckbox({ className }: { className?: string }) {
+  return <MultiOptionCheckbox field="transaction_types" className={className} />;
 }
-export function PropertyLandFeaturesCheckbox() {
-  return <MultiOptionCheckbox field="land_features" />;
+export function PropertyLandFeaturesCheckbox({ className }: { className?: string }) {
+  return <MultiOptionCheckbox field="land_features" className={className} />;
 }
-export function PropertyNearbyAttractionsCheckbox() {
-  return <MultiOptionCheckbox field="nearby_attractions" />;
+export function PropertyNearbyAttractionsCheckbox({ className }: { className?: string }) {
+  return <MultiOptionCheckbox field="nearby_attractions" className={className} />;
 }
-export function PropertyLandAndConstructionCheckbox() {
-  return <MultiOptionCheckbox field="land_and_construction" />;
+export function PropertyLandAndConstructionCheckbox({ className }: { className?: string }) {
+  return <MultiOptionCheckbox field="land_and_construction" className={className} />;
 }
 
-export function MultiOptionCheckbox({ field }: { field: DBPropertyMultiCodeField }) {
-  const { currentValues, options, title, subtitle, toggleValue, dictionaryId } = useMultiOptionField({
-    field,
-    variant: "checkbox",
-  });
-  useDebugRender("Checkbox" + title);
+export function MultiOptionCheckbox({ field, className }: { field: DBPropertyMultiCodeField; className?: string }) {
+  const { inputId, selectedOptions, options, title, subtitle, toggleOption, error } = useMultiOptionField({ field });
+  useDebugRender("Checkbox " + title);
 
+  const selectedKeys = selectedOptions?.map((option) => option.key);
   return (
-    <div className="flex flex-col space-y-2">
-      <FormFieldTitle text={title} />
+    <FormFieldLayout inputId={inputId} title={title} description={subtitle} error={error} className={className}>
       <div className="grid grid-cols-2 gap-2">
-        {options.map((option: MultiOption) => (
+        {options.map((option: FormOption) => (
           <div className="flex items-center gap-2" key={option.key}>
             <Checkbox
-              id={option.inputId}
-              checked={currentValues.includes(option.key)}
-              onCheckedChange={(checked) => {
-                toggleValue(option.key, checked as boolean);
+              id={`${inputId}-${option.key}`}
+              checked={selectedKeys?.includes(option.key)}
+              onCheckedChange={(selected) => {
+                toggleOption(option, selected as boolean);
               }}
             />
-            <Label htmlFor={option.inputId}>{option.label}</Label>
+            <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
           </div>
         ))}
       </div>
-      <AddEntryComponent dictionaryId={dictionaryId} toggleValue={toggleValue} />
-      <FormFieldDescription text={subtitle} />
-    </div>
+      {/* <AddEntryComponent dictionaryId={dictionaryId} toggleValue={toggleValue} /> */}
+    </FormFieldLayout>
   );
 }
 
-const AddEntryComponent = ({
-  dictionaryId,
-  toggleValue,
-}: {
-  dictionaryId: DBSerialID | undefined;
-  toggleValue: (value: DBSerialID | null | undefined, checked: boolean) => void;
-}) => {
-  const [value, setValue] = useState("");
-  const { addEntry } = useEntrySliceGetState();
-  const locale = usePropertyLocale();
+// const AddEntryComponent = ({
+//   dictionaryId,
+//   toggleValue,
+// }: {
+//   dictionaryId: DBSerialID | undefined;
+//   toggleValue: (value: DBSerialID | null | undefined, checked: boolean) => void;
+// }) => {
+//   const [value, setValue] = useState("");
+//   const { addEntry } = useEntrySliceGetState();
+//   const locale = usePropertyLocale();
 
-  if (!dictionaryId) return;
+//   if (!dictionaryId) return;
 
-  const handleAddEntry = () => {
-    const name = {
-      [locale]: value,
-    };
-    const entry = addEntry(dictionaryId, name);
-    toggleValue(entry.id, true);
-    setValue("");
-  };
+//   const handleAddEntry = () => {
+//     const name = {
+//       [locale]: value,
+//     };
+//     const entry = addEntry(dictionaryId, name);
+//     toggleValue(entry.id, true);
+//     setValue("");
+//   };
 
-  return (
-    <div className="flex items-center gap-2">
-      <Input value={value} onChange={(e) => setValue(e.target.value)} />
-      <Button onClick={handleAddEntry}>Add</Button>
-    </div>
-  );
-};
+//   return (
+//     <div className="flex items-center gap-2">
+//       <Input value={value} onChange={(e) => setValue(e.target.value)} />
+//       <Button onClick={handleAddEntry}>Add</Button>
+//     </div>
+//   );
+// };

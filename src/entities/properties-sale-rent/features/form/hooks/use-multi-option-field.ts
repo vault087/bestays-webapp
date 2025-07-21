@@ -14,6 +14,7 @@ export type MultiOptionFieldState = FormMultiOptionProps & {
   title: string | undefined;
   subtitle: string | undefined;
   error?: string | undefined;
+  selectedKeys: string[] | null;
 };
 
 export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField }): MultiOptionFieldState => {
@@ -34,6 +35,8 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
     [selectedEntries, entryToDropDownOption],
   );
 
+  const selectedKeys = useMemo(() => selectedOptions?.map((option) => option.key), [selectedOptions]);
+
   // Set values
   const toggleOption = useCallback(
     (option: FormOption, checked: boolean) => {
@@ -50,5 +53,5 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
     [updateProperty, field, currentValues],
   );
 
-  return { inputId, selectedOptions, options, toggleOption, title, subtitle };
+  return { inputId, options, selectedOptions, selectedKeys, toggleOption, title, subtitle };
 };
