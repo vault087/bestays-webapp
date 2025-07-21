@@ -53,7 +53,7 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas() {
   return (
-    <div className="bg-accent flex flex-col gap-4 p-4">
+    <div className="bg-accent flex flex-row gap-4 p-4">
       <div className="bg-background flex flex-col rounded-md p-4">
         <p>Properties</p>
         <div className="flex flex-row gap-8 pt-4">
@@ -92,7 +92,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
           </div>
         </div>
       </div>
-      {/* <ReactiveDebugCard /> */}
+      <ReactiveDebugCard />
     </div>
   );
 });

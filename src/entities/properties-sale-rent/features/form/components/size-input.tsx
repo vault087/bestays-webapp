@@ -17,8 +17,10 @@ export const PropertySizeInput = function PropertySizeInput() {
 
 export const PropertySizeTotalInput = function PropertySizeTotalInput() {
   const { t } = useTranslations("PropertiesSaleRent.fields.size");
+  const title = t("title");
   const description = t("description");
-  return <PropertySizeFieldInput title={t("title")} description={description} placeholder={t("title")} field="total" />;
+  const placeholder = t("placeholder");
+  return <PropertySizeFieldInput title={title} description={description} placeholder={placeholder} field="total" />;
 };
 
 export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({

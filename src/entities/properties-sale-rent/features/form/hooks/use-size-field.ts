@@ -33,8 +33,7 @@ export function usePropertySizeInput(field: DBPropertySizeField): {
   const entries = useDictionaryFormStore((state) => (dictionaryId ? state.entries[dictionaryId] : {}));
 
   const defaultUnit = useMemo(() => {
-    const entry = entries?.[0];
-    return entry ? entry.id : undefined;
+    return (Object.keys(entries || {})?.[0] as unknown as DBSerialID) || null;
   }, [entries]);
 
   // Get initial value from property
