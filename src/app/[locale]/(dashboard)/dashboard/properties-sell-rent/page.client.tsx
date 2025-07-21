@@ -60,11 +60,13 @@ const PropertyListCanvas = memo(function PropertyListCanvas() {
         <p>Properties</p>
         <div className="flex flex-row gap-4">
           <div className="flex flex-1 flex-col gap-4">
-            <div className="flex flex-row items-center gap-4">
-              <PropertyPriceInputGroup className="flex w-1/3 flex-col" />
+            <div className="flex flex-row items-start gap-4">
+              <PropertyPriceInputGroup className="flex flex-col" />
 
-              <PropertyAgentNotesInput />
-              <PropertyAboutInput />
+              <div className="flex w-full flex-col">
+                <PropertyAboutInput />
+                <PropertyAgentNotesInput />
+              </div>
             </div>
 
             <div className="flex flex-row items-center gap-4">

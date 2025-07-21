@@ -1,4 +1,9 @@
 {
+  "Common": {
+    "form-field": {
+      "globe-tooltip": "This field requires translation to other languages"
+    }
+  },
   "Dashboard": {
     "NavBar": {
       "Listings": "Listings",
