@@ -31,7 +31,7 @@ export function MultiOptionCheckbox({ field, className }: { field: DBPropertyMul
   const selectedKeys = selectedOptions?.map((option) => option.key);
   return (
     <FormFieldLayout inputId={inputId} title={title} description={subtitle} error={error} className={className}>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2 rounded-sm border-1 p-4 shadow-xs">
         {options.map((option: FormOption) => (
           <div className="flex items-center gap-2" key={option.key}>
             <Checkbox

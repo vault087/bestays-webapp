@@ -57,36 +57,35 @@ export default function PropertiesPageClient({
 const PropertyListCanvas = memo(function PropertyListCanvas() {
   return (
     <div className="bg-accent flex flex-col gap-4 p-4">
-      <div className="bg-background flex flex-col gap-4 rounded-md p-4">
+      <div className="bg-background flex flex-col rounded-md p-4">
         <p>Properties</p>
-        <div className="flex flex-row gap-4">
-          <div className="flex flex-1 flex-col gap-4">
-            <div className="flex flex-row items-start gap-4">
-              <PropertyPriceInputGroup className="flex flex-col" />
-
-              <div className="flex w-full flex-col">
-                <PropertyAboutInput />
-                <PropertyAgentNotesInput />
-              </div>
+        <div className="flex flex-row gap-8 pt-4">
+          {/* Fields Container */}
+          <div className="flex flex-1 flex-col space-y-8">
+            <div className="grid grid-cols-2 gap-4">
+              <PropertyHighlightsCheckbox />
+              <PropertyLocationStrengthsCheckbox />
+              <PropertyTransactionTypesCheckbox />
+              <PropertyLandFeaturesCheckbox />
+              <PropertyNearbyAttractionsCheckbox />
+              <PropertyLandAndConstructionCheckbox />
             </div>
 
-            <div className="flex flex-row items-center gap-4">
-              <div className="flex flex-1 flex-col gap-4">
-                <PropertyAreaInput />
-                <PropertyDivisibleSaleInput />
-              </div>
-              <div className="flex flex-1 flex-col gap-4">
-                <PropertyOwnershipTypeInput />
-                <PropertyPropertyTypeInput />
-              </div>
+            <div className="flex w-1/2 flex-row items-start gap-4">
+              <PropertyPriceInputGroup direction="vertical" />
             </div>
 
-            <PropertyHighlightsCheckbox />
-            <PropertyLocationStrengthsCheckbox />
-            <PropertyTransactionTypesCheckbox />
-            <PropertyLandFeaturesCheckbox />
-            <PropertyNearbyAttractionsCheckbox />
-            <PropertyLandAndConstructionCheckbox />
+            <div className="flex w-full flex-row space-x-4">
+              <PropertyAboutInput />
+              <PropertyAgentNotesInput />
+            </div>
+
+            <div className="grid grid-cols-2 items-center gap-4">
+              <PropertyAreaInput />
+              <PropertyDivisibleSaleInput />
+              <PropertyOwnershipTypeInput />
+              <PropertyPropertyTypeInput />
+            </div>
 
             {/* <PropertyLocaleProvider locale={locale}> */}
             {/* <PropertyImagesInput />

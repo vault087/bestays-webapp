@@ -5,15 +5,23 @@ import { useTranslations } from "@/modules/i18n";
 import { cn } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyPriceInputGroup = function PropertyPriceInputGroup({ className }: { className?: string }) {
+export const PropertyPriceInputGroup = function PropertyPriceInputGroup({
+  direction = "vertical",
+  className,
+}: {
+  direction?: "vertical" | "horizontal";
+  className?: string;
+}) {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
   const inputId = useId();
   const title = t("title");
   return (
-    <FormFieldLayout title={title} inputId={inputId} className={cn("flex flex-row gap-2", className)}>
-      <PropertyPriceRaiInput />
-      <PropertyPriceTotalInput />
-      <PropertyPriceSaleInput />
+    <FormFieldLayout title={title} inputId={inputId} className={className}>
+      <div className={cn(direction === "vertical" ? "flex flex-col gap-2" : "flex flex-row gap-2")}>
+        <PropertyPriceRaiInput />
+        <PropertyPriceTotalInput />
+        <PropertyPriceSaleInput />
+      </div>
     </FormFieldLayout>
   );
 };
