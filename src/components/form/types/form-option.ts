@@ -3,9 +3,8 @@ export type FormOption = {
   label: string;
 };
 
-interface FormBaseOptionProps {
+export interface FormBaseOptionProps {
   options: FormOption[];
-  selectOption: (option: FormOption) => void;
   placeholder?: string | undefined | null;
   addOption?:
     | {
@@ -18,8 +17,10 @@ interface FormBaseOptionProps {
 
 export interface FormSingleOptionProps extends FormBaseOptionProps {
   selectedOption: FormOption | null;
+  selectOption: (option: FormOption) => void;
 }
 
 export interface FormMultiOptionProps extends FormBaseOptionProps {
-  selectedOption: FormOption[];
+  selectedOptions: FormOption[] | null;
+  toggleOption: (option: FormOption, selected: boolean) => void;
 }
