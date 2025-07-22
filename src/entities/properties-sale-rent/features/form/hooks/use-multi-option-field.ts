@@ -2,10 +2,12 @@
 import { useState, useCallback, useMemo } from "react";
 import { FormOption, FormMultiOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
+import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import {
   DBPropertyMultiCodeField,
   usePropertyFormStoreActions,
   usePropertyFormStaticStore,
+  usePropertyLocale,
 } from "@/entities/properties-sale-rent/";
 import { useDictionaryOptions } from "./utils/use-dictionary-options";
 
@@ -18,13 +20,16 @@ export type MultiOptionFieldState = FormMultiOptionProps & {
 };
 
 export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField }): MultiOptionFieldState => {
-  const { inputId, options, title, subtitle, entries, entryToDropDownOption } = useDictionaryOptions({ field });
+  const { inputId, options, title, subtitle, dictionary, entries, entryToDropDownOption } = useDictionaryOptions({
+    field,
+  });
+  const { addEntry } = useDictionaryFormStoreActions();
 
   const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
 
   const [currentValues, setCurrentValues] = useState<DBSerialID[] | null>(property[field] as DBSerialID[]);
-
+  const locale = usePropertyLocale();
   // Get selected option
   const selectedEntries = useMemo(() => {
     return entries ? Object.values(entries).filter((entry) => currentValues?.includes(entry.id)) : [];
@@ -67,5 +72,33 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
     [updateProperty, field, currentValues],
   );
 
-  return { inputId, options, selectedOptions, selectOptions, selectedKeys, toggleOption, title, subtitle };
+  const addOption = useCallback(
+    (value: string | undefined) => {
+      console.log("adding option", value, locale);
+      if (!value || !dictionary?.id) return;
+      const newEntry = addEntry(dictionary?.id, { [locale]: value });
+      if (newEntry) {
+        const current = currentValues || [];
+
+        const newValues: DBSerialID[] = [...current, newEntry.id];
+        setCurrentValues(newValues);
+        updateProperty((draft) => {
+          draft[field] = newValues;
+        });
+      }
+    },
+    [dictionary?.id, addEntry, locale, currentValues, updateProperty, field],
+  );
+
+  return {
+    inputId,
+    options,
+    selectedOptions,
+    selectOptions,
+    selectedKeys,
+    toggleOption,
+    title,
+    subtitle,
+    addOption: { onClick: addOption },
+  };
 };

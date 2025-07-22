@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { StoreApi, useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
@@ -30,7 +30,7 @@ export function useDictionaryFormStoreActions(): DictionaryFormStoreActions {
     updateDictionary: useDebouncedCallback(store.getState().updateDictionary, timeout),
     addDictionary: useDebouncedCallback(store.getState().addDictionary, timeout),
     deleteDictionary: useDebouncedCallback(store.getState().deleteDictionary, timeout),
-    addEntry: useDebouncedCallback(store.getState().addEntry, timeout),
+    addEntry: store.getState().addEntry,
     updateEntry: useDebouncedCallback(store.getState().updateEntry, timeout),
     deleteEntry: useDebouncedCallback(store.getState().deleteEntry, timeout),
     deleteEntries: useDebouncedCallback(store.getState().deleteEntries, timeout),

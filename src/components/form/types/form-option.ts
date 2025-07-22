@@ -8,8 +8,8 @@ export interface FormBaseOptionProps {
   placeholder?: string | undefined | null;
   addOption?:
     | {
-        label: string;
-        onClick: () => void;
+        label?: string | undefined;
+        onClick: (value: string | undefined) => void;
       }
     | undefined
     | null;

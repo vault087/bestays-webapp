@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useId, useCallback } from "react";
 import { FormOption, FormBaseOptionProps } from "@/components/form";
-import { DBDictionaryEntry, useDictionaryFormStore } from "@/entities/dictionaries";
+import { DBDictionary, DBDictionaryEntry, useDictionaryFormStore } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
 import {
   DBPropertyCodeField,
@@ -15,6 +15,7 @@ export type OptionFieldState = FormBaseOptionProps & {
   title: string | undefined;
   subtitle: string | undefined;
   error?: string | undefined;
+  dictionary: DBDictionary | undefined;
   entries: Record<number, DBDictionaryEntry> | undefined;
   entryToDropDownOption: (entry: DBDictionaryEntry) => FormOption;
 };
@@ -51,5 +52,5 @@ export const useDictionaryOptions = ({
   const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code;
   const subtitle = getAvailableLocalizedText(dictionary?.description, locale);
 
-  return { inputId, options, title, subtitle, entries, entryToDropDownOption };
+  return { inputId, options, title, subtitle, dictionary, entries, entryToDropDownOption };
 };

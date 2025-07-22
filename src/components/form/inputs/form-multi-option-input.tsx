@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useCallback, memo } from "react";
+import { PlusIcon } from "lucide-react";
+import { useMemo, useCallback, memo, useRef } from "react";
 import { FormMultiOptionProps, FormOption } from "@/components/form/types";
 import { cn } from "@/modules/shadcn";
-import { Checkbox, Label } from "@/modules/shadcn/components";
+import { Button, Checkbox, Input, Label } from "@/modules/shadcn/components";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 
 export type FormMultiOptionState = FormMultiOptionProps & {
@@ -19,8 +20,10 @@ export const FormMultiOption = memo(function FormMultiOption({
   options,
   toggleOption,
   selectOptions,
+  addOption,
   variant,
 }: FormMultiOptionState & { variant: FormMultiOptionVariant }) {
+  console.log("addOption", addOption);
   return (
     <>
       {variant === "checkbox" && (
@@ -31,6 +34,7 @@ export const FormMultiOption = memo(function FormMultiOption({
           options={options}
           toggleOption={toggleOption}
           title={title}
+          addOption={addOption}
         />
       )}
       {variant === "select" && (
@@ -41,6 +45,7 @@ export const FormMultiOption = memo(function FormMultiOption({
           selectedOptions={selectedOptions}
           options={options}
           selectOptions={selectOptions}
+          addOption={addOption}
         />
       )}
     </>
@@ -48,30 +53,24 @@ export const FormMultiOption = memo(function FormMultiOption({
 });
 
 // Color palette optimized for human vision and accessibility
-function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOption }: FormMultiOptionState) {
+function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOption, addOption }: FormMultiOptionState) {
   const selectedKeys = selectedOptions?.map((option) => option.key);
 
-  const optionSymbol = useCallback((label: string): string => {
-    const words = label.split(" ");
-    if (words.length === 0) {
-      return "?";
+  const addOptionRef = useRef<HTMLInputElement | null>(null);
+  const handleAddOption = useCallback(() => {
+    console.log("adding option", addOption);
+    addOption?.onClick(addOptionRef.current?.value);
+    if (addOptionRef.current) {
+      addOptionRef.current.value = "";
     }
-    if (words.length > 1) {
-      return words[0].charAt(0) + words[1].charAt(0).toLowerCase();
-    }
-    if (label.length > 1) {
-      return label.charAt(0) + label.charAt(1).toLowerCase();
-    }
-
-    return label.charAt(0).toUpperCase();
-  }, []);
+  }, [addOption]);
 
   return (
     <div className="grid grid-cols-2 gap-2">
       {options.map((option: FormOption) => (
         <div
           className={cn(
-            "flex flex-row items-center justify-between gap-2 space-x-0 rounded-md border-1 p-3",
+            "flex flex-row items-center justify-between gap-2 space-x-0 rounded-md border-1 px-3 py-3",
             selectedKeys?.includes(option.key) ? "border-primary" : "border-border",
           )}
           key={option.key}
@@ -90,18 +89,6 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
           }}
         >
           <div className="flex flex-row items-center gap-2 space-x-1">
-            {/* Icon */}
-            <div
-              className={cn(
-                "p text-foreground flex h-8 w-8 items-center justify-center rounded-sm border-1 py-1",
-                selectedKeys?.includes(option.key) && "text-primary border-primary",
-                !selectedKeys?.includes(option.key) && "text-muted-foreground border-muted-foreground/40",
-                "hidden",
-              )}
-            >
-              <span className="border-border min-w-8 text-center text-sm uppercase">{optionSymbol(option.label)}</span>
-            </div>
-            {/* Label */}
             <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
           </div>
           <Checkbox
@@ -113,6 +100,14 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
           />
         </div>
       ))}
+      {addOption && (
+        <div className="flex flex-row items-center justify-between gap-2 rounded-md border-1 ps-3 pe-1">
+          <Input ref={addOptionRef} placeholder="Add New" className="roudned-none border-0 shadow-none" />
+          <Button variant="text" size="icon" onClick={() => handleAddOption()}>
+            <PlusIcon className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

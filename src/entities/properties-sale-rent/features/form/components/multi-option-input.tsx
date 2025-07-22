@@ -36,7 +36,7 @@ function MultiOptionField({
   className?: string;
   variant?: FormMultiOptionVariant | undefined;
 }) {
-  const { inputId, selectedOptions, options, title, subtitle, selectOptions, toggleOption, error } =
+  const { inputId, selectedOptions, options, title, subtitle, selectOptions, toggleOption, addOption, error } =
     useMultiOptionField({ field });
 
   return (
@@ -55,6 +55,7 @@ function MultiOptionField({
         toggleOption={toggleOption}
         selectOptions={selectOptions}
         variant={variant}
+        addOption={field === "transaction_types" ? undefined : addOption}
       />
     </FormFieldLayout>
   );
