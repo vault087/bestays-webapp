@@ -31,7 +31,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   className,
 }: {
   children: React.ReactNode;
-  inputId: string;
+  inputId?: string | undefined;
   title?: string | undefined | null;
   description?: string | undefined | null;
   error?: string | undefined | null;

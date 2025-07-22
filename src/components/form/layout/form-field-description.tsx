@@ -7,19 +7,18 @@ export function FormFieldDescription({
   className = "",
 }: {
   text: string | undefined | null;
-  inputId: string;
+  inputId?: string | undefined;
   className?: string;
 }) {
   if (!text) return null;
   return (
-    <Label
-      id={`${inputId}-description`}
-      htmlFor={inputId}
-      className={cn("font-open-sans text-muted-foreground text-xs", className)}
-      role="region"
-      aria-live="polite"
-    >
-      {text}
-    </Label>
+    <div className={cn("font-open-sans text-muted-foreground text-xs", className)}>
+      {inputId && (
+        <Label id={`${inputId}-description`} htmlFor={inputId} role="region" aria-live="polite">
+          {text}
+        </Label>
+      )}
+      {!inputId && text}
+    </div>
   );
 }

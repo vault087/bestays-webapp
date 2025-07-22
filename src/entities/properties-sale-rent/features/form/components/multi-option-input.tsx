@@ -72,7 +72,7 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
   useDebugRender("MultiInput" + title);
 
   return (
-    <FormFieldLayout inputId={inputId} title={title} description={subtitle} error={error}>
+    <FormFieldLayout title={title} description={subtitle} error={error}>
       <MultipleSelector
         inputProps={{
           id: inputId,

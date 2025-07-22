@@ -1,4 +1,4 @@
-import { memo, useId, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { FormFieldLayout, FormPriceInput } from "@/components/form";
 import { formatMoneyDisplay } from "@/entities/common";
 import { usePropertyPriceInput, DBPropertyPriceField, usePropertyLocale } from "@/entities/properties-sale-rent/";
@@ -14,10 +14,9 @@ export const PropertyPriceInputGroup = function PropertyPriceInputGroup({
   className?: string;
 }) {
   const { t } = useTranslations("PropertiesSaleRent.fields.price");
-  const inputId = useId();
   const title = t("title");
   return (
-    <FormFieldLayout title={title} inputId={inputId} className={className}>
+    <FormFieldLayout title={title} className={className}>
       <div className={cn(direction === "vertical" ? "flex flex-col gap-2" : "flex flex-row gap-2")}>
         <PropertyPriceRaiInput />
         <PropertyPriceTotalInput />

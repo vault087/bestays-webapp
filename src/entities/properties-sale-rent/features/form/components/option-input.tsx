@@ -25,7 +25,7 @@ export function PropertyOptionInput({ field, className }: { field: DBPropertyCod
   useDebugRender("PropertyOptionInput" + title);
 
   return (
-    <FormFieldLayout inputId={inputId} title={title} description={subtitle} error={error} className={className}>
+    <FormFieldLayout title={title} description={subtitle} error={error} className={className}>
       <FormOptionInput
         inputId={inputId}
         selectedOption={selectedOption}

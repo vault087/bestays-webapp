@@ -7,14 +7,19 @@ export function FormFieldError({
   className = "",
 }: {
   error: string | undefined | null;
-  inputId: string;
+  inputId?: string | undefined;
   className?: string;
 }) {
   if (!error) return null;
 
   return (
-    <Label id={`${inputId}-error`} htmlFor={inputId} className={cn("text-xs text-red-500", className)}>
-      {error}
-    </Label>
+    <div className={cn("text-destructive text-xs", className)}>
+      {inputId && (
+        <Label id={`${inputId}-error`} htmlFor={inputId}>
+          {error}
+        </Label>
+      )}
+      {!inputId && error}
+    </div>
   );
 }

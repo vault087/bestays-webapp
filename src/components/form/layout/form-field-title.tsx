@@ -16,11 +16,9 @@ export function FormFieldTitle({
 }) {
   if (!text) return null;
   return (
-    <Label
-      htmlFor={inputId}
-      className={cn("font-open-sans font-semibold", variant === "h1" ? "text-md" : "text-sm", className)}
-    >
-      {text}
-    </Label>
+    <div className={cn("font-open-sans font-semibold", variant === "h1" ? "text-md" : "text-sm", className)}>
+      {inputId && <Label htmlFor={inputId}>{text}</Label>}
+      {!inputId && text}
+    </div>
   );
 }
