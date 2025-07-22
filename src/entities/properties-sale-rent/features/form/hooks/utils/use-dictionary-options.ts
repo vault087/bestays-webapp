@@ -41,7 +41,10 @@ export const useDictionaryOptions = ({
   );
 
   const options = useMemo(
-    () => Object.values(entries || {}).map(entryToDropDownOption),
+    () =>
+      Object.values(entries || {})
+        .map(entryToDropDownOption)
+        .sort((a, b) => a.label.localeCompare(b.label)),
     [entries, entryToDropDownOption],
   );
 

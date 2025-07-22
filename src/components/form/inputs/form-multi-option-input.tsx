@@ -2,6 +2,7 @@
 
 import { useMemo, useCallback, memo } from "react";
 import { FormMultiOptionProps, FormOption } from "@/components/form/types";
+import { cn } from "@/modules/shadcn";
 import { Checkbox, Label } from "@/modules/shadcn/components";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 
@@ -51,7 +52,32 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
   return (
     <div className="grid grid-cols-2 gap-2">
       {options.map((option: FormOption) => (
-        <div className="flex items-center gap-2" key={option.key}>
+        <div
+          className={cn(
+            "flex flex-row items-center justify-between gap-2 space-x-0 rounded-md border-1 p-3",
+            selectedKeys?.includes(option.key) ? "border-primary" : "border-border",
+          )}
+          key={option.key}
+          onMouseDown={(e) => {
+            // Prevent focus loss during state updates
+            e.preventDefault();
+          }}
+          onClick={(e) => {
+            // Ensure the checkbox gets the click event properly
+            e.preventDefault();
+            const checkbox = document.getElementById(`${inputId}-${option.key}`) as HTMLInputElement;
+            if (checkbox) {
+              checkbox.click();
+              checkbox.focus();
+            }
+          }}
+        >
+          <div className="flex flex-row items-center gap-2 space-x-0">
+            <div className="p text-foreground flex h-8 w-8 items-center justify-center rounded-sm bg-amber-300 py-1">
+              <span className="border-border text-sm uppercase">{option.label.charAt(0)}</span>
+            </div>
+            <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
+          </div>
           <Checkbox
             id={`${inputId}-${option.key}`}
             checked={selectedKeys?.includes(option.key)}
@@ -59,24 +85,6 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
               toggleOption(option, selected as boolean);
             }}
           />
-          <Label
-            htmlFor={`${inputId}-${option.key}`}
-            onMouseDown={(e) => {
-              // Prevent focus loss during state updates
-              e.preventDefault();
-            }}
-            onClick={(e) => {
-              // Ensure the checkbox gets the click event properly
-              e.preventDefault();
-              const checkbox = document.getElementById(`${inputId}-${option.key}`) as HTMLInputElement;
-              if (checkbox) {
-                checkbox.click();
-                checkbox.focus();
-              }
-            }}
-          >
-            {option.label}
-          </Label>
         </div>
       ))}
     </div>

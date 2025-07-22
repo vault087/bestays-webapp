@@ -1,7 +1,8 @@
 "use client";
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
-import { useState, memo } from "react";
+import { useTranslations } from "next-intl";
+import { useState, memo, useRef } from "react";
 import { FormSingleOptionProps } from "@/components/form";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -54,6 +55,12 @@ export const FormOptionSelect = memo(function FormOptionInput({
 }: FormOptionState) {
   const [open, setOpen] = useState<boolean>(false);
 
+  const t = useTranslations("Common");
+  console.log("addOption", addOption);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState<string>(""); // ← Add state for input value
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -72,9 +79,17 @@ export const FormOptionSelect = memo(function FormOptionInput({
       </PopoverTrigger>
       <PopoverContent className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0" align="start">
         <Command>
-          <CommandInput placeholder="Find option" />
+          <CommandInput placeholder="Find option" ref={inputRef} onValueChange={setInputValue} />
           <CommandList>
-            <CommandEmpty>Not found.</CommandEmpty>
+            <CommandEmpty>
+              <div className="flex flex-col items-center justify-center gap-2">
+                {addOption && (
+                  <Button variant="ghost" className="w-full justify-center font-normal" onClick={addOption.onClick}>
+                    {inputValue}
+                  </Button>
+                )}
+              </div>
+            </CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { FormOption, FormSingleOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import {
@@ -28,6 +28,14 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
   const selectedEntry = currentValue ? entries?.[currentValue] : null;
   const selectedOption = selectedEntry ? entryToDropDownOption(selectedEntry) : null;
 
+  const addOption = useMemo(() => {
+    return {
+      label: "Add option",
+      onClick: () => {
+        console.log("add option");
+      },
+    };
+  }, []);
   // Set value
   const setValue = useCallback(
     (value: DBSerialID) => {
@@ -40,5 +48,5 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
   );
   const selectOption = useCallback((option: FormOption) => setValue(Number(option.key) as DBSerialID), [setValue]);
 
-  return { inputId, selectedOption, options, selectOption, title, subtitle };
+  return { inputId, selectedOption, options, selectOption, title, subtitle, addOption };
 };

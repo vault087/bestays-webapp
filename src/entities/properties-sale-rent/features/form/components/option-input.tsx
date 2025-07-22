@@ -27,7 +27,9 @@ export function PropertyOptionField({
   className,
   variant = "select",
 }: OptionFieldProps & { field: DBPropertyCodeField }) {
-  const { inputId, selectedOption, options, title, subtitle, selectOption, error } = useOptionField({ field });
+  const { inputId, selectedOption, options, title, subtitle, selectOption, error, addOption } = useOptionField({
+    field,
+  });
 
   return (
     <FormFieldLayout
@@ -43,6 +45,7 @@ export function PropertyOptionField({
         options={options}
         selectOption={selectOption}
         variant={variant}
+        addOption={addOption}
       />
     </FormFieldLayout>
   );

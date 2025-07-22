@@ -2,7 +2,8 @@
   "Common": {
     "form-field": {
       "globe-tooltip": "This field requires translation to other languages"
-    }
+    },
+    "not_found": "Not found"
   },
   "Dashboard": {
     "NavBar": {
