@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useId, useState } from "react";
-import { DEFAULT_CURRENCY, DBCurrency, DBCurrencySchema } from "@/entities/common";
+import { DEFAULT_CURRENCY, DBCurrency, DBCurrencySchema, moneyToString, stringToMoney } from "@/entities/common";
 import {
   DBPropertyPriceField,
   usePropertyFormStaticStore,
@@ -22,7 +22,7 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
   const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
   const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(property.price?.currency || DEFAULT_CURRENCY);
-  const [priceValue, setPriceValue] = useState<string>(property.price?.[field]?.toString() || "");
+  const [priceValue, setPriceValue] = useState<string>(moneyToString(property.price?.[field]));
 
   // Handle change
   const onPriceChange = useCallback(
@@ -34,7 +34,7 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
             currency: currentCurrency,
           };
         }
-        draft.price[field] = Number(value);
+        draft.price[field] = stringToMoney(value);
       });
     },
     [updateProperty, field, currentCurrency],

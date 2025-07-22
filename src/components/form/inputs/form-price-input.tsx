@@ -1,9 +1,8 @@
 "use client";
 
-import React, { memo, useCallback, useMemo } from "react";
-import { withMask } from "use-mask-input";
+import React, { memo, useCallback, useMemo, useRef } from "react";
 import { FormOption } from "@/components/form";
-import { DBCurrency, formatCurrency, getCurrencySymbol } from "@/entities/common";
+import { DBCurrency, formatMoneyDisplay, getCurrencySymbol } from "@/entities/common";
 import { Input } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
 import { FormDropDown } from "./form-dropdown";
@@ -58,14 +57,29 @@ export const FormPriceInput = memo(function FormPriceInput({
     [onCurrencyChange],
   );
 
-  // Create display value with proper formatting
-  const displayValue = useMemo(() => {
-    if (!value) return "";
-    return formatCurrency(value, locale, currency, "number");
-  }, [value, locale, currency]);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Create numeric mask pattern for currency input
-  const maskPattern = "999999999.99"; // Allows up to 9 digits before decimal and 2 after
+  const formatDisplayValue = useCallback(
+    (value: string): string => {
+      return formatMoneyDisplay(value, locale, currency, "number");
+    },
+    [locale, currency],
+  );
+
+  // on handleBlur we set value as a displayed value
+  // on focus we set value as a raw value
+
+  const handleFocus = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.value = value;
+    }
+  }, [value]);
+
+  const handleBlur = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.value = formatDisplayValue(value);
+    }
+  }, [formatDisplayValue, value]);
 
   return (
     <div className={cn("relative flex", className)}>
@@ -74,18 +88,21 @@ export const FormPriceInput = memo(function FormPriceInput({
           {currencySymbol}
         </span>
         <Input
-          ref={withMask(maskPattern, { placeholder: "0" })}
           id={inputId}
+          ref={inputRef}
           className={cn(
             "-me-px rounded-none border-none ps-6 pe-4 text-right shadow-none",
             "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
           )}
           name="price"
-          placeholder="0.00"
+          defaultValue={value}
+          placeholder={formatDisplayValue("0")}
           type="text"
           aria-invalid={arialInvalid}
           aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
-          value={displayValue}
+          // value={value}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           onChange={handleChange}
         />
       </div>
