@@ -51,7 +51,8 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
   field: DBPropertyPriceField;
   className?: string;
 }) {
-  const { inputId, value, onChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
+  const { inputId, price, onPriceChange, priceFormatted, pricePreview, error, currency, currencies, setCurrency } =
+    usePropertyPriceInput(field);
   useDebugRender("PropertyPriceInput" + field);
 
   return (
@@ -68,8 +69,8 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
     >
       <FormPriceInput
         inputId={inputId}
-        value={value}
-        onChange={onChange}
+        value={price}
+        onChange={onPriceChange}
         currency={currency}
         currencies={currencies}
         onCurrencyChange={setCurrency}

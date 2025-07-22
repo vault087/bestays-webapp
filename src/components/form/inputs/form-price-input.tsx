@@ -54,7 +54,7 @@ export const FormPriceInput = memo(function FormPriceInput({
         <Input
           id={inputId}
           className={cn(
-            "-me-px rounded-none border-none ps-6 shadow-none",
+            "-me-px rounded-none border-none ps-6 pe-4 text-right shadow-none",
             "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
           )}
           name="price"

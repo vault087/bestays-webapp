@@ -69,7 +69,6 @@
       },
       "size": {
         "title": "Area Size",
-        "placeholder": "Enter area size",
         "description": "Please enter the area size of the property"
       },
       "rooms": {
