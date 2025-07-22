@@ -73,7 +73,12 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
           }}
         >
           <div className="flex flex-row items-center gap-2 space-x-0">
-            <div className="p text-foreground flex h-8 w-8 items-center justify-center rounded-sm bg-amber-300 py-1">
+            <div
+              className={cn(
+                "p text-foreground flex h-8 w-8 items-center justify-center rounded-sm py-1",
+                "bg-amber-400",
+              )}
+            >
               <span className="border-border text-sm uppercase">{option.label.charAt(0)}</span>
             </div>
             <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
