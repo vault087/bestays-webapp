@@ -87,7 +87,7 @@ export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
         },
       }}
     >
-      <div className="flex flex-row items-center justify-end space-x-0">
+      <div className="focus-within:text-primary flex flex-row items-center justify-end space-x-0">
         <Button variant="outline" size="icon" className="rounded-full" onClick={onDecrement}>
           <MinusIcon className="h-4 w-4" />
         </Button>
@@ -98,7 +98,7 @@ export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
             value={formatDisplayValue(value)}
             placeholder="0"
             maxLength={3}
-            className="text-foreground focus-visible:text-primary h-8 w-auto min-w-0 border-0 px-1 py-0 text-center font-mono text-xs shadow-none dark:bg-transparent"
+            className="h-8 w-auto min-w-0 border-0 px-1 py-0 text-center font-mono text-xs shadow-none dark:bg-transparent"
             onChange={handleChange}
           />
         </div>
