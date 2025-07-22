@@ -11,14 +11,21 @@ export function FormFieldDescription({
   className?: string;
 }) {
   if (!text) return null;
+  const textClassName = cn("font-open-sans text-muted-foreground text-xs", className);
   return (
-    <div className={cn("font-open-sans text-muted-foreground text-xs", className)}>
+    <>
       {inputId && (
-        <Label id={`${inputId}-description`} htmlFor={inputId} role="region" aria-live="polite">
+        <Label
+          id={`${inputId}-description`}
+          className={textClassName}
+          htmlFor={inputId}
+          role="region"
+          aria-live="polite"
+        >
           {text}
         </Label>
       )}
-      {!inputId && text}
-    </div>
+      {!inputId && <span className={textClassName}>{text}</span>}
+    </>
   );
 }

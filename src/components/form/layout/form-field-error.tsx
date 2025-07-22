@@ -11,15 +11,15 @@ export function FormFieldError({
   className?: string;
 }) {
   if (!error) return null;
-
+  const textClassName = cn("text-destructive text-xs", className);
   return (
-    <div className={cn("text-destructive text-xs", className)}>
+    <>
       {inputId && (
-        <Label id={`${inputId}-error`} htmlFor={inputId}>
+        <Label id={`${inputId}-error`} className={textClassName} htmlFor={inputId}>
           {error}
         </Label>
       )}
-      {!inputId && error}
-    </div>
+      {!inputId && <span className={textClassName}>{error}</span>}
+    </>
   );
 }

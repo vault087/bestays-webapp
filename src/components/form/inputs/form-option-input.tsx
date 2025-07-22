@@ -15,11 +15,11 @@ import {
 } from "@/modules/shadcn/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { cn } from "@/modules/shadcn/utils/cn";
-import { useDebugRender } from "@/utils/use-debug-render";
+
+export type FormOptionVariant = "select";
 
 export type FormOptionState = FormSingleOptionProps & {
   inputId: string;
-  title: string | undefined | null;
 };
 
 export const FormOptionInput = memo(function FormOptionInput({
@@ -27,12 +27,32 @@ export const FormOptionInput = memo(function FormOptionInput({
   selectedOption,
   options,
   selectOption,
-  title,
+  addOption,
+  variant,
+}: FormOptionState & { variant?: FormOptionVariant }) {
+  return (
+    <>
+      {variant === "select" && (
+        <FormOptionSelect
+          inputId={inputId}
+          selectedOption={selectedOption}
+          options={options}
+          selectOption={selectOption}
+          addOption={addOption}
+        />
+      )}
+    </>
+  );
+});
+
+export const FormOptionSelect = memo(function FormOptionInput({
+  inputId,
+  selectedOption,
+  options,
+  selectOption,
   addOption,
 }: FormOptionState) {
   const [open, setOpen] = useState<boolean>(false);
-
-  useDebugRender("Input" + title);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

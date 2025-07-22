@@ -2,13 +2,12 @@
 import { FormFieldLayout } from "@/components/form";
 import { FormMultiOption, FormMultiOptionVariant } from "@/components/form/inputs/form-multi-option-input";
 import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
-import { useDebugRender } from "@/utils/use-debug-render";
-// Multi Code Uncontrolled Checkbox
 
 export type MultiOptionFieldProps = {
   className?: string;
   variant?: FormMultiOptionVariant | undefined;
 };
+
 export function PropertyHighlightsInput({ className, variant }: MultiOptionFieldProps) {
   return <MultiOptionField variant={variant} field="highlights" className={className} />;
 }
@@ -30,7 +29,7 @@ export function PropertyLandAndConstructionInput({ className, variant }: MultiOp
 
 function MultiOptionField({
   field,
-  variant = "input",
+  variant = "select",
   className,
 }: {
   field: DBPropertyMultiCodeField;
@@ -39,7 +38,6 @@ function MultiOptionField({
 }) {
   const { inputId, selectedOptions, options, title, subtitle, selectOptions, toggleOption, error } =
     useMultiOptionField({ field });
-  useDebugRender("Checkbox " + title);
 
   return (
     <FormFieldLayout title={title} description={subtitle} error={error} className={className}>

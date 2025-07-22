@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, memo } from "react";
 import { FormMultiOptionProps, FormOption } from "@/components/form/types";
 import { Checkbox, Label } from "@/modules/shadcn/components";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
@@ -10,8 +10,8 @@ export type FormMultiOptionState = FormMultiOptionProps & {
   title: string | undefined;
   error?: string | undefined;
 };
-export type FormMultiOptionVariant = "input" | "checkbox" | "badge";
-export function FormMultiOption({
+export type FormMultiOptionVariant = "select" | "checkbox" | "badge";
+export const FormMultiOption = memo(function FormMultiOption({
   inputId,
   title,
   selectedOptions,
@@ -32,8 +32,8 @@ export function FormMultiOption({
           title={title}
         />
       )}
-      {variant === "input" && (
-        <FormMultiOptionInput
+      {variant === "select" && (
+        <FormMultiOptionSelect
           inputId={inputId}
           toggleOption={toggleOption}
           title={title}
@@ -54,7 +54,7 @@ export function FormMultiOption({
       )}
     </>
   );
-}
+});
 
 function FormMultiOptionBadges({ inputId, selectedOptions, options, toggleOption }: FormMultiOptionState) {
   const selectedKeys = selectedOptions?.map((option) => option.key);
@@ -96,7 +96,7 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
   );
 }
 
-function FormMultiOptionInput({ inputId, title, selectedOptions, options, selectOptions }: FormMultiOptionState) {
+function FormMultiOptionSelect({ inputId, title, selectedOptions, options, selectOptions }: FormMultiOptionState) {
   const convertedOptions: Option[] = useMemo(() => {
     return options.map((option) => ({
       value: String(option.key),
