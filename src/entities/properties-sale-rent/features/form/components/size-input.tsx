@@ -1,12 +1,13 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback, useRef } from "react";
 import { FormFieldLayout, FormDropDown } from "@/components/form";
 import { DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import { usePropertySizeInput } from "@/entities/properties-sale-rent/features/form/hooks/use-size-field";
 import { useTranslations } from "@/modules/i18n";
 import { cn, Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
+
 export const PropertySizeInput = function PropertySizeInput() {
   return (
     <div className="flex w-full flex-row space-x-2 bg-transparent">
@@ -35,24 +36,61 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
 }) {
   const { inputId, value, onChange, error, unit, setUnit, units } = usePropertySizeInput(field);
   useDebugRender("PropertySizeFieldInput" + field);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const formatDisplayValue = useCallback((value: string): string => {
+    if (!value || value === "0") return "0.00";
+    const numValue = parseFloat(value);
+    return isNaN(numValue) ? "0.00" : numValue.toFixed(2);
+  }, []);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = e.target.value;
+      const rawValue = inputValue.replace(/[^\d.]/g, ""); // Extract raw numeric value
+      onChange(rawValue);
+    },
+    [onChange],
+  );
+
+  const handleFocus = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.value = value;
+    }
+  }, [value]);
+
+  const handleBlur = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.value = formatDisplayValue(value);
+    }
+  }, [formatDisplayValue, value]);
+
   return (
     <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
-      <div className="flex flex-row items-center space-x-2">
-        <div className="flex w-full flex-col space-y-0">
+      <div className={cn("relative flex")}>
+        <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
           <Input
             id={inputId}
-            type="number"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
+            ref={inputRef}
+            type="text"
+            defaultValue={formatDisplayValue(value)}
             placeholder="0.00"
             className={cn(
-              "h-8 border-0 bg-transparent px-1 py-0 text-left font-mono text-xs shadow-none dark:bg-transparent",
+              "-me-px rounded-none border-none px-4 py-0 text-right shadow-none",
               "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             )}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={handleChange}
           />
-          <div className="bg-border h-[1px] w-full" />
         </div>
-        <FormDropDown selectedOption={unit} options={units} selectOption={setUnit} />
+        <FormDropDown
+          selectedOption={unit}
+          options={units}
+          selectOption={setUnit}
+          className="rounded-s-none rounded-e-md"
+        />
       </div>
     </FormFieldLayout>
   );
