@@ -20,7 +20,7 @@ export const PropertyRoomsInputGroup = function PropertyRoomsInputGroup({
   const title = t("title");
   const description = t("description");
   return (
-    <FormFieldLayout title={title} description={description} className={className}>
+    <FormFieldLayout title={title} description={description} className={className} config={{ focus_ring: true }}>
       <div className={cn(direction === "vertical" ? "flex flex-col gap-4" : "flex flex-row gap-4")}>
         <PropertyRoomsBedroomsInput />
         <PropertyRoomsBathroomsInput />
@@ -98,7 +98,7 @@ export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
             value={formatDisplayValue(value)}
             placeholder="0"
             maxLength={3}
-            className="h-8 w-auto min-w-0 border-0 px-1 py-0 text-center font-mono text-xs shadow-none dark:bg-transparent"
+            className="text-foreground focus-visible:text-primary h-8 w-auto min-w-0 border-0 px-1 py-0 text-center font-mono text-xs shadow-none dark:bg-transparent"
             onChange={handleChange}
           />
         </div>

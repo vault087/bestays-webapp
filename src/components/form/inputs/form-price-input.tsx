@@ -83,8 +83,8 @@ export const FormPriceInput = memo(function FormPriceInput({
 
   return (
     <div className={cn("relative flex", className)}>
-      <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
-        <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
+      <div className="text-muted-foreground focus-within:text-primary w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
+        <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
           {currencySymbol}
         </span>
         <Input
@@ -93,6 +93,7 @@ export const FormPriceInput = memo(function FormPriceInput({
           className={cn(
             "-me-px rounded-none border-none ps-6 pe-4 text-right shadow-none",
             "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+            "focus-visible:text-primary",
           )}
           name="price"
           defaultValue={value}
