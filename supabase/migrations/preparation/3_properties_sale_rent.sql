@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS properties_sale_rent;
 CREATE TABLE properties_sale_rent (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     about JSONB,

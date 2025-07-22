@@ -1,7 +1,4 @@
-DROP TABLE IF EXISTS properties_sale_rent;
-DROP TABLE IF EXISTS dictionary_entries;
 DROP TABLE IF EXISTS dictionaries;
-
 CREATE TABLE dictionaries (
     id SERIAL PRIMARY KEY,
     code VARCHAR(50) UNIQUE NOT NULL,

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS dictionary_entries;
 CREATE TABLE dictionary_entries (
     id SERIAL PRIMARY KEY,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
