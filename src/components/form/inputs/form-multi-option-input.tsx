@@ -96,6 +96,7 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
                 "p text-foreground flex h-8 w-8 items-center justify-center rounded-sm border-1 py-1",
                 selectedKeys?.includes(option.key) && "text-primary border-primary",
                 !selectedKeys?.includes(option.key) && "text-muted-foreground border-muted-foreground/40",
+                "hidden",
               )}
             >
               <span className="border-border min-w-8 text-center text-sm uppercase">{optionSymbol(option.label)}</span>
