@@ -23,20 +23,22 @@ export const FormDropDown = memo(function FormDropDown({
           <Button variant="text" className="flex flex-row items-center justify-center space-x-0">
             {selectedOption && <span className="px-0 text-sm uppercase">{selectedOption.label}</span>}
             {!selectedOption && placeholder && <span className="px-0 text-sm uppercase">{placeholder}</span>}
-            <ChevronDown className="size-4" />
+            {options.length > 1 && <ChevronDown className="size-4" />}
           </Button>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
-        {options.map((option) => (
-          <div key={option.key}>
-            <DropdownMenuItem onClick={() => selectOption(option)} className="flex justify-between">
-              <span className="text-muted-foreground text-sm uppercase">{option.label}</span>
-              {option?.key === selectedOption?.key && <CheckIcon size={16} className="ml-auto" />}
-            </DropdownMenuItem>
-          </div>
-        ))}
-      </DropdownMenuContent>
+      {options.length > 1 && (
+        <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
+          {options.map((option) => (
+            <div key={option.key}>
+              <DropdownMenuItem onClick={() => selectOption(option)} className="flex justify-between">
+                <span className="text-muted-foreground text-sm uppercase">{option.label}</span>
+                {option?.key === selectedOption?.key && <CheckIcon size={16} className="ml-auto" />}
+              </DropdownMenuItem>
+            </div>
+          ))}
+        </DropdownMenuContent>
+      )}
     </DropdownMenu>
   );
 });

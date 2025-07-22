@@ -3,6 +3,10 @@
 import { ChangeEvent, memo } from "react";
 import { cn, Textarea } from "@/modules/shadcn/";
 
+type FormTextAreaConfig = {
+  textarea_className?: string;
+};
+
 // Base Input
 export const FormTextArea = memo(function FormTextArea({
   inputId,
@@ -13,6 +17,7 @@ export const FormTextArea = memo(function FormTextArea({
   placeholder,
   arialInvalid = false,
   className,
+  config,
 }: {
   inputId: string;
   value: string;
@@ -22,6 +27,7 @@ export const FormTextArea = memo(function FormTextArea({
   placeholder: string;
   arialInvalid?: boolean;
   className?: string;
+  config?: FormTextAreaConfig;
 }) {
   const onTextAreaChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     onChange(e.target.value);
@@ -37,6 +43,7 @@ export const FormTextArea = memo(function FormTextArea({
         placeholder={placeholder || ""}
         aria-invalid={arialInvalid}
         aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
+        className={config?.textarea_className}
       />
       <p
         id={`${inputId}-description`}

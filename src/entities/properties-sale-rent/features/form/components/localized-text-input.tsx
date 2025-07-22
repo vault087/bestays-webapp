@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { FormTextArea } from "@/components/form/inputs/form-text-area";
-import { FormFieldLayout, FormFieldLayoutConfig } from "@/components/form/layout/form-field-layout";
+import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   DBPropertyLocalizedTextField,
   PROPERTY_ABOUT_MAX,
@@ -43,21 +43,8 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
 
   useDebugRender("PropertyLocalizedTextInput" + title);
 
-  const config: FormFieldLayoutConfig = useMemo(() => {
-    return {
-      showGlobe: true,
-    };
-  }, []);
-
   return (
-    <FormFieldLayout
-      title={title}
-      description={description}
-      error={error}
-      inputId={inputId}
-      className={className}
-      config={config}
-    >
+    <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
       <FormTextArea
         inputId={inputId}
         value={value}
@@ -66,6 +53,7 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
         maxLength={maxLength}
         placeholder={placeholder || ""}
         arialInvalid={!!error}
+        config={{ textarea_className: "focus-visible:ring-0" }}
       />
     </FormFieldLayout>
   );

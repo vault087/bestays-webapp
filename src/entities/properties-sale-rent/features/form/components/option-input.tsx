@@ -30,7 +30,13 @@ export function PropertyOptionField({
   const { inputId, selectedOption, options, title, subtitle, selectOption, error } = useOptionField({ field });
 
   return (
-    <FormFieldLayout title={title} description={subtitle} error={error} className={className}>
+    <FormFieldLayout
+      title={title}
+      description={subtitle}
+      error={error}
+      className={className}
+      config={{ focus_ring: true }}
+    >
       <FormOptionInput
         inputId={inputId}
         selectedOption={selectedOption}

@@ -54,6 +54,7 @@ export const PropertyTextInput = memo(function PropertyTextInput({
         maxLength={maxLength}
         placeholder={placeholder || ""}
         arialInvalid={!!error}
+        config={{ textarea_className: "focus-visible:ring-0" }}
       />
     </FormFieldLayout>
   );

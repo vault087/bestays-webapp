@@ -69,6 +69,7 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
         title: {
           variant: "h2",
         },
+        focus_ring: false,
       }}
     >
       <FormPriceInput
