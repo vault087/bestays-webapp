@@ -63,12 +63,10 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
           <div className="flex flex-1 flex-col space-y-8">
             <PropertyImagesInput className="hidden" />
 
+            <PropertyTransactionTypesInput />
             <PropertyAreaInput />
             <PropertyPropertyTypeInput />
 
-            <PropertyTransactionTypesInput />
-
-            <PropertyRoomsInputGroup />
             {/* <div className="flex w-1/2 flex-col items-start gap-4">
               <PropertyPriceInputGroup direction="vertical" />
             </div> */}
@@ -79,17 +77,19 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
               <PropertyNearbyAttractionsInput />
             </div>
 
+            <PropertyRoomsInputGroup />
+
             {/* <div className="flex w-full flex-col space-y-4">
               <PropertyAboutInput />
               <PropertyAgentNotesInput />
             </div> */}
 
-            <div className="flex w-full flex-col items-center gap-4">
-              <PropertyLandFeaturesInput />
-              <PropertyDivisibleSaleInput />
-              <PropertyOwnershipTypeInput />
+            <div className="flex w-full flex-col items-center gap-4 pt-4">
               <PropertySizeInput />
+              <PropertyOwnershipTypeInput />
+              <PropertyDivisibleSaleInput />
               <PropertyLandAndConstructionInput />
+              <PropertyLandFeaturesInput />
             </div>
           </div>
         </div>
