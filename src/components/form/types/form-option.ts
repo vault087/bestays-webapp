@@ -23,4 +23,5 @@ export interface FormSingleOptionProps extends FormBaseOptionProps {
 export interface FormMultiOptionProps extends FormBaseOptionProps {
   selectedOptions: FormOption[] | null;
   toggleOption: (option: FormOption, selected: boolean) => void;
+  selectOptions: (options: FormOption[]) => void;
 }

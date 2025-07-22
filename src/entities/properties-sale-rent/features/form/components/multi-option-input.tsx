@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { FormFieldLayout } from "@/components/form";
+import { FormFieldLayout, FormOption } from "@/components/form";
 import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
 import MultipleSelector, { Option } from "@/modules/shadcn/components/ui/multiselect";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -26,7 +26,7 @@ export function PropertyLandAndConstructionInput() {
 }
 
 export const MultiOptionInput = function MultiOptionInput({ field }: { field: DBPropertyMultiCodeField }) {
-  const { inputId, selectedOptions, options, title, subtitle, toggleOption, error } = useMultiOptionField({ field });
+  const { inputId, selectedOptions, options, title, subtitle, selectOptions, error } = useMultiOptionField({ field });
 
   // Convert options to MultipleSelector format
   const convertedOptions: Option[] = useMemo(() => {
@@ -58,28 +58,15 @@ export const MultiOptionInput = function MultiOptionInput({ field }: { field: DB
   );
 
   const handleOnChange = useCallback(
-    (value: Option[]) => {
+    (values: Option[]) => {
       // Find options that were added or removed
-      const newKeys = value.map((opt) => String(opt.key));
-      const currentKeys = selectedOptions?.map((opt) => String(opt.key));
-
-      // Handle additions
-      newKeys.forEach((key) => {
-        if (!currentKeys?.includes(key)) {
-          const option = options.find((opt) => String(opt.key) === key);
-          if (option) toggleOption(option, true);
-        }
-      });
-
-      // Handle removals
-      currentKeys?.forEach((key) => {
-        if (!newKeys.includes(key)) {
-          const option = options.find((opt) => String(opt.key) === key);
-          if (option) toggleOption(option, false);
-        }
-      });
+      const selectedOptions: FormOption[] = values.map((opt) => ({
+        key: opt.value,
+        label: opt.label,
+      }));
+      selectOptions(selectedOptions);
     },
-    [options, selectedOptions, toggleOption],
+    [selectOptions],
   );
 
   useDebugRender("MultiInput" + title);

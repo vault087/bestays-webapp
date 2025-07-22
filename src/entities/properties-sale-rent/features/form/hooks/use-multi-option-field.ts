@@ -37,6 +37,20 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
 
   const selectedKeys = useMemo(() => selectedOptions?.map((option) => option.key), [selectedOptions]);
 
+  const selectOptions = useCallback(
+    (options: FormOption[]) => {
+      const values: DBSerialID[] = options.map((option) => Number(option.key));
+      if (!values || values.length === 0) {
+        return;
+      }
+      setCurrentValues(values);
+      updateProperty((draft) => {
+        draft[field] = values;
+      });
+    },
+    [field, updateProperty],
+  );
+
   // Set values
   const toggleOption = useCallback(
     (option: FormOption, checked: boolean) => {
@@ -53,5 +67,5 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
     [updateProperty, field, currentValues],
   );
 
-  return { inputId, options, selectedOptions, selectedKeys, toggleOption, title, subtitle };
+  return { inputId, options, selectedOptions, selectOptions, selectedKeys, toggleOption, title, subtitle };
 };
