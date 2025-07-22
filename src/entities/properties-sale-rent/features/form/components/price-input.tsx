@@ -1,6 +1,7 @@
-import { memo, useId } from "react";
+import { memo, useId, useMemo } from "react";
 import { FormFieldLayout, FormPriceInput } from "@/components/form";
-import { usePropertyPriceInput, DBPropertyPriceField } from "@/entities/properties-sale-rent/";
+import { formatCurrency } from "@/entities/common";
+import { usePropertyPriceInput, DBPropertyPriceField, usePropertyLocale } from "@/entities/properties-sale-rent/";
 import { useTranslations } from "@/modules/i18n";
 import { cn } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -51,9 +52,10 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
   field: DBPropertyPriceField;
   className?: string;
 }) {
-  const { inputId, price, onPriceChange, priceFormatted, pricePreview, error, currency, currencies, setCurrency } =
-    usePropertyPriceInput(field);
+  const { inputId, price, onPriceChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
   useDebugRender("PropertyPriceInput" + field);
+  const locale = usePropertyLocale();
+  const pricePreview = useMemo(() => formatCurrency(price, locale, currency, "name"), [price, locale, currency]);
 
   return (
     <FormFieldLayout
@@ -69,12 +71,14 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
     >
       <FormPriceInput
         inputId={inputId}
+        locale={locale}
         value={price}
         onChange={onPriceChange}
         currency={currency}
         currencies={currencies}
         onCurrencyChange={setCurrency}
       />
+      <div className="text-muted-foreground text-sm">{pricePreview}</div>
     </FormFieldLayout>
   );
 });

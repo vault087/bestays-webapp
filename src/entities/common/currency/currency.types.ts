@@ -11,3 +11,33 @@ export function getCurrencySymbol(currency: DBCurrency): string {
       return "฿";
   }
 }
+
+export const formatCurrency = (
+  amount: string,
+  locale: string,
+  currency: string,
+  display: "number" | "symbol" | "name" | "code",
+): string => {
+  if (!amount) return "";
+
+  const numericValue = Number(amount.replace(/[^0-9.]/g, "")); // Remove non-numeric chars except dot
+  switch (display) {
+    case "number":
+      return new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency: currency,
+        currencyDisplay: "code",
+      })
+        .format(numericValue)
+        .replace(currency, "")
+        .trim();
+    case "symbol":
+    case "name":
+    case "code":
+      return new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency: currency,
+        currencyDisplay: display,
+      }).format(numericValue);
+  }
+};

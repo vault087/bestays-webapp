@@ -4851,6 +4851,7 @@ __metadata:
     tw-animate-css: "npm:^1.3.4"
     typescript: "npm:^5.8.3"
     use-debounce: "npm:^10.0.5"
+    use-mask-input: "npm:^3.5.0"
     zod: "npm:^3.25.71"
     zustand: "npm:^5.0.6"
   languageName: unknown
@@ -11956,6 +11957,16 @@ __metadata:
   peerDependencies:
     react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
   checksum: 10c0/0a34bfab56f88e399ef7ee4ce0784355e2f4b977c746541b3fbe3ee3a4d2c747fce24748864532c03ff5f3411eb837f7f9d187c4e7076d62e0f181c499491096
+  languageName: node
+  linkType: hard
+
+"use-mask-input@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "use-mask-input@npm:3.5.0"
+  peerDependencies:
+    react: ">=16.4 || 17 || 18 || 20"
+    react-dom: ">=16.4 || 17 || 18 || 20"
+  checksum: 10c0/87bc0bc255a3298891cd725d16622e3312ab1e1f2044351c4c78d2ed104b5004c90239a2bfb54a87b424d359190d35ca635d0cc47b8087e462e24a4bbff94fef
   languageName: node
   linkType: hard
 
