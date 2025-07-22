@@ -67,9 +67,16 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
   }, [formatDisplayValue, value]);
 
   return (
-    <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
+    <FormFieldLayout
+      title={title}
+      description={description}
+      error={error}
+      inputId={inputId}
+      className={className}
+      config={{ focus_ring: true }}
+    >
       <div className={cn("flex")}>
-        <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
+        <div className="text-muted-foreground focus-within:text-primary w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
           <Input
             id={inputId}
             ref={inputRef}

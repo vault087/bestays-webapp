@@ -82,8 +82,8 @@ export const FormPriceInput = memo(function FormPriceInput({
   }, [formatDisplayValue, value]);
 
   return (
-    <div className={cn("relative flex", className)}>
-      <div className="text-muted-foreground focus-within:text-primary w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
+    <div className={cn("relative flex", "text-muted-foreground focus-within:text-primary", className)}>
+      <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
         <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
           {currencySymbol}
         </span>
@@ -107,12 +107,21 @@ export const FormPriceInput = memo(function FormPriceInput({
           onChange={handleChange}
         />
       </div>
-      <FormDropDown
-        selectedOption={dropdownValue}
-        options={dropdownValues}
-        selectOption={dropdownOnChanged}
-        className="rounded-s-none rounded-e-md"
-      />
+      {dropdownValues.length > 1 && (
+        <FormDropDown
+          selectedOption={dropdownValue}
+          options={dropdownValues}
+          selectOption={dropdownOnChanged}
+          className="rounded-s-none rounded-e-md"
+        />
+      )}
+      {dropdownValues.length === 1 && (
+        <div className="flex items-center rounded-s-none rounded-e-md border-1 px-2">
+          <span className="pointer-events-none flex items-center justify-center text-sm select-none">
+            {dropdownValue.label}
+          </span>
+        </div>
+      )}
     </div>
   );
 });

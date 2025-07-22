@@ -45,7 +45,14 @@ export const PropertyTextInput = memo(function PropertyTextInput({
 
   useDebugRender("PropertyTextInput" + title);
   return (
-    <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
+    <FormFieldLayout
+      title={title}
+      description={description}
+      error={error}
+      inputId={inputId}
+      className={className}
+      config={{ focus_ring: true }}
+    >
       <FormTextArea
         inputId={inputId}
         value={value}
