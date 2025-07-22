@@ -47,8 +47,25 @@ export const FormMultiOption = memo(function FormMultiOption({
   );
 });
 
+// Color palette optimized for human vision and accessibility
 function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOption }: FormMultiOptionState) {
   const selectedKeys = selectedOptions?.map((option) => option.key);
+
+  const optionSymbol = useCallback((label: string): string => {
+    const words = label.split(" ");
+    if (words.length === 0) {
+      return "?";
+    }
+    if (words.length > 1) {
+      return words[0].charAt(0) + words[1].charAt(0).toLowerCase();
+    }
+    if (label.length > 1) {
+      return label.charAt(0) + label.charAt(1).toLowerCase();
+    }
+
+    return label.charAt(0).toUpperCase();
+  }, []);
+
   return (
     <div className="grid grid-cols-2 gap-2">
       {options.map((option: FormOption) => (
@@ -72,15 +89,18 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
             }
           }}
         >
-          <div className="flex flex-row items-center gap-2 space-x-0">
+          <div className="flex flex-row items-center gap-2 space-x-1">
+            {/* Icon */}
             <div
               className={cn(
-                "p text-foreground flex h-8 w-8 items-center justify-center rounded-sm py-1",
-                "bg-amber-400",
+                "p text-foreground flex h-8 w-8 items-center justify-center rounded-sm border-1 py-1",
+                selectedKeys?.includes(option.key) && "text-primary border-primary",
+                !selectedKeys?.includes(option.key) && "text-muted-foreground border-muted-foreground/40",
               )}
             >
-              <span className="border-border text-sm uppercase">{option.label.charAt(0)}</span>
+              <span className="border-border min-w-8 text-center text-sm uppercase">{optionSymbol(option.label)}</span>
             </div>
+            {/* Label */}
             <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
           </div>
           <Checkbox

@@ -46,7 +46,7 @@ export default function PropertiesPageClient({
       <PropertyFormStoreProvider store={propertyStore}>
         <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
           <div className="flex w-full justify-center">
-            <PropertyListCanvas className="w-1/2" />
+            <PropertyListCanvas className="w-2/3" />
           </div>
         </PropertyFormStoreHydrated>
       </PropertyFormStoreProvider>
