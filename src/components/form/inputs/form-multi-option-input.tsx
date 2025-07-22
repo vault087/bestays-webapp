@@ -59,7 +59,24 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
               toggleOption(option, selected as boolean);
             }}
           />
-          <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
+          <Label
+            htmlFor={`${inputId}-${option.key}`}
+            onMouseDown={(e) => {
+              // Prevent focus loss during state updates
+              e.preventDefault();
+            }}
+            onClick={(e) => {
+              // Ensure the checkbox gets the click event properly
+              e.preventDefault();
+              const checkbox = document.getElementById(`${inputId}-${option.key}`) as HTMLInputElement;
+              if (checkbox) {
+                checkbox.click();
+                checkbox.focus();
+              }
+            }}
+          >
+            {option.label}
+          </Label>
         </div>
       ))}
     </div>

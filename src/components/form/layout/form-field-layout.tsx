@@ -52,7 +52,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
           <FormFieldTitle text={title} inputId={inputId} variant={finalConfig.title?.variant} />
         </div>
       )}
-      {description && <FormFieldDescription text={description} inputId={inputId} />}
+      {description && <FormFieldDescription className="pb-4" text={description} inputId={inputId} />}
 
       {children}
 
