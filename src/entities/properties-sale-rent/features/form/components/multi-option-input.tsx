@@ -29,7 +29,7 @@ export function PropertyLandAndConstructionInput({ className, variant }: MultiOp
 
 function MultiOptionField({
   field,
-  variant = "select",
+  variant = "checkbox",
   className,
 }: {
   field: DBPropertyMultiCodeField;

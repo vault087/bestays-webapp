@@ -10,7 +10,7 @@ export type FormMultiOptionState = FormMultiOptionProps & {
   title: string | undefined;
   error?: string | undefined;
 };
-export type FormMultiOptionVariant = "select" | "checkbox" | "badge";
+export type FormMultiOptionVariant = "select" | "checkbox";
 export const FormMultiOption = memo(function FormMultiOption({
   inputId,
   title,
@@ -42,44 +42,14 @@ export const FormMultiOption = memo(function FormMultiOption({
           selectOptions={selectOptions}
         />
       )}
-      {variant === "badge" && (
-        <FormMultiOptionBadges
-          inputId={inputId}
-          toggleOption={toggleOption}
-          title={title}
-          selectedOptions={selectedOptions}
-          options={options}
-          selectOptions={selectOptions}
-        />
-      )}
     </>
   );
 });
 
-function FormMultiOptionBadges({ inputId, selectedOptions, options, toggleOption }: FormMultiOptionState) {
-  const selectedKeys = selectedOptions?.map((option) => option.key);
-  return (
-    <div className="grid grid-cols-2 gap-2 rounded-sm border-1 p-4 shadow-xs">
-      {options.map((option: FormOption) => (
-        <div className="flex items-center gap-2" key={option.key}>
-          <Checkbox
-            id={`${inputId}-${option.key}`}
-            checked={selectedKeys?.includes(option.key)}
-            onCheckedChange={(selected) => {
-              toggleOption(option, selected as boolean);
-            }}
-          />
-          <Label htmlFor={`${inputId}-${option.key}`}>{option.label}</Label>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOption }: FormMultiOptionState) {
   const selectedKeys = selectedOptions?.map((option) => option.key);
   return (
-    <div className="grid grid-cols-2 gap-2 rounded-sm border-1 p-4 shadow-xs">
+    <div className="grid grid-cols-2 gap-2">
       {options.map((option: FormOption) => (
         <div className="flex items-center gap-2" key={option.key}>
           <Checkbox

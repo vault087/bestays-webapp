@@ -34,7 +34,13 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   className?: string;
 }) {
   return (
-    <div className={cn("flex w-full flex-col space-y-2", className)}>
+    <div
+      className={cn(
+        "flex w-full flex-col space-y-2",
+        config.title?.variant === "h1" && "rounded-lg p-4 shadow-[0_0_14px_rgba(0,0,0,0.1)]",
+        className,
+      )}
+    >
       {title && (
         <div className="flex flex-row space-x-2">
           <FormFieldTitle text={title} inputId={inputId} variant={config.title?.variant} />

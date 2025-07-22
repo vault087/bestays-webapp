@@ -15,10 +15,15 @@ export function FormFieldTitle({
   variant?: FormFieldTitleVariant;
 }) {
   if (!text) return null;
+  const textClassName = cn("font-open-sans font-semibold", variant === "h1" ? "text-md" : "text-sm", className);
   return (
-    <div className={cn("font-open-sans font-semibold", variant === "h1" ? "text-md" : "text-sm", className)}>
-      {inputId && <Label htmlFor={inputId}>{text}</Label>}
-      {!inputId && text}
-    </div>
+    <>
+      {inputId && (
+        <Label className={textClassName} htmlFor={inputId}>
+          {text}
+        </Label>
+      )}
+      {!inputId && <span className={textClassName}>{text}</span>}
+    </>
   );
 }

@@ -68,7 +68,7 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
 
   return (
     <FormFieldLayout title={title} description={description} error={error} inputId={inputId} className={className}>
-      <div className={cn("relative flex")}>
+      <div className={cn("flex")}>
         <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
           <Input
             id={inputId}
