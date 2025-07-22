@@ -66,7 +66,7 @@ export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
       description={subtitle}
       error={error}
       inputId={inputId}
-      className={className}
+      className={cn("flex flex-row items-center justify-between", className)}
       config={{
         title: {
           variant: "h2",
@@ -83,7 +83,8 @@ export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="0"
-          className="h-8 w-16 p-2 py-0 text-center font-mono text-xs shadow-none dark:bg-transparent"
+          maxLength={3}
+          className="h-8 w-10 border-0 p-2 py-0 text-center font-mono text-xs shadow-none dark:bg-transparent"
         />
         <Button variant="outline" size="icon" className="rounded-full" onClick={onIncrement}>
           <PlusIcon className="h-4 w-4" />
