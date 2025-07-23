@@ -4,6 +4,7 @@ import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, memo, useRef, useMemo, useCallback } from "react";
 import { FormSingleOptionProps } from "@/components/form";
+import { useFormFieldLayout } from "@/components/form/layout";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
   Command,
@@ -58,19 +59,22 @@ export const FormOptionSelect = memo(function FormOptionInput({
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState<string>(""); // ← Add state for input value
 
+  const { setFocused } = useFormFieldLayout();
+
   const handleAddOption = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       addOption?.onClick(inputValue);
-      setOpen(false); // ← Add this line to close the popup
+      setOpen(false);
+      setFocused(false);
     },
-    [addOption, inputValue],
+    [addOption, inputValue, setFocused],
   );
 
   const isExactMatching = useMemo(() => {
     return options.some((option) => option.label.toLowerCase() === inputValue.toLowerCase().trim());
   }, [options, inputValue]);
-  console.log("inputValue", inputValue, isExactMatching);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -89,7 +93,13 @@ export const FormOptionSelect = memo(function FormOptionInput({
       </PopoverTrigger>
       <PopoverContent className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0" align="start">
         <Command>
-          <CommandInput placeholder="Find option" ref={inputRef} onValueChange={setInputValue} />
+          <CommandInput
+            placeholder="Find option"
+            ref={inputRef}
+            onValueChange={setInputValue}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+          />
           <CommandList>
             <CommandEmpty>
               <div className="flex flex-col items-center justify-center gap-2">
