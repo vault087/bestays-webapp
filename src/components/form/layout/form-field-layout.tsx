@@ -65,15 +65,15 @@ export const FormFieldLayout = memo(function FormFieldLayout({
             <FormFieldTitle text={title} inputId={inputId} variant={margedConfig.title?.variant} />
           </div>
         )}
-        {description && margedConfig.description?.position === "top" && (
+        {/* {description && margedConfig.description?.position === "top" && (
           <FormFieldDescription className="pb-1" text={description} inputId={inputId} />
-        )}
+        )} */}
 
         {children}
 
-        {description && margedConfig.description?.position === "bottom" && (
+        {/* {description && margedConfig.description?.position === "bottom" && (
           <FormFieldDescription className="pt-1" text={description} inputId={inputId} />
-        )}
+        )} */}
 
         {error && <FormFieldError error={error} inputId={inputId} className="mt-1" />}
       </div>

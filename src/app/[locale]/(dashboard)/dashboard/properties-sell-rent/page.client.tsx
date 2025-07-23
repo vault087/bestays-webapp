@@ -27,6 +27,9 @@ import {
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
 import { cn } from "@/modules/shadcn";
+import Comp439 from "@/modules/shadcn/components/comp-439";
+import Comp520 from "@/modules/shadcn/components/comp-520";
+import Comp521 from "@/modules/shadcn/components/comp-521";
 
 export default function PropertiesPageClient({
   properties,
@@ -41,15 +44,19 @@ export default function PropertiesPageClient({
   const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", properties[0]), [properties]);
 
   return (
-    <DictionaryFormStoreProvider store={dictionaryStore}>
-      <PropertyFormStoreProvider store={propertyStore}>
-        <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
-          <div className="flex w-full justify-center">
-            <PropertyListCanvas />
-          </div>
-        </PropertyFormStoreHydrated>
-      </PropertyFormStoreProvider>
-    </DictionaryFormStoreProvider>
+    <div className="flex h-full w-full">
+      <DictionaryFormStoreProvider store={dictionaryStore}>
+        <PropertyFormStoreProvider store={propertyStore}>
+          <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
+            <div className="flex w-full flex-col gap-4">
+              <div className="flex flex-1 overflow-auto">
+                <PropertyListCanvas />
+              </div>
+            </div>
+          </PropertyFormStoreHydrated>
+        </PropertyFormStoreProvider>
+      </DictionaryFormStoreProvider>
+    </div>
   );
 }
 
@@ -61,7 +68,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
       {/* Fields Container */}
       <div className="rounded-card flex flex-row items-start justify-center gap-4 rounded-md p-0">
         {/* Left Column */}
-        <div className="flex flex-1 flex-col space-y-4">
+        <div className="flex flex-1 flex-col space-y-4 pb-8">
           <PropertyAreaInput />
           <PropertyPropertyTypeInput />
 
@@ -77,8 +84,8 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
 
           {/* <div className="flex w-full flex-col space-y-4">
               <PropertyAboutInput />
-              <PropertyAgentNotesInput />
             </div> */}
+          <PropertyRoomsInputGroup />
 
           <div className="flex w-full flex-col items-center gap-4 pt-4">
             <PropertySizeInput />
@@ -92,7 +99,8 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
         {/* Right Column */}
         <div className="flex flex-1 flex-col space-y-4">
           <PropertyImagesInput />
-          <PropertyRoomsInputGroup />
+          {/* <PropertyAboutInput /> */}
+          <PropertyAgentNotesInput />
         </div>
       </div>
       {/* </div> */}

@@ -28,11 +28,11 @@ export function useDictionaryFormStoreActions(): DictionaryFormStoreActions {
   const timeout = 300;
   return {
     updateDictionary: useDebouncedCallback(store.getState().updateDictionary, timeout),
-    addDictionary: useDebouncedCallback(store.getState().addDictionary, timeout),
-    deleteDictionary: useDebouncedCallback(store.getState().deleteDictionary, timeout),
-    addEntry: store.getState().addEntry,
     updateEntry: useDebouncedCallback(store.getState().updateEntry, timeout),
-    deleteEntry: useDebouncedCallback(store.getState().deleteEntry, timeout),
-    deleteEntries: useDebouncedCallback(store.getState().deleteEntries, timeout),
+    addDictionary: store.getState().addDictionary,
+    deleteDictionary: store.getState().deleteDictionary,
+    addEntry: store.getState().addEntry,
+    deleteEntry: store.getState().deleteEntry,
+    deleteEntries: store.getState().deleteEntries,
   } as DictionaryFormStoreActions;
 }
