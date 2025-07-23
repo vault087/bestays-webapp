@@ -4,10 +4,7 @@ import { Expand, ImagePlus, X } from "lucide-react";
 import Image from "next/image";
 import { memo, useMemo, useRef, useCallback } from "react";
 import { FormFieldLayout, ImageItem } from "@/components/form";
-import {
-  FormFieldLayoutToolbar,
-  FormFieldLayoutToolbarButton,
-} from "@/components/form/layout/form-field-layout-toolbar";
+import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
@@ -193,9 +190,9 @@ function ImageFieldExpandDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <FormFieldLayoutToolbarButton onClick={() => {}}>
+        <Button variant="ghost" size="icon" onClick={() => {}}>
           <Expand size={16} className="text-muted-foreground/80" />
-        </FormFieldLayoutToolbarButton>
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
         <DialogTitle className="sr-only">Property Images Editor</DialogTitle>

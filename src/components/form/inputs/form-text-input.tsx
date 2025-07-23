@@ -1,4 +1,5 @@
-import React, { memo } from "react";
+"use client";
+import React, { memo, useState } from "react";
 import { Input } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
 
@@ -11,7 +12,7 @@ export type FormTextInputConfig = {
 
 const DefaultFormTextInputConfig: FormTextInputConfig = {
   characterCount: {
-    always_show: true,
+    always_show: false,
     inline: true,
   },
 };
@@ -37,6 +38,8 @@ export const FormTextInput = memo(function FormTextInput({
   className?: string;
   config?: FormTextInputConfig;
 }) {
+  const [focused, setFocused] = useState(false);
+
   return (
     <div
       className={cn(
@@ -52,25 +55,29 @@ export const FormTextInput = memo(function FormTextInput({
         value={value}
         maxLength={maxLength}
         onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder || ""}
         aria-invalid={arialInvalid}
         aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
         className={"h-12 border-0 py-0 font-mono text-xs shadow-none dark:bg-transparent"}
       />
-      <div>
-        <p
-          id={`${inputId}-description`}
-          className={cn(
-            "text-muted-foreground flex text-end text-xs whitespace-nowrap",
-            config.characterCount.inline && "",
-            !config.characterCount.inline && "",
-          )}
-          role="status"
-          aria-live="polite"
-        >
-          {characterCount} / {maxLength}
-        </p>
-      </div>
+      {(config.characterCount.always_show || focused) && (
+        <div>
+          <p
+            id={`${inputId}-description`}
+            className={cn(
+              "text-muted-foreground flex text-end text-xs whitespace-nowrap",
+              config.characterCount.inline && "",
+              !config.characterCount.inline && "",
+            )}
+            role="status"
+            aria-live="polite"
+          >
+            {characterCount} / {maxLength}
+          </p>
+        </div>
+      )}
     </div>
   );
 });

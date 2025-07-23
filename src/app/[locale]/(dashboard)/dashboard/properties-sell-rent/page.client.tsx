@@ -1,5 +1,8 @@
 "use client";
+import { ArrowLeftIcon } from "lucide-react";
 import { memo, useMemo } from "react";
+import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
+import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import { createDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
@@ -26,7 +29,8 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
-import { cn } from "@/modules/shadcn";
+import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
+import { cn, Button } from "@/modules/shadcn";
 import Comp439 from "@/modules/shadcn/components/comp-439";
 import Comp520 from "@/modules/shadcn/components/comp-520";
 import Comp521 from "@/modules/shadcn/components/comp-521";
@@ -48,7 +52,25 @@ export default function PropertiesPageClient({
       <DictionaryFormStoreProvider store={dictionaryStore}>
         <PropertyFormStoreProvider store={propertyStore}>
           <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
-            <div className="flex w-full flex-col gap-4">
+            <div className="flex w-full flex-col gap-4 pt-6">
+              <div className="flex w-full flex-row items-center justify-between px-6">
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon">
+                    <ArrowLeftIcon className="!h-6 !w-6" />
+                  </Button>
+                  <h1 className="text-xl font-bold">Listing editor</h1>
+                </div>
+                <div className="min-w-sm pt-4">
+                  <Comp439 />
+                </div>
+
+                <div className="flex items-center justify-end space-x-3">
+                  <LocaleSwitcher />
+                  <ThemeSwitcher />
+                  <AvatarMenu />
+                </div>
+              </div>
+
               <div className="flex overflow-auto">
                 <PropertyListCanvas />
               </div>

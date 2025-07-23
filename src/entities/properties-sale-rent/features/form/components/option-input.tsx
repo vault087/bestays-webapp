@@ -1,18 +1,24 @@
 "use client";
 
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVerticalIcon, BlocksIcon, SquarePenIcon } from "lucide-react";
+import React from "react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
-import {
-  FormFieldLayoutToolbar,
-  FormFieldLayoutToolbarEditButton,
-} from "@/components/form/layout/form-field-layout-toolbar";
+import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { DictionaryEntryEditor } from "@/entities/dictionaries/features/form/components/blocks/dictionary-entry-editor";
 import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { DBPropertyCodeField, DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { useDictionaryOptions } from "@/entities/properties-sale-rent/features/form/hooks/utils/use-dictionary-options";
-import { Button } from "@/modules/shadcn";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
+import {
+  Button,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuGroup,
+} from "@/modules/shadcn";
+import { Dialog, DialogContent, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
 
 export type OptionFieldProps = {
   className?: string;
@@ -47,10 +53,10 @@ export function PropertyOptionField({
       description={description}
       error={error}
       className={className}
-      config={{ focus_ring: true, description: { position: "bottom" } }}
+      config={{ focus_ring: true }}
     >
       <FormFieldLayoutToolbar>
-        <FieldMenuButton field={field} />
+        <FieldDropDownMenu field={field} />
       </FormFieldLayoutToolbar>
 
       <FormOptionInput
@@ -64,46 +70,59 @@ export function PropertyOptionField({
     </FormFieldLayout>
   );
 }
+export function FieldDropDownMenu({ field }: { field: DBPropertyCodeField | DBPropertyMultiCodeField }) {
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
-export function FieldMenuButton({ field }: { field: DBPropertyCodeField | DBPropertyMultiCodeField }) {
-  const { dictionary, locale } = useDictionaryOptions({ field });
-  // Get mutable entries from dictionary store instead
-  const entries = useDictionaryFormStore((state) => (dictionary?.id ? state.entries[dictionary.id] : undefined));
-
-  if (!dictionary || !entries) {
-    return null;
-  }
+  const handleEditClick = () => {
+    setDropdownOpen(false);
+    setDialogOpen(true);
+  };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => {
-            console.log("!");
-          }}
-        >
-          <EllipsisVertical />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-md">
-        <DialogTitle className="sr-only">Manage {dictionary.name?.[locale] || dictionary.code} Options</DialogTitle>
-        <DictionaryEntryEditor
-          dictionary={dictionary}
-          entries={entries}
-          locale={locale}
-          onClose={() => {
-            // Dialog will close automatically when trigger loses focus
-            document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-          }}
-        />
-      </DialogContent>
-    </Dialog>
+    <>
+      <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:text-primary hover:bg-transparent"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <EllipsisVerticalIcon className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
+          <DropdownMenuGroup>
+            <DropdownMenuItem onSelect={handleEditClick}>
+              <SquarePenIcon className="h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <BlocksIcon className="h-4 w-4" />
+              Re-arrange
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <FieldMenuDialog field={field} open={dialogOpen} onOpenChange={setDialogOpen} />
+    </>
   );
 }
 
-export function OptionFieldEditDialog({ field }: { field: DBPropertyCodeField | DBPropertyMultiCodeField }) {
+export function FieldMenuDialog({
+  field,
+  open,
+  onOpenChange,
+}: {
+  field: DBPropertyCodeField | DBPropertyMultiCodeField;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const { dictionary, locale } = useDictionaryOptions({ field });
   // Get mutable entries from dictionary store instead
   const entries = useDictionaryFormStore((state) => (dictionary?.id ? state.entries[dictionary.id] : undefined));
@@ -113,10 +132,7 @@ export function OptionFieldEditDialog({ field }: { field: DBPropertyCodeField | 
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <FormFieldLayoutToolbarEditButton onClick={() => {}} />
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogTitle className="sr-only">Manage {dictionary.name?.[locale] || dictionary.code} Options</DialogTitle>
         <DictionaryEntryEditor
@@ -124,8 +140,7 @@ export function OptionFieldEditDialog({ field }: { field: DBPropertyCodeField | 
           entries={entries}
           locale={locale}
           onClose={() => {
-            // Dialog will close automatically when trigger loses focus
-            document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+            onOpenChange(false);
           }}
         />
       </DialogContent>

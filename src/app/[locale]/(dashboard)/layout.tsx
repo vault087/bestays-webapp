@@ -19,7 +19,7 @@ export default async function DashboardLayout({
     <RootLayout params={params}>
       <ProtectedProvider>
         <div className="flex min-h-screen flex-col">
-          <DashboardNavBarComponent />
+          {/* <DashboardNavBarComponent /> */}
           {children}
         </div>
       </ProtectedProvider>

@@ -11,18 +11,12 @@ export type FormFieldLayoutConfig = {
   title?: {
     variant?: FormFieldTitleVariant | undefined;
   };
-  description?: {
-    position?: "top" | "bottom";
-  };
   focus_ring?: boolean;
 };
 
 const DefaultFormFieldConfig: FormFieldLayoutConfig = {
   title: {
     variant: "h1",
-  },
-  description: {
-    position: "top",
   },
   focus_ring: false,
 };
@@ -65,15 +59,9 @@ export const FormFieldLayout = memo(function FormFieldLayout({
             <FormFieldTitle text={title} inputId={inputId} variant={margedConfig.title?.variant} />
           </div>
         )}
-        {/* {description && margedConfig.description?.position === "top" && (
-          <FormFieldDescription className="pb-1" text={description} inputId={inputId} />
-        )} */}
+        {description && <FormFieldDescription className="pb-1" text={description} inputId={inputId} />}
 
         {children}
-
-        {/* {description && margedConfig.description?.position === "bottom" && (
-          <FormFieldDescription className="pt-1" text={description} inputId={inputId} />
-        )} */}
 
         {error && <FormFieldError error={error} inputId={inputId} className="mt-1" />}
       </div>

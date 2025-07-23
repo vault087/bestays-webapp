@@ -3,7 +3,7 @@
 import { FormFieldLayout } from "@/components/form";
 import { FormMultiOption, FormMultiOptionVariant } from "@/components/form/inputs/form-multi-option-input";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
-import { DBPropertyMultiCodeField, OptionFieldEditDialog, useMultiOptionField } from "@/entities/properties-sale-rent/";
+import { DBPropertyMultiCodeField, FieldDropDownMenu, useMultiOptionField } from "@/entities/properties-sale-rent/";
 
 export type MultiOptionFieldProps = {
   className?: string;
@@ -47,7 +47,7 @@ function MultiOptionField({
       config={{ focus_ring: true }}
     >
       <FormFieldLayoutToolbar>
-        <OptionFieldEditDialog field={field} />
+        <FieldDropDownMenu field={field} />
       </FormFieldLayoutToolbar>
 
       <FormMultiOption

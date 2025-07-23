@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Trash2, Plus } from "lucide-react";
+import { X, BanIcon, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useCallback, useMemo } from "react";
 import { DBSerialID } from "@/entities/common";
@@ -91,14 +91,16 @@ export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: 
   const t = useTranslations("Dictionaries.entries.editor");
   const tCommon = useTranslations("Common");
 
-  const entryList = Object.values(entries);
+  const entryList = useMemo(() => {
+    return Object.values(entries).sort((a, b) => a.name?.[locale]?.localeCompare(b.name?.[locale] || "") || 0);
+  }, [entries, locale]);
 
   // Filter entries based on search query
   const filteredEntries = useMemo(() => {
     if (!searchQuery.trim()) return entryList;
 
     return entryList.filter((entry) => {
-      const entryName = getAvailableLocalizedText(entry.name, locale);
+      const entryName = entry.name?.[locale] || "";
       return entryName.toLowerCase().includes(searchQuery.toLowerCase());
     });
   }, [entryList, searchQuery, locale]);
@@ -156,19 +158,24 @@ export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: 
               {tCommon("not_found")}
             </div>
           ) : (
-            <div className="space-y-1">
+            <div className="space-y-0">
               {filteredEntries.map((entry) => (
-                <div key={entry.id} className="flex items-center space-x-2 rounded-sm p-2">
-                  <div className="min-w-0 flex-1">
-                    <DictionaryEntryNameInput dictionaryId={dictionary.id} entryId={entry.id} locale={locale} />
+                <div key={entry.id} className="flex items-center space-x-2 rounded-sm">
+                  <div className="min-w-0 flex-1 rounded-b-none border-b-1">
+                    <DictionaryEntryNameInput
+                      placeholder={getAvailableLocalizedText(entry.name, locale)}
+                      dictionaryId={dictionary.id}
+                      entryId={entry.id}
+                      locale={locale}
+                    />
                   </div>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={() => handleDeleteEntry(entry)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 flex-shrink-0 p-0"
+                    className="text-destructive hover:text-destructive h-8 w-8 flex-shrink-0 p-0 opacity-30 hover:opacity-100"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <BanIcon className="h-4 w-4" />
                   </Button>
                 </div>
               ))}

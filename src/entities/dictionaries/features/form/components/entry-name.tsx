@@ -30,10 +30,12 @@ export const DictionaryEntryNameInput = memo(function DictionaryEntryNameInput({
   dictionaryId,
   entryId,
   locale,
+  placeholder,
 }: {
   dictionaryId: number;
   entryId: number;
   locale: string;
+  placeholder?: string;
 }) {
   const { inputId, value, onChange, characterCount, error, maxLength } = useDictionaryEntryNameInput(
     dictionaryId,
@@ -42,7 +44,6 @@ export const DictionaryEntryNameInput = memo(function DictionaryEntryNameInput({
     DICTIONARY_ENTRY_NAME_MAX,
   );
   const t = useTranslations("Dictionaries.entries.name");
-  const placeholder = t("placeholder");
 
   return (
     <div className="flex flex-col space-y-2">
@@ -51,7 +52,7 @@ export const DictionaryEntryNameInput = memo(function DictionaryEntryNameInput({
         value={value}
         onChange={onChange}
         maxLength={maxLength}
-        placeholder={placeholder || ""}
+        placeholder={placeholder || t("placeholder")}
         className="h-8 border-0 bg-transparent py-0 font-mono text-xs shadow-none dark:bg-transparent"
         characterCount={characterCount}
       />
