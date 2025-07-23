@@ -1,10 +1,23 @@
 "use client";
-import { EditIcon } from "lucide-react";
+
 import { FormFieldLayout } from "@/components/form";
 import { FormMultiOption, FormMultiOptionVariant } from "@/components/form/inputs/form-multi-option-input";
-import FormFieldLayoutToolbar from "@/components/form/layout/form-field-layout-toolbar";
+import {
+  FormFieldLayoutToolbar,
+  FormFieldLayoutToolbarEditButton,
+} from "@/components/form/layout/form-field-layout-toolbar";
 import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
 import { Button } from "@/modules/shadcn/components/ui/button";
+import {
+  Dialog,
+  DialogDescription,
+  DialogTitle,
+  DialogHeader,
+  DialogContent,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from "@/modules/shadcn/components/ui/dialog";
 
 export type MultiOptionFieldProps = {
   className?: string;
@@ -48,9 +61,7 @@ function MultiOptionField({
       config={{ focus_ring: true }}
     >
       <FormFieldLayoutToolbar>
-        <Button variant="ghost" size="icon">
-          <EditIcon size={16} className="text-muted-foreground/80" />
-        </Button>
+        <MultiOptionFieldEditDialog field={field} />
       </FormFieldLayoutToolbar>
 
       <FormMultiOption
@@ -64,5 +75,45 @@ function MultiOptionField({
         addOption={addOption}
       />
     </FormFieldLayout>
+  );
+}
+
+export function MultiOptionFieldEditDialog({ field }: { field: DBPropertyMultiCodeField }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">Delete project</Button>
+        {/* <FormFieldLayoutToolbarEditButton onClick={() => {}} /> */}
+      </DialogTrigger>
+      <DialogContent>
+        <div className="flex flex-col items-center gap-2">
+          <DialogHeader>
+            <DialogTitle className="sm:text-center">Final confirmation</DialogTitle>
+            <DialogDescription className="sm:text-center">
+              This action cannot be undone. To confirm, please enter the project name{" "}
+              <span className="text-foreground">Origin UI</span>.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
+
+        <form className="space-y-5">
+          <div className="*:not-first:mt-2">
+            {/* <Label htmlFor={id}>Project name</Label> */}
+            Text Input
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline" className="flex-1">
+                Cancel
+              </Button>
+            </DialogClose>
+            Delete Button
+            {/* <Button type="button" className="flex-1" disabled={inputValue !== PROJECT_NAME}>
+              Delete
+            </Button> */}
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
