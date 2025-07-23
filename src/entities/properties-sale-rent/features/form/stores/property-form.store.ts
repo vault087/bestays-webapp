@@ -66,6 +66,10 @@ export function createPropertyFormStore(store_id: string, property: DBProperty):
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {
+            // Clear any persisted base64 images (legacy data)
+            if (state.property?.images) {
+              state.property.images = state.property.images.filter((img) => !img.url.startsWith("data:"));
+            }
             state.hydrated = true;
           }
         },

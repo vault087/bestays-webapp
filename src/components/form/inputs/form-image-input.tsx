@@ -37,26 +37,17 @@ export const FormImageInput = memo(function FormImageInput({
       const remainingSlots = maxImages - images.length;
       const filesToProcess = files.slice(0, remainingSlots);
 
-      const newImages: ImageItem[] = [];
-      let processed = 0;
+      const newImages: ImageItem[] = filesToProcess
+        .filter((file) => file.type.startsWith("image/"))
+        .map((file) => ({
+          url: URL.createObjectURL(file),
+          color: null,
+          description: null,
+        }));
 
-      filesToProcess.forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            newImages.push({
-              url: event.target?.result as string,
-              color: null,
-              description: null,
-            });
-            processed++;
-            if (processed === filesToProcess.length) {
-              onImagesChange([...images, ...newImages]);
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+      if (newImages.length > 0) {
+        onImagesChange([...images, ...newImages]);
+      }
 
       // Reset input
       if (fileInputRef.current) {

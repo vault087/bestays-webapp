@@ -64,6 +64,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
   const handleAddOption = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
+      setInputValue("");
       addOption?.onClick(inputValue);
       setOpen(false);
       setFocused(false);

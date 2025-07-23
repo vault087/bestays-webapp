@@ -17,7 +17,7 @@ export function FormFieldTitle({
   if (!text) return null;
   const textClassName = cn(
     "font-open-sans  text-foreground/80 ",
-    variant === "h1" ? "text-lg font-bold" : "font-semibold text-sm",
+    variant === "h1" ? "text-md font-bold" : "font-semibold text-sm",
     className,
   );
   return (

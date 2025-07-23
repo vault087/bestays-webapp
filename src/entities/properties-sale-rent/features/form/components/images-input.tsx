@@ -9,7 +9,6 @@ import {
   FormFieldLayoutToolbarButton,
 } from "@/components/form/layout/form-field-layout-toolbar";
 import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
-import { cn } from "@/modules/shadcn";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
 import { useDebugRender } from "@/utils/use-debug-render";
@@ -58,7 +57,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       description="Upload up to 30 images. The first image will be used as the main cover photo."
       error={error}
       inputId={inputId}
-      className={cn("space-y-4", className)}
+      className={className}
       config={{ focus_ring: true }}
     >
       <FormFieldLayoutToolbar>
@@ -91,26 +90,17 @@ function CompactImagesView({
       const remainingSlots = maxImages - images.length;
       const filesToProcess = files.slice(0, remainingSlots);
 
-      const newImages: ImageItem[] = [];
-      let processed = 0;
+      const newImages: ImageItem[] = filesToProcess
+        .filter((file) => file.type.startsWith("image/"))
+        .map((file) => ({
+          url: URL.createObjectURL(file),
+          color: null,
+          description: null,
+        }));
 
-      filesToProcess.forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            newImages.push({
-              url: event.target?.result as string,
-              color: null,
-              description: null,
-            });
-            processed++;
-            if (processed === filesToProcess.length) {
-              onImagesChange([...images, ...newImages]);
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+      if (newImages.length > 0) {
+        onImagesChange([...images, ...newImages]);
+      }
 
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
@@ -234,26 +224,17 @@ function ExpandedImagesView({
       const remainingSlots = maxImages - images.length;
       const filesToProcess = files.slice(0, remainingSlots);
 
-      const newImages: ImageItem[] = [];
-      let processed = 0;
+      const newImageItems: ImageItem[] = filesToProcess
+        .filter((file) => file.type.startsWith("image/"))
+        .map((file) => ({
+          url: URL.createObjectURL(file),
+          color: null,
+          description: null,
+        }));
 
-      filesToProcess.forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            newImages.push({
-              url: event.target?.result as string,
-              color: null,
-              description: null,
-            });
-            processed++;
-            if (processed === filesToProcess.length) {
-              onImagesChange([...images, ...newImages]);
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+      if (newImageItems.length > 0) {
+        onImagesChange([...images, ...newImageItems]);
+      }
 
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
@@ -346,7 +327,7 @@ function ExpandedImagesView({
             {otherImages.map((image, index) => (
               <div key={index + 1} className="group relative aspect-square rounded-md">
                 <div className="flex h-full w-full overflow-clip rounded-md">
-                  <div className="h-full w-full transition-transform duration-200 group-hover:scale-105">
+                  <div className="relative h-full w-full transition-transform duration-200 group-hover:scale-105">
                     <Image
                       src={image.url}
                       alt={`Image ${index + 2}`}

@@ -55,13 +55,13 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { className?: string }) {
   return (
-    <div className={cn("w-full bg-slate-900 px-5 pt-5", className)}>
+    <div className={cn("bg-background w-full px-5 pt-5", className)}>
       {/* Editing Area */}
       {/* <div className="w-full"> */}
       {/* Fields Container */}
-      <div className="rounded-card bg-background flex flex-row items-start justify-center gap-4 rounded-md p-4">
+      <div className="rounded-card flex flex-row items-start justify-center gap-4 rounded-md p-0">
         {/* Left Column */}
-        <div className="flex flex-1 flex-col space-y-8">
+        <div className="flex flex-1 flex-col space-y-4">
           <PropertyAreaInput />
           <PropertyPropertyTypeInput />
 
@@ -90,7 +90,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
         </div>
 
         {/* Right Column */}
-        <div className="flex flex-1 flex-col space-y-8">
+        <div className="flex flex-1 flex-col space-y-4">
           <PropertyImagesInput />
           <PropertyRoomsInputGroup />
         </div>
