@@ -82,8 +82,7 @@ export function MultiOptionFieldEditDialog({ field }: { field: DBPropertyMultiCo
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Delete project</Button>
-        {/* <FormFieldLayoutToolbarEditButton onClick={() => {}} /> */}
+        <FormFieldLayoutToolbarEditButton onClick={() => {}} />
       </DialogTrigger>
       <DialogContent>
         <div className="flex flex-col items-center gap-2">
