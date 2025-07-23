@@ -1,4 +1,4 @@
--- Generated: 2025-07-23T09:36:56.399Z
+-- Generated: 2025-07-23T10:25:28.085Z
 
 -- 1_dictionaries.sql
 DROP TABLE IF EXISTS properties_sale_rent;
@@ -56,9 +56,9 @@ CREATE TABLE properties_sale_rent (
     is_draft BOOLEAN DEFAULT TRUE,
 
     sale_enabled BOOLEAN,
-    sale_price NUMERIC(12,2),
+    sale_price BIGINT,
     rent_enabled BOOLEAN,
-    rent_price NUMERIC(12,2),
+    rent_price BIGINT,
 
     images JSONB,
     is_published BOOLEAN DEFAULT FALSE,

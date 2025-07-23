@@ -1,7 +1,8 @@
 "use client";
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
-import { useState, memo, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
+import { useState, memo, useRef, useMemo, useCallback } from "react";
 import { FormSingleOptionProps } from "@/components/form";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -11,7 +12,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/modules/shadcn/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/shadcn/components/ui/popover";
 import { cn } from "@/modules/shadcn/utils/cn";
@@ -53,6 +53,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
   addOption,
 }: FormOptionState) {
   const [open, setOpen] = useState<boolean>(false);
+  const t = useTranslations("Common");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState<string>(""); // ← Add state for input value
@@ -61,10 +62,15 @@ export const FormOptionSelect = memo(function FormOptionInput({
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       addOption?.onClick(inputValue);
+      setOpen(false); // ← Add this line to close the popup
     },
     [addOption, inputValue],
   );
 
+  const isExactMatching = useMemo(() => {
+    return options.some((option) => option.label.toLowerCase() === inputValue.toLowerCase().trim());
+  }, [options, inputValue]);
+  console.log("inputValue", inputValue, isExactMatching);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -87,16 +93,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
           <CommandList>
             <CommandEmpty>
               <div className="flex flex-col items-center justify-center gap-2">
-                {addOption && (
-                  <div className="flex flex-col items-center justify-center space-y-1">
-                    <Button variant="ghost" className="w-full justify-center font-normal" onClick={handleAddOption}>
-                      <div className="flex flex-row items-center space-x-1 px-2">
-                        <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
-                        <span className="text-sm">{inputValue}</span>
-                      </div>
-                    </Button>
-                  </div>
-                )}
+                <span className="text-muted-foreground text-sm">{t("not_found")}</span>
               </div>
             </CommandEmpty>
             <CommandGroup>
@@ -114,19 +111,24 @@ export const FormOptionSelect = memo(function FormOptionInput({
                 </CommandItem>
               ))}
             </CommandGroup>
-            {addOption && (
-              <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <Button variant="ghost" className="w-full justify-start font-normal" onClick={handleAddOption}>
-                    <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
-                    {addOption.label}
-                  </Button>
-                </CommandGroup>
-              </>
-            )}
           </CommandList>
         </Command>
+        {addOption && !isExactMatching && inputValue.length > 0 && (
+          <div className="flex flex-col items-center justify-center space-y-1 p-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="justify-start font-normal"
+              onClick={handleAddOption}
+              disabled={inputValue.length < 2}
+            >
+              <div className="flex items-center justify-center gap-2 px-2">
+                <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
+                {inputValue}
+              </div>
+            </Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );

@@ -14,9 +14,6 @@ export function PropertyHighlightsInput({ className, variant }: MultiOptionField
 export function PropertyLocationStrengthsInput({ className, variant }: MultiOptionFieldProps) {
   return <MultiOptionField variant={variant} field="location_strengths" className={className} />;
 }
-export function PropertyTransactionTypesInput({ className, variant }: MultiOptionFieldProps) {
-  return <MultiOptionField variant={variant} field="transaction_types" className={className} />;
-}
 export function PropertyLandFeaturesInput({ className, variant }: MultiOptionFieldProps) {
   return <MultiOptionField variant={variant} field="land_features" className={className} />;
 }
@@ -55,7 +52,7 @@ function MultiOptionField({
         toggleOption={toggleOption}
         selectOptions={selectOptions}
         variant={variant}
-        addOption={field === "transaction_types" ? undefined : addOption}
+        addOption={addOption}
       />
     </FormFieldLayout>
   );

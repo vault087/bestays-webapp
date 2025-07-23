@@ -15,7 +15,6 @@ import {
   PropertyPropertyTypeInput,
   PropertyHighlightsInput,
   PropertyLocationStrengthsInput,
-  PropertyTransactionTypesInput,
   PropertyLandFeaturesInput,
   PropertyNearbyAttractionsInput,
   PropertyLandAndConstructionInput,
@@ -23,7 +22,7 @@ import {
   PropertyRoomsInputGroup,
   usePropertyFormStore,
   createPropertyFormStore,
-  PropertyPriceInputGroup,
+  // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
@@ -63,7 +62,6 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
           <div className="flex flex-1 flex-col space-y-8">
             <PropertyImagesInput className="hidden" />
 
-            <PropertyTransactionTypesInput />
             <PropertyAreaInput />
             <PropertyPropertyTypeInput />
 

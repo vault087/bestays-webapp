@@ -1,5 +1,5 @@
 import { DBCode } from "@/entities/common/";
-import { DBPrice, DBProperty, DBRooms, DBSize } from "./property.types";
+import { DBProperty, DBRooms, DBSize } from "./property.types";
 
 export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
 export type DBPropertyTextField = keyof Pick<DBProperty, "agent_notes">;
@@ -11,16 +11,11 @@ export type DBPropertyCodeField = keyof Pick<
 
 export type DBPropertyMultiCodeField = keyof Pick<
   DBProperty,
-  | "location_strengths"
-  | "highlights"
-  | "transaction_types"
-  | "land_features"
-  | "nearby_attractions"
-  | "land_and_construction"
+  "location_strengths" | "highlights" | "land_features" | "nearby_attractions" | "land_and_construction"
 >;
 
 export type DBPropertySizeField = keyof DBSize;
-export type DBPropertyPriceField = keyof Pick<DBPrice, "rai" | "total" | "sale">;
+export type DBPropertyPriceField = keyof Pick<DBProperty, "rent_price" | "sale_price">;
 export type DBPropertyRoomsField = keyof DBRooms;
 
 export const PropertyFieldToDictionaryCodeMap: Record<
@@ -34,7 +29,6 @@ export const PropertyFieldToDictionaryCodeMap: Record<
   property_type: "property_types",
   location_strengths: "location_strengths",
   highlights: "highlights",
-  transaction_types: "transaction_types",
   land_features: "land_features",
   nearby_attractions: "nearby_attractions",
   land_and_construction: "land_and_construction",

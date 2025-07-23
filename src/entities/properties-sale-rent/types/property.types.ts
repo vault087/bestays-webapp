@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DBCurrencySchema, DBMoneySchema, DBSerialIDSchema } from "@/entities/common";
+import { DBMoneySchema, DBSerialIDSchema } from "@/entities/common";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
 // Table constants
@@ -20,14 +20,6 @@ export const DBRoomsSchema = z.object({
   living_rooms: z.number().int().positive().nullish(),
 });
 
-export const DBPriceSchema = z.object({
-  currency: DBCurrencySchema.nullish(),
-  rai: DBMoneySchema.nullish(),
-  total: DBMoneySchema.nullish(),
-  sale: DBMoneySchema.nullish(),
-});
-
-export type DBPrice = z.infer<typeof DBPriceSchema>;
 export type DBSize = z.infer<typeof DBSizeSchema>;
 export type DBSizeEntry = z.infer<typeof DBSizeEntrySchema>;
 export type DBRooms = z.infer<typeof DBRoomsSchema>;
@@ -47,14 +39,17 @@ export const DBPropertySchema = z.object({
 
   highlights: z.array(DBSerialIDSchema).nullish(),
   location_strengths: z.array(DBSerialIDSchema).nullish(),
-  transaction_types: z.array(DBSerialIDSchema).nullish(),
   land_features: z.array(DBSerialIDSchema).nullish(),
   nearby_attractions: z.array(DBSerialIDSchema).nullish(),
   land_and_construction: z.array(DBSerialIDSchema).nullish(),
 
+  rent_price: DBMoneySchema.nullish(),
+  sale_price: DBMoneySchema.nullish(),
+  sale_enabled: z.boolean().nullish(),
+  rent_enabled: z.boolean().nullish(),
+
   rooms: DBRoomsSchema.nullish(),
   size: DBSizeSchema.nullish(),
-  price: DBPriceSchema.nullish(),
   images: z.array(DBImageSchema).nullish(),
 
   agent_notes: z.string().max(PROPERTY_AGENT_NOTES_MAX).nullish(),

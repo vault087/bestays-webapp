@@ -51,13 +51,7 @@ export const enhancedMockDictionaries: MutableDictionary[] = [
     is_new: false,
   },
   // Transaction Types
-  {
-    id: 7,
-    code: "transaction_types",
-    name: { en: "Transaction Types", th: "ประเภทการทำธุรกรรม", ru: "Типы сделок" },
-    description: { en: "Types of transactions", th: "ประเภทของการทำธุรกรรม" },
-    is_new: false,
-  },
+
   // Land Features
   {
     id: 8,
