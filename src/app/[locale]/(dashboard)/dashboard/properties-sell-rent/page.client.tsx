@@ -49,7 +49,7 @@ export default function PropertiesPageClient({
         <PropertyFormStoreProvider store={propertyStore}>
           <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
             <div className="flex w-full flex-col gap-4">
-              <div className="flex flex-1 overflow-auto">
+              <div className="flex overflow-auto">
                 <PropertyListCanvas />
               </div>
             </div>
@@ -66,38 +66,34 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
       {/* Editing Area */}
       {/* <div className="w-full"> */}
       {/* Fields Container */}
-      <div className="rounded-card flex flex-row items-start justify-center gap-4 rounded-md p-0">
+      <div className="rounded-card flex flex-1 flex-col items-start justify-center gap-4 rounded-md p-0 sm:flex-row">
         {/* Left Column */}
-        <div className="flex flex-1 flex-col space-y-4 pb-8">
+        <div className="contents w-1/2 flex-col space-y-4 pb-8 sm:flex">
           <PropertyAreaInput />
           <PropertyPropertyTypeInput />
-
           {/* <div className="flex w-1/2 flex-col items-start gap-4">
               <PropertyPriceInputGroup direction="vertical" />
             </div> */}
-
-          <div className="grid grid-cols-1 gap-4">
+          <>
             <PropertyHighlightsInput />
             <PropertyLocationStrengthsInput />
             <PropertyNearbyAttractionsInput />
-          </div>
-
+          </>
           {/* <div className="flex w-full flex-col space-y-4">
               <PropertyAboutInput />
             </div> */}
           <PropertyRoomsInputGroup />
-
-          <div className="flex w-full flex-col items-center gap-4 pt-4">
+          <>
             <PropertySizeInput />
             <PropertyOwnershipTypeInput />
             <PropertyDivisibleSaleInput />
             <PropertyLandAndConstructionInput />
             <PropertyLandFeaturesInput />
-          </div>
+          </>
         </div>
 
         {/* Right Column */}
-        <div className="flex flex-1 flex-col space-y-4">
+        <div className="contents w-1/2 flex-col space-y-4 sm:flex">
           <PropertyImagesInput />
           {/* <PropertyAboutInput /> */}
           <PropertyAgentNotesInput />

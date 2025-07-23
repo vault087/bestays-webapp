@@ -1,5 +1,6 @@
 "use client";
 
+import { EllipsisVertical } from "lucide-react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
 import {
   FormFieldLayoutToolbar,
@@ -10,6 +11,7 @@ import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/st
 import { DBPropertyCodeField, DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { useDictionaryOptions } from "@/entities/properties-sale-rent/features/form/hooks/utils/use-dictionary-options";
+import { Button } from "@/modules/shadcn";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
 
 export type OptionFieldProps = {
@@ -48,7 +50,7 @@ export function PropertyOptionField({
       config={{ focus_ring: true, description: { position: "bottom" } }}
     >
       <FormFieldLayoutToolbar>
-        <OptionFieldEditDialog field={field} />
+        <FieldMenuButton field={field} />
       </FormFieldLayoutToolbar>
 
       <FormOptionInput
@@ -60,6 +62,44 @@ export function PropertyOptionField({
         addOption={addOption}
       />
     </FormFieldLayout>
+  );
+}
+
+export function FieldMenuButton({ field }: { field: DBPropertyCodeField | DBPropertyMultiCodeField }) {
+  const { dictionary, locale } = useDictionaryOptions({ field });
+  // Get mutable entries from dictionary store instead
+  const entries = useDictionaryFormStore((state) => (dictionary?.id ? state.entries[dictionary.id] : undefined));
+
+  if (!dictionary || !entries) {
+    return null;
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => {
+            console.log("!");
+          }}
+        >
+          <EllipsisVertical />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-md">
+        <DialogTitle className="sr-only">Manage {dictionary.name?.[locale] || dictionary.code} Options</DialogTitle>
+        <DictionaryEntryEditor
+          dictionary={dictionary}
+          entries={entries}
+          locale={locale}
+          onClose={() => {
+            // Dialog will close automatically when trigger loses focus
+            document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+          }}
+        />
+      </DialogContent>
+    </Dialog>
   );
 }
 
