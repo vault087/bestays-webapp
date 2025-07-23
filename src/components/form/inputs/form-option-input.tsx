@@ -83,7 +83,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
+          className="hover:bg-background border-input justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
         >
           <span className={cn("truncate", !selectedOption && "text-muted-foreground")}>
             {selectedOption ? selectedOption.label : "Select option"}

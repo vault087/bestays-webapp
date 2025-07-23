@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+import { Pencil, Expand } from "lucide-react";
 import { memo } from "react";
 import { Button } from "@/modules/shadcn/components/ui/button";
 
@@ -18,6 +18,20 @@ export function FormFieldLayoutToolbarEditButton({ className, onClick }: { class
   return (
     <FormFieldLayoutToolbarButton className={className} onClick={onClick}>
       <Pencil size={16} className="text-muted-foreground/80" />
+    </FormFieldLayoutToolbarButton>
+  );
+}
+
+export function FormFieldLayoutToolbarExpandButton({
+  className,
+  onClick,
+}: {
+  className?: string;
+  onClick: () => void;
+}) {
+  return (
+    <FormFieldLayoutToolbarButton className={className} onClick={onClick}>
+      <Expand size={16} className="text-muted-foreground/80" />
     </FormFieldLayoutToolbarButton>
   );
 }

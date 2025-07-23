@@ -55,47 +55,47 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { className?: string }) {
   return (
-    <div className={cn("flex w-full flex-row gap-4 bg-slate-900 px-4 pt-4", className)}>
+    <div className={cn("w-full bg-slate-900 px-5 pt-5", className)}>
       {/* Editing Area */}
-      <div className="flex w-full flex-col gap-2 rounded-md">
-        {/* Fields Container */}
-        <div className="rounded-card bg-background flex flex-row items-start justify-center gap-4 rounded-md p-4">
-          {/* Left Column */}
-          <div className="flex flex-1 flex-col space-y-8">
-            <PropertyAreaInput />
-            <PropertyPropertyTypeInput />
+      {/* <div className="w-full"> */}
+      {/* Fields Container */}
+      <div className="rounded-card bg-background flex flex-row items-start justify-center gap-4 rounded-md p-4">
+        {/* Left Column */}
+        <div className="flex flex-1 flex-col space-y-8">
+          <PropertyAreaInput />
+          <PropertyPropertyTypeInput />
 
-            {/* <div className="flex w-1/2 flex-col items-start gap-4">
+          {/* <div className="flex w-1/2 flex-col items-start gap-4">
               <PropertyPriceInputGroup direction="vertical" />
             </div> */}
 
-            <div className="grid grid-cols-1 gap-4">
-              <PropertyHighlightsInput />
-              <PropertyLocationStrengthsInput />
-              <PropertyNearbyAttractionsInput />
-            </div>
+          <div className="grid grid-cols-1 gap-4">
+            <PropertyHighlightsInput />
+            <PropertyLocationStrengthsInput />
+            <PropertyNearbyAttractionsInput />
+          </div>
 
-            {/* <div className="flex w-full flex-col space-y-4">
+          {/* <div className="flex w-full flex-col space-y-4">
               <PropertyAboutInput />
               <PropertyAgentNotesInput />
             </div> */}
 
-            <div className="flex w-full flex-col items-center gap-4 pt-4">
-              <PropertySizeInput />
-              <PropertyOwnershipTypeInput />
-              <PropertyDivisibleSaleInput />
-              <PropertyLandAndConstructionInput />
-              <PropertyLandFeaturesInput />
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div className="flex flex-1 flex-col space-y-8">
-            <PropertyImagesInput />
-            <PropertyRoomsInputGroup />
+          <div className="flex w-full flex-col items-center gap-4 pt-4">
+            <PropertySizeInput />
+            <PropertyOwnershipTypeInput />
+            <PropertyDivisibleSaleInput />
+            <PropertyLandAndConstructionInput />
+            <PropertyLandFeaturesInput />
           </div>
         </div>
+
+        {/* Right Column */}
+        <div className="flex flex-1 flex-col space-y-8">
+          <PropertyImagesInput />
+          <PropertyRoomsInputGroup />
+        </div>
       </div>
+      {/* </div> */}
       {/* <ReactiveDebugCard /> */}
     </div>
   );

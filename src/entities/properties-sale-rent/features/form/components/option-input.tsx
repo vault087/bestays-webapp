@@ -45,7 +45,7 @@ export function PropertyOptionField({
       description={description}
       error={error}
       className={className}
-      config={{ focus_ring: true }}
+      config={{ focus_ring: true, description: { position: "bottom" } }}
     >
       <FormFieldLayoutToolbar>
         <OptionFieldEditDialog field={field} />
