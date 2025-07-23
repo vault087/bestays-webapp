@@ -94,7 +94,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
       <PopoverContent className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0" align="start">
         <Command>
           <CommandInput
-            placeholder="Find option"
+            placeholder={t("option.find_or_enter")}
             ref={inputRef}
             onValueChange={setInputValue}
             onFocus={() => setFocused(true)}
@@ -128,11 +128,15 @@ export const FormOptionSelect = memo(function FormOptionInput({
           </CommandList>
         </Command>
         {addOption && !isExactMatching && inputValue.length > 0 && (
-          <div className="flex flex-col items-center justify-center space-y-1 p-2">
+          <div className="flex flex-col items-center justify-center space-y-1 pb-3">
             <Button
               variant="outline"
               size="sm"
               className="justify-start font-normal"
+              onMouseDown={(e) => {
+                // Prevent focus loss during state updates
+                e.preventDefault();
+              }}
               onClick={handleAddOption}
               disabled={inputValue.length < 2}
             >

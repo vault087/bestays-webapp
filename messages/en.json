@@ -3,7 +3,10 @@
     "form-field": {
       "globe-tooltip": "This field requires translation to other languages"
     },
-    "not_found": "Not found"
+    "not_found": "Not found",
+    "option": {
+      "find_or_enter": "Find or enter new option"
+    }
   },
   "Dashboard": {
     "NavBar": {
