@@ -41,6 +41,18 @@
       },
       "code": {
         "placeholder": "Enter code"
+      },
+      "editor": {
+        "title": "Manage Options",
+        "add_placeholder": "Enter new option name",
+        "add_button": "Add",
+        "delete_confirmation": {
+          "title": "Delete Option",
+          "description": "This option may be used somewhere else. To confirm deletion, please type \"delete\" below.",
+          "input_placeholder": "Type 'delete' to confirm",
+          "cancel": "Cancel",
+          "delete": "Delete"
+        }
       }
     }
   },
