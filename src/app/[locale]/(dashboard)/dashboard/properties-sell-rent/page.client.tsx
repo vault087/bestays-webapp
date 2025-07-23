@@ -60,7 +60,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
         <div className="flex flex-row gap-8 pt-4">
           {/* Fields Container */}
           <div className="flex flex-1 flex-col space-y-8">
-            <PropertyImagesInput className="hidden" />
+            <PropertyImagesInput />
 
             <PropertyAreaInput />
             <PropertyPropertyTypeInput />
