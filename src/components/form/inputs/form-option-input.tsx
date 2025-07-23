@@ -111,6 +111,10 @@ export const FormOptionSelect = memo(function FormOptionInput({
                 <CommandItem
                   key={option.key}
                   value={option.label}
+                  onMouseDown={(e) => {
+                    // Prevent focus loss during state updates
+                    e.preventDefault();
+                  }}
                   onSelect={() => {
                     selectOption(option);
                     setOpen(false);
