@@ -1,7 +1,10 @@
 "use client";
+import { EditIcon } from "lucide-react";
 import { FormFieldLayout } from "@/components/form";
 import { FormMultiOption, FormMultiOptionVariant } from "@/components/form/inputs/form-multi-option-input";
+import FormFieldLayoutToolbar from "@/components/form/layout/form-field-layout-toolbar";
 import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
+import { Button } from "@/modules/shadcn/components/ui/button";
 
 export type MultiOptionFieldProps = {
   className?: string;
@@ -44,6 +47,12 @@ function MultiOptionField({
       className={className}
       config={{ focus_ring: true }}
     >
+      <FormFieldLayoutToolbar>
+        <Button variant="ghost" size="icon">
+          <EditIcon size={16} className="text-muted-foreground/80" />
+        </Button>
+      </FormFieldLayoutToolbar>
+
       <FormMultiOption
         title={title}
         inputId={inputId}

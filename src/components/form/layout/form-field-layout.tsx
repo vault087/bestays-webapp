@@ -45,7 +45,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
     <FormFieldLayoutProvider focused={isFocused} setFocused={setIsFocused}>
       <div
         className={cn(
-          "flex w-full flex-col space-y-2",
+          "group relative flex w-full flex-col space-y-2",
           finalConfig.title?.variant === "h1" && "rounded-lg p-4 shadow-[0_0_14px_rgba(0,0,0,0.1)]",
 
           finalConfig.focus_ring &&
