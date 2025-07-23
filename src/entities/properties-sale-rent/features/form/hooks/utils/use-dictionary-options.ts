@@ -13,11 +13,12 @@ import {
 export type OptionFieldState = FormBaseOptionProps & {
   inputId: string;
   title: string | undefined;
-  subtitle: string | undefined;
+  description: string | undefined;
   error?: string | undefined;
   dictionary: DBDictionary | undefined;
   entries: Record<number, DBDictionaryEntry> | undefined;
   entryToDropDownOption: (entry: DBDictionaryEntry) => FormOption;
+  locale: string;
 };
 
 export const useDictionaryOptions = ({
@@ -50,7 +51,7 @@ export const useDictionaryOptions = ({
   );
 
   const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code;
-  const subtitle = getAvailableLocalizedText(dictionary?.description, locale);
+  const description = getAvailableLocalizedText(dictionary?.description, locale);
 
-  return { inputId, options, title, subtitle, dictionary, entries, entryToDropDownOption };
+  return { inputId, options, locale, description, dictionary, entries, entryToDropDownOption, title };
 };

@@ -36,13 +36,13 @@ function MultiOptionField({
   className?: string;
   variant?: FormMultiOptionVariant | undefined;
 }) {
-  const { inputId, selectedOptions, options, title, subtitle, selectOptions, toggleOption, addOption, error } =
+  const { inputId, selectedOptions, options, title, description, selectOptions, toggleOption, addOption, error } =
     useMultiOptionField({ field });
 
   return (
     <FormFieldLayout
       title={title}
-      description={subtitle}
+      description={description}
       error={error}
       className={className}
       config={{ focus_ring: true }}

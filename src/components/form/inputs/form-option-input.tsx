@@ -1,8 +1,7 @@
 "use client";
 
 import { CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useState, memo, useRef } from "react";
+import { useState, memo, useRef, useCallback } from "react";
 import { FormSingleOptionProps } from "@/components/form";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -55,11 +54,16 @@ export const FormOptionSelect = memo(function FormOptionInput({
 }: FormOptionState) {
   const [open, setOpen] = useState<boolean>(false);
 
-  const t = useTranslations("Common");
-  console.log("addOption", addOption);
-
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState<string>(""); // ← Add state for input value
+
+  const handleAddOption = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      addOption?.onClick(inputValue);
+    },
+    [addOption, inputValue],
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -84,9 +88,14 @@ export const FormOptionSelect = memo(function FormOptionInput({
             <CommandEmpty>
               <div className="flex flex-col items-center justify-center gap-2">
                 {addOption && (
-                  <Button variant="ghost" className="w-full justify-center font-normal" onClick={addOption.onClick}>
-                    {inputValue}
-                  </Button>
+                  <div className="flex flex-col items-center justify-center space-y-1">
+                    <Button variant="ghost" className="w-full justify-center font-normal" onClick={handleAddOption}>
+                      <div className="flex flex-row items-center space-x-1 px-2">
+                        <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
+                        <span className="text-sm">{inputValue}</span>
+                      </div>
+                    </Button>
+                  </div>
                 )}
               </div>
             </CommandEmpty>
@@ -109,7 +118,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <Button variant="ghost" className="w-full justify-start font-normal" onClick={addOption.onClick}>
+                  <Button variant="ghost" className="w-full justify-start font-normal" onClick={handleAddOption}>
                     <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
                     {addOption.label}
                   </Button>

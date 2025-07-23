@@ -14,13 +14,13 @@ import { useDictionaryOptions } from "./utils/use-dictionary-options";
 export type MultiOptionFieldState = FormMultiOptionProps & {
   inputId: string;
   title: string | undefined;
-  subtitle: string | undefined;
+  description: string | undefined;
   error?: string | undefined;
   selectedKeys: string[] | null;
 };
 
 export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField }): MultiOptionFieldState => {
-  const { inputId, options, title, subtitle, dictionary, entries, entryToDropDownOption } = useDictionaryOptions({
+  const { inputId, options, title, description, dictionary, entries, entryToDropDownOption } = useDictionaryOptions({
     field,
   });
   const { addEntry } = useDictionaryFormStoreActions();
@@ -98,7 +98,7 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
     selectedKeys,
     toggleOption,
     title,
-    subtitle,
+    description,
     addOption: { onClick: addOption },
   };
 };

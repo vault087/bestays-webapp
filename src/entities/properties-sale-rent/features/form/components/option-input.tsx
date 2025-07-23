@@ -27,14 +27,14 @@ export function PropertyOptionField({
   className,
   variant = "select",
 }: OptionFieldProps & { field: DBPropertyCodeField }) {
-  const { inputId, selectedOption, options, title, subtitle, selectOption, error, addOption } = useOptionField({
+  const { inputId, selectedOption, options, title, description, selectOption, error, addOption } = useOptionField({
     field,
   });
 
   return (
     <FormFieldLayout
       title={title}
-      description={subtitle}
+      description={description}
       error={error}
       className={className}
       config={{ focus_ring: true }}

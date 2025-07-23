@@ -1,7 +1,8 @@
 "use client";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { FormOption, FormSingleOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
+import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import {
   DBPropertyCodeField,
   usePropertyFormStoreActions,
@@ -12,12 +13,17 @@ import { useDictionaryOptions } from "./utils/use-dictionary-options";
 export type OptionFieldState = FormSingleOptionProps & {
   inputId: string;
   title: string | undefined;
-  subtitle: string | undefined;
+  description: string | undefined;
   error?: string | undefined;
 };
 
 export const useOptionField = ({ field }: { field: DBPropertyCodeField }): OptionFieldState => {
-  const { inputId, options, title, subtitle, entries, entryToDropDownOption } = useDictionaryOptions({ field });
+  const { inputId, options, title, description, locale, dictionary, entries, entryToDropDownOption } =
+    useDictionaryOptions({
+      field,
+    });
+
+  const { addEntry } = useDictionaryFormStoreActions();
 
   const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
@@ -28,14 +34,6 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
   const selectedEntry = currentValue ? entries?.[currentValue] : null;
   const selectedOption = selectedEntry ? entryToDropDownOption(selectedEntry) : null;
 
-  const addOption = useMemo(() => {
-    return {
-      label: "Add option",
-      onClick: () => {
-        console.log("add option");
-      },
-    };
-  }, []);
   // Set value
   const setValue = useCallback(
     (value: DBSerialID) => {
@@ -46,7 +44,31 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
     },
     [updateProperty, field],
   );
+
   const selectOption = useCallback((option: FormOption) => setValue(Number(option.key) as DBSerialID), [setValue]);
 
-  return { inputId, selectedOption, options, selectOption, title, subtitle, addOption };
+  const addOption = useCallback(
+    (value: string | undefined) => {
+      console.log("adding option", value, locale);
+      if (!value || !dictionary?.id) return;
+      const newEntry = addEntry(dictionary?.id, { [locale]: value });
+      if (newEntry) {
+        setCurrentValue(newEntry.id);
+        updateProperty((draft) => {
+          draft[field] = newEntry.id;
+        });
+      }
+    },
+    [dictionary?.id, addEntry, locale, updateProperty, field],
+  );
+
+  return {
+    inputId,
+    selectedOption,
+    options,
+    selectOption,
+    title,
+    description,
+    addOption: { onClick: addOption },
+  };
 };

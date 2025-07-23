@@ -47,7 +47,7 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
   className,
 }: {
   title: string;
-  subtitle?: string | undefined;
+  description?: string | undefined;
   field: DBPropertyPriceField;
   className?: string;
 }) {

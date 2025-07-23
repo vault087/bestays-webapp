@@ -47,12 +47,12 @@ export const PropertyRoomsLivingRoomsInput = function PropertyRoomsLivingRoomsIn
 
 export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
   title,
-  subtitle,
+  description,
   field,
   className,
 }: {
   title: string;
-  subtitle?: string | undefined;
+  description?: string | undefined;
   field: DBPropertyRoomsField;
   className?: string;
 }) {
@@ -77,7 +77,7 @@ export const PropertyRoomsFieldInput = memo(function PropertyRoomsFieldInput({
   return (
     <FormFieldLayout
       title={title}
-      description={subtitle}
+      description={description}
       error={error}
       inputId={inputId}
       className={cn("flex flex-row items-center justify-between", className)}
