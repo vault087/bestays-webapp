@@ -45,7 +45,7 @@ export default function PropertiesPageClient({
       <PropertyFormStoreProvider store={propertyStore}>
         <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
           <div className="flex w-full justify-center">
-            <PropertyListCanvas className="w-2/3" />
+            <PropertyListCanvas />
           </div>
         </PropertyFormStoreHydrated>
       </PropertyFormStoreProvider>
@@ -55,13 +55,13 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { className?: string }) {
   return (
-    <div className={cn("flex flex-row gap-4 p-4", className)}>
-      <div className="bg-background flex w-full flex-col rounded-md p-4">
-        <div className="flex flex-row gap-8 pt-4">
-          {/* Fields Container */}
+    <div className={cn("flex w-full flex-row gap-4 bg-slate-900 px-4 pt-4", className)}>
+      {/* Editing Area */}
+      <div className="flex w-full flex-col gap-2 rounded-md">
+        {/* Fields Container */}
+        <div className="rounded-card bg-background flex flex-row items-start justify-center gap-4 rounded-md p-4">
+          {/* Left Column */}
           <div className="flex flex-1 flex-col space-y-8">
-            <PropertyImagesInput />
-
             <PropertyAreaInput />
             <PropertyPropertyTypeInput />
 
@@ -75,8 +75,6 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
               <PropertyNearbyAttractionsInput />
             </div>
 
-            <PropertyRoomsInputGroup />
-
             {/* <div className="flex w-full flex-col space-y-4">
               <PropertyAboutInput />
               <PropertyAgentNotesInput />
@@ -89,6 +87,12 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
               <PropertyLandAndConstructionInput />
               <PropertyLandFeaturesInput />
             </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-1 flex-col space-y-8">
+            <PropertyImagesInput />
+            <PropertyRoomsInputGroup />
           </div>
         </div>
       </div>

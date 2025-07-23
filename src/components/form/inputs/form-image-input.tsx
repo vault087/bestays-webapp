@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon, XIcon } from "lucide-react";
+import Image from "next/image";
 import { memo, useCallback, useRef } from "react";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { cn } from "@/modules/shadcn/utils/cn";
@@ -90,10 +91,12 @@ export const FormImageInput = memo(function FormImageInput({
           <div className="relative min-h-[300px] flex-1">
             {mainImage && (
               <div className="relative h-full">
-                <img
+                <Image
                   src={mainImage.url}
                   alt={mainImage.description || `Image 1`}
-                  className="h-full w-full rounded-lg object-cover"
+                  fill
+                  className="rounded-lg object-cover"
+                  unoptimized
                 />
                 <Button
                   type="button"
@@ -114,10 +117,12 @@ export const FormImageInput = memo(function FormImageInput({
               <div className="grid max-h-[300px] grid-cols-1 gap-2 overflow-y-auto">
                 {thumbnailImages.map((image, index) => (
                   <div key={index + 1} className="relative aspect-square">
-                    <img
+                    <Image
                       src={image.url}
                       alt={image.description || `Image ${index + 2}`}
-                      className="h-full w-full rounded-md object-cover"
+                      fill
+                      className="rounded-md object-cover"
+                      unoptimized
                     />
                     <Button
                       type="button"
