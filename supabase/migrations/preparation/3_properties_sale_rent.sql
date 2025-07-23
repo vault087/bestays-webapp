@@ -7,15 +7,19 @@ CREATE TABLE properties_sale_rent (
     area INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
     location_strengths INT[],
     highlights INT[],
-    transaction_types INT[],
     size JSONB,
-    price JSONB,
+
     divisible_sale INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
     land_features INT[],
     rooms JSONB,
     nearby_attractions INT[],
     land_and_construction INT[],
     is_draft BOOLEAN DEFAULT TRUE,
+
+    sale_enabled BOOLEAN,
+    sale_price NUMERIC(12,2),
+    rent_enabled BOOLEAN,
+    rent_price NUMERIC(12,2),
 
     images JSONB,
     is_published BOOLEAN DEFAULT FALSE,
@@ -32,3 +36,14 @@ CREATE TABLE properties_sale_rent (
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
 
+ALTER TABLE properties_sale_rent DISABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_properties_sale_rent_sale_enabled ON properties_sale_rent (sale_enabled);
+CREATE INDEX idx_properties_sale_rent_rent_enabled ON properties_sale_rent (rent_enabled);
+CREATE INDEX idx_properties_sale_rent_is_draft ON properties_sale_rent (is_draft);
+CREATE INDEX idx_properties_sale_rent_is_published ON properties_sale_rent (is_published);
+CREATE INDEX idx_properties_sale_rent_is_featured ON properties_sale_rent (is_featured);
+CREATE INDEX idx_properties_sale_rent_weight ON properties_sale_rent (weight);
+CREATE INDEX idx_properties_sale_rent_created_at ON properties_sale_rent (created_at);
+CREATE INDEX idx_properties_sale_rent_updated_at ON properties_sale_rent (updated_at);
+CREATE INDEX idx_properties_sale_rent_deleted_at ON properties_sale_rent (deleted_at);
