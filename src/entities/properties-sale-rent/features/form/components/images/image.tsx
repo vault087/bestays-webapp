@@ -17,14 +17,23 @@ export const PropertyImage = memo(function PropertyImage({
   image: DBImage;
   onRemove: () => void;
   isCover: boolean;
-  size?: "sm" | "lg";
+  size?: "sm" | "md" | "lg";
   setCover?: () => void;
 }) {
   const t = useTranslations("Common");
 
   return (
-    <div className="group/image flex-shrink-0">
-      <div className="relative h-20 w-20 overflow-hidden rounded-md">
+    // <div className="group/image relative aspect-[4/3] overflow-hidden rounded-lg">
+    //   <div className="flex h-full w-full overflow-clip rounded-md">
+
+    <div className={cn("group/image flex-shrink-0", size === "lg" && "aspect-[4/3]", size === "md" && "aspect-square")}>
+      <div
+        className={cn(
+          "relative h-20 w-20 overflow-hidden rounded-md",
+          size === "lg" && "h-full w-full",
+          size === "md" && "h-30 w-30",
+        )}
+      >
         <div className="flex h-full w-full transition-transform duration-200 group-hover/image:scale-105">
           <Image src={image.url} alt="Cover photo" fill className="object-cover" unoptimized />
         </div>
@@ -43,7 +52,14 @@ export const PropertyImage = memo(function PropertyImage({
                 className="bg-foreground text-background group-hover/image:bg-foreground absolute top-1.5 left-1.5 h-4 w-4 rounded-full p-0 opacity-20 duration-100 group-hover/image:opacity-100"
                 onClick={() => setCover?.()}
               >
-                <ImagesIcon className={cn("", size === "lg" && "!h-4 !w-4", size == "sm" && "!h-3 !w-3")} />
+                <ImagesIcon
+                  className={cn(
+                    "",
+                    size === "lg" && "!h-4 !w-4",
+                    size === "md" && "!h-3 !w-3",
+                    size == "sm" && "!h-3 !w-3",
+                  )}
+                />
               </Button>
             </QuickTooltip>
           </div>

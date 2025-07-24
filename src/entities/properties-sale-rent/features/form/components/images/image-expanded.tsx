@@ -109,32 +109,16 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
         <div className="space-y-2">
           <div className="grid max-h-[400px] grid-cols-3 gap-2 overflow-y-auto">
             {/* Add Images */}
-            <div>
-              {images.length < maxImages ? (
-                <div className="flex items-center justify-center">
-                  <Button
-                    type="button"
-                    variant="text"
-                    className="flex h-auto items-center justify-center"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <div className="flex flex-col items-center justify-center space-y-2 border-dashed">
-                      {/* <div className="h-12 w-12 bg-amber-500"> */}
-                      <ImagePlus className="text-muted-foreground !h-12 !w-12" />
-                      {/* </div> */}
-                      <span className="text-lg">Upload Images</span>
-                      <span className="text-muted-foreground text-xs">{maxImages - images.length} remaining</span>
-                    </div>
-                  </Button>
-                </div>
-              ) : (
-                <div className="border-muted-foreground/25 flex aspect-[4/3] items-center justify-center rounded-lg border">
-                  <div className="text-center">
-                    <div className="text-muted-foreground text-sm">Maximum images reached</div>
-                  </div>
-                </div>
-              )}
-            </div>
+            {images.length < maxImages && (
+              <Button
+                type="button"
+                variant="outline"
+                className="h-30 w-30 flex-shrink-0 border-dashed"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <ImagePlus className="!h-6 !w-6" />
+              </Button>
+            )}
 
             {otherImages.map((image, index) => (
               <PropertyImage
@@ -143,6 +127,7 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
                 onRemove={() => handleRemoveImage(index + 1)}
                 isCover={false}
                 setCover={() => setCover(index + 1)}
+                size="md"
               />
             ))}
           </div>
