@@ -1,31 +1,26 @@
 "use client";
-import { useCallback, useId } from "react";
+import { useCallback, useId, useState } from "react";
 import {
   DBPropertyBoolField,
   usePropertyFormStaticStore,
   usePropertyFormStoreActions,
 } from "@/entities/properties-sale-rent";
-import { useCharacterLimit } from "@/modules/shadcn/hooks/use-character-limit";
 
 // Input hook for MutableProperty localized fields
-export function usePropertyBoolInput(
-  field: DBPropertyBoolField,
-  maxLength: number,
-): {
+export function usePropertyBoolInput(field: DBPropertyBoolField): {
   inputId: string;
-  value: string;
-  characterCount: number;
-  onChange: (value: string) => void;
+  value: boolean;
+  onChange: (value: boolean) => void;
   error?: string;
 } {
   const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
-  const initialValue = property[field] as string | null | undefined;
-  const { value, setValue, characterCount } = useCharacterLimit({ maxLength, initialValue: initialValue || "" });
+  const initialValue = property[field] as boolean | null | undefined;
+  const [value, setValue] = useState<boolean>(initialValue || false);
   const inputId = useId();
 
   const onChange = useCallback(
-    (value: string) => {
+    (value: boolean) => {
       setValue(value);
       updateProperty((draft) => {
         draft[field] = Boolean(value);
@@ -39,7 +34,6 @@ export function usePropertyBoolInput(
   return {
     inputId,
     value,
-    characterCount,
     onChange,
     error,
   };

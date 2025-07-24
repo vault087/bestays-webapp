@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { FormTextArea } from "@/components/form/inputs/form-text-area";
