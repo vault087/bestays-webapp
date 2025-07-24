@@ -25,15 +25,13 @@ import {
   PropertyRoomsInputGroup,
   usePropertyFormStore,
   createPropertyFormStore,
+  PropertyAboutInput,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
-import { PropertyAboutInput } from "@/entities/properties-sale-rent/features/form/components/localized-text-input";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { cn, Button } from "@/modules/shadcn";
 import Comp439 from "@/modules/shadcn/components/comp-439";
-import Comp520 from "@/modules/shadcn/components/comp-520";
-import Comp521 from "@/modules/shadcn/components/comp-521";
 
 export default function PropertiesPageClient({
   properties,
@@ -117,7 +115,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
         {/* Right Column */}
         <div className="contents w-1/2 flex-col space-y-4 sm:flex">
           <PropertyImagesInput />
-          {/* <PropertyAboutInput /> */}
+          <PropertyAboutInput />
           <PropertyAgentNotesInput />
         </div>
       </div>

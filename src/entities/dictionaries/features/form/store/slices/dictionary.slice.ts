@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { StateCreator } from "zustand";
-import { DBCode, DBSerialID, DBTemporarySerialID } from "@/entities/common";
+import { DBCode, DBSerialID, DBTemporarySerialID, generateTemporarySerialId } from "@/entities/common";
 import { DBDictionary, DBDictionaryEntry, MutableDictionary } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
 import { EntryStoreSliceActions, EntryStoreSliceState, createEntryStoreSlice } from "./entry.slice";
@@ -42,7 +42,7 @@ export const createDictionaryStoreSlice = (
     dictionaryIds: dictionaryIds,
     dictionaryByCode: convertedDictionariesByCode,
     deletedDictionaryIds: [],
-    temporaryDictionaryId: -1,
+    temporaryDictionaryId: generateTemporarySerialId(),
 
     ...createEntryStoreSlice(initialEntries)(set, get, api),
     addDictionary: (name: LocalizedText) =>

@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { StateCreator } from "zustand";
-import { DBSerialID, DBTemporarySerialID } from "@/entities/common/";
+import { DBSerialID, DBTemporarySerialID, generateTemporarySerialId } from "@/entities/common/";
 import { DBDictionaryEntry, MutableEntry } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
 
@@ -45,7 +45,7 @@ export const createEntryStoreSlice = (
     entries: convertedEntries,
     entriesIds: entriesIds,
     deletedEntryIds: [],
-    temporaryEntryId: -1,
+    temporaryEntryId: generateTemporarySerialId(),
 
     addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => {
       const newEntry = {
@@ -55,7 +55,6 @@ export const createEntryStoreSlice = (
         name,
         is_new: true,
       };
-
       set(
         produce((draft: EntryStoreSlice) => {
           newEntry.id = draft.temporaryEntryId;

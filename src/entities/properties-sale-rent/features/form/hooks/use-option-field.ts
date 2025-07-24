@@ -51,7 +51,6 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
 
   const addOption = useCallback(
     (value: string | undefined) => {
-      console.log("adding option", value, locale);
       if (!value || !dictionary?.id) return;
       const newEntry = addEntry(dictionary?.id, { [locale]: value });
       if (newEntry) {
