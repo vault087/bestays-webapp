@@ -13,19 +13,18 @@ export const PropertyImage = memo(function PropertyImage({
   isCover,
   setCover,
   size = "sm",
+  isReadOnly = false,
 }: {
   image: DBImage;
-  onRemove: () => void;
+  onRemove?: () => void;
   isCover: boolean;
   size?: "sm" | "md" | "lg";
   setCover?: () => void;
+  isReadOnly?: boolean;
 }) {
   const t = useTranslations("Common");
 
   return (
-    // <div className="group/image relative aspect-[4/3] overflow-hidden rounded-lg">
-    //   <div className="flex h-full w-full overflow-clip rounded-md">
-
     <div
       className={cn(
         "group/image flex-shrink-0 select-none",
@@ -48,7 +47,7 @@ export const PropertyImage = memo(function PropertyImage({
             {t("image.cover")}
           </div>
         )}
-        {!isCover && (
+        {!isCover && !isReadOnly && setCover && (
           <div>
             <QuickTooltip content={t("image.setCover")}>
               <Button
@@ -56,7 +55,7 @@ export const PropertyImage = memo(function PropertyImage({
                 variant="default"
                 size="xs"
                 className="bg-foreground text-background group-hover/image:bg-foreground absolute top-1.5 left-1.5 h-4 w-4 rounded-full p-0 opacity-20 duration-100 group-hover/image:opacity-100"
-                onClick={() => setCover?.()}
+                onClick={() => setCover()}
               >
                 <ImagesIcon
                   className={cn(
@@ -70,15 +69,17 @@ export const PropertyImage = memo(function PropertyImage({
             </QuickTooltip>
           </div>
         )}
-        <Button
-          type="button"
-          variant="destructive"
-          size="xs"
-          className="bg-foreground text-background absolute top-1.5 right-1.5 h-4 w-4 rounded-full p-0 opacity-20 duration-100 group-hover/image:opacity-100"
-          onClick={() => onRemove()}
-        >
-          <X className="!h-3 !w-3" />
-        </Button>
+        {!isReadOnly && onRemove && (
+          <Button
+            type="button"
+            variant="destructive"
+            size="xs"
+            className="bg-foreground text-background absolute top-1.5 right-1.5 h-4 w-4 rounded-full p-0 opacity-20 duration-100 group-hover/image:opacity-100"
+            onClick={() => onRemove()}
+          >
+            <X className="!h-3 !w-3" />
+          </Button>
+        )}
       </div>
     </div>
   );

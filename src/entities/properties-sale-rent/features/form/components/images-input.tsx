@@ -1,62 +1,113 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { memo, useCallback, useMemo } from "react";
-import { FormFieldLayout, ImageItem } from "@/components/form";
+import { memo, useCallback, useState } from "react";
+import { FormFieldLayout } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
+import { generateTemporarySerialId } from "@/entities/common";
+import { DBImage, MutableImage } from "@/entities/media/types/image.type";
 import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
 import { PROPERTY_MAX_IMAGES } from "@/entities/properties-sale-rent/types/property.types";
 import { ImageFieldExpandDialog, CompactImagesView } from "./images";
 
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
-  const { images, onImagesChange, onAddFile, error } = usePropertyImagesInput();
+  const { images: dbImages, onImagesChange, error } = usePropertyImagesInput();
   const maxImages = PROPERTY_MAX_IMAGES;
+  const [isExpandedOpen, setIsExpandedOpen] = useState(false);
+  const [mutableImages, setMutableImages] = useState<MutableImage[]>([]);
+  const [shouldAutoSelectFile, setShouldAutoSelectFile] = useState(false);
 
-  // Convert DBImage to ImageItem format for the form component
-  const formImages: ImageItem[] = useMemo(
-    () =>
-      images.map((img) => ({
-        url: img.url,
-        color: img.color,
-        alt: img.alt,
-      })),
-    [images],
+  // Initialize mutable images when opening expanded view
+  const handleOpenExpanded = useCallback(() => {
+    const initialMutableImages: MutableImage[] = dbImages.map((dbImage) => ({
+      ...dbImage,
+      id: generateTemporarySerialId(), // Generate temporary ID for state management
+      is_new: false, // Existing DB images
+    }));
+    setMutableImages(initialMutableImages);
+    setIsExpandedOpen(true);
+    setShouldAutoSelectFile(true); // Auto-trigger file selection
+  }, [dbImages]);
+
+  // Handle adding new files in expanded view
+  const handleAddFile = useCallback((file: File) => {
+    const previewUrl = URL.createObjectURL(file);
+    const newMutableImage: MutableImage = {
+      id: generateTemporarySerialId(),
+      url: previewUrl,
+      previewUrl,
+      file,
+      is_new: true,
+      uploadedAt: new Date(),
+      name: file.name,
+      size: file.size,
+      color: null,
+      alt: null,
+    };
+    setMutableImages((prev) => [...prev, newMutableImage]);
+  }, []);
+
+  // Handle changes to mutable images in expanded view
+  const handleMutableImagesChange = useCallback((newMutableImages: MutableImage[]) => {
+    setMutableImages(newMutableImages);
+  }, []);
+
+  // Reset auto file selection flag
+  const handleAutoSelectFileUsed = useCallback(() => {
+    setShouldAutoSelectFile(false);
+  }, []);
+
+  // Handle saving mutable images back to DB
+  const handleSaveImages = useCallback(async () => {
+    // For now, we'll convert mutable images back to DB format
+    // In a real implementation, you'd upload the files first
+    const dbImagesFromMutable: DBImage[] = mutableImages.map((img) => ({
+      url: img.url,
+      color: img.color,
+      alt: img.alt,
+    }));
+
+    // Clean up object URLs
+    mutableImages.forEach((img) => {
+      if (img.previewUrl && img.is_new) {
+        URL.revokeObjectURL(img.previewUrl);
+      }
+    });
+
+    // Update the DB images
+    onImagesChange(dbImagesFromMutable);
+
+    // Close expanded view
+    setIsExpandedOpen(false);
+  }, [mutableImages, onImagesChange]);
+
+  // Handle setting cover image in both views
+  const setCoverInCompact = useCallback(
+    (index: number) => {
+      if (dbImages.length > 1) {
+        const newImages = [...dbImages];
+        const [cover] = newImages.splice(index, 1);
+        newImages.unshift(cover);
+        onImagesChange(newImages);
+      }
+    },
+    [dbImages, onImagesChange],
   );
 
-  // Handle change from form component back to DBImage format
-  const handleImagesChange = (newImages: ImageItem[]) => {
-    const dbImages = newImages.map((img) => ({
-      url: img.url,
-      color: img.color || null,
-      alt: img.alt || null,
-    }));
-    onImagesChange(dbImages);
-  };
-
-  // Mock data - add 3 background images if no images exist
-  const displayImages = useMemo(() => {
-    if (formImages.length === 0) {
-      return [];
-      //   { url: "/bg/bg1.jpg", color: null, alt: "Beach villa background" },
-      //   { url: "/bg/bg2.jpg", color: null, alt: "Tropical view background" },
-      //   { url: "/bg/bg3.jpg", color: null, alt: "Coastal area background" },
-      // ];
-    }
-    return formImages;
-  }, [formImages]);
-
-  const setCover = useCallback(
+  const setCoverInExpanded = useCallback(
     (index: number) => {
-      const currentCover = images[0];
-      const newImages = [...images];
-      newImages[0] = newImages[index];
-      newImages[index] = currentCover;
-      onImagesChange(newImages);
+      if (mutableImages.length > 1) {
+        const newImages = [...mutableImages];
+        const [cover] = newImages.splice(index, 1);
+        newImages.unshift(cover);
+        setMutableImages(newImages);
+      }
     },
-    [images, onImagesChange],
+    [mutableImages],
   );
 
   const t = useTranslations("PropertiesSaleRent.fields.images");
+
   return (
     <FormFieldLayout
       title={t("title")}
@@ -67,21 +118,25 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
     >
       <FormFieldLayoutToolbar>
         <ImageFieldExpandDialog
-          images={displayImages}
-          onImagesChange={handleImagesChange}
-          onAddFile={onAddFile}
+          mutableImages={mutableImages}
+          onMutableImagesChange={handleMutableImagesChange}
+          onAddFile={handleAddFile}
+          onSave={handleSaveImages}
           maxImages={maxImages}
-          setCover={setCover}
+          setCover={setCoverInExpanded}
+          isOpen={isExpandedOpen}
+          onOpenChange={setIsExpandedOpen}
+          shouldAutoSelectFile={shouldAutoSelectFile}
+          onAutoSelectFileUsed={handleAutoSelectFileUsed}
         />
       </FormFieldLayoutToolbar>
 
-      {/* Compact View */}
+      {/* Compact View - Read-only DB Images */}
       <CompactImagesView
-        images={displayImages}
-        onImagesChange={handleImagesChange}
-        onAddFile={onAddFile}
+        dbImages={dbImages}
+        onOpenExpanded={handleOpenExpanded}
+        setCover={setCoverInCompact}
         maxImages={maxImages}
-        setCover={setCover}
       />
     </FormFieldLayout>
   );
