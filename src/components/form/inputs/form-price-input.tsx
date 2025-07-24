@@ -14,6 +14,7 @@ export const FormPriceInput = memo(function FormPriceInput({
   arialInvalid = false,
   className,
   currency,
+  disabled = false,
 }: {
   inputId: string;
   locale: string;
@@ -22,6 +23,7 @@ export const FormPriceInput = memo(function FormPriceInput({
   arialInvalid?: boolean;
   className?: string;
   currency: DBCurrency;
+  disabled?: boolean;
 }) {
   const [focused, setFocused] = useState(false);
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
@@ -67,7 +69,9 @@ export const FormPriceInput = memo(function FormPriceInput({
   );
 
   return (
-    <div className={cn("relative flex", "text-muted-foreground", className)}>
+    <div
+      className={cn("relative flex", "text-muted-foreground", disabled && "pointer-events-none opacity-50", className)}
+    >
       <div className="flex flex-col">
         {/* Outside Border Area */}
         <div className="flex">
@@ -75,7 +79,7 @@ export const FormPriceInput = memo(function FormPriceInput({
           <div
             className={cn(
               "flex w-full flex-row rounded-md rounded-e-none border-1 border-e-0 shadow-xs",
-              focused && "border-primary",
+              focused && !disabled && "border-primary",
             )}
           >
             <span className="pointer-events-none flex items-center justify-center ps-3 text-sm select-none">
@@ -84,6 +88,7 @@ export const FormPriceInput = memo(function FormPriceInput({
             <Input
               id={inputId}
               ref={inputRef}
+              disabled={disabled}
               className={cn(
                 "-me-px rounded-none border-none ps-6 pe-4 text-right shadow-none",
                 "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
@@ -101,7 +106,10 @@ export const FormPriceInput = memo(function FormPriceInput({
             />
           </div>
           <div
-            className={cn("flex items-center rounded-s-none rounded-e-md border-1 px-2", focused && "border-primary")}
+            className={cn(
+              "flex items-center rounded-s-none rounded-e-md border-1 px-2",
+              focused && !disabled && "border-primary",
+            )}
           >
             <span className="pointer-events-none flex items-center justify-center text-sm uppercase select-none">
               {currency}

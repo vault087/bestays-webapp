@@ -66,7 +66,14 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
           />
         </div>
       </FormFieldLayoutToolbar>
-      <FormPriceInput inputId={inputId} locale={locale} value={price} onChange={onPriceChange} currency={currency} />
+      <FormPriceInput
+        inputId={inputId}
+        locale={locale}
+        value={price}
+        onChange={onPriceChange}
+        currency={currency}
+        disabled={!toggleValue}
+      />
     </FormFieldLayout>
   );
 });

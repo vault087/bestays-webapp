@@ -76,10 +76,10 @@
         "placeholder": "Enter notes for agent"
       },
       "rent": {
-        "title": "Rental Price"
+        "title": "For Rent"
       },
       "sale": {
-        "title": "Sale Price"
+        "title": "For Sale"
       },
       "price": {
         "title": "Price",
