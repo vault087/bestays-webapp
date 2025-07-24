@@ -9,6 +9,7 @@ import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
 import { useDebugRender } from "@/utils/use-debug-render";
+import { PropertyImage, PropertyBigImage } from "./images/image";
 
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
   const { images, onImagesChange, error } = usePropertyImagesInput();
@@ -21,7 +22,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       images.map((img) => ({
         url: img.url,
         color: img.color,
-        description: img.description,
+        alt: img.alt,
       })),
     [images],
   );
@@ -31,7 +32,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
     const dbImages = newImages.map((img) => ({
       url: img.url,
       color: img.color || null,
-      description: img.description || null,
+      alt: img.alt || null,
     }));
     onImagesChange(dbImages);
   };
@@ -40,9 +41,9 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
   const displayImages = useMemo(() => {
     if (formImages.length === 0) {
       return [
-        { url: "/bg/bg1.jpg", color: null, description: "Beach villa background" },
-        { url: "/bg/bg2.jpg", color: null, description: "Tropical view background" },
-        { url: "/bg/bg3.jpg", color: null, description: "Coastal area background" },
+        { url: "/bg/bg1.jpg", color: null, alt: "Beach villa background" },
+        { url: "/bg/bg2.jpg", color: null, alt: "Tropical view background" },
+        { url: "/bg/bg3.jpg", color: null, alt: "Coastal area background" },
       ];
     }
     return formImages;
@@ -116,39 +117,12 @@ function CompactImagesView({
   return (
     <div className="flex items-center gap-3 overflow-x-auto pb-2">
       {/* Cover Image - Sticky */}
-      {coverImage && (
-        <div className="relative flex-shrink-0">
-          <div className="relative h-20 w-20 overflow-hidden rounded-md">
-            <Image src={coverImage.url} alt="Cover photo" fill className="object-cover" unoptimized />
-            <div className="absolute top-1 right-1 rounded bg-green-600 px-1 text-xs text-white">Cover</div>
-            <Button
-              type="button"
-              variant="destructive"
-              size="xs"
-              className="absolute top-1 left-1 h-5 w-5 p-0"
-              onClick={() => handleRemoveImage(0)}
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          </div>
-        </div>
-      )}
+      {coverImage && <PropertyImage image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />}
 
       {/* Thumbnail Images */}
       {thumbnails.map((image, index) => (
         <div key={index + 1} className="relative flex-shrink-0">
-          <div className="relative h-20 w-20 overflow-hidden rounded-md">
-            <Image src={image.url} alt={`Image ${index + 2}`} fill className="object-cover" unoptimized />
-            <Button
-              type="button"
-              variant="destructive"
-              size="xs"
-              className="absolute top-1 right-1 h-5 w-5 p-0"
-              onClick={() => handleRemoveImage(index + 1)}
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          </div>
+          {coverImage && <PropertyImage image={image} onRemove={() => handleRemoveImage(index + 1)} isCover={false} />}
         </div>
       ))}
 
@@ -261,25 +235,7 @@ function ExpandedImagesView({
         {/* Column 1: Cover Image */}
         <div className="flex flex-col space-y-2">
           {coverImage ? (
-            <div className="group relative aspect-[4/3] overflow-hidden rounded-lg">
-              <div className="flex h-full w-full overflow-clip rounded-md">
-                <div className="h-full w-full transition-transform duration-200 group-hover:scale-105">
-                  <Image src={coverImage.url} alt="Cover photo" fill className="object-cover" unoptimized />
-                </div>
-              </div>
-              <div className="bg-primary text-primary-foreground absolute top-2.5 left-2.5 rounded px-2 py-1 text-xs transition-transform duration-200 select-none group-hover:scale-110">
-                Cover
-              </div>
-              <Button
-                type="button"
-                variant="destructive"
-                size="xs"
-                className="bg-foreground text-background absolute top-2 right-2 h-5 w-5 rounded-full p-0 opacity-20 group-hover:scale-115 group-hover:opacity-100"
-                onClick={() => handleRemoveImage(0)}
-              >
-                <X className="!h-4 !w-4" />
-              </Button>
-            </div>
+            <PropertyBigImage image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />
           ) : (
             <div className="border-muted-foreground/25 flex aspect-[4/3] items-center justify-center rounded-lg border-2 border-dashed">
               <div className="text-center">

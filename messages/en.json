@@ -12,7 +12,11 @@
         "preview_value": "Add \"{value}\""
       }
     },
-    "edit": "Edit"
+    "edit": "Edit",
+    "image": {
+      "cover": "Cover",
+      "setCover": "Set as cover"
+    }
   },
   "Dashboard": {
     "NavBar": {
@@ -71,9 +75,9 @@
         "placeholder": "Enter about the property"
       },
       "agent_notes": {
-        "title": "Notes for agent",
-        "description": "Please enter any additional notes for agent about the property",
-        "placeholder": "Enter notes for agent"
+        "title": "Personal Notes*",
+        "description": "Personal notes won't be published anywhere",
+        "placeholder": "Start typing"
       },
       "rent": {
         "title": "For Rent"

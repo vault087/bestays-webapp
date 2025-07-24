@@ -5,6 +5,7 @@ import { memo } from "react";
 import { FormTextArea } from "@/components/form/inputs/form-text-area";
 import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import { DBPropertyTextField, usePropertyTextInput, PROPERTY_AGENT_NOTES_MAX } from "@/entities/properties-sale-rent/";
+import { cn } from "@/modules/shadcn/utils/cn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 // Text Uncontrolled Input
@@ -50,7 +51,7 @@ export const PropertyTextInput = memo(function PropertyTextInput({
       description={description}
       error={error}
       inputId={inputId}
-      className={className}
+      className={cn(className, "ring-foreground/20 ring-1")}
       config={{ focus_ring: true }}
     >
       <FormTextArea
