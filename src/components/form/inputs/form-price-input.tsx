@@ -1,11 +1,10 @@
 "use client";
 
-import React, { memo, useCallback, useMemo, useRef } from "react";
-import { FormOption } from "@/components/form";
+import React, { memo, useCallback, useMemo, useRef, useState } from "react";
+import { FormFieldPreview } from "@/components/form/layout";
 import { DBCurrency, formatMoneyDisplay, getCurrencySymbol } from "@/entities/common";
 import { Input } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
-import { FormDropDown } from "./form-dropdown";
 
 export const FormPriceInput = memo(function FormPriceInput({
   inputId,
@@ -15,8 +14,6 @@ export const FormPriceInput = memo(function FormPriceInput({
   arialInvalid = false,
   className,
   currency,
-  currencies,
-  onCurrencyChange,
 }: {
   inputId: string;
   locale: string;
@@ -25,9 +22,8 @@ export const FormPriceInput = memo(function FormPriceInput({
   arialInvalid?: boolean;
   className?: string;
   currency: DBCurrency;
-  currencies: DBCurrency[];
-  onCurrencyChange: (currency: DBCurrency) => void;
 }) {
+  const [focused, setFocused] = useState(false);
   const currencySymbol = useMemo(() => getCurrencySymbol(currency), [currency]);
 
   const handleChange = useCallback(
@@ -37,24 +33,6 @@ export const FormPriceInput = memo(function FormPriceInput({
       onChange(rawValue);
     },
     [onChange],
-  );
-
-  const currencyToDropDownOption = useCallback(
-    (currency: DBCurrency): FormOption => ({
-      key: currency,
-      label: currency,
-    }),
-    [],
-  );
-
-  const dropdownValue = useMemo(() => currencyToDropDownOption(currency), [currency, currencyToDropDownOption]);
-  const dropdownValues = useMemo(
-    () => currencies.map(currencyToDropDownOption),
-    [currencies, currencyToDropDownOption],
-  );
-  const dropdownOnChanged = useCallback(
-    (option: FormOption) => onCurrencyChange(option.key as DBCurrency),
-    [onCurrencyChange],
   );
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -70,58 +48,68 @@ export const FormPriceInput = memo(function FormPriceInput({
   // on focus we set value as a raw value
 
   const handleFocus = useCallback(() => {
+    setFocused(true);
     if (inputRef.current) {
       inputRef.current.value = value;
     }
   }, [value]);
 
   const handleBlur = useCallback(() => {
+    setFocused(false);
     if (inputRef.current) {
       inputRef.current.value = formatDisplayValue(value);
     }
   }, [formatDisplayValue, value]);
 
+  const pricePreview = useMemo(
+    () => formatMoneyDisplay(value, locale, currency, "narrowSymbol"),
+    [value, locale, currency],
+  );
+
   return (
-    <div className={cn("relative flex", "text-muted-foreground focus-within:text-primary", className)}>
-      <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
-        <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm select-none">
-          {currencySymbol}
-        </span>
-        <Input
-          id={inputId}
-          ref={inputRef}
-          className={cn(
-            "-me-px rounded-none border-none ps-6 pe-4 text-right shadow-none",
-            "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
-            "focus-visible:text-primary",
-          )}
-          name="price"
-          defaultValue={value}
-          placeholder={formatDisplayValue("0")}
-          type="text"
-          aria-invalid={arialInvalid}
-          aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
-          // value={value}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-      </div>
-      {dropdownValues.length > 1 && (
-        <FormDropDown
-          selectedOption={dropdownValue}
-          options={dropdownValues}
-          selectOption={dropdownOnChanged}
-          className="rounded-s-none rounded-e-md"
-        />
-      )}
-      {dropdownValues.length === 1 && (
-        <div className="flex items-center rounded-s-none rounded-e-md border-1 px-2">
-          <span className="pointer-events-none flex items-center justify-center text-sm select-none">
-            {dropdownValue.label}
-          </span>
+    <div className={cn("relative flex", "text-muted-foreground", className)}>
+      <div className="flex flex-col">
+        {/* Outside Border Area */}
+        <div className="flex">
+          {/* Inside Border Area */}
+          <div
+            className={cn(
+              "flex w-full flex-row rounded-md rounded-e-none border-1 border-e-0 shadow-xs",
+              focused && "border-primary",
+            )}
+          >
+            <span className="pointer-events-none flex items-center justify-center ps-3 text-sm select-none">
+              {currencySymbol}
+            </span>
+            <Input
+              id={inputId}
+              ref={inputRef}
+              className={cn(
+                "-me-px rounded-none border-none ps-6 pe-4 text-right shadow-none",
+                "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                "focus-visible:border-primary",
+              )}
+              name="price"
+              defaultValue={value}
+              placeholder={formatDisplayValue("0")}
+              type="text"
+              aria-invalid={arialInvalid}
+              aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            className={cn("flex items-center rounded-s-none rounded-e-md border-1 px-2", focused && "border-primary")}
+          >
+            <span className="pointer-events-none flex items-center justify-center text-sm uppercase select-none">
+              {currency}
+            </span>
+          </div>
         </div>
-      )}
+        <FormFieldPreview previewValue={pricePreview} className="pt-1" />
+      </div>
     </div>
   );
 });

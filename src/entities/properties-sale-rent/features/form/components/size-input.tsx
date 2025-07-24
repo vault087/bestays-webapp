@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { memo, useCallback, useMemo, useRef } from "react";
 import { FormFieldLayout, FormDropDown } from "@/components/form";
+import { FormFieldPreview } from "@/components/form/layout";
 import { DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import { usePropertySizeInput } from "@/entities/properties-sale-rent/features/form/hooks/use-size-field";
 import { cn, Input } from "@/modules/shadcn";
@@ -110,10 +111,7 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
           />
         </div>
 
-        {/* Preview Row */}
-        <div className="flex w-full flex-row justify-end pr-2">
-          <span className="text-muted-foreground text-sm font-light">{previewValue}</span>
-        </div>
+        <FormFieldPreview previewValue={previewValue} />
       </div>
     </FormFieldLayout>
   );

@@ -1,45 +1,20 @@
 import { useTranslations } from "next-intl";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { FormFieldLayout, FormPriceInput } from "@/components/form";
-import { formatMoneyDisplay } from "@/entities/common";
 import { usePropertyPriceInput, DBPropertyPriceField, usePropertyLocale } from "@/entities/properties-sale-rent/";
-import { cn } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
-export const PropertyPriceInputGroup = function PropertyPriceInputGroup({
-  direction = "vertical",
-  className,
-}: {
-  direction?: "vertical" | "horizontal";
-  className?: string;
-}) {
-  const t = useTranslations("PropertiesSaleRent.fields.price");
+export function PropertyRentPriceInput({ className }: { className?: string }) {
+  const t = useTranslations("PropertiesSaleRent.fields.rent");
   const title = t("title");
-  return (
-    <FormFieldLayout title={title} className={className}>
-      <div className={cn(direction === "vertical" ? "flex flex-col gap-2" : "flex flex-row gap-2")}>
-        <PropertyPriceRaiInput />
-        <PropertyPriceTotalInput />
-        <PropertyPriceSaleInput />
-      </div>
-    </FormFieldLayout>
-  );
-};
 
-export const PropertyPriceRaiInput = function PropertyPriceRaiInput() {
-  const t = useTranslations("PropertiesSaleRent.fields.price");
-  return <PropertyPriceInput title={t("rai.title")} field="rai" />;
-};
-
-export const PropertyPriceTotalInput = function PropertyPriceTotalInput() {
-  const t = useTranslations("PropertiesSaleRent.fields.price");
-  return <PropertyPriceInput title={t("total.title")} field="total" />;
-};
-
-export const PropertyPriceSaleInput = function PropertyPriceSaleInput() {
-  const t = useTranslations("PropertiesSaleRent.fields.price");
-  return <PropertyPriceInput title={t("sale.title")} field="sale" />;
-};
+  return <PropertyPriceInput title={title} field="rent_price" className={className} />;
+}
+export function PropertySalePriceInput({ className }: { className?: string }) {
+  const t = useTranslations("PropertiesSaleRent.fields.sale");
+  const title = t("title");
+  return <PropertyPriceInput title={title} field="sale_price" className={className} />;
+}
 
 export const PropertyPriceInput = memo(function PropertyPriceInput({
   title,
@@ -51,13 +26,9 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
   field: DBPropertyPriceField;
   className?: string;
 }) {
-  const { inputId, price, onPriceChange, error, currency, currencies, setCurrency } = usePropertyPriceInput(field);
+  const { inputId, price, onPriceChange, error, currency } = usePropertyPriceInput(field);
   useDebugRender("PropertyPriceInput" + field);
   const locale = usePropertyLocale();
-  const pricePreview = useMemo(
-    () => formatMoneyDisplay(price, locale, currency, "narrowSymbol"),
-    [price, locale, currency],
-  );
 
   return (
     <FormFieldLayout
@@ -67,21 +38,12 @@ export const PropertyPriceInput = memo(function PropertyPriceInput({
       className={className}
       config={{
         title: {
-          variant: "h2",
+          variant: "h1",
         },
         focus_ring: false,
       }}
     >
-      <FormPriceInput
-        inputId={inputId}
-        locale={locale}
-        value={price}
-        onChange={onPriceChange}
-        currency={currency}
-        currencies={currencies}
-        onCurrencyChange={setCurrency}
-      />
-      <div className="text-muted-foreground pl-1 text-sm">{pricePreview}</div>
+      <FormPriceInput inputId={inputId} locale={locale} value={price} onChange={onPriceChange} currency={currency} />
     </FormFieldLayout>
   );
 });

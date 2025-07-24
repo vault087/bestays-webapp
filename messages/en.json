@@ -75,6 +75,12 @@
         "description": "Please enter any additional notes for agent about the property",
         "placeholder": "Enter notes for agent"
       },
+      "rent": {
+        "title": "Rental Price"
+      },
+      "sale": {
+        "title": "Sale Price"
+      },
       "price": {
         "title": "Price",
         "rai": {

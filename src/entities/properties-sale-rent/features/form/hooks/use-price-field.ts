@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useId, useState } from "react";
-import { DEFAULT_CURRENCY, DBCurrency, DBCurrencySchema, moneyToString, stringToMoney } from "@/entities/common";
+import { DBCurrency, moneyToString, stringToMoney } from "@/entities/common";
 import {
   DBPropertyPriceField,
   usePropertyFormStaticStore,
@@ -13,43 +13,23 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
   price: string;
   onPriceChange: (value: string) => void;
   currency: DBCurrency;
-  currencies: DBCurrency[];
-  setCurrency: (currency: DBCurrency) => void;
   error?: string;
 } {
   const inputId = useId();
 
   const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
-  const [currentCurrency, setCurrentCurrency] = useState<DBCurrency>(property.price?.currency || DEFAULT_CURRENCY);
-  const [priceValue, setPriceValue] = useState<string>(moneyToString(property.price?.[field]));
+  const [priceValue, setPriceValue] = useState<string>(moneyToString(property[field]));
 
   // Handle change
   const onPriceChange = useCallback(
     (value: string) => {
       setPriceValue(value);
       updateProperty((draft) => {
-        if (!draft.price) {
-          draft.price = {
-            currency: currentCurrency,
-          };
-        }
-        draft.price[field] = stringToMoney(value);
+        draft[field] = stringToMoney(value);
       });
     },
-    [updateProperty, field, currentCurrency],
-  );
-
-  const setCurrency = useCallback(
-    (currency: DBCurrency) => {
-      setCurrentCurrency(currency);
-      updateProperty((draft) => {
-        if (draft.price) {
-          draft.price.currency = currency;
-        }
-      });
-    },
-    [updateProperty],
+    [updateProperty, field],
   );
 
   const error = undefined;
@@ -58,9 +38,7 @@ export function usePropertyPriceInput(field: DBPropertyPriceField): {
     inputId,
     price: priceValue,
     onPriceChange,
-    currency: currentCurrency,
-    currencies: DBCurrencySchema.options,
-    setCurrency,
+    currency: "THB",
     error,
   };
 }
