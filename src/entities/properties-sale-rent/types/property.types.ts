@@ -32,6 +32,7 @@ export const PROPERTY_MAX_IMAGES = 30;
 // Database Schemas
 export const DBPropertySchema = z.object({
   id: z.string().uuid(),
+  title: LocalizedTextSchema(PROPERTY_ABOUT_MAX).nullish(),
   about: LocalizedTextSchema(PROPERTY_ABOUT_MAX).nullish(),
 
   ownership_type: DBSerialIDSchema.nullish(),
@@ -54,7 +55,7 @@ export const DBPropertySchema = z.object({
   size: DBSizeSchema.nullish(),
   images: z.array(DBImageSchema).nullish(),
 
-  agent_notes: z.string().max(PROPERTY_AGENT_NOTES_MAX).nullish(),
+  personal_notes: z.string().max(PROPERTY_AGENT_NOTES_MAX).nullish(),
   agent_id: z.string().uuid().nullish(),
 
   is_published: z.boolean().default(false),

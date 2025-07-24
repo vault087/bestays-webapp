@@ -11,7 +11,7 @@ import {
   PropertyFormStoreProvider,
   PropertyFormStoreHydrated,
   MutableProperty,
-  PropertyAgentNotesInput,
+  PropertyPersonalNotesInput,
   PropertyAreaInput,
   PropertyDivisibleSaleInput,
   PropertyOwnershipTypeInput,
@@ -119,7 +119,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
             <PropertySalePriceInput />
           </div>
           <PropertyAboutInput />
-          <PropertyAgentNotesInput />
+          <PropertyPersonalNotesInput />
         </div>
       </div>
       {/* </div> */}

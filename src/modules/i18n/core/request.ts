@@ -1,34 +1,32 @@
+import deepmerge from "deepmerge";
 import { hasLocale } from "next-intl";
 import { getRequestConfig, RequestConfig } from "next-intl/server";
 import { routing } from "./routing";
 
 export default getRequestConfig(async ({ requestLocale }): Promise<RequestConfig> => {
-  // Typically corresponds to the `[locale]` segment
   const requested = await requestLocale;
   const currentLocale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
-  const defaultLocale = routing.defaultLocale; // e.g., 'en'
-  // Load current locale's base messages
+  const defaultLocale = routing.defaultLocale;
+
   const currentMessages = (await import(`/messages/${currentLocale}.json`)).default;
 
-  // Load default locale's messages if different from current
-  let defaultMessages = {};
-  if (currentLocale !== defaultLocale) {
-    try {
-      defaultMessages = (await import(`/messages/${defaultLocale}.json`)).default;
-    } catch (error) {
-      console.warn(`[i18n] Could not load default locale messages for '${defaultLocale}'.`, error);
-    }
-  } else {
-    defaultMessages = currentMessages;
+  // Skip merge for default locale (performance optimization)
+  if (currentLocale === defaultLocale) {
+    return {
+      locale: currentLocale,
+      messages: currentMessages,
+    };
   }
 
-  // Merge messages with default as fallback and keep default namespace for explicit access
-  const messages = {
-    ...defaultMessages,
-    ...currentMessages,
-    // Add default namespace for explicit access to default locale translations
-    default: defaultMessages,
-  };
+  // Only merge for non-default locales
+  let defaultMessages = {};
+  try {
+    defaultMessages = (await import(`/messages/${defaultLocale}.json`)).default;
+  } catch (error) {
+    console.warn(`[i18n] Could not load default locale messages for '${defaultLocale}'.`, error);
+  }
+
+  const messages = deepmerge(defaultMessages, currentMessages) as Record<string, unknown>;
 
   return {
     locale: currentLocale,
