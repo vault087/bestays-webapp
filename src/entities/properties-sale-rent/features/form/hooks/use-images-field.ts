@@ -1,8 +1,7 @@
 "use client";
 import { useCallback, useId } from "react";
-import { useStore } from "zustand";
-import { DBImage } from "@/entities/media/types/image.type";
-import { usePropertyFormStoreContext } from "@/entities/properties-sale-rent";
+import { DBImage, MutableImage } from "@/entities/media/types/image.type";
+import { usePropertyFormStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
 
 // Input hook for property images using slice management
 export function usePropertyImagesInput(): {
@@ -16,11 +15,12 @@ export function usePropertyImagesInput(): {
   error?: string;
 } {
   const inputId = useId();
-  const store = usePropertyFormStoreContext();
-
+  const { clearImages, addDBImages, addImage, deleteImage, reorderImages } = usePropertyFormStoreActions();
   // Subscribe to slice state changes for reactive updates
-  const allImages = useStore(store, (state) => state.getAllImagesOrdered());
-  
+  const allImages = usePropertyFormStore((state) =>
+    state.imageIds.map((id) => state.images[id]).filter((image): image is MutableImage => image !== undefined),
+  );
+
   // Convert to DBImage format for UI compatibility
   const images: DBImage[] = allImages.map((img) => ({
     url: img.url,
@@ -33,26 +33,26 @@ export function usePropertyImagesInput(): {
     (newImages: DBImage[]) => {
       // Clear existing and add new ones
       // Note: This is mainly for compatibility - prefer individual operations
-      store.getState().clearImages();
-      store.getState().addDBImages(newImages);
+      clearImages();
+      addDBImages(newImages);
     },
-    [store],
+    [clearImages, addDBImages],
   );
 
   // Add existing DB image
   const onAddImage = useCallback(
     (image: DBImage) => {
-      store.getState().addDBImages([image]);
+      addDBImages([image]);
     },
-    [store],
+    [addDBImages],
   );
 
   // Add new file upload
   const onAddFile = useCallback(
     (file: File) => {
-      store.getState().addImage(file);
+      addImage(file);
     },
-    [store],
+    [addImage],
   );
 
   // Remove image by index
@@ -60,18 +60,18 @@ export function usePropertyImagesInput(): {
     (index: number) => {
       const imageToRemove = allImages[index];
       if (imageToRemove) {
-        store.getState().deleteImage(imageToRemove.id);
+        deleteImage(imageToRemove.id);
       }
     },
-    [allImages, store],
+    [allImages, deleteImage],
   );
 
   // Reorder images
   const onReorderImages = useCallback(
     (fromIndex: number, toIndex: number) => {
-      store.getState().reorderImages(fromIndex, toIndex);
+      reorderImages(fromIndex, toIndex);
     },
-    [store],
+    [reorderImages],
   );
 
   const error = undefined;

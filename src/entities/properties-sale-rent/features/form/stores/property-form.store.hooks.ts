@@ -28,7 +28,7 @@ export function usePropertyFormStaticStore(): PropertyFormStore {
 export function usePropertyFormStoreActions(): PropertyFormStoreActions {
   const store = usePropertyFormStoreContext();
   return {
+    ...store.getState(),
     updateProperty: useDebouncedCallback(store.getState().updateProperty, 300),
-    reset: store.getState().reset,
   };
 }
