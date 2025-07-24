@@ -55,33 +55,32 @@ export const CompactImagesView = memo(function CompactImagesView({
   );
 
   return (
-    <div className="flex items-center pb-2">
-      {/* Fixed Left Section - Cover Image and Add Button */}
-      <div className="flex flex-shrink-0 items-center gap-3">
-        {/* Cover Image - Sticky */}
-        {coverImage && <PropertyImage image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />}
-
-        {/* Add Button - Sticky */}
-        {images.length < maxImages && (
-          <ImageAddButton remainingCount={remainingCount} onClick={() => fileInputRef.current?.click()} />
-        )}
-      </div>
-
-      {/* Scrollable Right Section - Thumbnails */}
-      {thumbnails.length > 0 && (
-        <div className="ml-3 flex items-center gap-3 overflow-x-auto">
-          {thumbnails.map((image, index) => (
-            <div key={index + 1} className="relative flex-shrink-0">
-              <PropertyImage
-                setCover={() => setCover(index + 1)}
-                image={image}
-                onRemove={() => handleRemoveImage(index + 1)}
-                isCover={false}
-              />
-            </div>
-          ))}
+    <div className="flex items-center gap-3 overflow-x-auto pb-4">
+      {/* Cover Image - Can scroll out */}
+      {coverImage && (
+        <div className="flex-shrink-0">
+          <PropertyImage image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />
         </div>
       )}
+
+      {/* Add Button - Becomes sticky when reaching left */}
+      {images.length < maxImages && (
+        <div className="bg-background sticky left-0 z-10 flex-shrink-0">
+          <ImageAddButton remainingCount={remainingCount} onClick={() => fileInputRef.current?.click()} />
+        </div>
+      )}
+
+      {/* Thumbnail Images */}
+      {thumbnails.map((image, index) => (
+        <div key={index + 1} className="relative flex-shrink-0">
+          <PropertyImage
+            setCover={() => setCover(index + 1)}
+            image={image}
+            onRemove={() => handleRemoveImage(index + 1)}
+            isCover={false}
+          />
+        </div>
+      ))}
 
       {/* Hidden File Input */}
       <input ref={fileInputRef} type="file" multiple accept="image/*" onChange={handleFileSelect} className="hidden" />
