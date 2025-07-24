@@ -64,8 +64,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
           "group bg-card relative flex w-full flex-col space-y-2",
           margedConfig.title?.variant === "h1" && "rounded-lg p-4 shadow-[0_0_14px_rgba(0,0,0,0.1)]",
 
-          margedConfig.focus_ring &&
-            "focus-within:ring-primary transition-shadow duration-200 focus-within:ring-2 focus-within:ring-offset-2",
+          margedConfig.focus_ring && "focus-within:ring-primary focus-within:ring-2 focus-within:ring-offset-2",
           // isFocused && "ring-primary ring-2 ring-offset-2",
           className,
         )}

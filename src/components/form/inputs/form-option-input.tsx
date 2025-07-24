@@ -97,7 +97,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
       <PopoverContent className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0" align="start">
         <Command>
           <CommandInput
-            placeholder={t("option.find_or_enter")}
+            placeholder={t("option.find_or_enter_value", { value: addOption?.label || "" })}
             ref={inputRef}
             onValueChange={setInputValue}
             onFocus={() => setFocused(true)}
@@ -121,7 +121,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
                     <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
                     <span className={cn("text-sm", isAddButtonEnabled && "rounded-b-none border-b-1")}>
                       {inputValue.length > 0
-                        ? t("option.add.preview", { value: inputValue })
+                        ? t("option.add.preview_value", { value: inputValue })
                         : t("option.add.placeholder")}
                     </span>
                   </div>

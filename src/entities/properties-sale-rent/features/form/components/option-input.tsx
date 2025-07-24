@@ -1,13 +1,13 @@
 "use client";
-
 import { EllipsisVerticalIcon, SquarePenIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React from "react";
+import { useState } from "react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { DictionaryEntryEditor } from "@/entities/dictionaries/features/form/components/blocks/dictionary-entry-editor";
 import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
-import { DBPropertyCodeField, DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
+import { getAvailableLocalizedText } from "@/entities/localized-text";
+import { DBPropertyCodeField, DBPropertyMultiCodeField, usePropertyLocale } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { useDictionaryOptions } from "@/entities/properties-sale-rent/features/form/hooks/utils/use-dictionary-options";
 import {
@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenu,
   DropdownMenuGroup,
+  cn,
 } from "@/modules/shadcn";
 import { Dialog, DialogContent, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
 
@@ -43,10 +44,14 @@ export function PropertyOptionField({
   className,
   variant = "select",
 }: OptionFieldProps & { field: DBPropertyCodeField }) {
-  const { inputId, selectedOption, options, title, description, selectOption, error, addOption } = useOptionField({
-    field,
-  });
+  const { inputId, selectedOption, options, title, description, selectOption, dictionary, error, addOption } =
+    useOptionField({
+      field,
+    });
 
+  const locale = usePropertyLocale();
+
+  console.log("re-render");
   return (
     <FormFieldLayout
       title={title}
@@ -65,14 +70,16 @@ export function PropertyOptionField({
         options={options}
         selectOption={selectOption}
         variant={variant}
-        addOption={addOption}
+        addOption={
+          addOption && { ...addOption, label: getAvailableLocalizedText(dictionary?.name, locale).toLocaleLowerCase() }
+        }
       />
     </FormFieldLayout>
   );
 }
 export function FieldDropDownMenu({ field }: { field: DBPropertyCodeField | DBPropertyMultiCodeField }) {
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const t = useTranslations("Common");
   const handleEditClick = () => {
@@ -114,10 +121,12 @@ export function FieldMenuDialog({
   field,
   open,
   onOpenChange,
+  className,
 }: {
   field: DBPropertyCodeField | DBPropertyMultiCodeField;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  className?: string;
 }) {
   const { dictionary, locale } = useDictionaryOptions({ field });
   // Get mutable entries from dictionary store instead
@@ -129,7 +138,7 @@ export function FieldMenuDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className={cn("max-w-[90vw] px-12", className)}>
         <DialogTitle className="sr-only">Manage {dictionary.name?.[locale] || dictionary.code} Options</DialogTitle>
         <DictionaryEntryEditor
           dictionary={dictionary}

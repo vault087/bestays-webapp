@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import { useMemo, useCallback, memo, useRef } from "react";
+import { useMemo, useCallback, memo, useRef, useState } from "react";
 import { FormMultiOptionProps, FormOption } from "@/components/form/types";
 import { cn } from "@/modules/shadcn";
 import { Button, Checkbox, Input, Label } from "@/modules/shadcn/components";
@@ -56,6 +56,8 @@ export const FormMultiOption = memo(function FormMultiOption({
 function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOption, addOption }: FormMultiOptionState) {
   const selectedKeys = selectedOptions?.map((option) => option.key);
 
+  const [addValueText, setAddValueText] = useState("");
+
   const addOptionRef = useRef<HTMLInputElement | null>(null);
   const handleAddOption = useCallback(() => {
     console.log("adding option", addOption);
@@ -70,8 +72,8 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
       {options.map((option: FormOption) => (
         <div
           className={cn(
-            "flex flex-row items-center justify-between gap-2 space-x-0 rounded-md border-1 px-3 py-3",
-            selectedKeys?.includes(option.key) ? "border-primary" : "border-border",
+            "flex flex-row items-center justify-between gap-2 space-x-0 rounded-md px-3 py-3",
+            selectedKeys?.includes(option.key) ? "border-primary border-1 shadow-sm" : "border-border border-1",
           )}
           key={option.key}
           onMouseDown={(e) => {
@@ -101,9 +103,20 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
         </div>
       ))}
       {addOption && (
-        <div className="flex flex-row items-center justify-between gap-2 rounded-md border-1 ps-3 pe-1">
-          <Input ref={addOptionRef} placeholder="Add New" className="roudned-none border-0 shadow-none" />
-          <Button variant="text" size="icon" onClick={() => handleAddOption()}>
+        <div className="focus-within:border-primary flex flex-row items-center justify-between gap-2 rounded-md border-1 ps-3 pe-1 focus-within:shadow-sm">
+          <Input
+            ref={addOptionRef}
+            onChange={(e) => setAddValueText(e.target.value)}
+            placeholder="Add New"
+            className="roudned-none border-0 shadow-none"
+          />
+          <Button
+            className="focus-within:bg-red-500"
+            variant="ghost"
+            size="icon"
+            disabled={addValueText.length < 2}
+            onClick={() => handleAddOption()}
+          >
             <PlusIcon className="h-4 w-4" />
           </Button>
         </div>

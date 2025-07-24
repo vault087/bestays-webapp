@@ -1,6 +1,6 @@
 "use client";
 
-import { X, BanIcon, Plus } from "lucide-react";
+import { SearchIcon, BanIcon, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useCallback, useMemo } from "react";
 import { DBSerialID } from "@/entities/common";
@@ -82,7 +82,7 @@ function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirma
   );
 }
 
-export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: DictionaryEntryEditorProps) {
+export function DictionaryEntryEditor({ dictionary, entries, locale }: DictionaryEntryEditorProps) {
   const [newEntryName, setNewEntryName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteDialogEntry, setDeleteDialogEntry] = useState<MutableEntry | null>(null);
@@ -137,18 +137,17 @@ export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: 
 
   return (
     <>
-      <div className="flex h-96 flex-col">
+      <div className="flex h-[80vh] flex-col">
         {/* Search input header */}
-        <div className="flex items-center space-x-2 border-b p-3">
+        <div className="border-input flex items-center border-b px-5" cmdk-input-wrapper="">
+          <SearchIcon size={20} className="text-muted-foreground/80 me-3" />
           <Input
+            data-slot="command-input-wrapper"
+            className="placeholder:text-muted-foreground/70 flex h-10 w-full rounded-md border-0 bg-transparent py-3 text-sm shadow-none outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
             placeholder={tCommon("option.find_or_enter")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1"
           />
-          <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
-            <X className="h-4 w-4" />
-          </Button>
         </div>
 
         {/* Entries list */}
@@ -158,7 +157,7 @@ export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: 
               {tCommon("not_found")}
             </div>
           ) : (
-            <div className="space-y-0">
+            <div className="grid grid-cols-2 gap-2">
               {filteredEntries.map((entry) => (
                 <div key={entry.id} className="flex items-center space-x-2 rounded-sm">
                   <div className="min-w-0 flex-1 rounded-b-none border-b-1">

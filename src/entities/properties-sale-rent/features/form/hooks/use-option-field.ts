@@ -2,6 +2,7 @@
 import { useState, useCallback } from "react";
 import { FormOption, FormSingleOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
+import { DBDictionary } from "@/entities/dictionaries";
 import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
 import {
   DBPropertyCodeField,
@@ -15,6 +16,7 @@ export type OptionFieldState = FormSingleOptionProps & {
   title: string | undefined;
   description: string | undefined;
   error?: string | undefined;
+  dictionary: DBDictionary | undefined;
 };
 
 export const useOptionField = ({ field }: { field: DBPropertyCodeField }): OptionFieldState => {
@@ -69,6 +71,7 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
     selectOption,
     title,
     description,
+    dictionary,
     addOption: { onClick: addOption },
   };
 };

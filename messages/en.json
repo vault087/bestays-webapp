@@ -5,10 +5,10 @@
     },
     "not_found": "Not found",
     "option": {
-      "find_or_enter": "Find or enter new option",
+      "find_or_enter_value": "Type to find or add new {value}",
       "add": {
         "placeholder": "Start typing to add new option",
-        "preview": "Add \"{value}\""
+        "preview_value": "Add \"{value}\""
       }
     },
     "edit": "Edit"
