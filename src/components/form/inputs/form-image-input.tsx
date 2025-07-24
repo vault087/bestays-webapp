@@ -9,7 +9,7 @@ import { cn } from "@/modules/shadcn/utils/cn";
 export type ImageItem = {
   url: string;
   color?: string | null;
-  description?: string | null;
+  alt?: string | null;
 };
 
 export const FormImageInput = memo(function FormImageInput({
@@ -84,7 +84,7 @@ export const FormImageInput = memo(function FormImageInput({
               <div className="relative h-full">
                 <Image
                   src={mainImage.url}
-                  alt={mainImage.description || `Image 1`}
+                  alt={mainImage.alt || `Image 1`}
                   fill
                   className="rounded-lg object-cover"
                   unoptimized
@@ -110,7 +110,7 @@ export const FormImageInput = memo(function FormImageInput({
                   <div key={index + 1} className="relative aspect-square">
                     <Image
                       src={image.url}
-                      alt={image.description || `Image ${index + 2}`}
+                      alt={image.alt || `Image ${index + 2}`}
                       fill
                       className="rounded-md object-cover"
                       unoptimized
