@@ -33,7 +33,13 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
         <DialogTitle className="sr-only">{title}</DialogTitle>
-        <ExpandedImagesView images={images} onImagesChange={onImagesChange} onAddFile={onAddFile} maxImages={maxImages} setCover={setCover} />
+        <ExpandedImagesView
+          images={images}
+          onImagesChange={onImagesChange}
+          onAddFile={onAddFile}
+          maxImages={maxImages}
+          setCover={setCover}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useId } from "react";
+import { useStore } from "zustand";
 import { DBImage } from "@/entities/media/types/image.type";
 import { usePropertyFormStoreContext } from "@/entities/properties-sale-rent";
 
@@ -17,8 +18,10 @@ export function usePropertyImagesInput(): {
   const inputId = useId();
   const store = usePropertyFormStoreContext();
 
-  // Get images from slice and convert to DBImage format for UI
-  const allImages = store.getState().getAllImagesOrdered();
+  // Subscribe to slice state changes for reactive updates
+  const allImages = useStore(store, (state) => state.getAllImagesOrdered());
+  
+  // Convert to DBImage format for UI compatibility
   const images: DBImage[] = allImages.map((img) => ({
     url: img.url,
     color: img.color,
@@ -55,13 +58,12 @@ export function usePropertyImagesInput(): {
   // Remove image by index
   const onRemoveImage = useCallback(
     (index: number) => {
-      const allImages = store.getState().getAllImagesOrdered();
       const imageToRemove = allImages[index];
       if (imageToRemove) {
         store.getState().deleteImage(imageToRemove.id);
       }
     },
-    [store],
+    [allImages, store],
   );
 
   // Reorder images
