@@ -8,11 +8,13 @@ import { ImageAddButton } from "./image-add-button";
 export const CompactImagesView = memo(function CompactImagesView({
   images,
   onImagesChange,
+  onAddFile,
   maxImages,
   setCover,
 }: {
   images: ImageItem[];
   onImagesChange: (images: ImageItem[]) => void;
+  onAddFile: (file: File) => void;
   setCover: (index: number) => void;
   maxImages: number;
 }) {
@@ -27,23 +29,18 @@ export const CompactImagesView = memo(function CompactImagesView({
       const remainingSlots = maxImages - images.length;
       const filesToProcess = files.slice(0, remainingSlots);
 
-      const newImages: ImageItem[] = filesToProcess
+      // Use onAddFile for each file instead of manually creating ObjectURLs
+      filesToProcess
         .filter((file) => file.type.startsWith("image/"))
-        .map((file) => ({
-          url: URL.createObjectURL(file),
-          color: null,
-          description: null,
-        }));
-
-      if (newImages.length > 0) {
-        onImagesChange([...images, ...newImages]);
-      }
+        .forEach((file) => {
+          onAddFile(file);
+        });
 
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     },
-    [images, maxImages, onImagesChange],
+    [images.length, maxImages, onAddFile],
   );
 
   const handleRemoveImage = useCallback(

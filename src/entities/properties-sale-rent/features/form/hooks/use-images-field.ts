@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useId } from "react";
-import { DBImage, MutableImage } from "@/entities/media/types/image.type";
+import { DBImage } from "@/entities/media/types/image.type";
 import { usePropertyFormStoreContext } from "@/entities/properties-sale-rent";
 
 // Input hook for property images using slice management

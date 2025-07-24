@@ -1,2 +1,2 @@
 export * from "./dictionaries.slice";
-export * from "./entry.slice.tss";
+export * from "./entries.slice";

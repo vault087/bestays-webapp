@@ -9,7 +9,7 @@ import { PROPERTY_MAX_IMAGES } from "@/entities/properties-sale-rent/types/prope
 import { ImageFieldExpandDialog, CompactImagesView } from "./images";
 
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
-  const { images, onImagesChange, error } = usePropertyImagesInput();
+  const { images, onImagesChange, onAddFile, error } = usePropertyImagesInput();
   const maxImages = PROPERTY_MAX_IMAGES;
 
   // Convert DBImage to ImageItem format for the form component
@@ -69,6 +69,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
         <ImageFieldExpandDialog
           images={displayImages}
           onImagesChange={handleImagesChange}
+          onAddFile={onAddFile}
           maxImages={maxImages}
           setCover={setCover}
         />
@@ -78,6 +79,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       <CompactImagesView
         images={displayImages}
         onImagesChange={handleImagesChange}
+        onAddFile={onAddFile}
         maxImages={maxImages}
         setCover={setCover}
       />

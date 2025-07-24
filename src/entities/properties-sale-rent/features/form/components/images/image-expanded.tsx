@@ -12,11 +12,13 @@ import { ImageAddButton } from "./image-add-button";
 export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
   images,
   onImagesChange,
+  onAddFile,
   maxImages,
   setCover,
 }: {
   images: ImageItem[];
   onImagesChange: (images: ImageItem[]) => void;
+  onAddFile: (file: File) => void;
   maxImages: number;
   setCover: (index: number) => void;
 }) {
@@ -31,7 +33,7 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
         <DialogTitle className="sr-only">{title}</DialogTitle>
-        <ExpandedImagesView images={images} onImagesChange={onImagesChange} maxImages={maxImages} setCover={setCover} />
+        <ExpandedImagesView images={images} onImagesChange={onImagesChange} onAddFile={onAddFile} maxImages={maxImages} setCover={setCover} />
       </DialogContent>
     </Dialog>
   );
@@ -40,11 +42,13 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
 export const ExpandedImagesView = memo(function ExpandedImagesView({
   images,
   onImagesChange,
+  onAddFile,
   maxImages,
   setCover,
 }: {
   images: ImageItem[];
   onImagesChange: (images: ImageItem[]) => void;
+  onAddFile: (file: File) => void;
   maxImages: number;
   setCover: (index: number) => void;
 }) {
@@ -60,23 +64,18 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
       const remainingSlots = maxImages - images.length;
       const filesToProcess = files.slice(0, remainingSlots);
 
-      const newImageItems: ImageItem[] = filesToProcess
+      // Use onAddFile for each file instead of manually creating ObjectURLs
+      filesToProcess
         .filter((file) => file.type.startsWith("image/"))
-        .map((file) => ({
-          url: URL.createObjectURL(file),
-          color: null,
-          description: null,
-        }));
-
-      if (newImageItems.length > 0) {
-        onImagesChange([...images, ...newImageItems]);
-      }
+        .forEach((file) => {
+          onAddFile(file);
+        });
 
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     },
-    [images, maxImages, onImagesChange],
+    [images.length, maxImages, onAddFile],
   );
 
   const handleRemoveImage = useCallback(
