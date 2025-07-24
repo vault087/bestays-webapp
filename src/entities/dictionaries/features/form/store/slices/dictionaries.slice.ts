@@ -3,7 +3,7 @@ import { StateCreator } from "zustand";
 import { DBCode, DBSerialID, DBTemporarySerialID, generateTemporarySerialId } from "@/entities/common";
 import { DBDictionary, DBDictionaryEntry, MutableDictionary } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
-import { EntryStoreSliceActions, EntryStoreSliceState, createEntryStoreSlice } from "./entry.slice";
+import { EntryStoreSliceActions, EntryStoreSliceState, createEntryStoreSlice } from "./entries.slice";
 
 export interface DictionaryStoreSliceState extends EntryStoreSliceState {
   dbDictionaries: DBDictionary[];

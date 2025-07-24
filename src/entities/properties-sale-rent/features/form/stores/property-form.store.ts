@@ -62,6 +62,7 @@ export function createPropertyFormStore(store_id: string, property: DBProperty):
           dbProperty: state.dbProperty,
           property: state.property,
           resetKey: state.resetKey,
+          images: state.images,
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {

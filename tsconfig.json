@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/entities/properties-sale-rent/features/form/context/dictionary.context.tsx.old"
+    "src/entities/properties-sale-rent/features/form/context/dictionary.context.tsx.old",
+    "src/entities/dictionaries/features/form/store/slices/entry.slice.tss"
   ],
   "exclude": ["node_modules"]
 }

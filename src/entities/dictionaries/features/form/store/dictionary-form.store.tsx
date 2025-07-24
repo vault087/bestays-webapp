@@ -7,7 +7,7 @@ import {
   createDictionaryStoreSlice,
   DictionaryStoreSlice,
   DictionaryStoreSliceActions,
-} from "./slices/dictionary.slice";
+} from "./slices/dictionaries.slice";
 
 export type DictionaryFormStoreState = DictionaryStoreSlice;
 export type DictionaryFormStoreActions = DictionaryStoreSliceActions;
