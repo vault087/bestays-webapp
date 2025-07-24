@@ -108,19 +108,6 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
 
       {/* q-Column Grid Layout */}
       <div className="grid min-h-[400px] grid-cols-2 gap-6">
-        {/* Column 1: Cover Image */}
-        <div className="flex flex-col space-y-2">
-          {coverImage ? (
-            <PropertyImage size="lg" image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />
-          ) : (
-            <div className="border-muted-foreground/25 flex aspect-[4/3] items-center justify-center rounded-lg border-2 border-dashed">
-              <div className="text-center">
-                <div className="text-muted-foreground text-sm select-none">{tCommon("image.noCover")}</div>
-              </div>
-            </div>
-          )}
-        </div>
-
         {/* Column 2: Other Images Grid */}
         <div className="space-y-2">
           <div className="grid max-h-[400px] grid-cols-3 gap-2 overflow-y-auto">
@@ -130,15 +117,37 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
             )}
 
             {otherImages.map((image, index) => (
-              <PropertyImage
-                key={index + 1}
-                image={image}
-                onRemove={() => handleRemoveImage(index + 1)}
-                isCover={false}
-                setCover={() => setCover(index + 1)}
-                size="md"
-              />
+              <div key={index + 1} className="group relative">
+                <PropertyImage
+                  image={image}
+                  onRemove={() => handleRemoveImage(index + 1)}
+                  isCover={false}
+                  setCover={() => setCover(index + 1)}
+                  size="md"
+                />
+                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                  <ImageOrderNumber index={index + 1} />
+                </div>
+              </div>
             ))}
+          </div>
+        </div>
+
+        {/* Column 1: Cover Image */}
+        <div className="flex flex-col justify-between space-y-2">
+          {coverImage ? (
+            <PropertyImage size="lg" image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />
+          ) : (
+            <div className="border-muted-foreground/25 flex aspect-[4/3] items-center justify-center rounded-lg border-2 border-dashed">
+              <div className="text-center">
+                <div className="text-muted-foreground text-sm select-none">{tCommon("image.noCover")}</div>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-row items-center justify-around space-y-2">
+            <Button variant="outline" size="lg">
+              Continue
+            </Button>
           </div>
         </div>
 
@@ -155,3 +164,11 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
     </div>
   );
 });
+
+function ImageOrderNumber({ index }: { index: number }) {
+  return (
+    <div className="bg-foreground/40 text-background/80 flex h-8 w-8 items-center justify-center rounded-full text-sm opacity-60 group-hover:opacity-80">
+      {index + 1}
+    </div>
+  );
+}
