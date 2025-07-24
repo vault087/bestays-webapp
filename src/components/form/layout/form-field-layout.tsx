@@ -74,7 +74,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
             <FormFieldTitle text={title} inputId={inputId} variant={margedConfig.title?.variant} />
             {margedConfig.isPrivate && (
               <QuickTooltip content={<span className="text-xs">{tooltipText}</span>}>
-                <EyeOffIcon className="text-muted-foreground h-4 w-4 opacity-80" />
+                <EyeOffIcon className="text-muted-foreground h-3.5 w-3.5 opacity-80" />
               </QuickTooltip>
             )}
           </div>

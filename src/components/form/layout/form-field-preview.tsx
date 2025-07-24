@@ -10,7 +10,7 @@ export const FormFieldPreview = memo(function FormFieldPreview({
 }) {
   return (
     <div className={cn("flex w-full flex-row justify-end pr-2", className)}>
-      <span className="text-muted-foreground text-sm font-light">{previewValue}</span>
+      <span className="text-muted-foreground text-xs font-thin">{previewValue}</span>
     </div>
   );
 });

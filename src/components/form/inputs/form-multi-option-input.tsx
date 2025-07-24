@@ -98,6 +98,7 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
             onCheckedChange={(selected) => {
               toggleOption(option, selected as boolean);
             }}
+            className="rounded-full"
           />
         </div>
       ))}
