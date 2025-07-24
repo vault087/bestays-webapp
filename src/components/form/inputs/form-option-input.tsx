@@ -76,6 +76,8 @@ export const FormOptionSelect = memo(function FormOptionInput({
     return options.some((option) => option.label.toLowerCase() === inputValue.toLowerCase().trim());
   }, [options, inputValue]);
 
+  const isAddButtonEnabled = inputValue.length > 0 && !isExactMatching;
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -101,9 +103,36 @@ export const FormOptionSelect = memo(function FormOptionInput({
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
           />
+          {addOption && inputValue.length > 0 && (
+            <div className="text-muted-foreground flex w-full flex-col items-start justify-start space-y-1">
+              <div className="flex pt-2 pl-0">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start font-normal"
+                  onMouseDown={(e) => {
+                    // Prevent focus loss during state updates
+                    e.preventDefault();
+                  }}
+                  onClick={handleAddOption}
+                  disabled={!isAddButtonEnabled}
+                >
+                  <div className="flex items-center justify-center gap-2 space-x-0 px-2">
+                    <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
+                    <span className={cn("text-sm", isAddButtonEnabled && "rounded-b-none border-b-1")}>
+                      {inputValue.length > 0
+                        ? t("option.add.preview", { value: inputValue })
+                        : t("option.add.placeholder")}
+                    </span>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          )}
+
           <CommandList>
-            <CommandEmpty>
-              <div className="flex flex-col items-center justify-center gap-2">
+            <CommandEmpty className="flex w-full items-start justify-center pb-3">
+              <div className="flex flex-col items-start justify-center gap-2">
                 <span className="text-muted-foreground text-sm">{t("not_found")}</span>
               </div>
             </CommandEmpty>
@@ -128,26 +157,6 @@ export const FormOptionSelect = memo(function FormOptionInput({
             </CommandGroup>
           </CommandList>
         </Command>
-        {addOption && !isExactMatching && inputValue.length > 0 && (
-          <div className="flex flex-col items-center justify-center space-y-1 pb-3">
-            <Button
-              variant="outline"
-              size="sm"
-              className="justify-start font-normal"
-              onMouseDown={(e) => {
-                // Prevent focus loss during state updates
-                e.preventDefault();
-              }}
-              onClick={handleAddOption}
-              disabled={inputValue.length < 2}
-            >
-              <div className="flex items-center justify-center gap-2 px-2">
-                <PlusIcon size={16} className="-ms-2 opacity-60" aria-hidden="true" />
-                {inputValue}
-              </div>
-            </Button>
-          </div>
-        )}
       </PopoverContent>
     </Popover>
   );
