@@ -156,7 +156,7 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
           <Input
             data-slot="command-input-wrapper"
             className="placeholder:text-muted-foreground/70 flex h-10 w-full rounded-md border-0 bg-transparent py-3 text-sm shadow-none outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder={tCommon("option.find_or_enter_value", {
+            placeholder={tCommon("option.find_value", {
               value: getAvailableLocalizedText(dictionary.name, locale).toLocaleLowerCase(),
             })}
             value={searchQuery}
@@ -195,9 +195,10 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
           )}
         </div>
         {/* Add new entry */}
-        <div className="flex items-center space-x-2 border-t p-3">
+        <div className="flex items-center space-x-2">
           <Input
             value={newEntryName}
+            className="rounded-b-none border-0 border-b-1 text-sm"
             onChange={(e) => setNewEntryName(e.target.value)}
             placeholder={t("add_placeholder")}
             onKeyDown={(e) => {

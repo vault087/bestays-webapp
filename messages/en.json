@@ -6,6 +6,7 @@
     "not_found": "Not found",
     "option": {
       "find_or_enter_value": "Type to find or add new {value}",
+      "find_value": "Type to find {value}",
       "add": {
         "placeholder": "Start typing to add new option",
         "preview_value": "Add \"{value}\""
