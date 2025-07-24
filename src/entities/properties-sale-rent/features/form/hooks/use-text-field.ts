@@ -34,7 +34,7 @@ export function usePropertyTextInput(
     (value: string) => {
       setValue(value);
       updateProperty((draft) => {
-        draft[field] = value;
+        draft[field] = value.trim();
       });
     },
     [updateProperty, field, setValue],

@@ -76,7 +76,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
     return options.some((option) => option.label.toLowerCase() === inputValue.toLowerCase().trim());
   }, [options, inputValue]);
 
-  const isAddButtonEnabled = inputValue.length > 0 && !isExactMatching;
+  const isAddButtonEnabled = inputValue.trim().length > 1 && !isExactMatching;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

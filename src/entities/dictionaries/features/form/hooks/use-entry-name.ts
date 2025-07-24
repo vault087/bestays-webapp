@@ -44,7 +44,7 @@ export function useDictionaryEntryNameInput(
         if (!draft.name) {
           draft.name = {};
         }
-        draft.name[locale] = value;
+        draft.name[locale] = value.trim();
       });
     },
     [dictionaryId, entryId, locale, setValue, updateEntry],

@@ -45,7 +45,7 @@ export function useDictionaryDescriptionInput(
         if (!draft.description) {
           draft.description = {};
         }
-        draft.description[locale] = value;
+        draft.description[locale] = value.trim();
       });
     },
     [id, locale, setValue, updateDictionary],

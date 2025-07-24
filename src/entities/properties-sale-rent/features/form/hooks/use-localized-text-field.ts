@@ -46,7 +46,7 @@ export function usePropertyLocalizedTextInput(
         if (!currentField) {
           (draft[field] as LocalizedText) = {};
         }
-        (draft[field] as LocalizedText)[locale] = value;
+        (draft[field] as LocalizedText)[locale] = value.trim();
       });
     },
     [locale, updateProperty, field, setValue],

@@ -36,7 +36,7 @@ export function useDictionaryCodeInput(
     (value: string) => {
       setValue(value);
       updateDictionary(id, (draft) => {
-        draft.code = value;
+        draft.code = value.trim();
       });
     },
     [id, setValue, updateDictionary],

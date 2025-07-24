@@ -207,9 +207,8 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
               }
             }}
           />
-          <Button onClick={handleAddEntry} disabled={!newEntryName.trim()} size="sm">
-            <Plus className="mr-1 h-4 w-4" />
-            {t("add_button")}
+          <Button onClick={handleAddEntry} disabled={newEntryName.trim().length < 2} size="sm">
+            <Plus className="h-4 w-4" />
           </Button>
         </div>
       </div>
