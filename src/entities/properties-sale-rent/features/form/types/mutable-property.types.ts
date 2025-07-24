@@ -24,6 +24,6 @@ export function convertToMutableProperty(property?: DBProperty): MutableProperty
 
   return {
     ...property,
-    is_new: !property,
+    is_new: false,
   };
 }
