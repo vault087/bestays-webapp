@@ -1,10 +1,9 @@
 "use client";
 
-import { ImagePlus } from "lucide-react";
 import { memo, useRef, useCallback } from "react";
 import { ImageItem } from "@/components/form";
-import { Button } from "@/modules/shadcn/components/ui/button";
 import { PropertyImage } from "./image";
+import { ImageAddButton } from "./image-add-button";
 
 export const CompactImagesView = memo(function CompactImagesView({
   images,
@@ -19,8 +18,8 @@ export const CompactImagesView = memo(function CompactImagesView({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const coverImage = images[0];
-  const thumbnails = images.slice(1, 5); // Show max 4 thumbnails in compact view
-  const remainingCount = Math.max(0, images.length - 5);
+  const thumbnails = images.slice(1); // Show all thumbnails in compact view
+  const remainingCount = Math.max(0, maxImages - images.length);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,41 +55,32 @@ export const CompactImagesView = memo(function CompactImagesView({
   );
 
   return (
-    <div className="flex items-center gap-3 overflow-x-auto pb-2">
-      {/* Cover Image - Sticky */}
-      {coverImage && <PropertyImage image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />}
+    <div className="flex items-center pb-2">
+      {/* Fixed Left Section - Cover Image and Add Button */}
+      <div className="flex flex-shrink-0 items-center gap-3">
+        {/* Cover Image - Sticky */}
+        {coverImage && <PropertyImage image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />}
 
-      {/* Thumbnail Images */}
-      {thumbnails.map((image, index) => (
-        <div key={index + 1} className="relative flex-shrink-0">
-          {coverImage && (
-            <PropertyImage
-              setCover={() => setCover(index + 1)}
-              image={image}
-              onRemove={() => handleRemoveImage(index + 1)}
-              isCover={false}
-            />
-          )}
+        {/* Add Button - Sticky */}
+        {images.length < maxImages && (
+          <ImageAddButton remainingCount={remainingCount} onClick={() => fileInputRef.current?.click()} />
+        )}
+      </div>
+
+      {/* Scrollable Right Section - Thumbnails */}
+      {thumbnails.length > 0 && (
+        <div className="ml-3 flex items-center gap-3 overflow-x-auto">
+          {thumbnails.map((image, index) => (
+            <div key={index + 1} className="relative flex-shrink-0">
+              <PropertyImage
+                setCover={() => setCover(index + 1)}
+                image={image}
+                onRemove={() => handleRemoveImage(index + 1)}
+                isCover={false}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-
-      {/* Remaining Count Indicator */}
-      {remainingCount > 0 && (
-        <div className="bg-muted flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-md">
-          <span className="text-muted-foreground text-sm">+{remainingCount}</span>
-        </div>
-      )}
-
-      {/* Add Button */}
-      {images.length < maxImages && (
-        <Button
-          type="button"
-          variant="outline"
-          className="h-20 w-20 flex-shrink-0 border-dashed"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <ImagePlus className="!h-6 !w-6" />
-        </Button>
       )}
 
       {/* Hidden File Input */}

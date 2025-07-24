@@ -1,11 +1,13 @@
 "use client";
 
-import { Expand, ImagePlus } from "lucide-react";
+import { Expand } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRef, useCallback, memo } from "react";
 import { ImageItem } from "@/components/form";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
 import { PropertyImage } from "./image";
+import { ImageAddButton } from "./image-add-button";
 
 export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
   images,
@@ -18,6 +20,8 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
   maxImages: number;
   setCover: (index: number) => void;
 }) {
+  const t = useTranslations("PropertiesSaleRent.fields.images");
+  const title = t("title");
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -26,7 +30,7 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
-        <DialogTitle className="sr-only">Property Images Editor</DialogTitle>
+        <DialogTitle className="sr-only">{title}</DialogTitle>
         <ExpandedImagesView images={images} onImagesChange={onImagesChange} maxImages={maxImages} setCover={setCover} />
       </DialogContent>
     </Dialog>
@@ -47,6 +51,8 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const coverImage = images[0];
   const otherImages = images.slice(1);
+
+  const remainingCount = Math.max(0, maxImages - images.length);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,12 +87,17 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
     [images, onImagesChange],
   );
 
+  const t = useTranslations("PropertiesSaleRent.fields.images");
+  const title = t("title");
+
+  const tCommon = useTranslations("Common");
+
   return (
     <div className="space-y-4">
       <div className="text-center">
-        <h3 className="text-lg font-semibold">Property Images</h3>
+        <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-muted-foreground text-sm">
-          {images.length} of {maxImages} images uploaded
+          {tCommon("image.uploaded", { count: images.length, max: maxImages })}
         </p>
       </div>
 
@@ -99,7 +110,7 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
           ) : (
             <div className="border-muted-foreground/25 flex aspect-[4/3] items-center justify-center rounded-lg border-2 border-dashed">
               <div className="text-center">
-                <div className="text-muted-foreground text-sm">No cover image</div>
+                <div className="text-muted-foreground text-sm select-none">{tCommon("image.noCover")}</div>
               </div>
             </div>
           )}
@@ -110,14 +121,7 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
           <div className="grid max-h-[400px] grid-cols-3 gap-2 overflow-y-auto">
             {/* Add Images */}
             {images.length < maxImages && (
-              <Button
-                type="button"
-                variant="outline"
-                className="h-30 w-30 flex-shrink-0 border-dashed"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <ImagePlus className="!h-6 !w-6" />
-              </Button>
+              <ImageAddButton size="md" remainingCount={remainingCount} onClick={() => fileInputRef.current?.click()} />
             )}
 
             {otherImages.map((image, index) => (

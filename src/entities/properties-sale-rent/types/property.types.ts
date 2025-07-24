@@ -27,6 +27,8 @@ export type DBRooms = z.infer<typeof DBRoomsSchema>;
 export const PROPERTY_ABOUT_MAX = 5000;
 export const PROPERTY_AGENT_NOTES_MAX = 5000;
 
+export const PROPERTY_MAX_IMAGES = 30;
+
 // Database Schemas
 export const DBPropertySchema = z.object({
   id: z.string().uuid(),

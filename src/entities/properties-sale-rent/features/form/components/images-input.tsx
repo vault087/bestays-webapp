@@ -4,13 +4,11 @@ import { memo, useCallback, useMemo } from "react";
 import { FormFieldLayout, ImageItem } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
-import { useDebugRender } from "@/utils/use-debug-render";
+import { PROPERTY_MAX_IMAGES } from "@/entities/properties-sale-rent/types/property.types";
 import { ImageFieldExpandDialog, CompactImagesView } from "./images";
-
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
   const { images, onImagesChange, error } = usePropertyImagesInput();
-
-  useDebugRender("PropertyImagesInput");
+  const maxImages = PROPERTY_MAX_IMAGES;
 
   // Convert DBImage to ImageItem format for the form component
   const formImages: ImageItem[] = useMemo(
@@ -36,11 +34,11 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
   // Mock data - add 3 background images if no images exist
   const displayImages = useMemo(() => {
     if (formImages.length === 0) {
-      return [
-        { url: "/bg/bg1.jpg", color: null, alt: "Beach villa background" },
-        { url: "/bg/bg2.jpg", color: null, alt: "Tropical view background" },
-        { url: "/bg/bg3.jpg", color: null, alt: "Coastal area background" },
-      ];
+      return [];
+      //   { url: "/bg/bg1.jpg", color: null, alt: "Beach villa background" },
+      //   { url: "/bg/bg2.jpg", color: null, alt: "Tropical view background" },
+      //   { url: "/bg/bg3.jpg", color: null, alt: "Coastal area background" },
+      // ];
     }
     return formImages;
   }, [formImages]);
@@ -68,7 +66,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
         <ImageFieldExpandDialog
           images={displayImages}
           onImagesChange={handleImagesChange}
-          maxImages={30}
+          maxImages={maxImages}
           setCover={setCover}
         />
       </FormFieldLayoutToolbar>
@@ -77,7 +75,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       <CompactImagesView
         images={displayImages}
         onImagesChange={handleImagesChange}
-        maxImages={30}
+        maxImages={maxImages}
         setCover={setCover}
       />
     </FormFieldLayout>

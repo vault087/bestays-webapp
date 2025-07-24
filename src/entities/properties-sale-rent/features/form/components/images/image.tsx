@@ -26,7 +26,13 @@ export const PropertyImage = memo(function PropertyImage({
     // <div className="group/image relative aspect-[4/3] overflow-hidden rounded-lg">
     //   <div className="flex h-full w-full overflow-clip rounded-md">
 
-    <div className={cn("group/image flex-shrink-0", size === "lg" && "aspect-[4/3]", size === "md" && "aspect-square")}>
+    <div
+      className={cn(
+        "group/image flex-shrink-0 select-none",
+        size === "lg" && "aspect-[4/3]",
+        size === "md" && "aspect-square",
+      )}
+    >
       <div
         className={cn(
           "relative h-20 w-20 overflow-hidden rounded-md",

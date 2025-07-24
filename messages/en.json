@@ -15,7 +15,9 @@
     "edit": "Edit",
     "image": {
       "cover": "Cover",
-      "setCover": "Set as cover"
+      "setCover": "Set as cover",
+      "noCover": "No cover image",
+      "uploaded": "{count} of {max} images uploaded"
     }
   },
   "Dashboard": {
@@ -69,6 +71,10 @@
   },
   "PropertiesSaleRent": {
     "fields": {
+      "images": {
+        "title": "Property Images",
+        "description": "Upload up to {maxImages} images. The first image will be used as the main cover photo."
+      },
       "about": {
         "title": "About",
         "description": "Please enter a short about the property",
