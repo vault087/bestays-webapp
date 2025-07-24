@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
+// import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
 import RootLayout from "@/components/layout/root-layout";
 import { ProtectedProvider } from "./provider";
 

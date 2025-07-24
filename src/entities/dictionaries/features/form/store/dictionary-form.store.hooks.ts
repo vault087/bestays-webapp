@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react";
+import { useContext } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { StoreApi, useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";

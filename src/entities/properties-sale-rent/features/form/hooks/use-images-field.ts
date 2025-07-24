@@ -2,9 +2,9 @@
 import { useCallback, useId, useState } from "react";
 import { z } from "zod";
 import { DBImageSchema } from "@/entities/media/types/image.type";
+import { usePropertyFormStaticStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
 
 type DBImage = z.infer<typeof DBImageSchema>;
-import { usePropertyFormStaticStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
 
 // Input hook for MutableProperty images field
 export function usePropertyImagesInput(): {

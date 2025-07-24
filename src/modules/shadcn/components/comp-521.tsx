@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Stepper, StepperIndicator, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from "./ui/stepper";
+import { Stepper, StepperIndicator, StepperItem, StepperTitle, StepperTrigger } from "./ui/stepper";
 
-const steps = [1, 2, 3, 4];
 const stepsNamed = [
   {
     step: 1,
