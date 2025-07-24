@@ -50,7 +50,7 @@ export default function PropertiesPageClient({
       <DictionaryFormStoreProvider store={dictionaryStore}>
         <PropertyFormStoreProvider store={propertyStore}>
           <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
-            <div className="flex w-full flex-col gap-4 pt-6">
+            <div className="flex w-full flex-col gap-4 pt-4">
               <div className="flex w-full flex-row items-center justify-between px-6">
                 <div className="flex items-center gap-2">
                   <Button variant="ghost" size="icon">
@@ -58,9 +58,7 @@ export default function PropertiesPageClient({
                   </Button>
                   <h1 className="text-xl font-bold">Listing editor</h1>
                 </div>
-                <div className="min-w-sm pt-4">
-                  <Comp439 />
-                </div>
+                <div className="min-w-sm pt-4">{/* <Comp439 /> */}</div>
 
                 <div className="flex items-center justify-end space-x-3">
                   <LocaleSwitcher />
@@ -82,7 +80,7 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { className?: string }) {
   return (
-    <div className={cn("bg-background w-full px-5 pt-5", className)}>
+    <div className={cn("bg-background w-full px-5 pt-2", className)}>
       {/* Editing Area */}
       {/* <div className="w-full"> */}
       {/* Fields Container */}
