@@ -1,8 +1,8 @@
 "use client";
 
-import { SearchIcon, BanIcon, Plus } from "lucide-react";
+import { SearchIcon, BanIcon, Plus, CircleAlertIcon, TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useId } from "react";
 import { DBSerialID } from "@/entities/common";
 import { DBDictionary, useDictionaryFormStoreActions, MutableEntry } from "@/entities/dictionaries";
 import { DictionaryEntryNameInput } from "@/entities/dictionaries/features/form/components/entry-name";
@@ -18,6 +18,7 @@ import {
   DialogClose,
 } from "@/modules/shadcn/components/ui/dialog";
 import { Input } from "@/modules/shadcn/components/ui/input";
+import { Label } from "@/modules/shadcn/components/ui/label";
 
 interface DictionaryEntryEditorProps {
   dictionary: DBDictionary;
@@ -33,6 +34,7 @@ interface DeleteConfirmationDialogProps {
 }
 
 function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirmationDialogProps) {
+  const id = useId();
   const [inputValue, setInputValue] = useState("");
   const t = useTranslations("Dictionaries.entries.editor.delete_confirmation");
 
@@ -54,29 +56,44 @@ function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirma
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("title")}</DialogTitle>
-          <DialogDescription>{t("description")}</DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder={t("input_placeholder")}
-          />
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-full border" aria-hidden="true">
+            <CircleAlertIcon className="opacity-80" size={16} />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="sm:text-center">{t("title")}</DialogTitle>
+            <DialogDescription className="sm:text-center">{t("description")}</DialogDescription>
+          </DialogHeader>
         </div>
 
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant="outline">
-              {t("cancel")}
+        <form className="space-y-5">
+          <div className="*:not-first:mt-2">
+            <Label htmlFor={id}>{t("description")}</Label>
+            <Input
+              id={id}
+              type="text"
+              placeholder={t("input_placeholder")}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline" className="flex-1">
+                {t("cancel")}
+              </Button>
+            </DialogClose>
+            <Button
+              type="button"
+              variant="destructive"
+              className="flex-1"
+              disabled={!isConfirmEnabled}
+              onClick={handleConfirm}
+            >
+              {t("delete")}
             </Button>
-          </DialogClose>
-          <Button type="button" variant="destructive" disabled={!isConfirmEnabled} onClick={handleConfirm}>
-            {t("delete")}
-          </Button>
-        </DialogFooter>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
@@ -143,14 +160,16 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
 
   return (
     <>
-      <div className="flex h-[60vh] max-h-[80vh] flex-col">
+      <div className="flex h-[60vh] max-h-[80vh] flex-col space-y-2">
         {/* Search input header */}
-        <div className="flex flex-row items-center justify-between">
-          <h2 className="text-lg font-bold">{title}</h2>
+        <div>
+          <div className="flex flex-row items-center justify-between">
+            <h2 className="text-lg font-bold">{title}</h2>
+          </div>
+          {description && (
+            <div className="text-muted-foreground flex items-start justify-start pt-1 pb-4 text-sm">{description}</div>
+          )}
         </div>
-        {description && (
-          <div className="text-muted-foreground flex items-start justify-start pt-1 pb-4 text-sm">{description}</div>
-        )}
         <div className="border-input flex items-center border-b px-5" cmdk-input-wrapper="">
           <SearchIcon size={20} className="text-muted-foreground/80 me-3" />
           <Input
@@ -170,9 +189,9 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
               {tCommon("not_found")}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-0">
               {filteredEntries.map((entry) => (
-                <div key={entry.id} className="flex items-center space-x-2 rounded-sm">
+                <div key={entry.id} className="flex items-center space-x-2 rounded-sm odd:pr-4">
                   <div className="min-w-0 flex-1 rounded-b-none border-b-1">
                     <DictionaryEntryNameInput
                       placeholder={getAvailableLocalizedText(entry.name, locale)}
@@ -182,12 +201,12 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
                     />
                   </div>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={() => handleDeleteEntry(entry)}
-                    className="text-destructive hover:text-destructive h-8 w-8 flex-shrink-0 p-0 opacity-30 hover:opacity-100"
+                    className="text-muted-foreground/80 hover:text-muted-foreground h-8 w-8 flex-shrink-0 p-0 opacity-30 hover:opacity-100"
                   >
-                    <BanIcon className="h-4 w-4" />
+                    <TrashIcon className="h-4 w-4" />
                   </Button>
                 </div>
               ))}
