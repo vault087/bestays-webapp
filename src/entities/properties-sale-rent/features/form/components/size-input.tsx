@@ -1,10 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { memo, useCallback, useMemo, useRef } from "react";
 import { FormFieldLayout, FormDropDown } from "@/components/form";
 import { DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import { usePropertySizeInput } from "@/entities/properties-sale-rent/features/form/hooks/use-size-field";
-import { useTranslations } from "@/modules/i18n";
 import { cn, Input } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
@@ -17,7 +17,7 @@ export const PropertySizeInput = function PropertySizeInput() {
 };
 
 export const PropertySizeTotalInput = function PropertySizeTotalInput() {
-  const { t } = useTranslations("PropertiesSaleRent.fields.size");
+  const t = useTranslations("PropertiesSaleRent.fields.size");
   const title = t("title");
   const description = t("description");
   return <PropertySizeFieldInput title={title} description={description} field="total" />;

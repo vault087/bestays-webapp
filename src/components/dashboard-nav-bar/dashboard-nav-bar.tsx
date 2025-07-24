@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ThemeSwitcher } from "@/components/theme";
-import { Link, usePathname, useTranslations } from "@/modules/i18n";
+import { Link, usePathname } from "@/modules/i18n";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import {
   Button,
@@ -36,7 +37,7 @@ const Logo = () => {
 };
 
 export default function DashboardNavBar() {
-  const { t } = useTranslations("Dashboard.NavBar");
+  const t = useTranslations("Dashboard.NavBar");
 
   const pathname = usePathname();
   const isActive = (href: string) => {

@@ -10,10 +10,8 @@ import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/st
 import { DBPropertyCodeField, DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { useDictionaryOptions } from "@/entities/properties-sale-rent/features/form/hooks/utils/use-dictionary-options";
-import { useTranslations } from "@/modules/i18n";
 import {
   Button,
-  DropdownMenuSeparator,
   DropdownMenuItem,
   DropdownMenuContent,
   DropdownMenuTrigger,

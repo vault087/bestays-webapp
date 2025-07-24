@@ -1,8 +1,8 @@
+import { useTranslations } from "next-intl";
 import { memo, useMemo } from "react";
 import { FormFieldLayout, FormPriceInput } from "@/components/form";
 import { formatMoneyDisplay } from "@/entities/common";
 import { usePropertyPriceInput, DBPropertyPriceField, usePropertyLocale } from "@/entities/properties-sale-rent/";
-import { useTranslations } from "@/modules/i18n";
 import { cn } from "@/modules/shadcn";
 import { useDebugRender } from "@/utils/use-debug-render";
 
@@ -13,7 +13,7 @@ export const PropertyPriceInputGroup = function PropertyPriceInputGroup({
   direction?: "vertical" | "horizontal";
   className?: string;
 }) {
-  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  const t = useTranslations("PropertiesSaleRent.fields.price");
   const title = t("title");
   return (
     <FormFieldLayout title={title} className={className}>
@@ -27,17 +27,17 @@ export const PropertyPriceInputGroup = function PropertyPriceInputGroup({
 };
 
 export const PropertyPriceRaiInput = function PropertyPriceRaiInput() {
-  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  const t = useTranslations("PropertiesSaleRent.fields.price");
   return <PropertyPriceInput title={t("rai.title")} field="rai" />;
 };
 
 export const PropertyPriceTotalInput = function PropertyPriceTotalInput() {
-  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  const t = useTranslations("PropertiesSaleRent.fields.price");
   return <PropertyPriceInput title={t("total.title")} field="total" />;
 };
 
 export const PropertyPriceSaleInput = function PropertyPriceSaleInput() {
-  const { t } = useTranslations("PropertiesSaleRent.fields.price");
+  const t = useTranslations("PropertiesSaleRent.fields.price");
   return <PropertyPriceInput title={t("sale.title")} field="sale" />;
 };
 
