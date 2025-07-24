@@ -1,21 +1,7 @@
 import { produce } from "immer";
 import { StateCreator } from "zustand";
 import { DBSerialID, DBTemporarySerialID, generateTemporarySerialId } from "@/entities/common/";
-
-// Image entity types
-export interface ImageData {
-  id: DBSerialID;
-  file: File;
-  previewUrl: string;
-  name: string;
-  size: number;
-  type: string;
-  uploadedAt: Date;
-}
-
-export interface MutableImage extends ImageData {
-  is_new: boolean;
-}
+import { DBImage, MutableImage } from "@/entities/media/types/image.type";
 
 // Image Store Slice State
 export interface ImageStoreSliceState {
@@ -28,24 +14,38 @@ export interface ImageStoreSliceState {
 // Image Store Slice Actions
 export interface ImageStoreSliceActions {
   addImage: (file: File) => MutableImage;
+  addDBImages: (dbImages: DBImage[]) => void;
   updateImage: (imageId: DBSerialID, updater: (draft: MutableImage) => void) => void;
   deleteImage: (imageId: DBSerialID) => void;
+  reorderImages: (fromIndex: number, toIndex: number) => void;
   clearImages: () => void;
   getImageById: (imageId: DBSerialID) => MutableImage | undefined;
   getImagesByIds: (imageIds: DBSerialID[]) => MutableImage[];
+  getAllImagesOrdered: () => MutableImage[];
 }
 
 export interface ImageStoreSlice extends ImageStoreSliceState, ImageStoreSliceActions {}
 
+// Helper function to convert DBImage to MutableImage
+function convertDBImageToMutableImage(dbImage: DBImage, id: DBSerialID): MutableImage {
+  return {
+    ...dbImage,
+    id,
+    is_new: false,
+  };
+}
+
 export const createImageStoreSlice = (
-  initialImages: ImageData[] = [],
+  initialImages: DBImage[] = [],
 ): StateCreator<ImageStoreSlice, [], [], ImageStoreSlice> => {
   const convertedImages: Record<DBSerialID, MutableImage> = {};
   const imageIds: DBSerialID[] = [];
 
-  initialImages.forEach((image) => {
-    convertedImages[image.id] = { ...image, is_new: false };
-    imageIds.push(image.id);
+  initialImages.forEach((dbImage, index) => {
+    const id = (index + 1) as DBSerialID; // Generate sequential IDs for DB images
+    const mutableImage = convertDBImageToMutableImage(dbImage, id);
+    convertedImages[id] = mutableImage;
+    imageIds.push(id);
   });
 
   return (set, get) => ({
@@ -61,13 +61,15 @@ export const createImageStoreSlice = (
         produce((draft: ImageStoreSlice) => {
           newImage = {
             id: draft.temporaryImageId,
+            url: URL.createObjectURL(file), // Use as both display URL and previewUrl
+            color: null,
+            alt: file.name, // Use filename as initial alt text
+            is_new: true,
             file,
             previewUrl: URL.createObjectURL(file),
             name: file.name,
             size: file.size,
-            type: file.type,
             uploadedAt: new Date(),
-            is_new: true,
           };
 
           draft.images[newImage.id] = newImage;
@@ -135,6 +137,33 @@ export const createImageStoreSlice = (
     getImagesByIds: (imageIds: DBSerialID[]) => {
       const state = get();
       return imageIds.map((id) => state.images[id]).filter((image): image is MutableImage => image !== undefined);
+    },
+
+    getAllImagesOrdered: () => {
+      const state = get();
+      return state.imageIds.map((id) => state.images[id]).filter((image): image is MutableImage => image !== undefined);
+    },
+
+    addDBImages: (dbImages: DBImage[]) => {
+      set(
+        produce((draft: ImageStoreSlice) => {
+          dbImages.forEach((dbImage, index) => {
+            const id = (draft.imageIds.length + index + 1) as DBSerialID;
+            const mutableImage = convertDBImageToMutableImage(dbImage, id);
+            draft.images[id] = mutableImage;
+            draft.imageIds.push(id);
+          });
+        }),
+      );
+    },
+
+    reorderImages: (fromIndex: number, toIndex: number) => {
+      set(
+        produce((draft: ImageStoreSlice) => {
+          const [removed] = draft.imageIds.splice(fromIndex, 1);
+          draft.imageIds.splice(toIndex, 0, removed);
+        }),
+      );
     },
   });
 };

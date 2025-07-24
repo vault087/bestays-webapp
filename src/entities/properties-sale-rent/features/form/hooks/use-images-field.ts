@@ -1,72 +1,85 @@
 "use client";
-import { useCallback, useId, useState } from "react";
-import { z } from "zod";
-import { DBImageSchema } from "@/entities/media/types/image.type";
-import { usePropertyFormStaticStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
+import { useCallback, useId } from "react";
+import { DBImage, MutableImage } from "@/entities/media/types/image.type";
+import { usePropertyFormStoreContext } from "@/entities/properties-sale-rent";
 
-type DBImage = z.infer<typeof DBImageSchema>;
-
-// Input hook for MutableProperty images field
+// Input hook for property images using slice management
 export function usePropertyImagesInput(): {
   inputId: string;
-  images: DBImage[];
+  images: DBImage[]; // Return as DBImage for UI compatibility
   onImagesChange: (images: DBImage[]) => void;
   onAddImage: (image: DBImage) => void;
+  onAddFile: (file: File) => void; // New method for file uploads
   onRemoveImage: (index: number) => void;
   onReorderImages: (fromIndex: number, toIndex: number) => void;
   error?: string;
 } {
   const inputId = useId();
+  const store = usePropertyFormStoreContext();
 
-  const { property } = usePropertyFormStaticStore();
-  const { updateProperty } = usePropertyFormStoreActions();
+  // Get images from slice and convert to DBImage format for UI
+  const allImages = store.getState().getAllImagesOrdered();
+  const images: DBImage[] = allImages.map((img) => ({
+    url: img.url,
+    color: img.color,
+    alt: img.alt,
+  }));
 
-  const [currentImages, setCurrentImages] = useState<DBImage[]>(property.images || []);
-
-  // Handle change
+  // Handle bulk change (for compatibility with existing UI)
   const onImagesChange = useCallback(
-    (images: DBImage[]) => {
-      setCurrentImages(images);
-      updateProperty((draft) => {
-        draft.images = images;
-      });
+    (newImages: DBImage[]) => {
+      // Clear existing and add new ones
+      // Note: This is mainly for compatibility - prefer individual operations
+      store.getState().clearImages();
+      store.getState().addDBImages(newImages);
     },
-    [updateProperty],
+    [store],
   );
 
+  // Add existing DB image
   const onAddImage = useCallback(
     (image: DBImage) => {
-      const newImages = [...currentImages, image];
-      onImagesChange(newImages);
+      store.getState().addDBImages([image]);
     },
-    [currentImages, onImagesChange],
+    [store],
   );
 
+  // Add new file upload
+  const onAddFile = useCallback(
+    (file: File) => {
+      store.getState().addImage(file);
+    },
+    [store],
+  );
+
+  // Remove image by index
   const onRemoveImage = useCallback(
     (index: number) => {
-      const newImages = currentImages.filter((_, i) => i !== index);
-      onImagesChange(newImages);
+      const allImages = store.getState().getAllImagesOrdered();
+      const imageToRemove = allImages[index];
+      if (imageToRemove) {
+        store.getState().deleteImage(imageToRemove.id);
+      }
     },
-    [currentImages, onImagesChange],
+    [store],
   );
 
+  // Reorder images
   const onReorderImages = useCallback(
     (fromIndex: number, toIndex: number) => {
-      const newImages = [...currentImages];
-      const [removed] = newImages.splice(fromIndex, 1);
-      newImages.splice(toIndex, 0, removed);
-      onImagesChange(newImages);
+      store.getState().reorderImages(fromIndex, toIndex);
     },
-    [currentImages, onImagesChange],
+    [store],
   );
 
   const error = undefined;
 
   return {
     inputId,
-    images: currentImages,
+    images,
     onImagesChange,
     onAddImage,
+    onAddFile,
     onRemoveImage,
     onReorderImages,
     error,

@@ -30,7 +30,9 @@ export type PropertyFormStore = PropertyFormStoreState & PropertyFormStoreAction
 
 // Store creator function
 export function createPropertyFormStore(store_id: string, property?: DBProperty): StoreApi<PropertyFormStore> {
-  const imageSliceCreator = createImageStoreSlice();
+  // Extract images from property for slice initialization
+  const initialImages = property?.images || [];
+  const imageSliceCreator = createImageStoreSlice(initialImages);
 
   return createStore<PropertyFormStore>()(
     persist(
@@ -70,10 +72,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {
-            // Clear any persisted base64 images (legacy data)
-            if (state.property?.images) {
-              state.property.images = state.property.images.filter((img) => !img.url.startsWith("data:"));
-            }
+            // Images are now managed by the slice, not persisted with property
             state.hydrated = true;
           }
         },
