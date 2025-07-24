@@ -59,7 +59,7 @@ export const DBPropertySchema = z.object({
   personal_notes: z.string().max(PROPERTY_PERSONAL_NOTES_MAX).nullish(),
   agent_id: z.string().uuid().nullish(),
 
-  is_published: z.boolean().default(false),
+  is_published: z.boolean().nullish(),
 
   created_by: z.string().uuid().nullish(),
   created_at: z.string().nullish(),

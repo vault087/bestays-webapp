@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
-import { DictionaryStoreTestProvider } from "@/entities/dictionaries/features/edit/mocks/test-utils";
+import { DictionariesStoreTestProvider } from "@/entities/dictionaries/features/edit/mocks/test-utils";
 import {
   useDictionaryCodeDisplay,
   useDictionaryCodeInput,
@@ -9,7 +9,7 @@ import {
 describe("useDictionaryCodeDisplay", () => {
   it("should return dictionary code for existing dictionary", () => {
     const TestComponent = ({ children }: { children: React.ReactNode }) => (
-      <DictionaryStoreTestProvider>{children}</DictionaryStoreTestProvider>
+      <DictionariesStoreTestProvider>{children}</DictionariesStoreTestProvider>
     );
 
     const { result } = renderHook(() => useDictionaryCodeDisplay(1), {
@@ -21,7 +21,7 @@ describe("useDictionaryCodeDisplay", () => {
 
   it("should return undefined for non-existing dictionary", () => {
     const TestComponent = ({ children }: { children: React.ReactNode }) => (
-      <DictionaryStoreTestProvider>{children}</DictionaryStoreTestProvider>
+      <DictionariesStoreTestProvider>{children}</DictionariesStoreTestProvider>
     );
 
     const { result } = renderHook(() => useDictionaryCodeDisplay(999), {
@@ -35,7 +35,7 @@ describe("useDictionaryCodeDisplay", () => {
 describe("useDictionaryCodeInput", () => {
   it("should return correct input props for existing dictionary", () => {
     const TestComponent = ({ children }: { children: React.ReactNode }) => (
-      <DictionaryStoreTestProvider>{children}</DictionaryStoreTestProvider>
+      <DictionariesStoreTestProvider>{children}</DictionariesStoreTestProvider>
     );
 
     const { result } = renderHook(() => useDictionaryCodeInput(1), {
@@ -53,7 +53,7 @@ describe("useDictionaryCodeInput", () => {
 
   it("should handle onChange correctly", () => {
     const TestComponent = ({ children }: { children: React.ReactNode }) => (
-      <DictionaryStoreTestProvider>{children}</DictionaryStoreTestProvider>
+      <DictionariesStoreTestProvider>{children}</DictionariesStoreTestProvider>
     );
 
     const { result } = renderHook(() => useDictionaryCodeInput(1), {

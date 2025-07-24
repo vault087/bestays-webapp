@@ -3,9 +3,9 @@ import { StateCreator } from "zustand";
 import { DBCode, DBSerialID, DBTemporarySerialID, generateTemporarySerialId } from "@/entities/common";
 import { DBDictionary, DBDictionaryEntry, MutableDictionary } from "@/entities/dictionaries/";
 import { LocalizedText } from "@/entities/localized-text";
-import { EntryStoreSliceActions, EntryStoreSliceState, createEntryStoreSlice } from "./entries.slice";
+import { EntriesStoreSliceActions, EntriesStoreSliceState, createEntriesStoreSlice } from "./entries.slice";
 
-export interface DictionaryStoreSliceState extends EntryStoreSliceState {
+export interface DictionariesStoreSliceState extends EntriesStoreSliceState {
   dbDictionaries: DBDictionary[];
   dictionaries: Record<DBSerialID, MutableDictionary>;
   dictionaryIds: DBSerialID[]; // dictionaryIds
@@ -14,18 +14,18 @@ export interface DictionaryStoreSliceState extends EntryStoreSliceState {
   temporaryDictionaryId: DBTemporarySerialID;
 }
 
-export interface DictionaryStoreSliceActions extends EntryStoreSliceActions {
+export interface DictionariesStoreSliceActions extends EntriesStoreSliceActions {
   addDictionary: (name: LocalizedText) => void;
   updateDictionary: (id: DBSerialID, updater: (draft: MutableDictionary) => void) => void;
   deleteDictionary: (id: DBSerialID) => void;
 }
 
-export type DictionaryStoreSlice = DictionaryStoreSliceState & DictionaryStoreSliceActions;
+export type DictionariesStoreSlice = DictionariesStoreSliceState & DictionariesStoreSliceActions;
 
-export const createDictionaryStoreSlice = (
+export const createDictionariesStoreSlice = (
   initialDictionaries: DBDictionary[],
   initialEntries: DBDictionaryEntry[],
-): StateCreator<DictionaryStoreSlice, [], [], DictionaryStoreSlice> => {
+): StateCreator<DictionariesStoreSlice, [], [], DictionariesStoreSlice> => {
   const convertedDictionaries: Record<DBSerialID, MutableDictionary> = {};
   const dictionaryIds: DBSerialID[] = [];
 
@@ -44,10 +44,10 @@ export const createDictionaryStoreSlice = (
     deletedDictionaryIds: [],
     temporaryDictionaryId: generateTemporarySerialId(),
 
-    ...createEntryStoreSlice(initialEntries)(set, get, api),
+    ...createEntriesStoreSlice(initialEntries)(set, get, api),
     addDictionary: (name: LocalizedText) =>
       set(
-        produce((draft: DictionaryStoreSlice) => {
+        produce((draft: DictionariesStoreSlice) => {
           const newDictionary = {
             id: draft.temporaryDictionaryId,
             code: "",
@@ -62,7 +62,7 @@ export const createDictionaryStoreSlice = (
 
     updateDictionary: (id: DBSerialID, updater: (draft: MutableDictionary) => void) => {
       set(
-        produce((draft: DictionaryStoreSlice) => {
+        produce((draft: DictionariesStoreSlice) => {
           if (draft.dictionaries[id]) {
             updater(draft.dictionaries[id]);
           }
@@ -72,7 +72,7 @@ export const createDictionaryStoreSlice = (
 
     deleteDictionary: (id: DBSerialID) =>
       set(
-        produce((draft: DictionaryStoreSlice) => {
+        produce((draft: DictionariesStoreSlice) => {
           const dictionary = draft.dictionaries[id];
           if (!dictionary) return;
 

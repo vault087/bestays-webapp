@@ -3,19 +3,24 @@
 import { produce } from "immer";
 import { StoreApi, createStore } from "zustand";
 import { persist } from "zustand/middleware";
+import {
+  createImageStoreSlice,
+  ImageStoreSliceActions,
+  ImageStoreSliceState,
+} from "@/entities/media/stores/images.slice";
 import { DBProperty, MutableProperty } from "@/entities/properties-sale-rent/";
+import { convertToMutableProperty } from "@/entities/properties-sale-rent/features/form/types/mutable-property.types";
 import { generateUUID } from "@/utils/generate-uuid";
 
-// MutableDictionary Store State
-export interface PropertyFormStoreState {
-  dbProperty: DBProperty;
+export interface PropertyFormStoreState extends ImageStoreSliceState {
+  dbProperty?: DBProperty | undefined;
   property: MutableProperty;
   hydrated: boolean;
   resetKey: string;
 }
 
 // MutableDictionary Store Actions
-export interface PropertyFormStoreActions {
+export interface PropertyFormStoreActions extends ImageStoreSliceActions {
   updateProperty: (updater: (draft: MutableProperty) => void) => void;
   reset: () => void;
 }
@@ -24,20 +29,17 @@ export interface PropertyFormStoreActions {
 export type PropertyFormStore = PropertyFormStoreState & PropertyFormStoreActions;
 
 // Store creator function
-export function createPropertyFormStore(store_id: string, property: DBProperty): StoreApi<PropertyFormStore> {
-  function buildInitialState(initialProperty: DBProperty): PropertyFormStoreState {
-    return {
-      dbProperty: initialProperty,
-      property: { ...initialProperty, is_new: true },
-      hydrated: false,
-      resetKey: generateUUID(),
-    };
-  }
+export function createPropertyFormStore(store_id: string, property?: DBProperty): StoreApi<PropertyFormStore> {
+  const imageSliceCreator = createImageStoreSlice();
 
   return createStore<PropertyFormStore>()(
     persist(
-      (set) => ({
-        ...buildInitialState(property),
+      (set, get, api) => ({
+        dbProperty: property,
+        property: convertToMutableProperty(property),
+        hydrated: false,
+        resetKey: generateUUID(),
+        ...imageSliceCreator(set, get, api),
 
         updateProperty: (updater: (draft: MutableProperty) => void) =>
           set(
@@ -46,11 +48,14 @@ export function createPropertyFormStore(store_id: string, property: DBProperty):
             }),
           ),
 
-        reset: () =>
+        reset: (property?: DBProperty) =>
           set((state) => {
+            const newProperty = property ? property : state.dbProperty;
             return {
               ...state,
-              ...buildInitialState(state.dbProperty),
+              ...imageSliceCreator(set, get, api),
+              dbProperty: newProperty,
+              property: convertToMutableProperty(newProperty),
               hydrated: state.hydrated,
               resetKey: generateUUID(), // Force component re-render
             };
@@ -62,7 +67,6 @@ export function createPropertyFormStore(store_id: string, property: DBProperty):
           dbProperty: state.dbProperty,
           property: state.property,
           resetKey: state.resetKey,
-          images: state.images,
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {

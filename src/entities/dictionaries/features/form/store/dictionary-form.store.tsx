@@ -4,13 +4,13 @@ import { createStore, StoreApi } from "zustand";
 import { persist } from "zustand/middleware";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
-  createDictionaryStoreSlice,
-  DictionaryStoreSlice,
-  DictionaryStoreSliceActions,
+  createDictionariesStoreSlice,
+  DictionariesStoreSlice,
+  DictionariesStoreSliceActions,
 } from "./slices/dictionaries.slice";
 
-export type DictionaryFormStoreState = DictionaryStoreSlice;
-export type DictionaryFormStoreActions = DictionaryStoreSliceActions;
+export type DictionaryFormStoreState = DictionariesStoreSlice;
+export type DictionaryFormStoreActions = DictionariesStoreSliceActions;
 
 export type DictionaryFormStore = DictionaryFormStoreState &
   DictionaryFormStoreActions & {
@@ -22,14 +22,14 @@ export function createDictionaryFormStore(
   dictionaries: DBDictionary[],
   entries: DBDictionaryEntry[],
 ): StoreApi<DictionaryFormStore> {
-  const dictionarySliceCreator = createDictionaryStoreSlice(dictionaries, entries);
+  const dictionarySliceCreator = createDictionariesStoreSlice(dictionaries, entries);
 
   return createStore<DictionaryFormStore>()(
     persist(
       (set, get, api) => {
         return {
           hydrated: false,
-          ...dictionarySliceCreator(set, get, api), // This already includes EntryStoreSlice
+          ...dictionarySliceCreator(set, get, api), // This already includes EntriesStoreSlice
         };
       },
       {

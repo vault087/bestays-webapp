@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { DBPropertySchema } from "@/entities/properties-sale-rent";
+import { DBProperty, DBPropertySchema } from "@/entities/properties-sale-rent";
+import { generateUUID } from "@/utils/generate-uuid";
 
 // Form Schemas (extend DB schemas)
 export const MutablePropertySchema = DBPropertySchema.omit({
@@ -12,3 +13,17 @@ export const MutablePropertySchema = DBPropertySchema.omit({
 });
 
 export type MutableProperty = z.infer<typeof MutablePropertySchema>;
+
+export function convertToMutableProperty(property?: DBProperty): MutableProperty {
+  if (!property) {
+    return {
+      id: generateUUID(),
+      is_new: true,
+    };
+  }
+
+  return {
+    ...property,
+    is_new: !property,
+  };
+}
