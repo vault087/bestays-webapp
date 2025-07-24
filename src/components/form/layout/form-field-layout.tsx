@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo } from "react";
 import { cn } from "@/modules/shadcn/utils/cn";
 import { FormFieldDescription } from "./form-field-description";
 import { FormFieldError } from "./form-field-error";
@@ -39,10 +39,26 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   className?: string;
 }) {
   const margedConfig = { ...DefaultFormFieldConfig, ...config };
-  const [isFocused, setIsFocused] = useState(false);
+  // const [isFocused, setIsFocused] = useState(false);
+
+  // const handleClick = () => {
+  //   setIsFocused(true);
+  // };
+
+  // const handleBlur = (e: React.FocusEvent) => {
+  //   // Only blur if focus is leaving the entire field layout
+  //   if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+  //     setIsFocused(false);
+  //   }
+  // };
 
   return (
-    <FormFieldLayoutProvider focused={isFocused} setFocused={setIsFocused}>
+    <FormFieldLayoutProvider
+      focused={true}
+      setFocused={(value) => {
+        console.log("setFocused", value);
+      }}
+    >
       <div
         className={cn(
           "group bg-card relative flex w-full flex-col space-y-2",
@@ -50,9 +66,12 @@ export const FormFieldLayout = memo(function FormFieldLayout({
 
           margedConfig.focus_ring &&
             "focus-within:ring-primary transition-shadow duration-200 focus-within:ring-2 focus-within:ring-offset-2",
-          isFocused && "ring-primary ring-2 ring-offset-2",
+          // isFocused && "ring-primary ring-2 ring-offset-2",
           className,
         )}
+        // onClick={handleClick}
+        // onBlur={handleBlur}
+        tabIndex={-1} // Allow div to receive focus events
       >
         {title && (
           <div className="flex flex-row space-x-2 pl-0">

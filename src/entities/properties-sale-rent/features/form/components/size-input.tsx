@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useMemo, useRef } from "react";
 import { FormFieldLayout, FormDropDown } from "@/components/form";
 import { DBPropertySizeField } from "@/entities/properties-sale-rent/";
 import { usePropertySizeInput } from "@/entities/properties-sale-rent/features/form/hooks/use-size-field";
@@ -45,6 +45,14 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
     return isNaN(numValue) ? "0.00" : numValue.toFixed(2);
   }, []);
 
+  const previewValue: string = useMemo(() => {
+    return (
+      formatDisplayValue(value) +
+      " " +
+      (unit?.label ? unit.label.charAt(0).toUpperCase() + unit.label.slice(1).toLocaleLowerCase() : "")
+    );
+  }, [value, formatDisplayValue, unit]);
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const inputValue = e.target.value;
@@ -75,29 +83,37 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
       className={className}
       config={{ focus_ring: true }}
     >
-      <div className={cn("flex")}>
-        <div className="text-muted-foreground focus-within:text-primary w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
-          <Input
-            id={inputId}
-            ref={inputRef}
-            type="text"
-            defaultValue={formatDisplayValue(value)}
-            placeholder="0.00"
-            className={cn(
-              "-me-px rounded-none border-none px-4 py-0 text-right shadow-none",
-              "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
-            )}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onChange={handleChange}
+      <div className="flex w-full flex-col space-y-2">
+        {/* Input Row */}
+        <div className="flex flex-row">
+          <div className="w-full rounded-md rounded-e-none border-1 border-e-0 shadow-xs">
+            <Input
+              id={inputId}
+              ref={inputRef}
+              type="text"
+              defaultValue={formatDisplayValue(value)}
+              placeholder="0.00"
+              className={cn(
+                "-me-px rounded-none border-none px-4 py-0 text-right shadow-none",
+                "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+              )}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+          </div>
+          <FormDropDown
+            selectedOption={unit}
+            options={units}
+            selectOption={setUnit}
+            className="rounded-s-none rounded-e-md"
           />
         </div>
-        <FormDropDown
-          selectedOption={unit}
-          options={units}
-          selectOption={setUnit}
-          className="rounded-s-none rounded-e-md"
-        />
+
+        {/* Preview Row */}
+        <div className="flex w-full flex-row justify-end pr-2">
+          <span className="text-muted-foreground text-sm font-light">{previewValue}</span>
+        </div>
       </div>
     </FormFieldLayout>
   );

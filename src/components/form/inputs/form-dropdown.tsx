@@ -1,3 +1,4 @@
+"use client";
 import { CheckIcon, ChevronDown } from "lucide-react";
 import { memo } from "react";
 import { FormSingleOptionProps } from "@/components/form/types";
