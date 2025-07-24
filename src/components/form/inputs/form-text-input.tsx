@@ -1,4 +1,5 @@
 "use client";
+import deepmerge from "deepmerge";
 import React, { memo, useState } from "react";
 import { Input } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
@@ -26,7 +27,7 @@ export const FormTextInput = memo(function FormTextInput({
   placeholder,
   arialInvalid = false,
   className,
-  config = DefaultFormTextInputConfig,
+  config,
 }: {
   inputId: string;
   value: string;
@@ -40,12 +41,13 @@ export const FormTextInput = memo(function FormTextInput({
 }) {
   const [focused, setFocused] = useState(false);
 
+  const margedConfig = deepmerge(DefaultFormTextInputConfig, config || {});
   return (
     <div
       className={cn(
         "flex h-full w-full flex-1",
-        config.characterCount.inline && "flex-row items-center justify-center space-x-1",
-        !config.characterCount.inline && "flex-col space-y-0",
+        margedConfig.characterCount.inline && "flex-row items-center justify-center space-x-1",
+        !margedConfig.characterCount.inline && "flex-col space-y-0",
         className,
       )}
     >
@@ -62,14 +64,14 @@ export const FormTextInput = memo(function FormTextInput({
         aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
         className={"h-12 border-0 py-0 font-mono text-xs shadow-none dark:bg-transparent"}
       />
-      {(config.characterCount.always_show || focused) && (
+      {(margedConfig.characterCount.always_show || focused) && (
         <div>
           <p
             id={`${inputId}-description`}
             className={cn(
               "text-muted-foreground flex text-end text-xs whitespace-nowrap",
-              config.characterCount.inline && "",
-              !config.characterCount.inline && "",
+              margedConfig.characterCount.inline && "",
+              !margedConfig.characterCount.inline && "",
             )}
             role="status"
             aria-live="polite"

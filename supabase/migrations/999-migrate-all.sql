@@ -1,4 +1,4 @@
--- Generated: 2025-07-24T14:52:13.438Z
+-- Generated: 2025-07-24T15:26:08.210Z
 
 -- 1_dictionaries.sql
 DROP TABLE IF EXISTS properties_sale_rent;
@@ -40,7 +40,6 @@ ALTER TABLE dictionary_entries DISABLE ROW LEVEL SECURITY;
 DROP TABLE IF EXISTS properties_sale_rent;
 CREATE TABLE properties_sale_rent (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    title JSONB,
     about JSONB,
 
     ownership_type INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -65,6 +64,7 @@ CREATE TABLE properties_sale_rent (
     is_published BOOLEAN DEFAULT FALSE,
     cover_image JSONB,
 
+    personal_title TEXT,
     personal_notes TEXT,
     agent_id UUID REFERENCES auth.users(id) ON DELETE SET NULL ON UPDATE CASCADE,
 
@@ -87,7 +87,7 @@ CREATE INDEX idx_properties_sale_rent_deleted_at ON properties_sale_rent (delete
 INSERT INTO "public"."dictionaries" 
 ("id", "code", "name", "metadata", "description") 
 VALUES 
-('1', 'areas', '{"en":"Area","ru":"Район","th":"พื้นที่"}', '{"info": "Administrative or commonly known zones in which the property is located. Useful for geographical search filters and grouping listings by region"}', '{"en": "Property’s geographical area", "ru": "Район недвижимости", "th": "พื้นที่ของอสังหาริมทรัพย์"}'),
+('1', 'areas', '{"en":"Location Area","ru":"Район местоположения","th":"พื้นที่ทำเล"}', '{"info": "Administrative or commonly known zones in which the property is located. Useful for geographical search filters and grouping listings by region"}', '{"en": "Property’s geographical area", "ru": "Район недвижимости", "th": "พื้นที่ของอสังหาริมทรัพย์"}'),
 ('2', 'location_strengths', '{"en":"Location Strength","ru":"Преимущество Местоположения","th":"จุดเด่นของทำเล"}', '{"info": "Macro-level desirability of a location based on geography, infrastructure, or prestige. Often influences price and investment value"}', '{"en": "Location desirability factor", "ru": "Преимущество местоположения", "th": "จุดเด่นของทำเล"}'),
 ('3', 'highlights', '{"en":"Highlight","ru":"Особенность","th":"จุดเด่น"}', '{"info": "Unique selling points or notable features of the property, such as design, amenities, or views. Used to attract buyer interest and differentiate listings"}', '{"en": "Unique property feature", "ru": "Уникальная особенность", "th": "จุดเด่นของอสังหาริมทรัพย์"}'),
 ('5', 'property_types', '{"en":"Property Type","ru":"Тип Недвижимости","th":"ประเภทอสังหาริมทรัพย์"}', '{"info": "Categorizes the general type of real estate, such as villa, condo, land, townhouse, or commercial. Helps define the nature of the asset"}', '{"en": "Property type", "ru": "Тип недвижимости", "th": "ประเภทอสังหาริมทรัพย์"}'),

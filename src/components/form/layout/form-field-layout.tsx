@@ -1,6 +1,10 @@
 "use client";
 
+import deepmerge from "deepmerge";
+import { EyeOffIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { memo } from "react";
+import { QuickTooltip } from "@/components/ui";
 import { cn } from "@/modules/shadcn/utils/cn";
 import { FormFieldDescription } from "./form-field-description";
 import { FormFieldError } from "./form-field-error";
@@ -12,6 +16,7 @@ export type FormFieldLayoutConfig = {
     variant?: FormFieldTitleVariant | undefined;
   };
   focus_ring?: boolean;
+  isPrivate?: boolean;
 };
 
 const DefaultFormFieldConfig: FormFieldLayoutConfig = {
@@ -19,6 +24,7 @@ const DefaultFormFieldConfig: FormFieldLayoutConfig = {
     variant: "h1",
   },
   focus_ring: false,
+  isPrivate: false,
 };
 
 export const FormFieldLayout = memo(function FormFieldLayout({
@@ -27,7 +33,7 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   title,
   description,
   error,
-  config = DefaultFormFieldConfig,
+  config,
   className,
 }: {
   children: React.ReactNode;
@@ -38,19 +44,10 @@ export const FormFieldLayout = memo(function FormFieldLayout({
   config?: FormFieldLayoutConfig | undefined;
   className?: string;
 }) {
-  const margedConfig = { ...DefaultFormFieldConfig, ...config };
-  // const [isFocused, setIsFocused] = useState(false);
+  const margedConfig = deepmerge(DefaultFormFieldConfig, config || {});
 
-  // const handleClick = () => {
-  //   setIsFocused(true);
-  // };
-
-  // const handleBlur = (e: React.FocusEvent) => {
-  //   // Only blur if focus is leaving the entire field layout
-  //   if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-  //     setIsFocused(false);
-  //   }
-  // };
+  const t = useTranslations("Common");
+  const tooltipText = t("form-field.private_indicator_tooltip");
 
   return (
     <FormFieldLayoutProvider
@@ -62,8 +59,8 @@ export const FormFieldLayout = memo(function FormFieldLayout({
       <div
         className={cn(
           "group bg-card relative flex w-full flex-col space-y-2",
+          config?.isPrivate && "border-muted-foreground/80 border-1 border-dashed",
           margedConfig.title?.variant === "h1" && "rounded-lg p-4 shadow-[0_0_14px_rgba(0,0,0,0.1)]",
-
           margedConfig.focus_ring && "focus-within:ring-primary focus-within:ring-2 focus-within:ring-offset-2",
           // isFocused && "ring-primary ring-2 ring-offset-2",
           className,
@@ -73,8 +70,13 @@ export const FormFieldLayout = memo(function FormFieldLayout({
         tabIndex={-1} // Allow div to receive focus events
       >
         {title && (
-          <div className="flex flex-row space-x-2 pl-0">
+          <div className="relative flex flex-row space-x-2 pl-0">
             <FormFieldTitle text={title} inputId={inputId} variant={margedConfig.title?.variant} />
+            {margedConfig.isPrivate && (
+              <QuickTooltip content={<span className="text-xs">{tooltipText}</span>}>
+                <EyeOffIcon className="text-muted-foreground h-4 w-4 opacity-80" />
+              </QuickTooltip>
+            )}
           </div>
         )}
         {description && <FormFieldDescription className="pb-1" text={description} inputId={inputId} />}

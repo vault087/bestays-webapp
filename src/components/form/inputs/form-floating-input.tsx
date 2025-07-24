@@ -1,3 +1,4 @@
+import deepmerge from "deepmerge";
 import React, { memo } from "react";
 import { FloatingLabel, FloatingInput } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
@@ -7,6 +8,12 @@ export type FormFloatingInputConfig = {
     always_show: boolean;
   };
 };
+export const DefaultFormFloatingInputConfig: FormFloatingInputConfig = {
+  characterCount: {
+    always_show: true,
+  },
+};
+
 export const FormFloatingInput = memo(function FormFloatingInput({
   inputId,
   value,
@@ -16,11 +23,7 @@ export const FormFloatingInput = memo(function FormFloatingInput({
   placeholder,
   arialInvalid = false,
   className,
-  config = {
-    characterCount: {
-      always_show: true,
-    },
-  },
+  config,
 }: {
   inputId: string;
   value: string;
@@ -32,6 +35,8 @@ export const FormFloatingInput = memo(function FormFloatingInput({
   className?: string;
   config?: FormFloatingInputConfig;
 }) {
+  const margedConfig = deepmerge(DefaultFormFloatingInputConfig, config || {});
+
   return (
     <div className={cn("relative flex w-full flex-col space-y-2", className)}>
       <FloatingInput
@@ -54,7 +59,7 @@ export const FormFloatingInput = memo(function FormFloatingInput({
         role="status"
         aria-live="polite"
       >
-        {(config.characterCount.always_show || characterCount === maxLength) && (
+        {(margedConfig.characterCount.always_show || characterCount === maxLength) && (
           <span className="tabular-nums">
             {characterCount} / {maxLength}
           </span>

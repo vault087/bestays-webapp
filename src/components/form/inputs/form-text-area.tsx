@@ -1,10 +1,25 @@
 "use client";
 
-import { ChangeEvent, memo } from "react";
+import deepmerge from "deepmerge";
+import { ChangeEvent, memo, useState } from "react";
 import { cn, Textarea } from "@/modules/shadcn/";
 
 type FormTextAreaConfig = {
-  textarea_className?: string;
+  textarea: {
+    className?: string;
+  };
+  characterCount?: {
+    always_show?: boolean;
+  };
+};
+
+const DefaultFormTextAreaConfig: FormTextAreaConfig = {
+  textarea: {
+    className: "",
+  },
+  characterCount: {
+    always_show: false,
+  },
 };
 
 // Base Input
@@ -33,6 +48,9 @@ export const FormTextArea = memo(function FormTextArea({
     onChange(e.target.value);
   };
 
+  const [focused, setFocused] = useState(false);
+  const margedConfig = deepmerge(DefaultFormTextAreaConfig, config || {});
+
   return (
     <div className={cn("flex w-full flex-col space-y-2", className)}>
       <Textarea
@@ -40,19 +58,23 @@ export const FormTextArea = memo(function FormTextArea({
         value={value}
         maxLength={maxLength}
         onChange={onTextAreaChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder || ""}
         aria-invalid={arialInvalid}
         aria-describedby={arialInvalid ? `${inputId}-error` : `${inputId}-description`}
-        className={config?.textarea_className}
+        className={margedConfig.textarea.className}
       />
-      <p
-        id={`${inputId}-description`}
-        className="text-muted-foreground mt-2 text-right text-xs"
-        role="status"
-        aria-live="polite"
-      >
-        <span className="tabular-nums">{characterCount}</span> / {maxLength}
-      </p>
+      {(margedConfig.characterCount?.always_show || focused) && (
+        <p
+          id={`${inputId}-description`}
+          className="text-muted-foreground mt-2 text-right text-xs"
+          role="status"
+          aria-live="polite"
+        >
+          <span className="tabular-nums">{characterCount}</span> / {maxLength}
+        </p>
+      )}
     </div>
   );
 });

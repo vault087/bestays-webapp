@@ -28,6 +28,7 @@ import {
   PropertyAboutInput,
   PropertySalePriceInput,
   PropertyRentPriceInput,
+  PropertyTitleInput,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
@@ -88,6 +89,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
       <div className="rounded-card flex flex-1 flex-col items-start justify-center gap-4 rounded-md p-0 sm:flex-row">
         {/* Left Column */}
         <div className="contents w-1/2 flex-col space-y-4 pb-8 sm:flex">
+          <PropertyTitleInput />
           <PropertyAreaInput />
           <PropertyPropertyTypeInput />
           {/* <div className="flex w-1/2 flex-col items-start gap-4">
@@ -123,7 +125,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
         </div>
       </div>
       {/* </div> */}
-      {/* <ReactiveDebugCard /> */}
+      <ReactiveDebugCard />
     </div>
   );
 });

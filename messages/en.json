@@ -1,7 +1,8 @@
 {
   "Common": {
     "form-field": {
-      "globe-tooltip": "This field requires translation to other languages"
+      "globe-tooltip": "This field requires translation to other languages",
+      "private_indicator_tooltip": "This field is private and will not be published anywhere"
     },
     "not_found": "Not found",
     "option": {
@@ -71,6 +72,11 @@
   },
   "PropertiesSaleRent": {
     "fields": {
+      "title": {
+        "title": "Property Title",
+        "description": "Title of the property for you to easily identify it",
+        "placeholder": "Enter title"
+      },
       "images": {
         "title": "Property Images",
         "description": "Upload up to {maxImages} images. The first image will be used as the main cover photo."
@@ -80,8 +86,8 @@
         "description": "Please enter a short about the property",
         "placeholder": "Enter about the property"
       },
-      "agent_notes": {
-        "title": "Personal Notes*",
+      "personal_notes": {
+        "title": "Personal Notes",
         "description": "Personal notes won't be published anywhere",
         "placeholder": "Start typing"
       },

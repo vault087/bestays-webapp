@@ -4,7 +4,7 @@ import { DBProperty, DBRooms, DBSize } from "./property.types";
 export type DBPropertyBoolField = keyof Pick<DBProperty, "rent_enabled" | "sale_enabled">;
 
 export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
-export type DBPropertyTextField = keyof Pick<DBProperty, "personal_notes" | "title">;
+export type DBPropertyTextField = keyof Pick<DBProperty, "personal_notes" | "personal_title">;
 
 export type DBPropertyCodeField = keyof Pick<
   DBProperty,

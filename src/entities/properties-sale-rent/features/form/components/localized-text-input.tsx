@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { FormTextArea } from "@/components/form/inputs/form-text-area";
+import { FormTextInput } from "@/components/form/inputs/form-text-input";
 import { FormFieldLayout } from "@/components/form/layout/form-field-layout";
 import {
   DBPropertyLocalizedTextField,
@@ -22,6 +23,7 @@ export const PropertyAboutInput = function PropertyAboutInput({ className }: { c
       field="about"
       maxLength={PROPERTY_ABOUT_MAX}
       className={className}
+      isPrivate={false}
     />
   );
 };
@@ -33,6 +35,8 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
   placeholder,
   field,
   className,
+  variant = "textarea",
+  isPrivate = false,
 }: {
   title: string | undefined;
   placeholder: string | undefined;
@@ -40,6 +44,8 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
   maxLength: number;
   field: DBPropertyLocalizedTextField;
   className?: string;
+  variant?: "textarea" | "input";
+  isPrivate?: boolean;
 }) {
   const { inputId, value, onChange, error, characterCount } = usePropertyLocalizedTextInput(field, maxLength);
 
@@ -52,18 +58,31 @@ export const PropertyLocalizedTextInput = memo(function PropertyLocalizedTextInp
       error={error}
       inputId={inputId}
       className={className}
-      config={{ focus_ring: true }}
+      config={{ focus_ring: true, isPrivate }}
     >
-      <FormTextArea
-        inputId={inputId}
-        value={value}
-        onChange={onChange}
-        characterCount={characterCount}
-        maxLength={maxLength}
-        placeholder={placeholder || ""}
-        arialInvalid={!!error}
-        config={{ textarea_className: "focus-visible:ring-0" }}
-      />
+      {variant === "textarea" ? (
+        <FormTextArea
+          inputId={inputId}
+          value={value}
+          onChange={onChange}
+          characterCount={characterCount}
+          maxLength={maxLength}
+          placeholder={placeholder || ""}
+          arialInvalid={!!error}
+          config={{ textarea: { className: "focus-visible:ring-0" } }}
+        />
+      ) : (
+        <FormTextInput
+          inputId={inputId}
+          value={value}
+          onChange={onChange}
+          characterCount={characterCount}
+          maxLength={maxLength}
+          placeholder={placeholder || ""}
+          className="-mt-2 rounded-b-none border-b-1"
+          arialInvalid={!!error}
+        />
+      )}
     </FormFieldLayout>
   );
 });

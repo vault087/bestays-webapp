@@ -25,14 +25,15 @@ export type DBSizeEntry = z.infer<typeof DBSizeEntrySchema>;
 export type DBRooms = z.infer<typeof DBRoomsSchema>;
 
 export const PROPERTY_ABOUT_MAX = 5000;
-export const PROPERTY_AGENT_NOTES_MAX = 5000;
+export const PROPERTY_PERSONAL_NOTES_MAX = 5000;
+export const PROPERTY_TITLE_MAX = 50;
 
 export const PROPERTY_MAX_IMAGES = 30;
 
 // Database Schemas
 export const DBPropertySchema = z.object({
   id: z.string().uuid(),
-  title: LocalizedTextSchema(PROPERTY_ABOUT_MAX).nullish(),
+  personal_title: z.string().max(PROPERTY_TITLE_MAX).nullish(),
   about: LocalizedTextSchema(PROPERTY_ABOUT_MAX).nullish(),
 
   ownership_type: DBSerialIDSchema.nullish(),
@@ -55,7 +56,7 @@ export const DBPropertySchema = z.object({
   size: DBSizeSchema.nullish(),
   images: z.array(DBImageSchema).nullish(),
 
-  personal_notes: z.string().max(PROPERTY_AGENT_NOTES_MAX).nullish(),
+  personal_notes: z.string().max(PROPERTY_PERSONAL_NOTES_MAX).nullish(),
   agent_id: z.string().uuid().nullish(),
 
   is_published: z.boolean().default(false),

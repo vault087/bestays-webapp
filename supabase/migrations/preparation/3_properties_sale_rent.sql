@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS properties_sale_rent;
 CREATE TABLE properties_sale_rent (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    title JSONB,
     about JSONB,
 
     ownership_type INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -26,6 +25,7 @@ CREATE TABLE properties_sale_rent (
     is_published BOOLEAN DEFAULT FALSE,
     cover_image JSONB,
 
+    personal_title TEXT,
     personal_notes TEXT,
     agent_id UUID REFERENCES auth.users(id) ON DELETE SET NULL ON UPDATE CASCADE,
 
