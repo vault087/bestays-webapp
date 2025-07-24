@@ -58,4 +58,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+@theme inline {
+  --color-tooltip: var(--foreground);
+  --color-tooltip-foreground: var(--background);
+}
+
 @import "./shadcn.css";
