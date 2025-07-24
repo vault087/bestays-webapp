@@ -135,21 +135,34 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
     setDeleteDialogEntry(null);
   }, []);
 
+  const title = t("dialog_title", {
+    dictionaryName: getAvailableLocalizedText(dictionary.name, locale),
+  });
+
+  const description = getAvailableLocalizedText(dictionary.description, locale);
+
   return (
     <>
-      <div className="flex h-[80vh] flex-col">
+      <div className="flex h-[60vh] max-h-[80vh] flex-col">
         {/* Search input header */}
+        <div className="flex flex-row items-center justify-between">
+          <h2 className="text-lg font-bold">{title}</h2>
+        </div>
+        {description && (
+          <div className="text-muted-foreground flex items-start justify-start pt-1 pb-4 text-sm">{description}</div>
+        )}
         <div className="border-input flex items-center border-b px-5" cmdk-input-wrapper="">
           <SearchIcon size={20} className="text-muted-foreground/80 me-3" />
           <Input
             data-slot="command-input-wrapper"
             className="placeholder:text-muted-foreground/70 flex h-10 w-full rounded-md border-0 bg-transparent py-3 text-sm shadow-none outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder={tCommon("option.find_or_enter")}
+            placeholder={tCommon("option.find_or_enter_value", {
+              value: getAvailableLocalizedText(dictionary.name, locale).toLocaleLowerCase(),
+            })}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-
         {/* Entries list */}
         <div className="flex-1 overflow-y-auto p-2">
           {filteredEntries.length === 0 ? (
@@ -181,7 +194,6 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
             </div>
           )}
         </div>
-
         {/* Add new entry */}
         <div className="flex items-center space-x-2 border-t p-3">
           <Input

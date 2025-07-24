@@ -49,6 +49,7 @@
       },
       "editor": {
         "title": "Manage Options",
+        "dialog_title": "{dictionaryName}",
         "add_placeholder": "Enter new option name",
         "add_button": "Add",
         "delete_confirmation": {

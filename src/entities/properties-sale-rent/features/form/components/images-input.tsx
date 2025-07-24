@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/sha
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
-  const { inputId, images, onImagesChange, error } = usePropertyImagesInput();
+  const { images, onImagesChange, error } = usePropertyImagesInput();
 
   useDebugRender("PropertyImagesInput");
 
@@ -53,7 +53,6 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       title="Property Images"
       description="Upload up to 30 images. The first image will be used as the main cover photo."
       error={error}
-      inputId={inputId}
       className={className}
       config={{ focus_ring: true }}
     >

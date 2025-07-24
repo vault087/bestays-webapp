@@ -60,7 +60,6 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
 
   const addOptionRef = useRef<HTMLInputElement | null>(null);
   const handleAddOption = useCallback(() => {
-    console.log("adding option", addOption);
     addOption?.onClick(addOptionRef.current?.value);
     if (addOptionRef.current) {
       addOptionRef.current.value = "";
@@ -105,18 +104,13 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
       {addOption && (
         <div className="focus-within:border-primary flex flex-row items-center justify-between gap-2 rounded-md border-1 ps-3 pe-1 focus-within:shadow-sm">
           <Input
+            id={`${inputId}-add-option`}
             ref={addOptionRef}
             onChange={(e) => setAddValueText(e.target.value)}
             placeholder="Add New"
             className="roudned-none border-0 shadow-none"
           />
-          <Button
-            className="focus-within:bg-red-500"
-            variant="ghost"
-            size="icon"
-            disabled={addValueText.length < 2}
-            onClick={() => handleAddOption()}
-          >
+          <Button variant="ghost" size="icon" disabled={addValueText.length < 2} onClick={() => handleAddOption()}>
             <PlusIcon className="h-4 w-4" />
           </Button>
         </div>
