@@ -6,7 +6,8 @@
     "not_found": "Not found",
     "option": {
       "find_or_enter": "Find or enter new option"
-    }
+    },
+    "edit": "Edit"
   },
   "Dashboard": {
     "NavBar": {

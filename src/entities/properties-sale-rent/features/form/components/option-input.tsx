@@ -1,6 +1,7 @@
 "use client";
 
-import { EllipsisVerticalIcon, BlocksIcon, SquarePenIcon } from "lucide-react";
+import { EllipsisVerticalIcon, SquarePenIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
@@ -9,6 +10,7 @@ import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/st
 import { DBPropertyCodeField, DBPropertyMultiCodeField } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
 import { useDictionaryOptions } from "@/entities/properties-sale-rent/features/form/hooks/utils/use-dictionary-options";
+import { useTranslations } from "@/modules/i18n";
 import {
   Button,
   DropdownMenuSeparator,
@@ -74,6 +76,7 @@ export function FieldDropDownMenu({ field }: { field: DBPropertyCodeField | DBPr
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
+  const t = useTranslations("Common");
   const handleEditClick = () => {
     setDropdownOpen(false);
     setDialogOpen(true);
@@ -98,12 +101,7 @@ export function FieldDropDownMenu({ field }: { field: DBPropertyCodeField | DBPr
           <DropdownMenuGroup>
             <DropdownMenuItem onSelect={handleEditClick}>
               <SquarePenIcon className="h-4 w-4" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <BlocksIcon className="h-4 w-4" />
-              Re-arrange
+              {t("edit")}
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
