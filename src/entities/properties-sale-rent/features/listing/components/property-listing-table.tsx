@@ -10,7 +10,6 @@ import {
   useReactTable,
   Updater,
 } from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/modules/shadcn/components/ui/table";
@@ -85,7 +84,7 @@ export function PropertyListingTable({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="h-16 px-4 py-2 align-top select-none"
+                  className="relative h-12 px-4 py-2 align-top select-none"
                   aria-sort={
                     header.column.getIsSorted() === "asc"
                       ? "ascending"
@@ -94,27 +93,7 @@ export function PropertyListingTable({
                         : "none"
                   }
                 >
-                  {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                    <div
-                      className="flex h-full cursor-pointer items-center justify-between gap-2 select-none"
-                      onClick={header.column.getToggleSortingHandler()}
-                      onKeyDown={(e) => {
-                        if (header.column.getCanSort() && (e.key === "Enter" || e.key === " ")) {
-                          e.preventDefault();
-                          header.column.getToggleSortingHandler()?.(e);
-                        }
-                      }}
-                      tabIndex={header.column.getCanSort() ? 0 : undefined}
-                    >
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      {{
-                        asc: <ChevronUpIcon className="shrink-0 opacity-60" size={16} aria-hidden="true" />,
-                        desc: <ChevronDownIcon className="shrink-0 opacity-60" size={16} aria-hidden="true" />,
-                      }[header.column.getIsSorted() as string] ?? <span className="size-4" aria-hidden="true" />}
-                    </div>
-                  ) : (
-                    flexRender(header.column.columnDef.header, header.getContext())
-                  )}
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
             </TableRow>

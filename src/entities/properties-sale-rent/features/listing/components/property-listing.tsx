@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
+import { FilterTags } from "./filter-tags";
 import { PropertyListingTable } from "./property-listing-table";
 import { PropertyListingProps, PropertyRow } from "./types";
 
@@ -68,16 +69,33 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
     });
   }, [properties, dictionaryByCode, entriesByDictionaryId, locale]);
 
+  const handleFilterEdit = (columnId: string) => {
+    // For now, this could trigger focus on the specific filter dropdown
+    // Implementation can be enhanced later if needed
+    console.log("Edit filter:", columnId);
+  };
+
   return (
-    <PropertyListingTable
-      data={tableData}
-      dictionaries={dictionaries}
-      entries={entries}
-      locale={locale}
-      columnFilters={columnFilters}
-      setColumnFilters={setColumnFilters}
-      sorting={sorting}
-      setSorting={setSorting}
-    />
+    <div className="space-y-4">
+      <FilterTags
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        dictionaries={dictionaries}
+        entries={entries}
+        locale={locale}
+        onFilterEdit={handleFilterEdit}
+      />
+
+      <PropertyListingTable
+        data={tableData}
+        dictionaries={dictionaries}
+        entries={entries}
+        locale={locale}
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        sorting={sorting}
+        setSorting={setSorting}
+      />
+    </div>
   );
 }

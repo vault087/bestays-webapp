@@ -37,7 +37,7 @@ export function BooleanHeaderFilter({ column }: BooleanHeaderFilterProps) {
   };
 
   return (
-    <div className="mt-2 w-20" onClick={(e) => e.stopPropagation()}>
+    <div className="absolute top-full left-0 z-10 mt-1 w-20" onClick={(e) => e.stopPropagation()}>
       <FormDropDown
         selectedOption={selectedOption}
         options={options}
@@ -95,7 +95,7 @@ export function DictionaryHeaderFilter({
   };
 
   return (
-    <div className="mt-2 w-28" onClick={(e) => e.stopPropagation()}>
+    <div className="absolute top-full left-0 z-10 mt-1 w-28" onClick={(e) => e.stopPropagation()}>
       <FormDropDown
         selectedOption={selectedOption}
         options={options}

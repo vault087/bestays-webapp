@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
 import { capitalize } from "@/utils/capitalize";
@@ -28,18 +29,52 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "id",
-    header: "ID",
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="flex h-12 items-center justify-between">
+          <span className="text-sm font-medium tracking-wide">ID</span>
+          <button
+            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              column.toggleSorting();
+            }}
+          >
+            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+          </button>
+        </div>
+      );
+    },
     cell: ({ row }) => (
       <span className="text-muted-foreground font-mono text-xs">{row.getValue<string>("id").slice(0, 8)}</span>
     ),
   },
   {
     accessorKey: "personal_title",
-    header: () => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="text-sm font-medium tracking-wide">{capitalize("title")}</span>
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="flex h-12 items-center justify-between">
+          <span className="text-sm font-medium tracking-wide">{capitalize("title")}</span>
+          <button
+            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              column.toggleSorting();
+            }}
+          >
+            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+          </button>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const title = row.getValue<string>("personal_title");
       return title ? (
@@ -51,18 +86,35 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "property_type",
-    header: ({ column }) => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("property type")}</span>
-        <DictionaryHeaderFilter
-          column={column}
-          dictionaryCode={PropertyFieldToDictionaryCodeMap.property_type}
-          dictionaries={dictionaries}
-          entries={entries}
-          locale={locale}
-        />
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="relative">
+          <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-colors">
+            <span className="text-sm font-medium tracking-wide">{capitalize("property type")}</span>
+            <button
+              className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                column.toggleSorting();
+              }}
+            >
+              <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+            </button>
+          </div>
+          <DictionaryHeaderFilter
+            column={column}
+            dictionaryCode={PropertyFieldToDictionaryCodeMap.property_type}
+            dictionaries={dictionaries}
+            entries={entries}
+            locale={locale}
+          />
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const type = row.getValue<string>("property_type");
       return type || <span className="text-muted-foreground">—</span>;
@@ -75,18 +127,35 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "area",
-    header: ({ column }) => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("area")}</span>
-        <DictionaryHeaderFilter
-          column={column}
-          dictionaryCode={PropertyFieldToDictionaryCodeMap.area}
-          dictionaries={dictionaries}
-          entries={entries}
-          locale={locale}
-        />
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="relative">
+          <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-colors">
+            <span className="text-sm font-medium tracking-wide">{capitalize("area")}</span>
+            <button
+              className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                column.toggleSorting();
+              }}
+            >
+              <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+            </button>
+          </div>
+          <DictionaryHeaderFilter
+            column={column}
+            dictionaryCode={PropertyFieldToDictionaryCodeMap.area}
+            dictionaries={dictionaries}
+            entries={entries}
+            locale={locale}
+          />
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const area = row.getValue<string>("area");
       return area || <span className="text-muted-foreground">—</span>;
@@ -99,11 +168,26 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "rent_price",
-    header: () => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="text-sm font-medium tracking-wide">{capitalize("rent price")}</span>
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="flex h-12 items-center justify-between">
+          <span className="text-sm font-medium tracking-wide">{capitalize("rent price")}</span>
+          <button
+            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              column.toggleSorting();
+            }}
+          >
+            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+          </button>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const price = row.getValue<number>("rent_price");
       const enabled = row.original.rent_enabled;
@@ -117,11 +201,26 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "sale_price",
-    header: () => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="text-sm font-medium tracking-wide">{capitalize("sale price")}</span>
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="flex h-12 items-center justify-between">
+          <span className="text-sm font-medium tracking-wide">{capitalize("sale price")}</span>
+          <button
+            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              column.toggleSorting();
+            }}
+          >
+            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+          </button>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const price = row.getValue<number>("sale_price");
       const enabled = row.original.sale_enabled;
@@ -133,42 +232,11 @@ export const createPropertyColumns = ({
       );
     },
   },
-  {
-    accessorKey: "rent_enabled",
-    header: ({ column }) => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("for rent")}</span>
-        <BooleanHeaderFilter column={column} />
-      </div>
-    ),
-    cell: ({ row }) => (row.original.rent_enabled ? capitalize("yes") : capitalize("no")),
-    enableSorting: false,
-    filterFn: (row, columnId, filterValue) => {
-      const rentEnabled = row.original.rent_enabled;
-      return filterValue === undefined || rentEnabled === filterValue;
-    },
-    meta: { filterVariant: "select" },
-  },
-  {
-    accessorKey: "sale_enabled",
-    header: ({ column }) => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("for sale")}</span>
-        <BooleanHeaderFilter column={column} />
-      </div>
-    ),
-    cell: ({ row }) => (row.original.sale_enabled ? capitalize("yes") : capitalize("no")),
-    enableSorting: false,
-    filterFn: (row, columnId, filterValue) => {
-      const saleEnabled = row.original.sale_enabled;
-      return filterValue === undefined || saleEnabled === filterValue;
-    },
-    meta: { filterVariant: "select" },
-  },
+
   {
     accessorKey: "status",
     header: () => (
-      <div className="flex h-16 flex-col justify-start">
+      <div className="flex h-12 items-center">
         <span className="text-sm font-medium tracking-wide">{capitalize("status")}</span>
       </div>
     ),
@@ -179,12 +247,29 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "is_published",
-    header: ({ column }) => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("published")}</span>
-        <BooleanHeaderFilter column={column} />
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="relative">
+          <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-colors">
+            <span className="text-sm font-medium tracking-wide">{capitalize("published")}</span>
+            <button
+              className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                column.toggleSorting();
+              }}
+            >
+              <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+            </button>
+          </div>
+          <BooleanHeaderFilter column={column} />
+        </div>
+      );
+    },
     cell: ({ row }) => <PublishedStatus is_published={row.getValue("is_published")} />,
     filterFn: (row, columnId, filterValue) => {
       const isPublished = row.original.is_published;
@@ -194,11 +279,26 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "updated_at",
-    header: () => (
-      <div className="flex h-16 flex-col justify-start">
-        <span className="text-sm font-medium tracking-wide">{capitalize("updated")}</span>
-      </div>
-    ),
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const SortIcon =
+        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+
+      return (
+        <div className="flex h-12 items-center justify-between">
+          <span className="text-sm font-medium tracking-wide">{capitalize("updated")}</span>
+          <button
+            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              column.toggleSorting();
+            }}
+          >
+            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
+          </button>
+        </div>
+      );
+    },
     cell: ({ row }) => <RelativeTimeCell date={row.getValue("updated_at")} />,
   },
 ];
