@@ -27,7 +27,15 @@
       "Properties": "Properties",
       "Settings": "Settings",
       "Logout": "Logout"
-    }
+    },
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "properties": "Properties",
+    "analytics": "Analytics",
+    "properties_overview": "Properties Overview",
+    "search_properties": "Search properties...",
+    "export": "Export",
+    "add_property": "Add Property"
   },
   "Home": {
     "Dashboard": "Dashboard",
