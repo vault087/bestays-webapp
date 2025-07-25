@@ -7,7 +7,6 @@ export const MutablePropertySchema = DBPropertySchema.omit({
   created_by: true,
   created_at: true,
   updated_at: true,
-  deleted_at: true,
   // images: true, // Images are managed by the images slice, not in property state
 }).extend({
   is_new: z.boolean().default(false),

@@ -2,7 +2,7 @@
 
 import { ArrowLeftIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useId, useState, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";
@@ -32,6 +32,8 @@ import {
   PropertyFormStoreHydrated,
   usePropertyTextInput,
   PROPERTY_PERSONAL_NOTES_MAX,
+  usePropertyFormStoreActions,
+  usePropertyFormStoreContext,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
@@ -210,9 +212,40 @@ export const SaveButton = memo(function SaveButton() {
 });
 
 export const DeleteButton = memo(function DeleteButton() {
+  const store = usePropertyFormStoreContext();
+  const { updateProperty } = store.getState(); // instant
+  const isDeleted = usePropertyFormStore((state) => state.property.deleted_at !== null);
   return (
-    <Button variant="destructive" size="sm" className="opacity-50 hover:opacity-100">
-      Delete
-    </Button>
+    <div>
+      {isDeleted && (
+        <Button
+          variant="secondary"
+          size="sm"
+          className=""
+          onClick={() => {
+            updateProperty((draft) => {
+              draft.deleted_at = null;
+            });
+          }}
+        >
+          Restore
+        </Button>
+      )}
+
+      {!isDeleted && (
+        <Button
+          variant="destructive"
+          size="sm"
+          className=""
+          onClick={() => {
+            updateProperty((draft) => {
+              draft.deleted_at = new Date().toISOString();
+            });
+          }}
+        >
+          Delete
+        </Button>
+      )}
+    </div>
   );
 });
