@@ -15,7 +15,7 @@
 ### **Current Implementation Problems**
 
 - ❌ Filter badges don't align with columns (flex-wrap layout)
-- ❌ No sorting icons on fields except ID  
+- ❌ No sorting icons on fields except ID
 - ❌ Complex positioning logic for filters
 - ❌ Current approach requires manual alignment
 - ❌ Missing React optimization (memo, useMemo, useCallback) considerations
@@ -208,7 +208,7 @@ const FilterChip = memo(function FilterChip({ value, onRemove }: { value: string
   return (
     <div className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 rounded text-xs border">
       <span className="text-blue-800">{value}</span>
-      <button 
+      <button
         onClick={onRemove}
         className="hover:bg-blue-200 rounded-full p-0.5 transition-colors"
         aria-label="Remove filter"
@@ -374,6 +374,7 @@ export function CustomPropertyTable({
 ## 🚀 **Performance Optimization Strategy**
 
 ### **React Optimization Guidelines**
+
 ```typescript
 // ✅ Use memo for components that receive stable props
 const TableHeaderCell = memo(function TableHeaderCell({ field, sortDirection, onSort, onFilter }) {
@@ -384,9 +385,12 @@ const TableHeaderCell = memo(function TableHeaderCell({ field, sortDirection, on
 const sortedData = useMemo(() => applySorting(data, sorting), [data, sorting]);
 
 // ✅ Use useCallback for event handlers passed to memoized components
-const handleSort = useCallback((fieldKey: string) => {
-  // Sort logic
-}, [sorting, setSorting]);
+const handleSort = useCallback(
+  (fieldKey: string) => {
+    // Sort logic
+  },
+  [sorting, setSorting],
+);
 
 // ❌ Avoid memo on frequently changing components
 // ❌ Don't use useMemo for simple computations
@@ -394,6 +398,7 @@ const handleSort = useCallback((fieldKey: string) => {
 ```
 
 ### **When to Optimize**
+
 - **Use memo**: Components with stable props that render frequently
 - **Use useMemo**: Expensive calculations (sorting, filtering large datasets)
 - **Use useCallback**: Event handlers passed to memoized child components

@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
 import { ColumnFiltersState } from "@tanstack/react-table";
+import { useCallback, useMemo } from "react";
 import { DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
-import { FilterableFieldKey } from "../types/table-fields.types";
+import { FilterableFieldKey } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
 
 /**
  * Hook for managing table filtering operations
@@ -15,7 +15,19 @@ export function useTableFiltering(
   setColumnFilters: (filters: ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)) => void,
   entries: DBDictionaryEntry[],
   locale: string
-) {
+): {
+  getFilterValue: (fieldKey: FilterableFieldKey) => string | boolean | undefined;
+  setFilterValue: (fieldKey: FilterableFieldKey, value: string | boolean | undefined) => void;
+  removeFilter: (fieldKey: FilterableFieldKey) => void;
+  clearAllFilters: () => void;
+  getFilterDisplayValue: (filter: { id: string; value: string | boolean | number }) => string;
+  applyFiltering: <T extends Record<string, unknown>>(
+    data: T[],
+    filterMappings?: Record<string, (item: T, filterValue: unknown) => boolean>
+  ) => T[];
+  activeFilters: Array<{ field: FilterableFieldKey; value: unknown; displayValue: string }>;
+  hasFilters: boolean;
+} {
   // Get filter value for a specific field
   const getFilterValue = useCallback(
     (fieldKey: FilterableFieldKey): string | boolean | undefined => {

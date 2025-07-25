@@ -1,14 +1,24 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
 import { SortingState } from "@tanstack/react-table";
-import { TableFieldKey } from "../types/table-fields.types";
+import { useCallback, useMemo, useState } from "react";
+import { TableFieldKey } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
 
 /**
  * Hook for managing table sorting state and operations
  * Follows project pattern of clear return interface and useCallback optimization
  */
-export function useTableSorting(initialSort?: SortingState) {
+export function useTableSorting(initialSort?: SortingState): {
+  sorting: SortingState;
+  setSorting: (sorting: SortingState | ((prev: SortingState) => SortingState)) => void;
+  getSortDirection: (fieldKey: TableFieldKey) => "asc" | "desc" | null;
+  toggleSort: (fieldKey: TableFieldKey) => void;
+  clearSort: () => void;
+  setSort: (fieldKey: TableFieldKey, direction: "asc" | "desc") => void;
+  applySorting: <T extends Record<string, unknown>>(data: T[]) => T[];
+  sortedFields: Array<{ field: TableFieldKey; direction: "asc" | "desc" }>;
+  hasSort: boolean;
+} {
   const [sorting, setSorting] = useState<SortingState>(
     initialSort || [{ id: "updated_at", desc: true }]
   );
