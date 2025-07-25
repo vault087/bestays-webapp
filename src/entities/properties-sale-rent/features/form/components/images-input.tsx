@@ -6,13 +6,14 @@ import { FormFieldLayout } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { generateTemporarySerialId } from "@/entities/common";
 import { MutableImage } from "@/entities/media/types/image.type";
-import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
+import { usePropertyFormStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
 import { uploadPropertyImages } from "@/entities/properties-sale-rent/libs/image-upload";
 import { PROPERTY_MAX_IMAGES } from "@/entities/properties-sale-rent/types/property.types";
 import { ImageFieldExpandDialog, CompactImagesView } from "./images";
 
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
-  const { images: dbImages, onImagesChange, error } = usePropertyImagesInput();
+  const images = usePropertyFormStore((state) => state.property.images);
+  const { refreshImages } = usePropertyFormStoreActions();
   const maxImages = PROPERTY_MAX_IMAGES;
   const [isExpandedOpen, setIsExpandedOpen] = useState(false);
   const [mutableImages, setMutableImages] = useState<MutableImage[]>([]);
@@ -20,15 +21,15 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
 
   // Initialize mutable images when opening expanded view
   const handleOpenExpanded = useCallback(() => {
-    const initialMutableImages: MutableImage[] = dbImages.map((dbImage) => ({
-      ...dbImage,
+    const initialMutableImages: MutableImage[] = (images || []).map((image) => ({
+      ...image,
       id: generateTemporarySerialId(), // Generate temporary ID for state management
       is_new: false, // Existing DB images
     }));
     setMutableImages(initialMutableImages);
     setIsExpandedOpen(true);
     setShouldAutoSelectFile(true); // Auto-trigger file selection
-  }, [dbImages]);
+  }, [images]);
 
   // Handle adding new files in expanded view
   const handleAddFile = useCallback((file: File) => {
@@ -78,7 +79,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       });
 
       // Update the DB images with uploaded URLs
-      onImagesChange(uploadResult.images);
+      refreshImages(uploadResult.images);
 
       // Close expanded view
       setIsExpandedOpen(false);
@@ -86,19 +87,19 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       console.error("Failed to save images:", error);
       // TODO: Show error to user
     }
-  }, [mutableImages, onImagesChange]);
+  }, [mutableImages, refreshImages]);
 
   // Handle setting cover image in both views
   const setCoverInCompact = useCallback(
     (index: number) => {
-      if (dbImages.length > 1) {
-        const newImages = [...dbImages];
+      if (images && images.length > 1) {
+        const newImages = [...images];
         const [cover] = newImages.splice(index, 1);
         newImages.unshift(cover);
-        onImagesChange(newImages);
+        refreshImages(newImages);
       }
     },
-    [dbImages, onImagesChange],
+    [images, refreshImages],
   );
 
   const setCoverInExpanded = useCallback(
@@ -119,7 +120,6 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
     <FormFieldLayout
       title={t("title")}
       description={t("description", { maxImages })}
-      error={error}
       className={className}
       config={{ focus_ring: true }}
     >
@@ -140,7 +140,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
 
       {/* Compact View - Read-only DB Images */}
       <CompactImagesView
-        dbImages={dbImages}
+        images={images || []}
         onOpenExpanded={handleOpenExpanded}
         setCover={setCoverInCompact}
         maxImages={maxImages}

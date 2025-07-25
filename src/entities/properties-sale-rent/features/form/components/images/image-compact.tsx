@@ -6,19 +6,19 @@ import { PropertyImage } from "./image";
 import { ImageAddButton } from "./image-add-button";
 
 export const CompactImagesView = memo(function CompactImagesView({
-  dbImages,
+  images,
   onOpenExpanded,
   setCover,
   maxImages,
 }: {
-  dbImages: DBImage[];
+  images: DBImage[];
   onOpenExpanded: () => void;
   setCover: (index: number) => void;
   maxImages: number;
 }) {
-  const coverImage = dbImages[0];
-  const thumbnails = dbImages.slice(1); // Show all thumbnails in compact view
-  const remainingCount = Math.max(0, maxImages - dbImages.length);
+  const coverImage = images[0];
+  const thumbnails = images.slice(1); // Show all thumbnails in compact view
+  const remainingCount = Math.max(0, maxImages - images.length);
 
   const handleSetCover = useCallback(
     (index: number) => {
@@ -37,7 +37,7 @@ export const CompactImagesView = memo(function CompactImagesView({
       )}
 
       {/* Add Button - Becomes sticky when reaching left */}
-      {dbImages.length < maxImages && (
+      {images.length < maxImages && (
         <div className="bg-background sticky left-0 z-10 flex-shrink-0">
           <ImageAddButton remainingCount={remainingCount} onClick={onOpenExpanded} />
         </div>
