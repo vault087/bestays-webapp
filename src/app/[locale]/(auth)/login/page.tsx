@@ -1,4 +1,4 @@
-import { getAdminSupabase } from "@/modules/supabase";
+// import { getAdminSupabase } from "@/modules/supabase";
 import LoginForm from "./login-form";
 
 export default async function Login() {

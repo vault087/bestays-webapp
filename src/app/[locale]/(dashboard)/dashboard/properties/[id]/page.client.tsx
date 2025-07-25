@@ -63,12 +63,11 @@ export default function PropertiesPageClient({
                   <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard/properties")}>
                     <ArrowLeftIcon className="!h-6 !w-6" />
                   </Button>
-                  <h1 className="text-xl font-bold">Listing editor</h1>
-                </div>
-
-                <div className="flex items-center gap-2">
+                  {/* <h1 className="text-xl font-bold">Listing editor</h1> */}
                   <TitleInput />
                 </div>
+
+                <div className="flex items-center gap-2"></div>
 
                 <div className="min-w-sm pt-4">{/* <Comp439 /> */}</div>
 
@@ -154,13 +153,18 @@ export function ReactiveDebugCard() {
 export const TitleInput = memo(function TitleInput() {
   const { inputId, value, onChange } = usePropertyTextInput("personal_title", PROPERTY_PERSONAL_NOTES_MAX);
   const t = useTranslations("Properties.fields.title");
-  const displayValye = value.length > 0 ? value : t("no_title");
   return (
-    <Input
-      className="rounded-b-none border-0 border-b-1 text-lg font-light"
-      id={inputId}
-      value={displayValye}
-      onChange={(e) => onChange(e.target.value)}
-    />
+    <div className="flex flex-col gap-2">
+      <Input
+        className={cn(
+          "placeholder:muted-foreground text-foreground h-20 border-0 font-medium shadow-none md:text-3xl",
+          value.length > 0 && "",
+        )}
+        id={inputId}
+        value={value}
+        placeholder={t("no_title")}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
   );
 });
