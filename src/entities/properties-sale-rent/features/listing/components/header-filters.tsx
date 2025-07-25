@@ -1,6 +1,6 @@
 "use client";
 import { Column } from "@tanstack/react-table";
-import { CheckIcon, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckIcon, ChevronDown } from "lucide-react";
 import { memo, useMemo } from "react";
 import { FormSingleOptionProps } from "@/components/form/types";
 import { FormOption } from "@/components/form/types/form-option";
@@ -40,20 +40,14 @@ export function BooleanHeaderFilter({ title, column }: BooleanHeaderFilterProps)
   };
 
   return (
-    <div
-      className="absolute left-0 z-10 mt-1 w-20 transition-all duration-200 ease-in-out"
-      style={{ top: "50px" }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <FilterDropDown
-        title={title}
-        selectedOption={selectedOption}
-        options={options}
-        selectOption={selectOption}
-        placeholder={capitalize("all")}
-        className="hover:bg-muted/50 focus:bg-muted h-7 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-all duration-200 ease-in-out"
-      />
-    </div>
+    <FilterDropDown
+      title={title}
+      selectedOption={selectedOption}
+      options={options}
+      selectOption={selectOption}
+      placeholder={capitalize("all")}
+      className="hover:bg-muted/50 focus:bg-muted h-12 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-all duration-200 ease-in-out"
+    />
   );
 }
 
@@ -105,20 +99,14 @@ export function DictionaryHeaderFilter({
   };
 
   return (
-    <div
-      className="absolute left-0 z-10 mt-1 w-28 transition-all duration-200 ease-in-out"
-      style={{ top: "50px" }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <FilterDropDown
-        title={title}
-        selectedOption={selectedOption}
-        options={options}
-        selectOption={selectOption}
-        placeholder={capitalize("all")}
-        className="hover:bg-muted/50 focus:bg-muted h-7 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-all duration-200 ease-in-out"
-      />
-    </div>
+    <FilterDropDown
+      title={title}
+      selectedOption={selectedOption}
+      options={options}
+      selectOption={selectOption}
+      placeholder={capitalize("all")}
+      className="hover:bg-muted/50 focus:bg-muted h-12 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-all duration-200 ease-in-out"
+    />
   );
 }
 
@@ -133,30 +121,24 @@ export const FilterDropDown = memo(function FormDropDown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div
-          className={cn(
-            "bg-background text-muted-foreground border-input inline-flex items-center rounded-md border",
-            className,
-          )}
-        >
-          {title && (
-            <div className="flex flex-row items-center justify-center space-x-0">
-              <span className="text-sm font-medium tracking-wide">{title}</span>
-              <Button variant="ghost" size="icon">
-                {JSON.stringify(selectedOption)}
-                {selectedOption && <ChevronDown className="text-primary size-4" />}
-                {!selectedOption && <ChevronUp className="text-muted-foreground size-4" />}
-              </Button>
-            </div>
-          )}
-          {!title && (
-            <Button variant="text" className="flex flex-row items-center justify-center space-x-0">
-              {selectedOption && <span className="px-0 text-sm uppercase">{selectedOption.label}</span>}
-              {!selectedOption && placeholder && <span className="px-0 text-sm uppercase">{placeholder}</span>}
-              {options.length > 1 && <ChevronDown className="size-4" />}
-            </Button>
-          )}
-        </div>
+        {title ? (
+          <Button
+            variant="ghost"
+            className={cn(
+              "hover:bg-muted/50 focus:bg-muted flex items-center justify-between space-x-2 text-sm font-medium tracking-wide",
+              className,
+            )}
+          >
+            <span>{title}</span>
+            <ChevronDown className="size-4" />
+          </Button>
+        ) : (
+          <Button variant="text" className={cn("flex flex-row items-center justify-center space-x-0", className)}>
+            {selectedOption && <span className="px-0 text-sm uppercase">{selectedOption.label}</span>}
+            {!selectedOption && placeholder && <span className="px-0 text-sm uppercase">{placeholder}</span>}
+            {options.length > 1 && <ChevronDown className="size-4" />}
+          </Button>
+        )}
       </DropdownMenuTrigger>
       {options.length > 1 && (
         <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
@@ -182,15 +164,15 @@ interface HeaderDropdownProps {
 }
 
 export function HeaderDropdown({ title, hasFilter, children }: HeaderDropdownProps) {
-  return (
-    <div className="relative">
-      <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-all duration-200 ease-in-out">
-        <span className="text-sm font-medium tracking-wide">{title}</span>
-        <ChevronDown
-          className={`h-4 w-4 transition-all duration-200 ease-in-out ${hasFilter ? "text-primary rotate-180" : "text-muted-foreground group-hover:text-foreground"}`}
-        />
-      </div>
-      {children}
-    </div>
-  );
+  // if (!hasFilter) {
+  //   // Show only plain text title for non-filterable columns
+  //   return (
+  //     <div className="flex h-12 items-center px-2 py-1">
+  //       <span className="text-sm font-medium tracking-wide">{title}</span>
+  //     </div>
+  //   );
+  // }
+
+  // Show only the dropdown for filterable columns
+  return <div className="relative flex h-full w-full">{children}</div>;
 }

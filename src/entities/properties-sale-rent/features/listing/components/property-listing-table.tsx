@@ -85,10 +85,6 @@ export function PropertyListingTable({
                 <TableHead
                   key={header.id}
                   className="relative h-12 px-4 py-2 align-top select-none"
-                  style={{
-                    // Reserve space for filter dropdowns (40px height + padding)
-                    paddingBottom: "48px",
-                  }}
                   aria-sort={
                     header.column.getIsSorted() === "asc"
                       ? "ascending"

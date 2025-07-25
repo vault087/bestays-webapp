@@ -156,12 +156,12 @@ export const createPropertyColumns = ({
       return (
         <HeaderDropdown title={capitalize("area")} hasFilter={hasFilter}>
           <DictionaryHeaderFilter
-            title={capitalize("area")}
             column={column}
             dictionaryCode={PropertyFieldToDictionaryCodeMap.area}
             dictionaries={dictionaries}
             entries={entries}
             locale={locale}
+            title={capitalize("area")}
           />
         </HeaderDropdown>
       );
@@ -183,7 +183,7 @@ export const createPropertyColumns = ({
 
       return (
         <HeaderDropdown title={capitalize("rent")} hasFilter={hasFilter}>
-          <BooleanHeaderFilter column={column} />
+          <BooleanHeaderFilter column={column} title={capitalize("rent")} />
         </HeaderDropdown>
       );
     },
@@ -201,7 +201,7 @@ export const createPropertyColumns = ({
 
       return (
         <HeaderDropdown title={capitalize("sale")} hasFilter={hasFilter}>
-          <BooleanHeaderFilter column={column} />
+          <BooleanHeaderFilter column={column} title={capitalize("sale")} />
         </HeaderDropdown>
       );
     },
@@ -219,7 +219,7 @@ export const createPropertyColumns = ({
 
       return (
         <HeaderDropdown title={capitalize("published")} hasFilter={hasFilter}>
-          <BooleanHeaderFilter column={column} />
+          <BooleanHeaderFilter column={column} title={capitalize("published")} />
         </HeaderDropdown>
       );
     },
