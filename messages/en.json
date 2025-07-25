@@ -80,6 +80,10 @@
   },
   "Properties": {
     "fields": {
+      "published": {
+        "is_published": "Approved",
+        "is_not_published": "Draft"
+      },
       "title": {
         "no_title": "No title",
         "title": "Property Title",

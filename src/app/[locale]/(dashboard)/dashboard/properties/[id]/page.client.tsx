@@ -1,7 +1,8 @@
 "use client";
+
 import { ArrowLeftIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useMemo } from "react";
+import { useId, useState, memo, useMemo } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";
@@ -34,9 +35,12 @@ import {
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
+import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/form/hooks/use-bool-field";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button, Input } from "@/modules/shadcn";
+import { Label } from "@/modules/shadcn/components/ui/label";
+import { Switch } from "@/modules/shadcn/components/ui/switch";
 
 export default function PropertiesPageClient({
   property,
@@ -72,14 +76,23 @@ export default function PropertiesPageClient({
                 <div className="min-w-sm pt-4">{/* <Comp439 /> */}</div>
 
                 <div className="flex items-center justify-end space-x-3">
+                  <div className="flex pr-4">
+                    <PublishedToggle />
+                  </div>
+                  <div className="flex flex-row space-x-6">
+                    <SaveButton />
+                  </div>
                   <LocaleSwitcher />
                   <ThemeSwitcher />
                   <AvatarMenu />
                 </div>
               </div>
 
-              <div className="flex overflow-auto">
+              <div className="flex flex-col overflow-auto">
                 <PropertyListCanvas />
+                <div className="flex flex-row items-center justify-center space-x-6 py-4">
+                  <DeleteButton />
+                </div>
               </div>
             </div>
           </PropertyFormStoreHydrated>
@@ -166,5 +179,40 @@ export const TitleInput = memo(function TitleInput() {
         onChange={(e) => onChange(e.target.value)}
       />
     </div>
+  );
+});
+
+export const PublishedToggle = memo(function PublishedInput() {
+  const { inputId, value, onChange } = usePropertyBoolInput("is_published");
+
+  const t = useTranslations("Properties.fields.published");
+
+  return (
+    <div className="flex flex-row items-center gap-2">
+      <Label
+        htmlFor={inputId}
+        className={cn("text-sm font-medium", value && "text-primary", !value && "text-muted-foreground")}
+      >
+        {t("is_published")}
+      </Label>
+      <Switch
+        checked={value}
+        onCheckedChange={onChange}
+        id={inputId}
+        className="data-[state=unchecked]:border-input data-[state=unchecked]:[&_span]:bg-input data-[state=unchecked]:bg-transparent [&_span]:transition-all data-[state=unchecked]:[&_span]:size-4 data-[state=unchecked]:[&_span]:translate-x-0.5 data-[state=unchecked]:[&_span]:shadow-none data-[state=unchecked]:[&_span]:rtl:-translate-x-0.5"
+      />
+    </div>
+  );
+});
+
+export const SaveButton = memo(function SaveButton() {
+  return <Button size="sm">Save</Button>;
+});
+
+export const DeleteButton = memo(function DeleteButton() {
+  return (
+    <Button variant="destructive" size="sm" className="opacity-50 hover:opacity-100">
+      Delete
+    </Button>
   );
 });

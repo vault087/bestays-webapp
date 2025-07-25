@@ -10,26 +10,3 @@ export default async function Login() {
     </div>
   );
 }
-
-// async function createTestUser() {
-//   const supabase = await getAdminSupabase();
-//   const { data: users, error } = await supabase.auth.admin.listUsers();
-//   if (error) {
-//     console.error("ListUsers Error: " + error);
-//   }
-
-//   if (users.users.length > 0) {
-//     return;
-//   }
-
-//   const { data } = await supabase.auth.admin.createUser({
-//     email: "test@test.com",
-//     password: "test",
-//     email_confirm: true,
-//     user_metadata: {
-//       is_test_user: true,
-//     },
-//   });
-
-//   return data;
-// }

@@ -1,7 +1,7 @@
 import { DBCode } from "@/entities/common/";
 import { DBProperty, DBRooms, DBSize } from "./property.types";
 
-export type DBPropertyBoolField = keyof Pick<DBProperty, "rent_enabled" | "sale_enabled">;
+export type DBPropertyBoolField = keyof Pick<DBProperty, "rent_enabled" | "sale_enabled" | "is_published">;
 
 export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
 export type DBPropertyTextField = keyof Pick<DBProperty, "personal_notes" | "personal_title">;
