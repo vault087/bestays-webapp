@@ -50,7 +50,7 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   personal_title: {
     key: "personal_title",
     label: "Property Title",
-    sortable: true,
+    sortable: false,
     filterable: false,
     className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
@@ -60,8 +60,8 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   property_type: {
     key: "property_type",
     label: "Property Type",
-    sortable: true,
-    filterable: true,
+    sortable: false,
+    filterable: false,
     className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     cellClassName: "px-4 py-4 text-sm text-gray-900",
@@ -70,8 +70,8 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   area: {
     key: "area",
     label: "Area",
-    sortable: true,
-    filterable: true,
+    sortable: false,
+    filterable: false,
     className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     cellClassName: "px-4 py-4 text-sm text-gray-900",
@@ -98,8 +98,8 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   is_published: {
     key: "is_published",
     label: "Status",
-    sortable: true,
-    filterable: true,
+    sortable: false,
+    filterable: false,
     className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     cellClassName: "px-4 py-4 text-sm",
@@ -108,7 +108,7 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   updated_at: {
     key: "updated_at",
     label: "Last Updated",
-    sortable: true,
+    sortable: false,
     filterable: false,
     className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
@@ -128,8 +128,8 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   rent_enabled: {
     key: "rent_enabled",
     label: "Rent",
-    sortable: true,
-    filterable: true,
+    sortable: false,
+    filterable: false,
     className: "px-4 py-3 text-right text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-right text-sm font-medium text-gray-700",
     cellClassName: "px-4 py-4 text-right text-sm",
@@ -138,8 +138,8 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
   sale_enabled: {
     key: "sale_enabled",
     label: "Sale",
-    sortable: true,
-    filterable: true,
+    sortable: false,
+    filterable: false,
     className: "px-4 py-3 text-right text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-right text-sm font-medium text-gray-700",
     cellClassName: "px-4 py-4 text-right text-sm",

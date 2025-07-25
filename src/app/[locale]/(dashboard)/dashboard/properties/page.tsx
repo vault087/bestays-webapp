@@ -37,7 +37,7 @@ export default async function PropertiesListingPage({ params }: { params: Promis
         </div>
       </div>
 
-      <div className="flex-1 px-6 py-4">
+      <div className="mt-8 flex-1 px-6 py-4">
         <PropertyListing
           properties={(listings.data as DashboardProperty[]) || []}
           dictionaries={dbDictionaries.data || []}

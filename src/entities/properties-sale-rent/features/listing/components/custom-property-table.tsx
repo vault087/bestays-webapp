@@ -132,6 +132,8 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
 
   return (
     <div className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+      {/* Filter Row */}
+
       {/* Header */}
       <CustomTableHeader
         sorting={sorting}
@@ -139,14 +141,6 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
         dictionaries={dictionaries}
-        entries={entries}
-        locale={locale}
-      />
-
-      {/* Filter Row */}
-      <CustomFilterRow
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
         entries={entries}
         locale={locale}
       />

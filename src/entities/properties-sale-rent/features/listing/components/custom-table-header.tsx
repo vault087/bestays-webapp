@@ -147,16 +147,16 @@ export const CustomTableHeader = memo(function CustomTableHeader({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="flex h-full w-full items-center justify-center space-x-0">
-              <Button
+            <div className="flex h-full w-full flex-col items-center justify-center space-y-2">
+              {/* <Button
                 variant="ghost"
                 className="hover:bg-muted/90 focus:bg-muted space-x-2 rounded-sm border-0 bg-transparent text-sm font-medium tracking-wide"
               >
-                <div className="flex h-full w-full items-center justify-center space-x-2">
-                  <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
-                  <ChevronDownIcon className="size-4" />
+                <div className="flex h-full w-full items-center justify-center space-x-2"> */}
+              <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
+              {/* <ChevronDownIcon className="size-4" />
                 </div>
-              </Button>
+              </Button> */}
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[180px]">

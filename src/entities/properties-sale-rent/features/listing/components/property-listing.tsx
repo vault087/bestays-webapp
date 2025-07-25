@@ -82,27 +82,16 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
   };
 
   return (
-    <div className="space-y-4">
-      {/* <FilterTags
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-        dictionaries={dictionaries}
-        entries={entries}
-        locale={locale}
-        onFilterEdit={handleFilterEdit}
-      /> */}
-
-      <CustomPropertyTable
-        data={tableData}
-        dictionaries={dictionaries}
-        entries={entries}
-        locale={locale}
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-        sorting={sorting}
-        setSorting={setSorting}
-        onRowClick={handleRowClick}
-      />
-    </div>
+    <CustomPropertyTable
+      data={tableData}
+      dictionaries={dictionaries}
+      entries={entries}
+      locale={locale}
+      columnFilters={columnFilters}
+      setColumnFilters={setColumnFilters}
+      sorting={sorting}
+      setSorting={setSorting}
+      onRowClick={handleRowClick}
+    />
   );
 }

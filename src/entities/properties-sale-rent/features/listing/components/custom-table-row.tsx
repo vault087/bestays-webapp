@@ -59,7 +59,7 @@ export const CustomTableRow = memo(function CustomTableRow({
     return (
       <div className="flex h-full w-full items-center justify-center">
         {title && <div className="font-medium text-gray-900">{title}</div>}
-        {!title && <span className="text-gray-500 italic">Untitled</span>}
+        {!title && <span className="text-gray-500 italic">No title</span>}
       </div>
     );
   }, [row.personal_title]);
@@ -67,7 +67,7 @@ export const CustomTableRow = memo(function CustomTableRow({
   const renderDictionaryValue = useCallback(
     (value: string | null, fieldKey: string) => {
       if (!value) {
-        return <span className="text-gray-500">—</span>;
+        return <span className="text-gray-500"></span>;
       }
 
       // Find the original ID field
@@ -158,7 +158,7 @@ export const CustomTableRow = memo(function CustomTableRow({
     }
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <span className="text-gray-500">—</span>
+        <span className="text-gray-500"></span>
       </div>
     );
   }, [row.updated_at]);
@@ -214,7 +214,7 @@ export const CustomTableRow = memo(function CustomTableRow({
           cellContent = value ? (
             <span className="text-sm text-gray-900">{value.toString()}</span>
           ) : (
-            <span className="text-gray-500">—</span>
+            <span className="text-gray-500"></span>
           );
       }
 
