@@ -85,7 +85,7 @@ export function PropertyListingTable({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="h-16 align-top select-none"
+                  className="h-16 px-4 py-2 align-top select-none"
                   aria-sort={
                     header.column.getIsSorted() === "asc"
                       ? "ascending"

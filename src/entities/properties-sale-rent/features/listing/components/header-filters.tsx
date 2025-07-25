@@ -6,6 +6,7 @@ import { FormDropDown } from "@/components/form/inputs/form-dropdown";
 import { FormOption } from "@/components/form/types/form-option";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
+import { capitalize } from "@/utils/capitalize";
 import { PropertyRow } from "./types";
 
 interface BooleanHeaderFilterProps {
@@ -16,9 +17,9 @@ export function BooleanHeaderFilter({ column }: BooleanHeaderFilterProps) {
   const filterValue = column.getFilterValue() as boolean | undefined;
 
   const options: FormOption[] = [
-    { key: "all", label: "All" },
-    { key: "true", label: "Yes" },
-    { key: "false", label: "No" },
+    { key: "all", label: capitalize("all") },
+    { key: "true", label: capitalize("yes") },
+    { key: "false", label: capitalize("no") },
   ];
 
   const selectedOption =
@@ -36,13 +37,13 @@ export function BooleanHeaderFilter({ column }: BooleanHeaderFilterProps) {
   };
 
   return (
-    <div className="mt-1 w-20" onClick={(e) => e.stopPropagation()}>
+    <div className="mt-2 w-20" onClick={(e) => e.stopPropagation()}>
       <FormDropDown
         selectedOption={selectedOption}
         options={options}
         selectOption={selectOption}
-        placeholder="All"
-        className="h-8 min-w-0 text-xs"
+        placeholder={capitalize("all")}
+        className="hover:bg-muted/50 focus:bg-muted h-7 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-colors"
       />
     </div>
   );
@@ -68,11 +69,11 @@ export function DictionaryHeaderFilter({
 
   const options: FormOption[] = useMemo(() => {
     const dictionaryEntries = dictionary ? entries.filter((e) => e.dictionary_id === dictionary.id) : [];
-    const allOption = { key: "all", label: "All" };
+    const allOption = { key: "all", label: capitalize("all") };
     const entryOptions = dictionaryEntries
       .map((entry) => ({
         key: entry.id.toString(),
-        label: getAvailableLocalizedText(entry.name, locale),
+        label: capitalize(getAvailableLocalizedText(entry.name, locale)),
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
 
@@ -94,13 +95,13 @@ export function DictionaryHeaderFilter({
   };
 
   return (
-    <div className="mt-1 w-32" onClick={(e) => e.stopPropagation()}>
+    <div className="mt-2 w-28" onClick={(e) => e.stopPropagation()}>
       <FormDropDown
         selectedOption={selectedOption}
         options={options}
         selectOption={selectOption}
-        placeholder="All"
-        className="h-8 min-w-0 text-xs"
+        placeholder={capitalize("all")}
+        className="hover:bg-muted/50 focus:bg-muted h-7 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-colors"
       />
     </div>
   );

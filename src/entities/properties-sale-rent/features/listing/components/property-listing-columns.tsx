@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
+import { capitalize } from "@/utils/capitalize";
 import { BooleanHeaderFilter, DictionaryHeaderFilter } from "./header-filters";
 import { PropertyImage } from "./property-image";
 import { PropertyStatus } from "./property-status";
@@ -34,7 +35,11 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "personal_title",
-    header: "Title",
+    header: () => (
+      <div className="flex h-16 flex-col justify-start">
+        <span className="text-sm font-medium tracking-wide">{capitalize("title")}</span>
+      </div>
+    ),
     cell: ({ row }) => {
       const title = row.getValue<string>("personal_title");
       return title ? (
@@ -47,8 +52,8 @@ export const createPropertyColumns = ({
   {
     accessorKey: "property_type",
     header: ({ column }) => (
-      <div className="flex flex-col gap-1">
-        <span>Property Type</span>
+      <div className="flex h-16 flex-col justify-start">
+        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("property type")}</span>
         <DictionaryHeaderFilter
           column={column}
           dictionaryCode={PropertyFieldToDictionaryCodeMap.property_type}
@@ -71,8 +76,8 @@ export const createPropertyColumns = ({
   {
     accessorKey: "area",
     header: ({ column }) => (
-      <div className="flex flex-col gap-1">
-        <span>Area</span>
+      <div className="flex h-16 flex-col justify-start">
+        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("area")}</span>
         <DictionaryHeaderFilter
           column={column}
           dictionaryCode={PropertyFieldToDictionaryCodeMap.area}
@@ -94,7 +99,11 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "rent_price",
-    header: "Rent Price",
+    header: () => (
+      <div className="flex h-16 flex-col justify-start">
+        <span className="text-sm font-medium tracking-wide">{capitalize("rent price")}</span>
+      </div>
+    ),
     cell: ({ row }) => {
       const price = row.getValue<number>("rent_price");
       const enabled = row.original.rent_enabled;
@@ -108,7 +117,11 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "sale_price",
-    header: "Sale Price",
+    header: () => (
+      <div className="flex h-16 flex-col justify-start">
+        <span className="text-sm font-medium tracking-wide">{capitalize("sale price")}</span>
+      </div>
+    ),
     cell: ({ row }) => {
       const price = row.getValue<number>("sale_price");
       const enabled = row.original.sale_enabled;
@@ -123,12 +136,12 @@ export const createPropertyColumns = ({
   {
     accessorKey: "rent_enabled",
     header: ({ column }) => (
-      <div className="flex flex-col gap-1">
-        <span>For Rent</span>
+      <div className="flex h-16 flex-col justify-start">
+        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("for rent")}</span>
         <BooleanHeaderFilter column={column} />
       </div>
     ),
-    cell: ({ row }) => (row.original.rent_enabled ? "Yes" : "No"),
+    cell: ({ row }) => (row.original.rent_enabled ? capitalize("yes") : capitalize("no")),
     enableSorting: false,
     filterFn: (row, columnId, filterValue) => {
       const rentEnabled = row.original.rent_enabled;
@@ -139,12 +152,12 @@ export const createPropertyColumns = ({
   {
     accessorKey: "sale_enabled",
     header: ({ column }) => (
-      <div className="flex flex-col gap-1">
-        <span>For Sale</span>
+      <div className="flex h-16 flex-col justify-start">
+        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("for sale")}</span>
         <BooleanHeaderFilter column={column} />
       </div>
     ),
-    cell: ({ row }) => (row.original.sale_enabled ? "Yes" : "No"),
+    cell: ({ row }) => (row.original.sale_enabled ? capitalize("yes") : capitalize("no")),
     enableSorting: false,
     filterFn: (row, columnId, filterValue) => {
       const saleEnabled = row.original.sale_enabled;
@@ -154,7 +167,11 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => (
+      <div className="flex h-16 flex-col justify-start">
+        <span className="text-sm font-medium tracking-wide">{capitalize("status")}</span>
+      </div>
+    ),
     cell: ({ row }) => (
       <PropertyStatus rent_enabled={row.original.rent_enabled} sale_enabled={row.original.sale_enabled} />
     ),
@@ -163,8 +180,8 @@ export const createPropertyColumns = ({
   {
     accessorKey: "is_published",
     header: ({ column }) => (
-      <div className="flex flex-col gap-1">
-        <span>Published</span>
+      <div className="flex h-16 flex-col justify-start">
+        <span className="mb-1 text-sm font-medium tracking-wide">{capitalize("published")}</span>
         <BooleanHeaderFilter column={column} />
       </div>
     ),
@@ -177,7 +194,11 @@ export const createPropertyColumns = ({
   },
   {
     accessorKey: "updated_at",
-    header: "Updated",
+    header: () => (
+      <div className="flex h-16 flex-col justify-start">
+        <span className="text-sm font-medium tracking-wide">{capitalize("updated")}</span>
+      </div>
+    ),
     cell: ({ row }) => <RelativeTimeCell date={row.getValue("updated_at")} />,
   },
 ];
