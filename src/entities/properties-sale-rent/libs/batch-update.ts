@@ -27,6 +27,8 @@ export interface BatchUpdateResult {
  */
 export async function updateDictionariesEntriesPropertiesBatch(params: BatchUpdateParams): Promise<BatchUpdateResult> {
   try {
+    console.log("sending data", params);
+
     const { data, error } = await supabase.rpc("update_dictionaries_entries_properties_batch", {
       dictionaries: params.dictionaries,
       entries: params.entries,

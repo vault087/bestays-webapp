@@ -1,5 +1,7 @@
 {
   "Common": {
+    "save": "Save",
+    "saving": "Saving...",
     "form-field": {
       "globe-tooltip": "This field requires translation to other languages",
       "private_indicator_tooltip": "This field is private and will not be published anywhere"
