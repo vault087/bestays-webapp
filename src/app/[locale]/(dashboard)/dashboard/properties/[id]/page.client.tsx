@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, CircleAlertIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useCallback, useId } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";
@@ -32,7 +32,6 @@ import {
   PropertyFormStoreHydrated,
   usePropertyTextInput,
   PROPERTY_PERSONAL_NOTES_MAX,
-  usePropertyFormStoreActions,
   usePropertyFormStoreContext,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
@@ -41,6 +40,15 @@ import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/f
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button, Input } from "@/modules/shadcn";
+import {
+  Dialog,
+  DialogDescription,
+  DialogTitle,
+  DialogHeader,
+  DialogContent,
+  DialogFooter,
+  DialogClose,
+} from "@/modules/shadcn/components/ui/dialog";
 import { Label } from "@/modules/shadcn/components/ui/label";
 import { Switch } from "@/modules/shadcn/components/ui/switch";
 
@@ -211,41 +219,124 @@ export const SaveButton = memo(function SaveButton() {
   return <Button size="sm">Save</Button>;
 });
 
+interface DeleteConfirmationDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirmationDialogProps) {
+  const id = useId();
+  const [inputValue, setInputValue] = useState("");
+  const t = useTranslations("Properties.delete_confirmation");
+
+  const isConfirmEnabled = inputValue.toLowerCase() === "delete";
+
+  const handleConfirm = useCallback(() => {
+    if (isConfirmEnabled) {
+      onConfirm();
+      setInputValue("");
+      onClose();
+    }
+  }, [isConfirmEnabled, onConfirm, onClose]);
+
+  const handleClose = useCallback(() => {
+    setInputValue("");
+    onClose();
+  }, [onClose]);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent>
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-full border" aria-hidden="true">
+            <CircleAlertIcon className="opacity-80" size={16} />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="sm:text-center">{t("title")}</DialogTitle>
+            <DialogDescription className="sm:text-center">{t("description")}</DialogDescription>
+          </DialogHeader>
+        </div>
+
+        <form className="space-y-5">
+          <div className="*:not-first:mt-2">
+            <Label htmlFor={id}>{t("description")}</Label>
+            <Input
+              id={id}
+              type="text"
+              placeholder={t("input_placeholder")}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline" className="flex-1">
+                {t("cancel")}
+              </Button>
+            </DialogClose>
+            <Button
+              type="button"
+              variant="destructive"
+              className="flex-1"
+              disabled={!isConfirmEnabled}
+              onClick={handleConfirm}
+            >
+              {t("delete")}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export const DeleteButton = memo(function DeleteButton() {
   const store = usePropertyFormStoreContext();
   const { updateProperty } = store.getState(); // instant
   const isDeleted = usePropertyFormStore((state) => state.property.deleted_at !== null);
-  return (
-    <div>
-      {isDeleted && (
-        <Button
-          variant="secondary"
-          size="sm"
-          className=""
-          onClick={() => {
-            updateProperty((draft) => {
-              draft.deleted_at = null;
-            });
-          }}
-        >
-          Restore
-        </Button>
-      )}
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-      {!isDeleted && (
-        <Button
-          variant="destructive"
-          size="sm"
-          className=""
-          onClick={() => {
-            updateProperty((draft) => {
-              draft.deleted_at = new Date().toISOString();
-            });
-          }}
-        >
-          Delete
-        </Button>
-      )}
-    </div>
+  const handleDelete = useCallback(() => {
+    updateProperty((draft) => {
+      draft.deleted_at = new Date().toISOString();
+    });
+  }, [updateProperty]);
+
+  const handleShowDeleteDialog = useCallback(() => {
+    setShowDeleteDialog(true);
+  }, []);
+
+  const handleCloseDeleteDialog = useCallback(() => {
+    setShowDeleteDialog(false);
+  }, []);
+
+  return (
+    <>
+      <div>
+        {isDeleted && (
+          <Button
+            variant="secondary"
+            size="sm"
+            className=""
+            onClick={() => {
+              updateProperty((draft) => {
+                draft.deleted_at = null;
+              });
+            }}
+          >
+            Restore
+          </Button>
+        )}
+
+        {!isDeleted && (
+          <Button variant="destructive" size="sm" className="" onClick={handleShowDeleteDialog}>
+            Delete
+          </Button>
+        )}
+      </div>
+
+      <DeleteConfirmationDialog isOpen={showDeleteDialog} onClose={handleCloseDeleteDialog} onConfirm={handleDelete} />
+    </>
   );
 });

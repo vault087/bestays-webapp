@@ -79,6 +79,13 @@
     }
   },
   "Properties": {
+    "delete_confirmation": {
+      "title": "Delete Property",
+      "description": "Are you sure want to delete this property? To confirm deletion, please type \"delete\" below.",
+      "input_placeholder": "Type 'delete' to confirm",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
     "fields": {
       "published": {
         "is_published": "Approved",
