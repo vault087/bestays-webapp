@@ -158,21 +158,9 @@ export const FilterDropDown = memo(function FormDropDown({
 
 // Header Dropdown Component that shows column name with chevron
 interface HeaderDropdownProps {
-  title: string;
-  hasFilter: boolean;
   children: React.ReactNode;
 }
 
-export function HeaderDropdown({ title, hasFilter, children }: HeaderDropdownProps) {
-  // if (!hasFilter) {
-  //   // Show only plain text title for non-filterable columns
-  //   return (
-  //     <div className="flex h-12 items-center px-2 py-1">
-  //       <span className="text-sm font-medium tracking-wide">{title}</span>
-  //     </div>
-  //   );
-  // }
-
-  // Show only the dropdown for filterable columns
+export function HeaderDropdown({ children }: HeaderDropdownProps) {
   return <div className="relative flex h-full w-full">{children}</div>;
 }
