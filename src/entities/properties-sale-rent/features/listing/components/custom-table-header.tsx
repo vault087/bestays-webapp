@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, CheckIcon } from "lucide-react";
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDownIcon, CheckIcon } from "lucide-react";
 import { memo, useCallback } from "react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
@@ -62,20 +62,20 @@ export const CustomTableHeader = memo(function CustomTableHeader({
     [columnFilters],
   );
 
-  const handleSort = useCallback(
-    (fieldKey: SortableFieldKey) => {
-      const currentSort = getSortDirection(fieldKey);
+  // const handleSort = useCallback(
+  //   (fieldKey: SortableFieldKey) => {
+  //     const currentSort = getSortDirection(fieldKey);
 
-      if (!currentSort) {
-        setSorting([{ id: fieldKey, desc: false }]);
-      } else if (currentSort === "asc") {
-        setSorting([{ id: fieldKey, desc: true }]);
-      } else {
-        setSorting([]);
-      }
-    },
-    [getSortDirection, setSorting],
-  );
+  //     if (!currentSort) {
+  //       setSorting([{ id: fieldKey, desc: false }]);
+  //     } else if (currentSort === "asc") {
+  //       setSorting([{ id: fieldKey, desc: true }]);
+  //     } else {
+  //       setSorting([]);
+  //     }
+  //   },
+  //   [getSortDirection, setSorting],
+  // );
 
   const setFilterValue = useCallback(
     (fieldKey: FilterableFieldKey, value: string | boolean | undefined) => {
@@ -147,16 +147,15 @@ export const CustomTableHeader = memo(function CustomTableHeader({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className={cn(
-                "hover:bg-muted/50 focus:bg-muted flex items-center justify-between space-x-2 text-sm font-medium tracking-wide",
-                "h-12 w-full min-w-0 rounded-sm border-0 bg-transparent transition-all duration-200 ease-in-out",
-              )}
-            >
-              <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
-              <ChevronDown className="size-4" />
-            </Button>
+            <div className="flex h-full w-full items-center justify-center">
+              <Button
+                variant="ghost"
+                className="hover:bg-muted/90 focus:bg-muted flex space-x-2 rounded-sm border-0 bg-transparent text-sm font-medium tracking-wide"
+              >
+                <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
+                <ChevronDownIcon className="size-4" />
+              </Button>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[180px]">
             {options.map((option) => (
@@ -208,7 +207,7 @@ export const CustomTableHeader = memo(function CustomTableHeader({
               )}
             >
               <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
-              <ChevronDown className="size-4" />
+              <ChevronDownIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[180px]">
@@ -270,33 +269,33 @@ export const CustomTableHeader = memo(function CustomTableHeader({
       }
 
       // Sortable-only fields - title + separate sort button
-      if (config.sortable) {
-        return (
-          <div key={fieldKey} className={cn(config.headerClassName)}>
-            <div className="flex h-12 items-center justify-between">
-              <span className="text-sm font-medium tracking-wide">{config.label}</span>
-              <button
-                className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSort(fieldKey as SortableFieldKey);
-                }}
-              >
-                {renderSortIcon(fieldKey)}
-              </button>
-            </div>
-          </div>
-        );
-      }
+      // if (config.sortable) {
+      //   return (
+      //     <div key={fieldKey} className={cn(config.headerClassName)}>
+      //       <div className="flex h-12 items-center justify-between">
+      //         <span className="text-sm font-medium tracking-wide">{config.label}</span>
+      //         <button
+      //           className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
+      //           onClick={(e) => {
+      //             e.stopPropagation();
+      //             handleSort(fieldKey as SortableFieldKey);
+      //           }}
+      //         >
+      //           {renderSortIcon(fieldKey)}
+      //         </button>
+      //       </div>
+      //     </div>
+      //   );
+      // }
 
       // Non-sortable, non-filterable fields
       return (
-        <div key={fieldKey} className={cn(config.headerClassName)}>
+        <div key={fieldKey} className={cn(config.headerClassName, "flex items-center justify-center")}>
           <span className="text-sm font-medium text-gray-700">{config.label}</span>
         </div>
       );
     },
-    [DictionaryHeaderFilter, BooleanHeaderFilter, handleSort, renderSortIcon],
+    [DictionaryHeaderFilter, BooleanHeaderFilter],
   );
 
   return (

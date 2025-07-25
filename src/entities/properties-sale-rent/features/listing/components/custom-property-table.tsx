@@ -62,7 +62,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
         if (typeof filterValue === "boolean") {
           const row = data.find((r) => r.id === item.id);
           if (!row) return false;
-          
+
           switch (fieldKey) {
             case "rent_enabled":
               return row.rent_enabled === filterValue;
@@ -131,7 +131,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
   }, [filteredData, sorting]);
 
   return (
-    <div className="w-full border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+    <div className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
       {/* Header */}
       <CustomTableHeader
         sorting={sorting}
@@ -167,9 +167,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
         ) : (
           <div className="px-4 py-12 text-center text-gray-500">
             <div className="text-sm">No properties found.</div>
-            {columnFilters.length > 0 && (
-              <div className="text-xs mt-1">Try adjusting your filters</div>
-            )}
+            {columnFilters.length > 0 && <div className="mt-1 text-xs">Try adjusting your filters</div>}
           </div>
         )}
       </div>
@@ -234,4 +232,4 @@ export const TypeSafeCustomPropertyTable = memo(function TypeSafeCustomPropertyT
       onRowClick={onRowClick}
     />
   );
-}); 
+});

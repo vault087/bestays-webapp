@@ -5,14 +5,14 @@ import { X } from "lucide-react";
 import { memo, useCallback } from "react";
 import { DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
-import { Badge } from "@/modules/shadcn";
-import { capitalize } from "@/utils/capitalize";
 import {
   TABLE_FIELDS_CONFIG,
   VISIBLE_FIELDS,
   GRID_TEMPLATE_COLUMNS,
   type TableFieldKey,
 } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
+import { Badge } from "@/modules/shadcn";
+import { capitalize } from "@/utils/capitalize";
 
 interface CustomFilterRowProps {
   columnFilters: ColumnFiltersState;
@@ -31,7 +31,7 @@ export const CustomFilterRow = memo(function CustomFilterRow({
     (columnId: string) => {
       setColumnFilters((prev) => prev.filter((filter) => filter.id !== columnId));
     },
-    [setColumnFilters]
+    [setColumnFilters],
   );
 
   const getFilterDisplayValue = useCallback(
@@ -51,7 +51,7 @@ export const CustomFilterRow = memo(function CustomFilterRow({
 
       return filter.value?.toString() || "";
     },
-    [entries, locale]
+    [entries, locale],
   );
 
   const renderFilterCell = useCallback(
@@ -66,27 +66,28 @@ export const CustomFilterRow = memo(function CustomFilterRow({
           className={config.cellClassName}
           style={{ minHeight: "48px", paddingTop: "8px", paddingBottom: "8px" }}
         >
-          {filter && (() => {
-            const displayValue = getFilterDisplayValue(filter);
-            if (displayValue) {
-              return (
-                <Badge className="gap-0" variant="outline">
-                  {displayValue}
-                  <button
-                    className="focus-visible:border-ring focus-visible:ring-ring/50 text-primary-foreground/60 hover:text-primary-foreground -my-px -ms-px -me-1.5 inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-[inherit] p-0 transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
-                    onClick={() => removeFilter(filter.id)}
-                  >
-                    <X size={12} aria-hidden="true" />
-                  </button>
-                </Badge>
-              );
-            }
-            return null;
-          })()}
+          {filter &&
+            (() => {
+              const displayValue = getFilterDisplayValue(filter);
+              if (displayValue) {
+                return (
+                  <Badge className="gap-0" variant="outline">
+                    {displayValue}
+                    <button
+                      className="focus-visible:border-ring focus-visible:ring-ring/50 text-primary-foreground/60 hover:text-primary-foreground -my-px -ms-px -me-1.5 inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-[inherit] p-0 transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
+                      onClick={() => removeFilter(filter.id)}
+                    >
+                      <X size={12} aria-hidden="true" />
+                    </button>
+                  </Badge>
+                );
+              }
+              return null;
+            })()}
         </div>
       );
     },
-    [columnFilters, getFilterDisplayValue, removeFilter]
+    [columnFilters, getFilterDisplayValue, removeFilter],
   );
 
   // Always render the filter row with reserved space to prevent UI jumping
@@ -103,5 +104,3 @@ export const CustomFilterRow = memo(function CustomFilterRow({
     </div>
   );
 });
-
- 

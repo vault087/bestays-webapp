@@ -46,9 +46,7 @@ export function FilterTags({
         label = "Property type";
         const dictionary = dictionaries.find((d) => d.code === PropertyFieldToDictionaryCodeMap.property_type);
         if (dictionary) {
-          const entry = entries.find(
-            (e) => e.dictionary_id === dictionary.id && e.id.toString() === filter.value
-          );
+          const entry = entries.find((e) => e.dictionary_id === dictionary.id && e.id.toString() === filter.value);
           if (entry) {
             displayValue = capitalize(getAvailableLocalizedText(entry.name, locale));
           }
@@ -57,9 +55,7 @@ export function FilterTags({
         label = "Area";
         const dictionary = dictionaries.find((d) => d.code === PropertyFieldToDictionaryCodeMap.area);
         if (dictionary) {
-          const entry = entries.find(
-            (e) => e.dictionary_id === dictionary.id && e.id.toString() === filter.value
-          );
+          const entry = entries.find((e) => e.dictionary_id === dictionary.id && e.id.toString() === filter.value);
           if (entry) {
             displayValue = capitalize(getAvailableLocalizedText(entry.name, locale));
           }
@@ -107,14 +103,14 @@ export function FilterTags({
       {filterTags.map((tag) => (
         <div
           key={tag.id}
-          className="inline-flex items-center gap-1 rounded-md border bg-background px-2 py-1 text-sm shadow-sm hover:bg-muted/50 transition-colors cursor-pointer"
+          className="bg-background hover:bg-muted/50 inline-flex cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-sm shadow-sm transition-colors"
           onClick={() => editFilter(tag.id)}
         >
-          <ChevronsUpDown className="h-3 w-3 text-primary" />
-          <span className="font-medium text-muted-foreground">{tag.label}:</span>
+          <ChevronsUpDown className="text-primary h-3 w-3" />
+          <span className="text-muted-foreground font-medium">{tag.label}:</span>
           <span className="font-medium">{tag.displayValue}</span>
           <button
-            className="ml-1 rounded-sm p-0.5 hover:bg-muted transition-colors"
+            className="hover:bg-muted ml-1 rounded-sm p-0.5 transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               removeFilter(tag.id);
@@ -126,4 +122,4 @@ export function FilterTags({
       ))}
     </div>
   );
-} 
+}

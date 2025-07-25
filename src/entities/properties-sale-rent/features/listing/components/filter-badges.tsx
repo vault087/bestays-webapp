@@ -46,7 +46,7 @@ export const FilterBadges = memo(function FilterBadges({
   return (
     <div className="bg-muted/20 flex flex-wrap gap-1 border-b px-4 py-2 text-xs">
       {columnFilters.map((filter) => {
-        const displayValue = getFilterDisplayValue(filter);
+        const displayValue = getFilterDisplayValue(filter as { id: string; value: string | boolean | number });
         if (!displayValue) return null;
 
         return (
