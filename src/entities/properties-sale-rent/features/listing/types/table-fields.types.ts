@@ -293,14 +293,12 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
 
 // Get visible fields in order
 export const VISIBLE_FIELDS = DISPLAY_FIELDS_ORDER.filter(
-  (key) => !TABLE_FIELDS_CONFIG[key].className?.includes("hidden")
+  (key) => !TABLE_FIELDS_CONFIG[key].className?.includes("hidden"),
 );
 
 // Generate CSS Grid template from visible fields
-export const GRID_TEMPLATE_COLUMNS = VISIBLE_FIELDS.map(
-  (key) => TABLE_FIELDS_CONFIG[key].minWidth || "1fr"
-).join(" ");
+export const GRID_TEMPLATE_COLUMNS = VISIBLE_FIELDS.map((key) => TABLE_FIELDS_CONFIG[key].minWidth || "1fr").join(" ");
 
 // Type helpers
 export type VisibleFieldKey = (typeof VISIBLE_FIELDS)[number];
-export type TableFieldConfigMap = typeof TABLE_FIELDS_CONFIG; 
+export type TableFieldConfigMap = typeof TABLE_FIELDS_CONFIG;
