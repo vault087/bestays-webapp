@@ -14,7 +14,7 @@ import { useDebugRender } from "@/utils/use-debug-render";
 
 // Localized Text Uncontrolled Input
 export const PropertyAboutInput = function PropertyAboutInput({ className }: { className?: string }) {
-  const t = useTranslations("PropertiesSaleRent.fields.about");
+  const t = useTranslations("Properties.fields.about");
   return (
     <PropertyLocalizedTextInput
       title={t("title")}

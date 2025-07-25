@@ -1,13 +1,12 @@
-import { US, RU, TH } from "country-flag-icons/react/3x2";
+import { US, TH } from "country-flag-icons/react/3x2";
 import React from "react";
 
-export const LOCALES = ["en", "ru", "th"];
+export const LOCALES = ["en", "th"];
 export const DEFAULT_LOCALE = "en";
 
 // Flag components for easy access by hooks and components
 export const FLAGS: Record<string, React.ComponentType<{ className?: string; title?: string }>> = {
   en: US,
-  ru: RU,
   th: TH,
 };
 

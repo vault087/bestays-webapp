@@ -1,5 +1,6 @@
 "use client";
 import { ArrowLeftIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { memo, useMemo } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
@@ -27,14 +28,15 @@ import {
   PropertyAboutInput,
   PropertySalePriceInput,
   PropertyRentPriceInput,
-  PropertyTitleInput,
   PropertyFormStoreHydrated,
+  usePropertyTextInput,
+  PROPERTY_PERSONAL_NOTES_MAX,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
-import { cn, Button } from "@/modules/shadcn";
+import { cn, Button, Input } from "@/modules/shadcn";
 
 export default function PropertiesPageClient({
   property,
@@ -63,6 +65,11 @@ export default function PropertiesPageClient({
                   </Button>
                   <h1 className="text-xl font-bold">Listing editor</h1>
                 </div>
+
+                <div className="flex items-center gap-2">
+                  <TitleInput />
+                </div>
+
                 <div className="min-w-sm pt-4">{/* <Comp439 /> */}</div>
 
                 <div className="flex items-center justify-end space-x-3">
@@ -92,7 +99,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
       <div className="rounded-card flex flex-1 flex-col items-start justify-center gap-4 rounded-md p-0 sm:flex-row">
         {/* Left Column */}
         <div className="contents w-1/2 flex-col space-y-4 pb-8 sm:flex">
-          <PropertyTitleInput />
+          {/* <PropertyTitleInput /> */}
           <PropertyAreaInput />
           <PropertyPropertyTypeInput />
           {/* <div className="flex w-1/2 flex-col items-start gap-4">
@@ -126,7 +133,7 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
           <PropertyAboutInput />
           <PropertyPersonalNotesInput />
         </div>
-        <ReactiveDebugCard />
+        {/* <ReactiveDebugCard /> */}
       </div>
       {/* </div> */}
     </div>
@@ -143,3 +150,17 @@ export function ReactiveDebugCard() {
   }, [property]);
   return <DebugCard label="Error State Debug" json={debug} />;
 }
+
+export const TitleInput = memo(function TitleInput() {
+  const { inputId, value, onChange } = usePropertyTextInput("personal_title", PROPERTY_PERSONAL_NOTES_MAX);
+  const t = useTranslations("Properties.fields.title");
+  const displayValye = value.length > 0 ? value : t("no_title");
+  return (
+    <Input
+      className="rounded-b-none border-0 border-b-1 text-lg font-light"
+      id={inputId}
+      value={displayValye}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  );
+});

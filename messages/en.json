@@ -78,9 +78,10 @@
       }
     }
   },
-  "PropertiesSaleRent": {
+  "Properties": {
     "fields": {
       "title": {
+        "no_title": "No title",
         "title": "Property Title",
         "description": "Title of the property for you to easily identify it",
         "placeholder": "Enter title"

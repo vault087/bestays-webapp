@@ -32,7 +32,7 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
   shouldAutoSelectFile: boolean;
   onAutoSelectFileUsed: () => void;
 }) {
-  const t = useTranslations("PropertiesSaleRent.fields.images");
+  const t = useTranslations("Properties.fields.images");
   const title = t("title");
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -135,7 +135,7 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
     [setCover],
   );
 
-  const t = useTranslations("PropertiesSaleRent.fields.images");
+  const t = useTranslations("Properties.fields.images");
   const title = t("title");
 
   const tCommon = useTranslations("Common");

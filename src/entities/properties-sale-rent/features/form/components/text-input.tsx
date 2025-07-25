@@ -14,7 +14,7 @@ import {
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export const PropertyTitleInput = function PropertyTitleInput({ className }: { className?: string }) {
-  const t = useTranslations("PropertiesSaleRent.fields.title");
+  const t = useTranslations("Properties.fields.title");
   const title = t("title");
   const description = t("description");
   const placeholder = t("placeholder");
@@ -34,7 +34,7 @@ export const PropertyTitleInput = function PropertyTitleInput({ className }: { c
 
 // Text Uncontrolled Input
 export const PropertyPersonalNotesInput = function PropertyPersonalNotesInput({ className }: { className?: string }) {
-  const t = useTranslations("PropertiesSaleRent.fields");
+  const t = useTranslations("Properties.fields");
   const title = t("personal_notes.title");
   const description = t("personal_notes.description");
   const placeholder = t("personal_notes.placeholder");

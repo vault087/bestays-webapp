@@ -1,39 +1,133 @@
 {
+  "Common": {
+    "form-field": {
+      "globe-tooltip": "ฟิลด์นี้ต้องการการแปลเป็นภาษาอื่น ๆ",
+      "private_indicator_tooltip": "ฟิลด์นี้เป็นส่วนตัวและจะไม่ถูกเผยแพร่ที่ใด"
+    },
+    "not_found": "ไม่พบข้อมูล",
+    "option": {
+      "find_or_enter_value": "พิมพ์เพื่อค้นหาหรือเพิ่ม {value} ใหม่",
+      "find_value": "พิมพ์เพื่อค้นหา {value}",
+      "add": {
+        "placeholder": "เริ่มพิมพ์เพื่อเพิ่มตัวเลือกใหม่",
+        "preview_value": "เพิ่ม \"{value}\""
+      }
+    },
+    "edit": "แก้ไข",
+    "image": {
+      "cover": "หน้าปก",
+      "setCover": "ตั้งเป็นหน้าปก",
+      "noCover": "ไม่มีรูปหน้าปก",
+      "uploaded": "อัปโหลดรูปภาพแล้ว {count} จาก {max} รูป"
+    }
+  },
   "Dashboard": {
     "NavBar": {
       "Listings": "รายการประกาศ",
-      "Properties": "คุณสมบัติ",
+      "Properties": "อสังหาริมทรัพย์",
       "Settings": "ตั้งค่า",
       "Logout": "ออกจากระบบ"
-    }
+    },
+    "dashboard": "แดชบอร์ด",
+    "overview": "ภาพรวม",
+    "properties": "อสังหาริมทรัพย์",
+    "analytics": "การวิเคราะห์",
+    "properties_overview": "ภาพรวมอสังหาริมทรัพย์",
+    "search_properties": "ค้นหาอสังหาริมทรัพย์...",
+    "export": "ส่งออก",
+    "add_property": "เพิ่มอสังหาริมทรัพย์"
   },
   "Home": {
     "Dashboard": "หน้าหลัก",
     "LogIn": "เข้าสู่ระบบ"
   },
-  "PropertiesSaleRent": {
+  "Dictionaries": {
     "fields": {
-      "about": {
-        "label": "รายละเอียดของคุณสมบัติ",
-        "placeholder": "ป้อนรายละเอียดของคุณสมบัติ",
-        "subtitle": "กรุณาป้อนรายละเอียดของคุณสมบัติสั้นๆ"
+      "name": {
+        "title": "ชื่อ",
+        "placeholder": "ป้อนชื่อ"
       },
-      "agent_notes": {
-        "label": "บันทึกสำหรับตัวแทน",
-        "placeholder": "ป้อนบันทึกสำหรับตัวแทน",
-        "subtitle": "กรุณาป้อนบันทึกสำหรับตัวแทนเกี่ยวกับคุณสมบัติ"
+      "description": {
+        "title": "คำอธิบาย",
+        "description": "กรุณาป้อนคำอธิบายสั้น ๆ ของพจนานุกรม"
+      },
+      "meta_info": {
+        "title": "บริบท AI",
+        "description": "กรุณาป้อนข้อมูลเพิ่มเติมสั้น ๆ สำหรับ AI"
+      }
+    },
+    "entries": {
+      "name": {
+        "placeholder": "ป้อนชื่อ"
+      },
+      "code": {
+        "placeholder": "ป้อนรหัส"
+      },
+      "editor": {
+        "title": "จัดการตัวเลือก",
+        "dialog_title": "{dictionaryName}",
+        "add_placeholder": "ป้อนชื่อตัวเลือกใหม่",
+        "add_button": "เพิ่ม",
+        "delete_confirmation": {
+          "title": "ลบตัวเลือก",
+          "description": "ตัวเลือกนี้อาจถูกใช้งานที่อื่น หากต้องการยืนยันการลบ กรุณาพิมพ์ \"delete\" ด้านล่าง",
+          "input_placeholder": "พิมพ์ 'delete' เพื่อยืนยัน",
+          "cancel": "ยกเลิก",
+          "delete": "ลบ"
+        }
+      }
+    }
+  },
+  "Properties": {
+    "fields": {
+      "title": {
+        "no_title": "ไม่มีชื่อ",
+        "title": "ชื่ออสังหาริมทรัพย์",
+        "description": "ชื่อของอสังหาริมทรัพย์เพื่อให้คุณระบุได้ง่าย",
+        "placeholder": "ป้อนชื่อ"
+      },
+      "images": {
+        "title": "รูปภาพอสังหาริมทรัพย์",
+        "description": "อัปโหลดรูปภาพได้สูงสุด {maxImages} รูป รูปแรกจะใช้เป็นหน้าปก"
+      },
+      "about": {
+        "title": "เกี่ยวกับ",
+        "description": "กรุณาป้อนข้อมูลสั้น ๆ เกี่ยวกับอสังหาริมทรัพย์",
+        "placeholder": "ป้อนข้อมูลเกี่ยวกับอสังหาริมทรัพย์"
+      },
+      "personal_notes": {
+        "title": "บันทึกส่วนตัว",
+        "description": "บันทึกส่วนตัวจะไม่ถูกเผยแพร่ที่ใด",
+        "placeholder": "เริ่มพิมพ์"
+      },
+      "rent": {
+        "title": "สำหรับเช่า"
+      },
+      "sale": {
+        "title": "สำหรับขาย"
       },
       "price": {
-        "label": "ราคา",
-        "rai": "ไร่ละ(บาท)",
-        "total": "ราคารวม(บาท)",
-        "sale": "ราคาขาย"
+        "title": "ราคา",
+        "rai": {
+          "title": "ไร่ละ (บาท)",
+          "placeholder": "ป้อนราคาเป็นไร่"
+        },
+        "total": {
+          "title": "ราคารวม (บาท)",
+          "placeholder": "ป้อนราคารวม"
+        },
+        "sale": {
+          "title": "ราคาขาย",
+          "placeholder": "ป้อนราคาขาย"
+        }
       },
       "size": {
-        "label": "ขนาดพื้นที่"
+        "title": "ขนาดพื้นที่",
+        "description": "กรุณาป้อนขนาดพื้นที่ของอสังหาริมทรัพย์"
       },
       "rooms": {
-        "label": "จำนวนห้อง",
+        "title": "จำนวนห้อง",
+        "description": "กรุณาป้อนจำนวนห้องในอสังหาริมทรัพย์",
         "bedrooms": "ห้องนอน",
         "bathrooms": "ห้องน้ำ",
         "living_rooms": "ห้องรับแขก"

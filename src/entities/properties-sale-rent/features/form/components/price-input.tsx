@@ -15,13 +15,13 @@ import { Switch } from "@/modules/shadcn/components/ui/switch";
 import { useDebugRender } from "@/utils/use-debug-render";
 
 export function PropertyRentPriceInput({ className }: { className?: string }) {
-  const t = useTranslations("PropertiesSaleRent.fields.rent");
+  const t = useTranslations("Properties.fields.rent");
   const title = t("title");
 
   return <PropertyPriceInput title={title} field="rent_price" toggleField="rent_enabled" className={className} />;
 }
 export function PropertySalePriceInput({ className }: { className?: string }) {
-  const t = useTranslations("PropertiesSaleRent.fields.sale");
+  const t = useTranslations("Properties.fields.sale");
   const title = t("title");
   return <PropertyPriceInput title={title} field="sale_price" toggleField="sale_enabled" className={className} />;
 }

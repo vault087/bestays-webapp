@@ -16,7 +16,7 @@ export const PropertyRoomsInputGroup = function PropertyRoomsInputGroup({
   direction?: "vertical" | "horizontal";
   className?: string;
 }) {
-  const t = useTranslations("PropertiesSaleRent.fields.rooms");
+  const t = useTranslations("Properties.fields.rooms");
   const title = t("title");
   const description = t("description");
   return (
@@ -31,17 +31,17 @@ export const PropertyRoomsInputGroup = function PropertyRoomsInputGroup({
 };
 
 export const PropertyRoomsBedroomsInput = function PropertyRoomsBedroomsInput() {
-  const t = useTranslations("PropertiesSaleRent.fields.rooms");
+  const t = useTranslations("Properties.fields.rooms");
   return <PropertyRoomsFieldInput title={t("bedrooms")} field="bedrooms" />;
 };
 
 export const PropertyRoomsBathroomsInput = function PropertyRoomsBathroomsInput() {
-  const t = useTranslations("PropertiesSaleRent.fields.rooms");
+  const t = useTranslations("Properties.fields.rooms");
   return <PropertyRoomsFieldInput title={t("bathrooms")} field="bathrooms" />;
 };
 
 export const PropertyRoomsLivingRoomsInput = function PropertyRoomsLivingRoomsInput() {
-  const t = useTranslations("PropertiesSaleRent.fields.rooms");
+  const t = useTranslations("Properties.fields.rooms");
   return <PropertyRoomsFieldInput title={t("living_rooms")} field="living_rooms" />;
 };
 

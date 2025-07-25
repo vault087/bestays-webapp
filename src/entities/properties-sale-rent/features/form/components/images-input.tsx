@@ -114,7 +114,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
     [mutableImages],
   );
 
-  const t = useTranslations("PropertiesSaleRent.fields.images");
+  const t = useTranslations("Properties.fields.images");
 
   return (
     <FormFieldLayout

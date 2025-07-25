@@ -1,0 +1,528 @@
+I do have these supabase schemas:
+import { z } from "zod";
+import { DBMoneySchema, DBSerialIDSchema } from "@/entities/common";
+import { LocalizedTextSchema } from "@/entities/localized-text";
+import { DBImageSchema } from "@/entities/media/types/image.type";
+// Table constants
+export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
+
+export const DBSizeEntrySchema = z.object({
+  value: z.number().positive(),
+  unit: DBSerialIDSchema,
+});
+
+export const DBSizeSchema = z.object({
+  total: DBSizeEntrySchema.nullish(),
+});
+
+export const DBRoomsSchema = z.object({
+  bedrooms: z.number().int().positive().nullish(),
+  bathrooms: z.number().int().positive().nullish(),
+  living_rooms: z.number().int().positive().nullish(),
+});
+
+export type DBSize = z.infer<typeof DBSizeSchema>;
+export type DBSizeEntry = z.infer<typeof DBSizeEntrySchema>;
+export type DBRooms = z.infer<typeof DBRoomsSchema>;
+
+export const PROPERTY_ABOUT_MAX = 5000;
+export const PROPERTY_PERSONAL_NOTES_MAX = 5000;
+export const PROPERTY_TITLE_MAX = 50;
+
+export const PROPERTY_MAX_IMAGES = 30;
+
+// Database Schemas
+export const DBPropertySchema = z.object({
+  id: z.string().uuid(),
+  personal_title: z.string().max(PROPERTY_TITLE_MAX).nullish(),
+  about: LocalizedTextSchema(PROPERTY_ABOUT_MAX).nullish(),
+
+  ownership_type: DBSerialIDSchema.nullish(),
+  property_type: DBSerialIDSchema.nullish(),
+  area: DBSerialIDSchema.nullish(),
+  divisible_sale: DBSerialIDSchema.nullish(),
+
+  highlights: z.array(DBSerialIDSchema).nullish(),
+  location_strengths: z.array(DBSerialIDSchema).nullish(),
+  land_features: z.array(DBSerialIDSchema).nullish(),
+  nearby_attractions: z.array(DBSerialIDSchema).nullish(),
+  land_and_construction: z.array(DBSerialIDSchema).nullish(),
+
+  rent_price: DBMoneySchema.nullish(),
+  sale_price: DBMoneySchema.nullish(),
+  sale_enabled: z.boolean().nullish(),
+  rent_enabled: z.boolean().nullish(),
+
+  rooms: DBRoomsSchema.nullish(),
+  size: DBSizeSchema.nullish(),
+  images: z.array(DBImageSchema).nullish(),
+  cover_image: DBImageSchema.nullish(),
+
+  personal_notes: z.string().max(PROPERTY_PERSONAL_NOTES_MAX).nullish(),
+  agent_id: z.string().uuid().nullish(),
+
+  is_published: z.boolean().nullish(),
+
+  created_by: z.string().uuid().nullish(),
+  created_at: z.string().nullish(),
+  updated_at: z.string().nullish(),
+  deleted_at: z.string().nullish(),
+});
+
+// Types
+export type DBProperty = z.infer<typeof DBPropertySchema>;
+
+
+import { DBCode } from "@/entities/common/";
+import { DBProperty, DBRooms, DBSize } from "./property.types";
+
+export type DBPropertyBoolField = keyof Pick<DBProperty, "rent_enabled" | "sale_enabled">;
+
+export type DBPropertyLocalizedTextField = keyof Pick<DBProperty, "about">;
+export type DBPropertyTextField = keyof Pick<DBProperty, "personal_notes" | "personal_title">;
+
+export type DBPropertyCodeField = keyof Pick<
+  DBProperty,
+  "area" | "ownership_type" | "property_type" | "divisible_sale"
+>;
+
+export type DBPropertyMultiCodeField = keyof Pick<
+  DBProperty,
+  "location_strengths" | "highlights" | "land_features" | "nearby_attractions" | "land_and_construction"
+>;
+
+export type DBPropertySizeField = keyof DBSize;
+export type DBPropertyPriceField = keyof Pick<DBProperty, "rent_price" | "sale_price">;
+export type DBPropertyRoomsField = keyof DBRooms;
+
+export const PropertyFieldToDictionaryCodeMap: Record<
+  DBPropertyMultiCodeField | DBPropertyCodeField | "size.unit",
+  DBCode
+> = {
+  // Multi-code fields
+  area: "areas",
+  divisible_sale: "divisible_sale_types",
+  ownership_type: "ownership_types",
+  property_type: "property_types",
+  location_strengths: "location_strengths",
+  highlights: "highlights",
+  land_features: "land_features",
+  nearby_attractions: "nearby_attractions",
+  land_and_construction: "land_and_construction",
+  "size.unit": "measurement_units",
+};
+import { z } from "zod";
+import { DBSerialID } from "@/entities/common";
+
+export const DBImageSchema = z.object({
+  url: z.string(),
+  color: z.string().nullish(),
+  alt: z.string().nullish(),
+});
+
+export type DBImage = z.infer<typeof DBImageSchema>;
+
+// Browser-specific image type for form handling
+export interface MutableImage extends DBImage {
+  id: DBSerialID; // Unique identifier for slice management
+  is_new: boolean; // Track if this is a new upload vs existing DB image
+  file?: File; // Original file for new uploads
+  previewUrl?: string; // Object URL for file preview (needs cleanup)
+  uploadedAt?: Date; // Upload timestamp
+  name?: string; // Original filename
+  size?: number; // File size in bytes
+}
+
+
+import { z } from "zod";
+import { DBCodeSchema, DBSerialIDSchema } from "@/entities/common";
+import { LocalizedTextSchema } from "@/entities/localized-text";
+
+// Table constants
+export const DICTIONARIES_TABLE = "dictionaries";
+export const DICTIONARY_ENTRIES_TABLE = "dictionary_entries";
+
+export const DICTIONARY_NAME_MAX = 255;
+export const DICTIONARY_DESCRIPTION_MAX = 2000;
+export const DICTIONARY_META_INFO_MAX = 2000;
+
+export const DICTIONARY_ENTRY_NAME_MAX = 255;
+
+export const DBDictionaryMetadataSchema = z.object({
+  info: z.string().max(DICTIONARY_META_INFO_MAX).nullish(),
+});
+
+// Database Schemas
+export const DBDictionarySchema = z.object({
+  id: DBSerialIDSchema,
+  code: DBCodeSchema,
+  name: LocalizedTextSchema(DICTIONARY_NAME_MAX),
+  description: LocalizedTextSchema(DICTIONARY_DESCRIPTION_MAX).nullish(),
+  metadata: DBDictionaryMetadataSchema.nullish(),
+  created_by: z.string().uuid().nullish(),
+  created_at: z.string().nullish(),
+  updated_at: z.string().nullish(),
+});
+
+export const DBDictionaryEntrySchema = z.object({
+  id: DBSerialIDSchema,
+  is_active: z.boolean().default(true),
+  dictionary_id: DBSerialIDSchema,
+  name: LocalizedTextSchema(DICTIONARY_ENTRY_NAME_MAX),
+  created_by: z.string().uuid().nullish(),
+  created_at: z.string().nullish(),
+  updated_at: z.string().nullish(),
+});
+
+// Types
+export type DBDictionary = z.infer<typeof DBDictionarySchema>;
+export type DBDictionaryEntry = z.infer<typeof DBDictionaryEntrySchema>;
+
+import { z } from "zod";
+import { DBProperty, DBPropertySchema } from "@/entities/properties-sale-rent";
+import { generateUUID } from "@/utils/generate-uuid";
+
+// Form Schemas (extend DB schemas)
+export const MutablePropertySchema = DBPropertySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+  deleted_at: true,
+  // images: true, // Images are managed by the images slice, not in property state
+}).extend({
+  is_new: z.boolean().default(false),
+});
+
+export type MutableProperty = z.infer<typeof MutablePropertySchema>;
+
+export function convertToMutableProperty(property?: DBProperty): MutableProperty {
+  if (!property) {
+    return {
+      id: generateUUID(),
+      is_new: true,
+    };
+  }
+
+  return {
+    ...property,
+    is_new: false,
+  };
+}
+import { z } from "zod";
+import { DBDictionarySchema, DBDictionaryEntrySchema } from "@/entities/dictionaries/types/dictionary.types";
+
+// Form Schemas (extend DB schemas)
+export const MutableDictionarySchema = DBDictionarySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+}).extend({
+  is_new: z.boolean().default(false),
+});
+
+export const MutableEntrySchema = DBDictionaryEntrySchema.omit({
+  created_by: true,
+  created_at: true,
+  updated_at: true,
+}).extend({
+  is_new: z.boolean().default(false),
+});
+
+export type MutableDictionary = z.infer<typeof MutableDictionarySchema>;
+export type MutableEntry = z.infer<typeof MutableEntrySchema>;
+
+***
+now i need an rpc function for supabase that accepts arrays of my mutable dictionaries, entries and property also mutable. here's generated solution, but we need to very carefully validate it.
+
+-- Batch update function for dictionaries, entries, and properties
+DROP FUNCTION IF EXISTS update_dictionaries_entries_properties_batch;
+CREATE OR REPLACE FUNCTION update_dictionaries_entries_properties_batch(
+  p_domain_id uuid,
+  dictionaries jsonb,
+  entries jsonb,
+  properties jsonb,
+  deleted_dictionaries jsonb DEFAULT '[]',
+  deleted_entries jsonb DEFAULT '[]',
+  deleted_properties jsonb DEFAULT '[]'
+) RETURNS jsonb AS $$
+DECLARE
+  dictionary_id_mapping jsonb := '{}';
+  entry_id_mapping jsonb := '{}';
+  property_id_mapping jsonb := '{}';
+  temp_entry_id text;
+  new_entry_id integer;
+  old_entry_id integer;
+BEGIN
+  -- Step 1: Handle dictionaries first
+  SELECT upsert_dictionaries_batch(dictionaries, deleted_dictionaries) INTO dictionary_id_mapping;
+  
+  -- Step 2: Handle entries with dictionary mapping
+  SELECT upsert_entries_batch_with_dictionary_mapping(entries, dictionary_id_mapping, deleted_entries) INTO entry_id_mapping;
+  
+  -- Step 3: Update entries that reference old temporary negative IDs
+  FOR temp_entry_id, new_entry_id IN 
+    SELECT * FROM jsonb_each(entry_id_mapping)
+  LOOP
+    old_entry_id := (temp_entry_id)::integer;
+    -- Update properties that reference the old temporary entry ID
+    UPDATE properties_sale_rent SET
+      ownership_type = new_entry_id WHERE ownership_type = old_entry_id,
+      property_type = new_entry_id WHERE property_type = old_entry_id,
+      area = new_entry_id WHERE area = old_entry_id,
+      divisible_sale = new_entry_id WHERE divisible_sale = old_entry_id;
+    
+    -- Update array fields (multi-code fields)
+    UPDATE properties_sale_rent SET
+      location_strengths = array_replace(location_strengths, old_entry_id, new_entry_id),
+      highlights = array_replace(highlights, old_entry_id, new_entry_id),
+      land_features = array_replace(land_features, old_entry_id, new_entry_id),
+      nearby_attractions = array_replace(nearby_attractions, old_entry_id, new_entry_id),
+      land_and_construction = array_replace(land_and_construction, old_entry_id, new_entry_id);
+  END LOOP;
+  
+  -- Step 4: Handle properties with entry mapping
+  SELECT upsert_properties_batch_with_entry_mapping(p_domain_id, properties, entry_id_mapping, deleted_properties) INTO property_id_mapping;
+  
+  -- Return all mappings for client use
+  RETURN jsonb_build_object(
+    'dictionary_mapping', dictionary_id_mapping,
+    'entry_mapping', entry_id_mapping,
+    'property_mapping', property_id_mapping
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+-- Dictionaries batch function
+DROP FUNCTION IF EXISTS upsert_dictionaries_batch;
+CREATE OR REPLACE FUNCTION upsert_dictionaries_batch(
+  dictionaries jsonb,
+  deleted_dictionary_ids jsonb DEFAULT '[]'
+) RETURNS jsonb AS $$
+DECLARE
+  id_mapping jsonb := '{}';
+  dict jsonb;
+  old_id integer;
+  new_id integer;
+BEGIN
+  -- Delete dictionaries first
+  IF jsonb_array_length(deleted_dictionary_ids) > 0 THEN
+    DELETE FROM dictionaries WHERE id = ANY(
+      SELECT (jsonb_array_elements_text(deleted_dictionary_ids))::integer
+    );
+  END IF;
+
+  -- Handle each dictionary
+  FOR dict IN SELECT * FROM jsonb_array_elements(dictionaries)
+  LOOP
+    IF (dict ->> 'is_new')::boolean THEN
+      -- Insert new dictionary
+      INSERT INTO dictionaries (code, name, description, metadata, created_by)
+      VALUES (
+        dict ->> 'code',
+        CASE WHEN dict -> 'name' = 'null' THEN NULL ELSE dict -> 'name' END,
+        CASE WHEN dict -> 'description' = 'null' THEN NULL ELSE dict -> 'description' END,
+        CASE WHEN dict -> 'metadata' = 'null' THEN NULL ELSE dict -> 'metadata' END,
+        (dict ->> 'created_by')::uuid
+      ) RETURNING id INTO new_id;
+      
+      -- Map old temporary ID to new real ID
+      old_id := (dict ->> 'id')::integer;
+      id_mapping := id_mapping || jsonb_build_object(old_id::text, new_id);
+    ELSE
+      -- Update existing dictionary
+      UPDATE dictionaries SET
+        code = dict ->> 'code',
+        name = CASE WHEN dict -> 'name' = 'null' THEN NULL ELSE dict -> 'name' END,
+        description = CASE WHEN dict -> 'description' = 'null' THEN NULL ELSE dict -> 'description' END,
+        metadata = CASE WHEN dict -> 'metadata' = 'null' THEN NULL ELSE dict -> 'metadata' END,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = (dict ->> 'id')::integer;
+    END IF;
+  END LOOP;
+
+  RETURN id_mapping;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Entries batch function with dictionary mapping
+DROP FUNCTION IF EXISTS upsert_entries_batch_with_dictionary_mapping;
+CREATE OR REPLACE FUNCTION upsert_entries_batch_with_dictionary_mapping(
+  entries jsonb,
+  dictionary_id_mapping jsonb,
+  deleted_entry_ids jsonb DEFAULT '[]'
+) RETURNS jsonb AS $$
+DECLARE
+  id_mapping jsonb := '{}';
+  entry jsonb;
+  old_id integer;
+  new_id integer;
+  mapped_dictionary_id integer;
+BEGIN
+  -- Delete entries first
+  IF jsonb_array_length(deleted_entry_ids) > 0 THEN
+    DELETE FROM dictionary_entries WHERE id = ANY(
+      SELECT (jsonb_array_elements_text(deleted_entry_ids))::integer
+    );
+  END IF;
+
+  -- Handle each entry
+  FOR entry IN SELECT * FROM jsonb_array_elements(entries)
+  LOOP
+    -- Get mapped dictionary ID
+    mapped_dictionary_id := COALESCE(
+      (dictionary_id_mapping ->> (entry ->> 'dictionary_id'))::integer,
+      (entry ->> 'dictionary_id')::integer
+    );
+    
+    IF (entry ->> 'is_new')::boolean THEN
+      -- Insert new entry
+      INSERT INTO dictionary_entries (dictionary_id, name, is_active, created_by)
+      VALUES (
+        mapped_dictionary_id,
+        CASE WHEN entry -> 'name' = 'null' THEN NULL ELSE entry -> 'name' END,
+        COALESCE((entry ->> 'is_active')::boolean, true),
+        (entry ->> 'created_by')::uuid
+      ) RETURNING id INTO new_id;
+      
+      -- Map old temporary ID to new real ID
+      old_id := (entry ->> 'id')::integer;
+      id_mapping := id_mapping || jsonb_build_object(old_id::text, new_id);
+    ELSE
+      -- Update existing entry
+      UPDATE dictionary_entries SET
+        dictionary_id = mapped_dictionary_id,
+        name = CASE WHEN entry -> 'name' = 'null' THEN NULL ELSE entry -> 'name' END,
+        is_active = COALESCE((entry ->> 'is_active')::boolean, true),
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = (entry ->> 'id')::integer;
+    END IF;
+  END LOOP;
+
+  RETURN id_mapping;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Properties batch function with entry mapping
+DROP FUNCTION IF EXISTS upsert_properties_batch_with_entry_mapping;
+CREATE OR REPLACE FUNCTION upsert_properties_batch_with_entry_mapping(
+  p_domain_id uuid,
+  properties jsonb,
+  entry_id_mapping jsonb,
+  deleted_property_ids jsonb DEFAULT '[]'
+) RETURNS jsonb AS $$
+DECLARE
+  id_mapping jsonb := '{}';
+  prop jsonb;
+  old_id uuid;
+  new_id uuid;
+  mapped_entry_id integer;
+BEGIN
+  -- Delete properties first
+  IF jsonb_array_length(deleted_property_ids) > 0 THEN
+    DELETE FROM properties_sale_rent WHERE id = ANY(
+      SELECT (jsonb_array_elements_text(deleted_property_ids))::uuid
+    );
+  END IF;
+
+  -- Handle each property
+  FOR prop IN SELECT * FROM jsonb_array_elements(properties)
+  LOOP
+    IF (prop ->> 'is_new')::boolean THEN
+      -- Insert new property
+      INSERT INTO properties_sale_rent (
+        about, ownership_type, property_type, area, location_strengths, highlights,
+        size, divisible_sale, land_features, rooms, nearby_attractions, land_and_construction,
+        sale_enabled, sale_price, rent_enabled, rent_price, images, is_published, cover_image,
+        personal_title, personal_notes, agent_id, created_by
+      )
+      VALUES (
+        CASE WHEN prop -> 'about' = 'null' THEN NULL ELSE prop -> 'about' END,
+        -- Map entry IDs using the mapping
+        COALESCE((entry_id_mapping ->> (prop ->> 'ownership_type'))::integer, (prop ->> 'ownership_type')::integer),
+        COALESCE((entry_id_mapping ->> (prop ->> 'property_type'))::integer, (prop ->> 'property_type')::integer),
+        COALESCE((entry_id_mapping ->> (prop ->> 'area'))::integer, (prop ->> 'area')::integer),
+        -- Map array fields
+        map_entry_array(prop -> 'location_strengths', entry_id_mapping),
+        map_entry_array(prop -> 'highlights', entry_id_mapping),
+        CASE WHEN prop -> 'size' = 'null' THEN NULL ELSE prop -> 'size' END,
+        COALESCE((entry_id_mapping ->> (prop ->> 'divisible_sale'))::integer, (prop ->> 'divisible_sale')::integer),
+        map_entry_array(prop -> 'land_features', entry_id_mapping),
+        CASE WHEN prop -> 'rooms' = 'null' THEN NULL ELSE prop -> 'rooms' END,
+        map_entry_array(prop -> 'nearby_attractions', entry_id_mapping),
+        map_entry_array(prop -> 'land_and_construction', entry_id_mapping),
+        (prop ->> 'sale_enabled')::boolean,
+        (prop ->> 'sale_price')::bigint,
+        (prop ->> 'rent_enabled')::boolean,
+        (prop ->> 'rent_price')::bigint,
+        CASE WHEN prop -> 'images' = 'null' THEN NULL ELSE prop -> 'images' END,
+        COALESCE((prop ->> 'is_published')::boolean, false),
+        CASE WHEN prop -> 'cover_image' = 'null' THEN NULL ELSE prop -> 'cover_image' END,
+        prop ->> 'personal_title',
+        prop ->> 'personal_notes',
+        (prop ->> 'agent_id')::uuid,
+        (prop ->> 'created_by')::uuid
+      ) RETURNING id INTO new_id;
+      
+      -- Map old temporary ID to new real ID
+      old_id := (prop ->> 'id')::uuid;
+      id_mapping := id_mapping || jsonb_build_object(old_id::text, new_id);
+    ELSE
+      -- Update existing property
+      UPDATE properties_sale_rent SET
+        about = CASE WHEN prop -> 'about' = 'null' THEN NULL ELSE prop -> 'about' END,
+        ownership_type = COALESCE((entry_id_mapping ->> (prop ->> 'ownership_type'))::integer, (prop ->> 'ownership_type')::integer),
+        property_type = COALESCE((entry_id_mapping ->> (prop ->> 'property_type'))::integer, (prop ->> 'property_type')::integer),
+        area = COALESCE((entry_id_mapping ->> (prop ->> 'area'))::integer, (prop ->> 'area')::integer),
+        location_strengths = map_entry_array(prop -> 'location_strengths', entry_id_mapping),
+        highlights = map_entry_array(prop -> 'highlights', entry_id_mapping),
+        size = CASE WHEN prop -> 'size' = 'null' THEN NULL ELSE prop -> 'size' END,
+        divisible_sale = COALESCE((entry_id_mapping ->> (prop ->> 'divisible_sale'))::integer, (prop ->> 'divisible_sale')::integer),
+        land_features = map_entry_array(prop -> 'land_features', entry_id_mapping),
+        rooms = CASE WHEN prop -> 'rooms' = 'null' THEN NULL ELSE prop -> 'rooms' END,
+        nearby_attractions = map_entry_array(prop -> 'nearby_attractions', entry_id_mapping),
+        land_and_construction = map_entry_array(prop -> 'land_and_construction', entry_id_mapping),
+        sale_enabled = (prop ->> 'sale_enabled')::boolean,
+        sale_price = (prop ->> 'sale_price')::bigint,
+        rent_enabled = (prop ->> 'rent_enabled')::boolean,
+        rent_price = (prop ->> 'rent_price')::bigint,
+        images = CASE WHEN prop -> 'images' = 'null' THEN NULL ELSE prop -> 'images' END,
+        is_published = COALESCE((prop ->> 'is_published')::boolean, false),
+        cover_image = CASE WHEN prop -> 'cover_image' = 'null' THEN NULL ELSE prop -> 'cover_image' END,
+        personal_title = prop ->> 'personal_title',
+        personal_notes = prop ->> 'personal_notes',
+        agent_id = (prop ->> 'agent_id')::uuid,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = (prop ->> 'id')::uuid;
+    END IF;
+  END LOOP;
+
+  RETURN id_mapping;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Helper function to map entry arrays
+CREATE OR REPLACE FUNCTION map_entry_array(
+  entry_array jsonb,
+  entry_id_mapping jsonb
+) RETURNS integer[] AS $$
+DECLARE
+  result integer[] := '{}';
+  entry_id text;
+  mapped_id integer;
+BEGIN
+  IF entry_array IS NULL OR entry_array = 'null' THEN
+    RETURN NULL;
+  END IF;
+  
+  FOR entry_id IN SELECT jsonb_array_elements_text(entry_array)
+  LOOP
+    mapped_id := COALESCE(
+      (entry_id_mapping ->> entry_id)::integer,
+      entry_id::integer
+    );
+    result := array_append(result, mapped_id);
+  END LOOP;
+  
+  RETURN result;
+END;
+$$ LANGUAGE plpgsql;
