@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon, BanIcon, Plus, CircleAlertIcon, TrashIcon } from "lucide-react";
+import { SearchIcon, Plus, CircleAlertIcon, TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useCallback, useMemo, useId } from "react";
 import { DBSerialID } from "@/entities/common";
