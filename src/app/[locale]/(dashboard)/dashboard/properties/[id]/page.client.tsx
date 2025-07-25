@@ -33,6 +33,7 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
+import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button } from "@/modules/shadcn";
 
 export default function PropertiesPageClient({
@@ -44,6 +45,7 @@ export default function PropertiesPageClient({
   dictionaries: DBDictionary[];
   entries: DBDictionaryEntry[];
 }) {
+  const router = useRouter();
   const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
   const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", properties[0]), [properties]);
 
@@ -55,7 +57,7 @@ export default function PropertiesPageClient({
             <div className="flex w-full flex-col gap-4 pt-4">
               <div className="flex w-full flex-row items-center justify-between px-6">
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard/properties")}>
                     <ArrowLeftIcon className="!h-6 !w-6" />
                   </Button>
                   <h1 className="text-xl font-bold">Listing editor</h1>

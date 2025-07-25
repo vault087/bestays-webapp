@@ -3,12 +3,48 @@ import { ArrowUpDown, ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-reac
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
 import { capitalize } from "@/utils/capitalize";
-import { BooleanHeaderFilter, DictionaryHeaderFilter } from "./header-filters";
+import { BooleanHeaderFilter, DictionaryHeaderFilter, HeaderDropdown } from "./header-filters";
 import { PropertyImage } from "./property-image";
-import { PropertyStatus } from "./property-status";
 import { PublishedStatus } from "./published-status";
 import { RelativeTimeCell } from "./relative-time-cell";
 import { PropertyRow } from "./types";
+
+// Price Badge Component
+interface PriceBadgeProps {
+  price: number | null;
+  enabled: boolean | null;
+  type: "rent" | "sale";
+}
+
+function PriceBadge({ price, enabled, type }: PriceBadgeProps) {
+  if (!enabled) {
+    return (
+      <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
+        Not set
+      </span>
+    );
+  }
+
+  if (!price) {
+    return (
+      <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">
+        Price TBD
+      </span>
+    );
+  }
+
+  const bgColor = type === "rent" ? "bg-blue-50" : "bg-green-50";
+  const textColor = type === "rent" ? "text-blue-700" : "text-green-700";
+  const ringColor = type === "rent" ? "ring-blue-700/10" : "ring-green-700/10";
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-md ${bgColor} px-2 py-1 text-xs font-medium ${textColor} ring-1 ring-inset ${ringColor}`}
+    >
+      ₿{price.toLocaleString()}
+    </span>
+  );
+}
 
 interface CreateColumnsProps {
   dictionaries: DBDictionary[];
@@ -87,32 +123,19 @@ export const createPropertyColumns = ({
   {
     accessorKey: "property_type",
     header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const SortIcon =
-        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+      const hasFilter = column.getFilterValue() !== undefined;
 
       return (
-        <div className="relative">
-          <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-colors">
-            <span className="text-sm font-medium tracking-wide">{capitalize("property type")}</span>
-            <button
-              className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                column.toggleSorting();
-              }}
-            >
-              <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
-            </button>
-          </div>
+        <HeaderDropdown title={capitalize("property type")} hasFilter={hasFilter}>
           <DictionaryHeaderFilter
+            title={capitalize("property type")}
             column={column}
             dictionaryCode={PropertyFieldToDictionaryCodeMap.property_type}
             dictionaries={dictionaries}
             entries={entries}
             locale={locale}
           />
-        </div>
+        </HeaderDropdown>
       );
     },
     cell: ({ row }) => {
@@ -128,32 +151,19 @@ export const createPropertyColumns = ({
   {
     accessorKey: "area",
     header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const SortIcon =
-        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+      const hasFilter = column.getFilterValue() !== undefined;
 
       return (
-        <div className="relative">
-          <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-colors">
-            <span className="text-sm font-medium tracking-wide">{capitalize("area")}</span>
-            <button
-              className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                column.toggleSorting();
-              }}
-            >
-              <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
-            </button>
-          </div>
+        <HeaderDropdown title={capitalize("area")} hasFilter={hasFilter}>
           <DictionaryHeaderFilter
+            title={capitalize("area")}
             column={column}
             dictionaryCode={PropertyFieldToDictionaryCodeMap.area}
             dictionaries={dictionaries}
             entries={entries}
             locale={locale}
           />
-        </div>
+        </HeaderDropdown>
       );
     },
     cell: ({ row }) => {
@@ -167,107 +177,50 @@ export const createPropertyColumns = ({
     meta: { filterVariant: "select" },
   },
   {
-    accessorKey: "rent_price",
+    accessorKey: "rent_enabled",
     header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const SortIcon =
-        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+      const hasFilter = column.getFilterValue() !== undefined;
 
       return (
-        <div className="flex h-12 items-center justify-between">
-          <span className="text-sm font-medium tracking-wide">{capitalize("rent price")}</span>
-          <button
-            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
-            onClick={(e) => {
-              e.stopPropagation();
-              column.toggleSorting();
-            }}
-          >
-            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
-          </button>
-        </div>
+        <HeaderDropdown title={capitalize("rent")} hasFilter={hasFilter}>
+          <BooleanHeaderFilter column={column} />
+        </HeaderDropdown>
       );
     },
-    cell: ({ row }) => {
-      const price = row.getValue<number>("rent_price");
-      const enabled = row.original.rent_enabled;
-      if (!enabled) return <span className="text-muted-foreground">—</span>;
-      return price ? (
-        <span className="font-medium">₿{price.toLocaleString()}</span>
-      ) : (
-        <span className="text-muted-foreground">—</span>
-      );
+    cell: ({ row }) => <PriceBadge price={row.original.rent_price} enabled={row.original.rent_enabled} type="rent" />,
+    filterFn: (row, columnId, filterValue) => {
+      const rentEnabled = row.original.rent_enabled;
+      return filterValue === undefined || rentEnabled === filterValue;
     },
+    meta: { filterVariant: "select" },
   },
   {
-    accessorKey: "sale_price",
+    accessorKey: "sale_enabled",
     header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const SortIcon =
-        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+      const hasFilter = column.getFilterValue() !== undefined;
 
       return (
-        <div className="flex h-12 items-center justify-between">
-          <span className="text-sm font-medium tracking-wide">{capitalize("sale price")}</span>
-          <button
-            className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
-            onClick={(e) => {
-              e.stopPropagation();
-              column.toggleSorting();
-            }}
-          >
-            <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
-          </button>
-        </div>
+        <HeaderDropdown title={capitalize("sale")} hasFilter={hasFilter}>
+          <BooleanHeaderFilter column={column} />
+        </HeaderDropdown>
       );
     },
-    cell: ({ row }) => {
-      const price = row.getValue<number>("sale_price");
-      const enabled = row.original.sale_enabled;
-      if (!enabled) return <span className="text-muted-foreground">—</span>;
-      return price ? (
-        <span className="font-medium">₿{price.toLocaleString()}</span>
-      ) : (
-        <span className="text-muted-foreground">—</span>
-      );
+    cell: ({ row }) => <PriceBadge price={row.original.sale_price} enabled={row.original.sale_enabled} type="sale" />,
+    filterFn: (row, columnId, filterValue) => {
+      const saleEnabled = row.original.sale_enabled;
+      return filterValue === undefined || saleEnabled === filterValue;
     },
-  },
-
-  {
-    accessorKey: "status",
-    header: () => (
-      <div className="flex h-12 items-center">
-        <span className="text-sm font-medium tracking-wide">{capitalize("status")}</span>
-      </div>
-    ),
-    cell: ({ row }) => (
-      <PropertyStatus rent_enabled={row.original.rent_enabled} sale_enabled={row.original.sale_enabled} />
-    ),
-    enableSorting: false,
+    meta: { filterVariant: "select" },
   },
   {
     accessorKey: "is_published",
     header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const SortIcon =
-        sortDirection === "desc" ? ArrowDownNarrowWide : sortDirection === "asc" ? ArrowUpNarrowWide : ArrowUpDown;
+      const hasFilter = column.getFilterValue() !== undefined;
 
       return (
-        <div className="relative">
-          <div className="group hover:bg-muted/30 flex h-12 cursor-pointer items-center justify-between rounded-sm px-2 py-1 transition-colors">
-            <span className="text-sm font-medium tracking-wide">{capitalize("published")}</span>
-            <button
-              className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                column.toggleSorting();
-              }}
-            >
-              <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
-            </button>
-          </div>
+        <HeaderDropdown title={capitalize("published")} hasFilter={hasFilter}>
           <BooleanHeaderFilter column={column} />
-        </div>
+        </HeaderDropdown>
       );
     },
     cell: ({ row }) => <PublishedStatus is_published={row.getValue("is_published")} />,

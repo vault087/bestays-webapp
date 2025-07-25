@@ -10,8 +10,8 @@ import {
   useReactTable,
   Updater,
 } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
+import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/modules/shadcn/components/ui/table";
 import { createPropertyColumns } from "./property-listing-columns";
 import { PropertyRow } from "./types";
@@ -85,6 +85,10 @@ export function PropertyListingTable({
                 <TableHead
                   key={header.id}
                   className="relative h-12 px-4 py-2 align-top select-none"
+                  style={{
+                    // Reserve space for filter dropdowns (40px height + padding)
+                    paddingBottom: "48px",
+                  }}
                   aria-sort={
                     header.column.getIsSorted() === "asc"
                       ? "ascending"
