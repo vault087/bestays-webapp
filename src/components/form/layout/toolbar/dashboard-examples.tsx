@@ -1,12 +1,12 @@
 "use client";
 
-import { memo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { memo, useState } from "react";
+import { DashboardLayout, DashboardSidebar, DashboardNavigation } from "@/components/form/layout/dashboard-layout";
+import { DashboardPage, DashboardPageContent } from "@/components/form/layout/dashboard-page";
+import { Badge } from "@/modules/shadcn/components/ui/badge";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import { Input } from "@/modules/shadcn/components/ui/input";
-import { Badge } from "@/modules/shadcn/components/ui/badge";
-import { DashboardLayout, DashboardSidebar, DashboardNavigation } from "../dashboard-layout";
-import { DashboardPage, DashboardPageContent } from "../dashboard-page";
 
 // Example: Properties Overview Page
 export const PropertiesOverviewExample = memo(function PropertiesOverviewExample() {

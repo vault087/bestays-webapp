@@ -55,6 +55,7 @@ export const DBPropertySchema = z.object({
   rooms: DBRoomsSchema.nullish(),
   size: DBSizeSchema.nullish(),
   images: z.array(DBImageSchema).nullish(),
+  cover_image: DBImageSchema.nullish(),
 
   personal_notes: z.string().max(PROPERTY_PERSONAL_NOTES_MAX).nullish(),
   agent_id: z.string().uuid().nullish(),

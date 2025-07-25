@@ -36,10 +36,7 @@ export async function fetch<S extends z.ZodRawShape, K extends keyof S & string>
     const selectFields = fields.join(", ");
 
     // Fetch only the required fields from Supabase with better typing
-    const response = (await supabase
-      .from(table)
-      .select(selectFields)
-      .eq("id", "61c8a8c0-13d2-4cb1-9b80-5ed30107c1a9")) as unknown as SupabaseResponse<
+    const response = (await supabase.from(table).select(selectFields)) as unknown as SupabaseResponse<
       Pick<z.infer<z.ZodObject<S>>, K>
     >;
 

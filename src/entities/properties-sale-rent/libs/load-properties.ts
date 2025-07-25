@@ -1,17 +1,25 @@
-import { DBPropertySchema, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale-rent";
+import { DBProperty, DBPropertySchema, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale-rent";
 import { fetch } from "@/modules/supabase/crud/fetch";
 
-// Helper function for listing properties with specific fields
-export function listing(): ReturnType<typeof fetch> {
-  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, ["area"]);
+const DASHBOARD_LISTING_FIELDS: (keyof DBProperty)[] = [
+  "id",
+  "personal_title",
+  "property_type",
+  "area",
+  "rent_price",
+  "sale_price",
+  "sale_enabled",
+  "rent_enabled",
+  "cover_image",
+  "is_published",
+  "updated_at",
+  "deleted_at",
+];
+export function loadDashboardPropertyListings(): ReturnType<typeof fetch> {
+  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, DASHBOARD_LISTING_FIELDS);
 }
 
-// Additional helper functions for common field combinations
-export function loadPropertySummaries(): ReturnType<typeof fetch> {
-  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, ["id", "property_type", "area", "is_published"]);
-}
-
-export function loadPropertyDetails(): ReturnType<typeof fetch> {
+export function loadDashboardPropertyDetails(): ReturnType<typeof fetch> {
   return fetch(
     PROPERTIES_SALE_RENT_TABLE,
     DBPropertySchema,
