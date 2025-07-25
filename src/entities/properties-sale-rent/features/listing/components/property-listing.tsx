@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
-import { PropertyListingFilters } from "./property-listing-filters";
 import { PropertyListingTable } from "./property-listing-table";
 import { PropertyListingProps, PropertyRow } from "./types";
 
@@ -70,22 +69,15 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
   }, [properties, dictionaryByCode, entriesByDictionaryId, locale]);
 
   return (
-    <div className="space-y-4">
-      <PropertyListingFilters
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-        dictionaries={dictionaries}
-        entries={entries}
-        locale={locale}
-      />
-
-      <PropertyListingTable
-        data={tableData}
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-        sorting={sorting}
-        setSorting={setSorting}
-      />
-    </div>
+    <PropertyListingTable
+      data={tableData}
+      dictionaries={dictionaries}
+      entries={entries}
+      locale={locale}
+      columnFilters={columnFilters}
+      setColumnFilters={setColumnFilters}
+      sorting={sorting}
+      setSorting={setSorting}
+    />
   );
 }

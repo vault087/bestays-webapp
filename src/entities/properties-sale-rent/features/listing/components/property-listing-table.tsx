@@ -12,12 +12,16 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/modules/shadcn/components/ui/table";
 import { createPropertyColumns } from "./property-listing-columns";
 import { PropertyRow } from "./types";
 
 interface PropertyListingTableProps {
   data: PropertyRow[];
+  dictionaries: DBDictionary[];
+  entries: DBDictionaryEntry[];
+  locale: string;
   columnFilters: ColumnFiltersState;
   setColumnFilters: (filters: ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)) => void;
   sorting: SortingState;
@@ -26,13 +30,16 @@ interface PropertyListingTableProps {
 
 export function PropertyListingTable({
   data,
+  dictionaries,
+  entries,
+  locale,
   columnFilters,
   setColumnFilters,
   sorting,
   setSorting,
 }: PropertyListingTableProps) {
   const router = useRouter();
-  const columns = createPropertyColumns();
+  const columns = createPropertyColumns({ dictionaries, entries, locale });
 
   const handleColumnFiltersChange = (updaterOrValue: Updater<ColumnFiltersState>) => {
     if (typeof updaterOrValue === "function") {
@@ -78,7 +85,7 @@ export function PropertyListingTable({
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="h-10 select-none"
+                  className="h-16 align-top select-none"
                   aria-sort={
                     header.column.getIsSorted() === "asc"
                       ? "ascending"

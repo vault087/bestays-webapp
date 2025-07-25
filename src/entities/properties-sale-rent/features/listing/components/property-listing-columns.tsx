@@ -1,11 +1,24 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
+import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
+import { BooleanHeaderFilter, DictionaryHeaderFilter } from "./header-filters";
 import { PropertyImage } from "./property-image";
 import { PropertyStatus } from "./property-status";
 import { PublishedStatus } from "./published-status";
 import { RelativeTimeCell } from "./relative-time-cell";
 import { PropertyRow } from "./types";
 
-export const createPropertyColumns = (): ColumnDef<PropertyRow>[] => [
+interface CreateColumnsProps {
+  dictionaries: DBDictionary[];
+  entries: DBDictionaryEntry[];
+  locale: string;
+}
+
+export const createPropertyColumns = ({
+  dictionaries,
+  entries,
+  locale,
+}: CreateColumnsProps): ColumnDef<PropertyRow>[] => [
   {
     accessorKey: "cover_image",
     header: "",
@@ -33,27 +46,49 @@ export const createPropertyColumns = (): ColumnDef<PropertyRow>[] => [
   },
   {
     accessorKey: "property_type",
-    header: "Property Type",
+    header: ({ column }) => (
+      <div className="flex flex-col gap-1">
+        <span>Property Type</span>
+        <DictionaryHeaderFilter
+          column={column}
+          dictionaryCode={PropertyFieldToDictionaryCodeMap.property_type}
+          dictionaries={dictionaries}
+          entries={entries}
+          locale={locale}
+        />
+      </div>
+    ),
     cell: ({ row }) => {
       const type = row.getValue<string>("property_type");
       return type || <span className="text-muted-foreground">—</span>;
     },
     filterFn: (row, columnId, filterValue) => {
       const propertyTypeId = row.original.property_type_id;
-      return filterValue === "all" || propertyTypeId?.toString() === filterValue;
+      return filterValue === undefined || propertyTypeId?.toString() === filterValue;
     },
     meta: { filterVariant: "select" },
   },
   {
     accessorKey: "area",
-    header: "Area",
+    header: ({ column }) => (
+      <div className="flex flex-col gap-1">
+        <span>Area</span>
+        <DictionaryHeaderFilter
+          column={column}
+          dictionaryCode={PropertyFieldToDictionaryCodeMap.area}
+          dictionaries={dictionaries}
+          entries={entries}
+          locale={locale}
+        />
+      </div>
+    ),
     cell: ({ row }) => {
       const area = row.getValue<string>("area");
       return area || <span className="text-muted-foreground">—</span>;
     },
     filterFn: (row, columnId, filterValue) => {
       const areaId = row.original.area_id;
-      return filterValue === "all" || areaId?.toString() === filterValue;
+      return filterValue === undefined || areaId?.toString() === filterValue;
     },
     meta: { filterVariant: "select" },
   },
@@ -87,15 +122,35 @@ export const createPropertyColumns = (): ColumnDef<PropertyRow>[] => [
   },
   {
     accessorKey: "rent_enabled",
-    header: "For Rent",
+    header: ({ column }) => (
+      <div className="flex flex-col gap-1">
+        <span>For Rent</span>
+        <BooleanHeaderFilter column={column} />
+      </div>
+    ),
     cell: ({ row }) => (row.original.rent_enabled ? "Yes" : "No"),
     enableSorting: false,
+    filterFn: (row, columnId, filterValue) => {
+      const rentEnabled = row.original.rent_enabled;
+      return filterValue === undefined || rentEnabled === filterValue;
+    },
+    meta: { filterVariant: "select" },
   },
   {
     accessorKey: "sale_enabled",
-    header: "For Sale",
+    header: ({ column }) => (
+      <div className="flex flex-col gap-1">
+        <span>For Sale</span>
+        <BooleanHeaderFilter column={column} />
+      </div>
+    ),
     cell: ({ row }) => (row.original.sale_enabled ? "Yes" : "No"),
     enableSorting: false,
+    filterFn: (row, columnId, filterValue) => {
+      const saleEnabled = row.original.sale_enabled;
+      return filterValue === undefined || saleEnabled === filterValue;
+    },
+    meta: { filterVariant: "select" },
   },
   {
     accessorKey: "status",
@@ -107,8 +162,17 @@ export const createPropertyColumns = (): ColumnDef<PropertyRow>[] => [
   },
   {
     accessorKey: "is_published",
-    header: "Published",
+    header: ({ column }) => (
+      <div className="flex flex-col gap-1">
+        <span>Published</span>
+        <BooleanHeaderFilter column={column} />
+      </div>
+    ),
     cell: ({ row }) => <PublishedStatus is_published={row.getValue("is_published")} />,
+    filterFn: (row, columnId, filterValue) => {
+      const isPublished = row.original.is_published;
+      return filterValue === undefined || isPublished === filterValue;
+    },
     meta: { filterVariant: "select" },
   },
   {
