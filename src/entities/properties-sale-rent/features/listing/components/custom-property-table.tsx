@@ -1,8 +1,8 @@
 "use client";
 
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
-import { memo, useMemo, useState } from "react";
-import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
+import { memo, useMemo } from "react";
+import { DBDictionaryEntry } from "@/entities/dictionaries";
 import { TABLE_FIELDS_CONFIG } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
 import { useTableSorting, useTableFiltering } from "@/entities/properties-sale-rent/features/listing/hooks";
 import { useRouter } from "@/modules/i18n/core/client/navigation";

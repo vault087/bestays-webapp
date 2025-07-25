@@ -1,5 +1,6 @@
-export * from "./custom-table-header";
 export * from "./custom-filter-row";
+export * from "./custom-property-table";
+export * from "./custom-table-header";
 export * from "./custom-table-row";
 export * from "./filter-badges";
 export * from "./filter-tags";

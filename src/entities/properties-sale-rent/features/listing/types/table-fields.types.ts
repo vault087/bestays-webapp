@@ -1,5 +1,9 @@
+import React from "react";
 import { PropertyRow } from "@/entities/properties-sale-rent/features/listing/components/types";
 import { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
+import { PropertyImage } from "@/entities/properties-sale-rent/features/listing/components/property-image";
+import { PublishedStatus } from "@/entities/properties-sale-rent/features/listing/components/published-status";
+import { RelativeTimeCell } from "@/entities/properties-sale-rent/features/listing/components/relative-time-cell";
 
 /**
  * Configuration for a single table field
@@ -38,8 +42,8 @@ export const DISPLAY_FIELDS_ORDER: (keyof DashboardProperty)[] = [
 export type DisplayProperty = Pick<DashboardProperty, (typeof DISPLAY_FIELDS_ORDER)[number]>;
 
 /**
- * Table field configuration array
- * Defines all table columns with their properties
+ * Table field configuration array with custom renderers
+ * Defines all table columns with their properties and rendering logic
  */
 export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
   {
@@ -49,6 +53,7 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: false,
     width: "60px",
     align: "center",
+    render: (value, row) => <PropertyImage coverImage={row.cover_image} />,
   },
   {
     key: "id",
@@ -57,6 +62,11 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: false,
     width: "100px",
     align: "left",
+    render: (value) => (
+      <span className="text-muted-foreground font-mono text-xs">
+        {typeof value === "string" ? value.slice(0, 8) : "—"}
+      </span>
+    ),
   },
   {
     key: "personal_title",
@@ -65,6 +75,14 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: false,
     width: "1fr",
     align: "left",
+    render: (value) => {
+      const title = value as string | null;
+      return title ? (
+        <span className="font-medium">{title}</span>
+      ) : (
+        <span className="text-muted-foreground italic">No title</span>
+      );
+    },
   },
   {
     key: "property_type",
@@ -73,6 +91,11 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: true,
     width: "150px",
     align: "left",
+    render: (value) => (
+      <span className="text-sm">
+        {value || <span className="text-muted-foreground">—</span>}
+      </span>
+    ),
   },
   {
     key: "area",
@@ -81,6 +104,11 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: true,
     width: "150px",
     align: "left",
+    render: (value) => (
+      <span className="text-sm">
+        {value || <span className="text-muted-foreground">—</span>}
+      </span>
+    ),
   },
   {
     key: "rent_enabled",
@@ -89,6 +117,21 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: true,
     width: "120px",
     align: "center",
+    render: (value, row) => {
+      const enabled = value as boolean | null;
+      if (enabled && row.rent_price) {
+        return (
+          <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+            ฿{row.rent_price.toLocaleString()}
+          </span>
+        );
+      }
+      return enabled ? (
+        <span className="text-green-600 text-xs">Enabled</span>
+      ) : (
+        <span className="text-muted-foreground text-xs">—</span>
+      );
+    },
   },
   {
     key: "sale_enabled",
@@ -97,6 +140,21 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: true,
     width: "120px",
     align: "center",
+    render: (value, row) => {
+      const enabled = value as boolean | null;
+      if (enabled && row.sale_price) {
+        return (
+          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+            ฿{row.sale_price.toLocaleString()}
+          </span>
+        );
+      }
+      return enabled ? (
+        <span className="text-blue-600 text-xs">Enabled</span>
+      ) : (
+        <span className="text-muted-foreground text-xs">—</span>
+      );
+    },
   },
   {
     key: "is_published",
@@ -105,6 +163,7 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: true,
     width: "100px",
     align: "center",
+    render: (value) => <PublishedStatus is_published={value as boolean | null} />,
   },
   {
     key: "updated_at",
@@ -113,6 +172,7 @@ export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
     filterable: false,
     width: "120px",
     align: "right",
+    render: (value) => <RelativeTimeCell date={value as string | null} />,
   },
 ] as const;
 
