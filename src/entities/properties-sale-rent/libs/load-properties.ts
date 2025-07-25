@@ -33,7 +33,7 @@ export function loadDashboardPropertyListings(): ReturnType<typeof fetch> {
 // }
 
 export type DashboardPropertyFetchResponse = {
-  data: DBProperty[];
+  data?: DBProperty;
   error: string | null;
 };
 
@@ -45,15 +45,22 @@ export async function loadDashboardPropertyDetails(propertyId: string): Promise<
     // Check for errors
     if (response.error) throw response.error;
 
+    if (!response.data || response.data.length === 0) {
+      return {
+        data: undefined,
+        error: "Property not found",
+      };
+    }
+
     return {
-      data: response.data,
+      data: response.data[0],
       error: null,
     };
   } catch (error) {
     console.error("Failed to load dictionaries:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return {
-      data: [],
+      data: undefined,
       error: errorMessage,
     };
   }

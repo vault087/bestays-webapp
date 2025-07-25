@@ -9,7 +9,6 @@ import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/fo
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
   PropertyFormStoreProvider,
-  PropertyFormStoreHydrated,
   MutableProperty,
   PropertyPersonalNotesInput,
   PropertyAreaInput,
@@ -29,6 +28,7 @@ import {
   PropertySalePriceInput,
   PropertyRentPriceInput,
   PropertyTitleInput,
+  PropertyFormStoreHydrated,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
@@ -37,17 +37,18 @@ import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button } from "@/modules/shadcn";
 
 export default function PropertiesPageClient({
-  properties,
+  property,
   dictionaries,
   entries,
 }: {
-  properties: MutableProperty[];
+  property: MutableProperty;
   dictionaries: DBDictionary[];
   entries: DBDictionaryEntry[];
 }) {
   const router = useRouter();
+
   const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
-  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", properties[0]), [properties]);
+  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", property), [property]);
 
   return (
     <div className="flex h-full w-full">

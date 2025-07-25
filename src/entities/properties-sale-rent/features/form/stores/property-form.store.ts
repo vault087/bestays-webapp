@@ -13,7 +13,8 @@ import { convertToMutableProperty } from "@/entities/properties-sale-rent/featur
 import { generateUUID } from "@/utils/generate-uuid";
 
 export interface PropertyFormStoreState extends ImageStoreSliceState {
-  dbProperty?: DBProperty | undefined;
+  freshProperty?: DBProperty | undefined;
+  initialProperty?: DBProperty | undefined;
   property: MutableProperty;
   hydrated: boolean;
   resetKey: string;
@@ -22,7 +23,7 @@ export interface PropertyFormStoreState extends ImageStoreSliceState {
 // MutableDictionary Store Actions
 export interface PropertyFormStoreActions extends ImageStoreSliceActions {
   updateProperty: (updater: (draft: MutableProperty) => void) => void;
-  reset: () => void;
+  reset: (property?: DBProperty) => void;
 }
 
 // Combined store type
@@ -37,7 +38,8 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
   return createStore<PropertyFormStore>()(
     persist(
       (set, get, api) => ({
-        dbProperty: property,
+        initialProperty: property,
+        freshProperty: property,
         property: convertToMutableProperty(property),
         hydrated: false,
         resetKey: generateUUID(),
@@ -52,11 +54,11 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
 
         reset: (property?: DBProperty) =>
           set((state) => {
-            const newProperty = property ? property : state.dbProperty;
+            const newProperty = property ? property : state.initialProperty;
             return {
               ...state,
               ...imageSliceCreator(set, get, api),
-              dbProperty: newProperty,
+              initialProperty: newProperty,
               property: convertToMutableProperty(newProperty),
               hydrated: state.hydrated,
               resetKey: generateUUID(), // Force component re-render
@@ -66,14 +68,32 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
       {
         name: `property-store-${store_id}`,
         partialize: (state) => ({
-          dbProperty: state.dbProperty,
+          initialProperty: state.initialProperty,
           property: state.property,
           resetKey: state.resetKey,
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {
-            // Images are now managed by the slice, not persisted with property
+            console.log("hydrated, ", state);
+
+            // Check if we need to reset due to property mismatch
+            if (state.property.id !== state.freshProperty?.id) {
+              console.log("property id mismatch, updating state");
+
+              // Instead of calling reset (which could cause issues),
+              // directly update the state
+              const newProperty = state.freshProperty;
+
+              Object.assign(state, {
+                initialProperty: newProperty,
+                property: convertToMutableProperty(newProperty),
+                resetKey: generateUUID(),
+              });
+            }
+
+            // Set hydrated to true after all operations
             state.hydrated = true;
+            // Images are now managed by the slice, not persisted with property
           }
         },
       },

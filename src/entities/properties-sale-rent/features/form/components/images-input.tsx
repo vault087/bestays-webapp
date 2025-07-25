@@ -5,8 +5,9 @@ import { memo, useCallback, useState } from "react";
 import { FormFieldLayout } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { generateTemporarySerialId } from "@/entities/common";
-import { DBImage, MutableImage } from "@/entities/media/types/image.type";
+import { MutableImage } from "@/entities/media/types/image.type";
 import { usePropertyImagesInput } from "@/entities/properties-sale-rent";
+import { uploadPropertyImages } from "@/entities/properties-sale-rent/libs/image-upload";
 import { PROPERTY_MAX_IMAGES } from "@/entities/properties-sale-rent/types/property.types";
 import { ImageFieldExpandDialog, CompactImagesView } from "./images";
 
@@ -59,26 +60,32 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
 
   // Handle saving mutable images back to DB
   const handleSaveImages = useCallback(async () => {
-    // For now, we'll convert mutable images back to DB format
-    // In a real implementation, you'd upload the files first
-    const dbImagesFromMutable: DBImage[] = mutableImages.map((img) => ({
-      url: img.url,
-      color: img.color,
-      alt: img.alt,
-    }));
+    try {
+      // Upload images to Supabase Storage
+      const uploadResult = await uploadPropertyImages(mutableImages);
 
-    // Clean up object URLs
-    mutableImages.forEach((img) => {
-      if (img.previewUrl && img.is_new) {
-        URL.revokeObjectURL(img.previewUrl);
+      if (!uploadResult.success) {
+        console.error("Image upload failed:", uploadResult.errors);
+        // TODO: Show error to user
+        return;
       }
-    });
 
-    // Update the DB images
-    onImagesChange(dbImagesFromMutable);
+      // Clean up object URLs
+      mutableImages.forEach((img) => {
+        if (img.previewUrl && img.is_new) {
+          URL.revokeObjectURL(img.previewUrl);
+        }
+      });
 
-    // Close expanded view
-    setIsExpandedOpen(false);
+      // Update the DB images with uploaded URLs
+      onImagesChange(uploadResult.images);
+
+      // Close expanded view
+      setIsExpandedOpen(false);
+    } catch (error) {
+      console.error("Failed to save images:", error);
+      // TODO: Show error to user
+    }
   }, [mutableImages, onImagesChange]);
 
   // Handle setting cover image in both views
