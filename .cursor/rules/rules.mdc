@@ -1,0 +1,10 @@
+---
+description: Basic rules
+globs:
+alwaysApply: true
+---
+
+- Never use "any"
+- Specify result types
+- always run lint to validate your work
+- never work outside of the scope of context and focus on small but precise iteractions with confirmations and re-analisys

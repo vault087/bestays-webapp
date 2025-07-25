@@ -15,6 +15,9 @@ const DASHBOARD_LISTING_FIELDS: (keyof DBProperty)[] = [
   "updated_at",
   "deleted_at",
 ];
+
+export type DashboardProperty = Pick<DBProperty, (typeof DASHBOARD_LISTING_FIELDS)[number]>;
+
 export function loadDashboardPropertyListings(): ReturnType<typeof fetch> {
   return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, DASHBOARD_LISTING_FIELDS);
 }
