@@ -11,7 +11,7 @@ import {
   GRID_TEMPLATE_COLUMNS,
   type TableFieldKey,
 } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
-import { Badge } from "@/modules/shadcn";
+import { Badge, Button } from "@/modules/shadcn";
 import { capitalize } from "@/utils/capitalize";
 
 interface CustomFilterRowProps {
@@ -71,15 +71,17 @@ export const CustomFilterRow = memo(function CustomFilterRow({
               const displayValue = getFilterDisplayValue(filter);
               if (displayValue) {
                 return (
-                  <Badge className="gap-0" variant="outline">
-                    {displayValue}
-                    <button
-                      className="focus-visible:border-ring focus-visible:ring-ring/50 text-primary-foreground/60 hover:text-primary-foreground -my-px -ms-px -me-1.5 inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-[inherit] p-0 transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
-                      onClick={() => removeFilter(filter.id)}
-                    >
-                      <X size={12} aria-hidden="true" />
-                    </button>
-                  </Badge>
+                  <Button
+                    variant="text"
+                    size="xs"
+                    className="group flex w-full"
+                    onClick={() => removeFilter(filter.id)}
+                  >
+                    <Badge className="flex w-full flex-row space-x-2 px-3 py-1" variant="outline">
+                      {displayValue}
+                      <X className="h-2.5 w-2.5 group-hover:text-red-800" />
+                    </Badge>
+                  </Button>
                 );
               }
               return null;

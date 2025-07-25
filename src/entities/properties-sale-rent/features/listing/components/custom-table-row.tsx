@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { memo, useCallback } from "react";
+import { moneyToString } from "@/entities/common";
 import { DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import {
@@ -38,28 +40,28 @@ export const CustomTableRow = memo(function CustomTableRow({
     const coverImage = row.cover_image;
     if (coverImage?.url) {
       return (
-        <img src={coverImage.url} alt="Property" className="h-12 w-12 rounded-md border border-gray-200 object-cover" />
+        <Image
+          src={coverImage.url}
+          alt="Property"
+          className="h-12 w-12 rounded-md border border-gray-200 object-cover"
+        />
       );
     }
     return (
       <div className="flex h-12 w-12 items-center justify-center rounded-md border border-gray-200 bg-gray-100">
-        <span className="text-xs text-gray-400">No image</span>
+        <span className="text-center text-xs text-gray-400">No image</span>
       </div>
     );
   }, [row.cover_image]);
 
   const renderPersonalTitle = useCallback(() => {
     const title = row.personal_title;
-    if (title) {
-      return (
-        <div className="flex items-center space-x-3">
-          <div>
-            <div className="font-medium text-gray-900">{title}</div>
-          </div>
-        </div>
-      );
-    }
-    return <span className="text-gray-500 italic">No title</span>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        {title && <div className="font-medium text-gray-900">{title}</div>}
+        {!title && <span className="text-gray-500 italic">Untitled</span>}
+      </div>
+    );
   }, [row.personal_title]);
 
   const renderDictionaryValue = useCallback(
@@ -79,7 +81,11 @@ export const CustomTableRow = memo(function CustomTableRow({
         }
       }
 
-      return <span className="text-gray-900">{value}</span>;
+      return (
+        <div className="flex h-full w-full items-center justify-center">
+          <span className="flex w-full justify-center text-center text-gray-900">{value}</span>
+        </div>
+      );
     },
     [row, entries, locale],
   );
@@ -88,40 +94,17 @@ export const CustomTableRow = memo(function CustomTableRow({
     (price: number | null, type: "sale" | "rent") => {
       const isEnabled = type === "sale" ? row.sale_enabled : row.rent_enabled;
 
-      // Not enabled - show "Not set" badge
-      if (!isEnabled) {
-        return (
-          <div className="text-right">
-            <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
-              Not set
-            </span>
-          </div>
-        );
-      }
-
-      // Enabled but no price - show "Price TBD" badge
-      if (!price) {
-        return (
-          <div className="text-right">
-            <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">
-              Price TBD
-            </span>
-          </div>
-        );
-      }
-
-      // Has price - show colored price badge
-      const bgColor = type === "rent" ? "bg-blue-50" : "bg-green-50";
-      const textColor = type === "rent" ? "text-blue-700" : "text-green-700";
-      const ringColor = type === "rent" ? "ring-blue-700/10" : "ring-green-700/10";
-
       return (
-        <div className="text-right">
-          <span
-            className={`inline-flex items-center rounded-md ${bgColor} px-2 py-1 text-xs font-medium ${textColor} ring-1 ring-inset ${ringColor}`}
-          >
-            ฿{price.toLocaleString()}
-          </span>
+        <div className="flex h-full w-full items-center justify-center">
+          {price && (
+            <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">
+              <div className={cn("text-center text-sm", isEnabled ? "text-green-800" : "text-gray-600")}>
+                {moneyToString(price)}
+              </div>
+            </span>
+          )}
+          {!price && <div className={cn("text-center", isEnabled ? "text-green-800" : "text-gray-600")}>Not set</div>}
+          {/* </span> */}
         </div>
       );
     },
@@ -130,20 +113,18 @@ export const CustomTableRow = memo(function CustomTableRow({
 
   const renderPublishedStatus = useCallback(() => {
     const isPublished = row.is_published;
-    if (isPublished === true) {
-      return (
-        <span className="inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-          Published
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <span
+          className={cn(
+            "inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-xs font-medium",
+            isPublished ? "text-green-800" : "text-gray-800",
+          )}
+        >
+          {isPublished ? "Published" : "Draft"}
         </span>
-      );
-    } else if (isPublished === false) {
-      return (
-        <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
-          Draft
-        </span>
-      );
-    }
-    return <span className="text-gray-500">—</span>;
+      </div>
+    );
   }, [row.is_published]);
 
   const renderRelativeTime = useCallback(() => {
@@ -168,12 +149,18 @@ export const CustomTableRow = memo(function CustomTableRow({
       }
 
       return (
-        <span className="text-sm text-gray-500" title={date.toLocaleString()}>
-          {timeAgo}
-        </span>
+        <div className="flex h-full w-full items-center justify-center">
+          <span className="text-center text-sm text-gray-500" title={date.toLocaleString()}>
+            {timeAgo}
+          </span>
+        </div>
       );
     }
-    return <span className="text-gray-500">—</span>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <span className="text-gray-500">—</span>
+      </div>
+    );
   }, [row.updated_at]);
 
   const renderCell = useCallback(
@@ -232,7 +219,7 @@ export const CustomTableRow = memo(function CustomTableRow({
       }
 
       return (
-        <div key={fieldKey} className={cn(config.cellClassName)}>
+        <div key={fieldKey} className={cn(config.cellClassName, "")}>
           {cellContent}
         </div>
       );

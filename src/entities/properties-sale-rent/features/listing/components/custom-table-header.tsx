@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDownIcon, CheckIcon } from "lucide-react";
+import { ChevronDownIcon, CheckIcon } from "lucide-react";
 import { memo, useCallback } from "react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
@@ -8,7 +8,7 @@ import {
   TABLE_FIELDS_CONFIG,
   VISIBLE_FIELDS,
   GRID_TEMPLATE_COLUMNS,
-  type SortableFieldKey,
+  // type SortableFieldKey,
   type TableFieldKey,
   type FilterableFieldKey,
 } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
@@ -37,22 +37,22 @@ interface CustomTableHeaderProps {
 }
 
 export const CustomTableHeader = memo(function CustomTableHeader({
-  sorting,
-  setSorting,
+  // sorting,
+  // setSorting,
   columnFilters,
   setColumnFilters,
   dictionaries,
   entries,
   locale,
 }: CustomTableHeaderProps) {
-  const getSortDirection = useCallback(
-    (fieldKey: TableFieldKey): "asc" | "desc" | null => {
-      const sortItem = sorting.find((item) => item.id === fieldKey);
-      if (!sortItem) return null;
-      return sortItem.desc ? "desc" : "asc";
-    },
-    [sorting],
-  );
+  // const getSortDirection = useCallback(
+  //   (fieldKey: TableFieldKey): "asc" | "desc" | null => {
+  //     const sortItem = sorting.find((item) => item.id === fieldKey);
+  //     if (!sortItem) return null;
+  //     return sortItem.desc ? "desc" : "asc";
+  //   },
+  //   [sorting],
+  // );
 
   const getFilterValue = useCallback(
     (fieldKey: FilterableFieldKey): string | boolean | undefined => {
@@ -97,21 +97,21 @@ export const CustomTableHeader = memo(function CustomTableHeader({
     [setColumnFilters],
   );
 
-  const renderSortIcon = useCallback(
-    (fieldKey: TableFieldKey) => {
-      const sortDirection = getSortDirection(fieldKey);
-      const iconSize = "h-4 w-4";
+  // const renderSortIcon = useCallback(
+  //   (fieldKey: TableFieldKey) => {
+  //     const sortDirection = getSortDirection(fieldKey);
+  //     const iconSize = "h-4 w-4";
 
-      if (sortDirection === "asc") {
-        return <ArrowUp className={cn(iconSize, "opacity-60 transition-opacity hover:opacity-100")} />;
-      } else if (sortDirection === "desc") {
-        return <ArrowDown className={cn(iconSize, "opacity-60 transition-opacity hover:opacity-100")} />;
-      } else {
-        return <ArrowUpDown className={cn(iconSize, "opacity-60 transition-opacity hover:opacity-100")} />;
-      }
-    },
-    [getSortDirection],
-  );
+  //     if (sortDirection === "asc") {
+  //       return <ArrowUp className={cn(iconSize, "opacity-60 transition-opacity hover:opacity-100")} />;
+  //     } else if (sortDirection === "desc") {
+  //       return <ArrowDown className={cn(iconSize, "opacity-60 transition-opacity hover:opacity-100")} />;
+  //     } else {
+  //       return <ArrowUpDown className={cn(iconSize, "opacity-60 transition-opacity hover:opacity-100")} />;
+  //     }
+  //   },
+  //   [getSortDirection],
+  // );
 
   // Dictionary filter component
   const DictionaryHeaderFilter = useCallback(
@@ -147,13 +147,15 @@ export const CustomTableHeader = memo(function CustomTableHeader({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="flex h-full w-full items-center justify-center">
+            <div className="flex h-full w-full items-center justify-center space-x-0">
               <Button
                 variant="ghost"
-                className="hover:bg-muted/90 focus:bg-muted flex space-x-2 rounded-sm border-0 bg-transparent text-sm font-medium tracking-wide"
+                className="hover:bg-muted/90 focus:bg-muted space-x-2 rounded-sm border-0 bg-transparent text-sm font-medium tracking-wide"
               >
-                <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
-                <ChevronDownIcon className="size-4" />
+                <div className="flex h-full w-full items-center justify-center space-x-2">
+                  <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
+                  <ChevronDownIcon className="size-4" />
+                </div>
               </Button>
             </div>
           </DropdownMenuTrigger>
@@ -199,16 +201,17 @@ export const CustomTableHeader = memo(function CustomTableHeader({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className={cn(
-                "hover:bg-muted/50 focus:bg-muted flex items-center justify-between space-x-2 text-sm font-medium tracking-wide",
-                "h-12 w-full min-w-0 rounded-sm border-0 bg-transparent transition-all duration-200 ease-in-out",
-              )}
-            >
-              <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
-              <ChevronDownIcon className="size-4" />
-            </Button>
+            <div className="flex h-full w-full items-center justify-center space-x-0">
+              <Button
+                variant="ghost"
+                className="hover:bg-muted/90 focus:bg-muted space-x-2 rounded-sm border-0 bg-transparent text-sm font-medium tracking-wide"
+              >
+                <div className="flex h-full w-full items-center justify-center space-x-2">
+                  <span>{TABLE_FIELDS_CONFIG[fieldKey].label}</span>
+                  <ChevronDownIcon className="size-4" />
+                </div>
+              </Button>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[180px]">
             {options.map((option) => (
@@ -251,7 +254,7 @@ export const CustomTableHeader = memo(function CustomTableHeader({
             );
           case "area":
             return (
-              <div key={fieldKey} className={cn(config.headerClassName)}>
+              <div key={fieldKey} className={cn(config.headerClassName, "")}>
                 <DictionaryHeaderFilter fieldKey={fieldKey} dictionaryCode={PropertyFieldToDictionaryCodeMap.area} />
               </div>
             );

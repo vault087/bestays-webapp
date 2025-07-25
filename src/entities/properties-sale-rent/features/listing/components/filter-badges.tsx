@@ -66,7 +66,7 @@ export const FilterBadges = memo(function FilterBadges({
               className="hover:bg-muted-foreground/10 h-3 w-3 p-0"
               onClick={() => removeFilter(filter.id)}
             >
-              <X className="h-2 w-2" />
+              <X className="h-3 w-3" />
             </Button>
           </div>
         );

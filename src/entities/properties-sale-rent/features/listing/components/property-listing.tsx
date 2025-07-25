@@ -7,7 +7,7 @@ import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-a
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { CustomPropertyTable } from "./custom-property-table";
-import { FilterTags } from "./filter-tags";
+// import { FilterTags } from "./filter-tags";
 import { PropertyListingProps, PropertyRow } from "./types";
 
 export function PropertyListing({ properties, dictionaries, entries, locale }: PropertyListingProps) {
@@ -83,14 +83,14 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
 
   return (
     <div className="space-y-4">
-      <FilterTags
+      {/* <FilterTags
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
         dictionaries={dictionaries}
         entries={entries}
         locale={locale}
         onFilterEdit={handleFilterEdit}
-      />
+      /> */}
 
       <CustomPropertyTable
         data={tableData}
