@@ -1,204 +1,171 @@
-import React from "react";
-import { PropertyRow } from "@/entities/properties-sale-rent/features/listing/components/types";
-import { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
-import { PropertyImage } from "@/entities/properties-sale-rent/features/listing/components/property-image";
-import { PublishedStatus } from "@/entities/properties-sale-rent/features/listing/components/published-status";
-import { RelativeTimeCell } from "@/entities/properties-sale-rent/features/listing/components/relative-time-cell";
+import type { ReactNode } from "react";
+import type { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
 
-/**
- * Configuration for a single table field
- * Follows project pattern of clear interface definitions
- */
-export interface TableFieldConfig<T = unknown> {
-  key: keyof DashboardProperty;
-  title: string;
+// Define available field keys from DashboardProperty
+export type TableFieldKey = keyof DashboardProperty;
+
+// Define which fields can be sorted
+export type SortableFieldKey = Exclude<TableFieldKey, "cover_image">;
+
+// Define which fields can be filtered
+export type FilterableFieldKey = "property_type" | "area" | "is_published" | "sale_enabled" | "rent_enabled";
+
+// Table field configuration interface
+export interface TableFieldConfig<TFieldKey extends TableFieldKey = TableFieldKey> {
+  key: TFieldKey;
+  label: string;
   sortable: boolean;
   filterable: boolean;
-  width: string; // CSS Grid column width
-  align: "left" | "center" | "right";
-  render?: (value: T, row: PropertyRow) => React.ReactNode;
+  className?: string;
+  headerClassName?: string;
+  cellClassName?: string;
+  cellRenderer?: (value: unknown, row: DashboardProperty) => ReactNode;
+  minWidth?: string;
 }
 
-/**
- * Sorted array of field keys for table rendering
- * Uses Pick<DashboardProperty> pattern from existing codebase
- */
-export const DISPLAY_FIELDS_ORDER: (keyof DashboardProperty)[] = [
-  "cover_image",
-  "id",
-  "personal_title",
-  "property_type",
-  "area",
-  "rent_enabled",
-  "sale_enabled",
-  "is_published",
-  "updated_at",
+// Display field order using Pick<DashboardProperty> pattern
+export const DISPLAY_FIELDS_ORDER: TableFieldKey[] = [
+  "cover_image", // Product/Image
+  "personal_title", // Title
+  "property_type", // Type
+  "area", // Area/Location
+  "sale_price", // Sale Price
+  "rent_price", // Rent Price
+  "is_published", // Status
+  "updated_at", // Last Updated
 ] as const;
 
-/**
- * Type-safe field selection using Pick utility
- * Follows existing codebase pattern for field typing
- */
-export type DisplayProperty = Pick<DashboardProperty, (typeof DISPLAY_FIELDS_ORDER)[number]>;
-
-/**
- * Table field configuration array with custom renderers
- * Defines all table columns with their properties and rendering logic
- */
-export const TABLE_FIELDS_CONFIG: TableFieldConfig[] = [
-  {
+// Table field configuration with JSON styling reference
+export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
+  cover_image: {
     key: "cover_image",
-    title: "",
+    label: "",
     sortable: false,
     filterable: false,
-    width: "60px",
-    align: "center",
-    render: (value, row) => <PropertyImage coverImage={row.cover_image} />,
+    className: "w-16 px-4 py-3",
+    headerClassName: "w-16 px-4 py-3",
+    cellClassName: "w-16 px-4 py-4",
+    minWidth: "64px",
   },
-  {
-    key: "id",
-    title: "ID",
-    sortable: true,
-    filterable: false,
-    width: "100px",
-    align: "left",
-    render: (value) => (
-      <span className="text-muted-foreground font-mono text-xs">
-        {typeof value === "string" ? value.slice(0, 8) : "—"}
-      </span>
-    ),
-  },
-  {
+  personal_title: {
     key: "personal_title",
-    title: "Title",
+    label: "Property Title",
     sortable: true,
     filterable: false,
-    width: "1fr",
-    align: "left",
-    render: (value) => {
-      const title = value as string | null;
-      return title ? (
-        <span className="font-medium">{title}</span>
-      ) : (
-        <span className="text-muted-foreground italic">No title</span>
-      );
-    },
+    className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-sm",
+    minWidth: "200px",
   },
-  {
+  property_type: {
     key: "property_type",
-    title: "Property type",
+    label: "Property Type",
     sortable: true,
     filterable: true,
-    width: "150px",
-    align: "left",
-    render: (value) => (
-      <span className="text-sm">
-        {value || <span className="text-muted-foreground">—</span>}
-      </span>
-    ),
+    className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-sm text-gray-900",
+    minWidth: "150px",
   },
-  {
+  area: {
     key: "area",
-    title: "Area",
+    label: "Area",
     sortable: true,
     filterable: true,
-    width: "150px",
-    align: "left",
-    render: (value) => (
-      <span className="text-sm">
-        {value || <span className="text-muted-foreground">—</span>}
-      </span>
-    ),
+    className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-sm text-gray-900",
+    minWidth: "120px",
   },
-  {
-    key: "rent_enabled",
-    title: "Rent",
-    sortable: true,
-    filterable: true,
-    width: "120px",
-    align: "center",
-    render: (value, row) => {
-      const enabled = value as boolean | null;
-      if (enabled && row.rent_price) {
-        return (
-          <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
-            ฿{row.rent_price.toLocaleString()}
-          </span>
-        );
-      }
-      return enabled ? (
-        <span className="text-green-600 text-xs">Enabled</span>
-      ) : (
-        <span className="text-muted-foreground text-xs">—</span>
-      );
-    },
-  },
-  {
-    key: "sale_enabled",
-    title: "Sale",
-    sortable: true,
-    filterable: true,
-    width: "120px",
-    align: "center",
-    render: (value, row) => {
-      const enabled = value as boolean | null;
-      if (enabled && row.sale_price) {
-        return (
-          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
-            ฿{row.sale_price.toLocaleString()}
-          </span>
-        );
-      }
-      return enabled ? (
-        <span className="text-blue-600 text-xs">Enabled</span>
-      ) : (
-        <span className="text-muted-foreground text-xs">—</span>
-      );
-    },
-  },
-  {
-    key: "is_published",
-    title: "Published",
-    sortable: true,
-    filterable: true,
-    width: "100px",
-    align: "center",
-    render: (value) => <PublishedStatus is_published={value as boolean | null} />,
-  },
-  {
-    key: "updated_at",
-    title: "Updated",
+  sale_price: {
+    key: "sale_price",
+    label: "Sale Price",
     sortable: true,
     filterable: false,
-    width: "120px",
-    align: "right",
-    render: (value) => <RelativeTimeCell date={value as string | null} />,
+    className: "px-4 py-3 text-right text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-right text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-right font-semibold text-gray-900",
+    minWidth: "120px",
   },
-] as const;
+  rent_price: {
+    key: "rent_price",
+    label: "Rent Price",
+    sortable: true,
+    filterable: false,
+    className: "px-4 py-3 text-right text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-right text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-right font-semibold text-gray-900",
+    minWidth: "120px",
+  },
+  is_published: {
+    key: "is_published",
+    label: "Status",
+    sortable: true,
+    filterable: true,
+    className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-sm",
+    minWidth: "100px",
+  },
+  updated_at: {
+    key: "updated_at",
+    label: "Last Updated",
+    sortable: true,
+    filterable: false,
+    className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
+    cellClassName: "px-4 py-4 text-sm text-gray-500",
+    minWidth: "130px",
+  },
+  // Hidden fields that exist in DashboardProperty but not displayed
+  id: {
+    key: "id",
+    label: "ID",
+    sortable: false,
+    filterable: false,
+    className: "hidden",
+    headerClassName: "hidden",
+    cellClassName: "hidden",
+  },
+  rent_enabled: {
+    key: "rent_enabled",
+    label: "Rent Enabled",
+    sortable: false,
+    filterable: true,
+    className: "hidden",
+    headerClassName: "hidden",
+    cellClassName: "hidden",
+  },
+  sale_enabled: {
+    key: "sale_enabled",
+    label: "Sale Enabled",
+    sortable: false,
+    filterable: true,
+    className: "hidden",
+    headerClassName: "hidden",
+    cellClassName: "hidden",
+  },
+  deleted_at: {
+    key: "deleted_at",
+    label: "Deleted At",
+    sortable: false,
+    filterable: false,
+    className: "hidden",
+    headerClassName: "hidden",
+    cellClassName: "hidden",
+  },
+} as const;
 
-/**
- * Auto-generated CSS Grid template from field configuration
- * Follows project pattern of computed constants
- */
-export const GRID_TEMPLATE_COLUMNS = TABLE_FIELDS_CONFIG.map((field) => field.width).join(" ");
+// Get visible fields in order
+export const VISIBLE_FIELDS = DISPLAY_FIELDS_ORDER.filter(
+  (key) => !TABLE_FIELDS_CONFIG[key].className?.includes("hidden")
+);
 
-/**
- * Type helper for field keys - ensures type safety
- */
-export type TableFieldKey = (typeof TABLE_FIELDS_CONFIG)[number]["key"];
+// Generate CSS Grid template from visible fields
+export const GRID_TEMPLATE_COLUMNS = VISIBLE_FIELDS.map(
+  (key) => TABLE_FIELDS_CONFIG[key].minWidth || "1fr"
+).join(" ");
 
-/**
- * Type helper for sortable fields only
- */
-export type SortableFieldKey = Extract<
-  TableFieldKey,
-  (typeof TABLE_FIELDS_CONFIG)[number] extends { sortable: true; key: infer K } ? K : never
->;
-
-/**
- * Type helper for filterable fields only
- */
-export type FilterableFieldKey = Extract<
-  TableFieldKey,
-  (typeof TABLE_FIELDS_CONFIG)[number] extends { filterable: true; key: infer K } ? K : never
->; 
+// Type helpers
+export type VisibleFieldKey = (typeof VISIBLE_FIELDS)[number];
+export type TableFieldConfigMap = typeof TABLE_FIELDS_CONFIG; 

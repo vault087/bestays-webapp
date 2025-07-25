@@ -2,29 +2,25 @@
 
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import { memo, useMemo } from "react";
-import { DBDictionaryEntry } from "@/entities/dictionaries";
-import { TABLE_FIELDS_CONFIG } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
-import { useTableSorting, useTableFiltering } from "@/entities/properties-sale-rent/features/listing/hooks";
-import { useRouter } from "@/modules/i18n/core/client/navigation";
-import { CustomFilterRow } from "./custom-filter-row"; 
+import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
+import { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
+import { CustomFilterRow } from "./custom-filter-row";
 import { CustomTableHeader } from "./custom-table-header";
 import { CustomTableRow } from "./custom-table-row";
 import { PropertyRow } from "./types";
 
 interface CustomPropertyTableProps {
   data: PropertyRow[];
+  dictionaries: DBDictionary[];
   entries: DBDictionaryEntry[];
   locale: string;
   columnFilters: ColumnFiltersState;
   setColumnFilters: (filters: ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)) => void;
   sorting: SortingState;
   setSorting: (sorting: SortingState | ((prev: SortingState) => SortingState)) => void;
+  onRowClick?: (propertyId: string) => void;
 }
 
-/**
- * Complete custom property table implementation
- * Uses CSS Grid for perfect alignment and custom hooks for state management
- */
 export const CustomPropertyTable = memo(function CustomPropertyTable({
   data,
   entries,
@@ -33,98 +29,186 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
   setColumnFilters,
   sorting,
   setSorting,
+  onRowClick,
 }: CustomPropertyTableProps) {
-  const router = useRouter();
+  // Convert PropertyRow to DashboardProperty for internal use
+  const dashboardData: DashboardProperty[] = useMemo(() => {
+    return data.map((row) => ({
+      id: row.id,
+      personal_title: row.personal_title,
+      property_type: row.property_type,
+      area: row.area,
+      rent_price: row.rent_price,
+      sale_price: row.sale_price,
+      rent_enabled: row.rent_enabled,
+      sale_enabled: row.sale_enabled,
+      cover_image: row.cover_image,
+      is_published: row.is_published,
+      updated_at: row.updated_at,
+      deleted_at: null, // Not used in listing
+    }));
+  }, [data]);
 
-  // Use custom hooks for table functionality
-  const {
-    getSortDirection,
-    toggleSort,
-    applySorting,
-  } = useTableSorting(sorting);
+  // Apply filtering to data
+  const filteredData = useMemo(() => {
+    if (columnFilters.length === 0) return dashboardData;
 
-  const {
-    getFilterDisplayValue,
-    removeFilter,
-  } = useTableFiltering(columnFilters, setColumnFilters, entries, locale);
+    return dashboardData.filter((item) => {
+      return columnFilters.every((filter) => {
+        const { id: fieldKey, value: filterValue } = filter;
 
-  // Apply sorting and filtering to data
-  const processedData = useMemo(() => {
-    let result = [...data];
-    
-    // Apply sorting
-    result = applySorting(result);
-    
-    return result;
-  }, [data, applySorting]);
+        // Handle boolean filters
+        if (typeof filterValue === "boolean") {
+          return item[fieldKey as keyof DashboardProperty] === filterValue;
+        }
 
-  // Handle row click navigation
-  const handleRowClick = (propertyId: string): void => {
-    router.push(`/dashboard/properties/${propertyId}`);
-  };
+        // Handle string filters (dictionary entries)
+        if (typeof filterValue === "string" && filterValue !== "all") {
+          // For dictionary fields, we need to check against the original ID
+          const row = data.find((r) => r.id === item.id);
+          if (row) {
+            const originalIdField = `${fieldKey}_id` as keyof PropertyRow;
+            const originalId = row[originalIdField];
+            return originalId?.toString() === filterValue;
+          }
+        }
 
-  // Handle sort changes
-  const handleSort = (fieldKey: string): void => {
-    toggleSort(fieldKey);
-    // Update external sorting state
-    setSorting((prev) => {
-      const existingSort = prev.find((item) => item.id === fieldKey);
-      if (!existingSort) {
-        return [{ id: fieldKey, desc: false }];
-      }
-      if (!existingSort.desc) {
-        return [{ id: fieldKey, desc: true }];
-      }
-      return [];
+        return true;
+      });
     });
-  };
+  }, [dashboardData, columnFilters, data]);
 
-  // Handle filter opening
-  const handleFilterOpen = (fieldKey: string): void => {
-    // Here you would implement filter dialog logic
-    console.log("Open filter for:", fieldKey);
-  };
+  // Apply sorting to filtered data
+  const sortedData = useMemo(() => {
+    if (sorting.length === 0) return filteredData;
 
-  // Handle filter removal
-  const handleFilterRemove = (fieldKey: string): void => {
-    removeFilter(fieldKey);
-  };
+    return [...filteredData].sort((a, b) => {
+      for (const sortItem of sorting) {
+        const aValue = a[sortItem.id as keyof DashboardProperty];
+        const bValue = b[sortItem.id as keyof DashboardProperty];
+
+        // Handle null/undefined values
+        if (aValue == null && bValue == null) continue;
+        if (aValue == null) return sortItem.desc ? 1 : -1;
+        if (bValue == null) return sortItem.desc ? -1 : 1;
+
+        // Compare values
+        let comparison = 0;
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          comparison = aValue.localeCompare(bValue);
+        } else if (typeof aValue === "number" && typeof bValue === "number") {
+          comparison = aValue - bValue;
+        } else if (aValue instanceof Date && bValue instanceof Date) {
+          comparison = aValue.getTime() - bValue.getTime();
+        } else {
+          comparison = String(aValue).localeCompare(String(bValue));
+        }
+
+        if (comparison !== 0) {
+          return sortItem.desc ? -comparison : comparison;
+        }
+      }
+      return 0;
+    });
+  }, [filteredData, sorting]);
 
   return (
-    <div className="rounded-md border">
-      {/* Header row with sorting icons and filter dropdowns */}
+    <div className="w-full border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+      {/* Header */}
       <CustomTableHeader
-        fields={TABLE_FIELDS_CONFIG}
-        getSortDirection={getSortDirection}
-        onSort={handleSort}
-        onFilterOpen={handleFilterOpen}
+        sorting={sorting}
+        setSorting={setSorting}
       />
 
-      {/* Filter badges row - perfectly aligned under headers */}
+      {/* Filter Row */}
       <CustomFilterRow
-        fields={TABLE_FIELDS_CONFIG}
         columnFilters={columnFilters}
-        getFilterDisplayValue={getFilterDisplayValue}
-        onRemoveFilter={handleFilterRemove}
+        setColumnFilters={setColumnFilters}
+        entries={entries}
+        locale={locale}
       />
 
-      {/* Table body with data rows */}
-      <div className="min-h-[400px]">
-        {processedData.length > 0 ? (
-          processedData.map((row) => (
+      {/* Table Body */}
+      <div className="divide-y divide-gray-100">
+        {sortedData.length > 0 ? (
+          sortedData.map((row, index) => (
             <CustomTableRow
               key={row.id}
-              fields={TABLE_FIELDS_CONFIG}
-              data={row}
-              onClick={handleRowClick}
+              row={row}
+              entries={entries}
+              locale={locale}
+              onClick={onRowClick}
+              isLast={index === sortedData.length - 1}
             />
           ))
         ) : (
-          <div className="flex items-center justify-center h-24 text-center text-muted-foreground">
-            No properties found.
+          <div className="px-4 py-12 text-center text-gray-500">
+            <div className="text-sm">No properties found.</div>
+            {columnFilters.length > 0 && (
+              <div className="text-xs mt-1">Try adjusting your filters</div>
+            )}
           </div>
         )}
       </div>
     </div>
+  );
+});
+
+// Type-safe wrapper for the main table component
+interface TypeSafeCustomPropertyTableProps {
+  data: DashboardProperty[];
+  dictionaries: DBDictionary[];
+  entries: DBDictionaryEntry[];
+  locale: string;
+  columnFilters: ColumnFiltersState;
+  setColumnFilters: (filters: ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)) => void;
+  sorting: SortingState;
+  setSorting: (sorting: SortingState | ((prev: SortingState) => SortingState)) => void;
+  onRowClick?: (propertyId: string) => void;
+}
+
+export const TypeSafeCustomPropertyTable = memo(function TypeSafeCustomPropertyTable({
+  data,
+  dictionaries,
+  entries,
+  locale,
+  columnFilters,
+  setColumnFilters,
+  sorting,
+  setSorting,
+  onRowClick,
+}: TypeSafeCustomPropertyTableProps) {
+  // Convert DashboardProperty to PropertyRow format
+  const propertyRows: PropertyRow[] = useMemo(() => {
+    return data.map((property) => ({
+      id: property.id,
+      personal_title: property.personal_title,
+      property_type: property.property_type,
+      area: property.area,
+      rent_price: property.rent_price,
+      sale_price: property.sale_price,
+      rent_enabled: property.rent_enabled,
+      sale_enabled: property.sale_enabled,
+      cover_image: property.cover_image,
+      is_published: property.is_published,
+      updated_at: property.updated_at,
+      // These fields would need to be populated from the original data if filtering is needed
+      property_type_id: null,
+      area_id: null,
+    }));
+  }, [data]);
+
+  return (
+    <CustomPropertyTable
+      data={propertyRows}
+      dictionaries={dictionaries}
+      entries={entries}
+      locale={locale}
+      columnFilters={columnFilters}
+      setColumnFilters={setColumnFilters}
+      sorting={sorting}
+      setSorting={setSorting}
+      onRowClick={onRowClick}
+    />
   );
 }); 

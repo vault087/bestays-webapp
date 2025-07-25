@@ -1,112 +1,198 @@
 "use client";
 
-import { ArrowUpDown, ArrowDownNarrowWide, ArrowUpNarrowWide, ChevronDown } from "lucide-react";
-import { memo } from "react";
-import { Button } from "@/modules/shadcn";
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown } from "lucide-react";
+import { memo, useCallback } from "react";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/modules/shadcn";
 import { cn } from "@/modules/shadcn/utils/cn";
-import { TableFieldConfig, GRID_TEMPLATE_COLUMNS } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
+import {
+  TABLE_FIELDS_CONFIG,
+  VISIBLE_FIELDS,
+  GRID_TEMPLATE_COLUMNS,
+  type SortableFieldKey,
+  type TableFieldKey,
+} from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
 
 interface CustomTableHeaderProps {
-  fields: TableFieldConfig[];
-  getSortDirection: (fieldKey: string) => "asc" | "desc" | null;
-  onSort: (fieldKey: string) => void;
-  onFilterOpen: (fieldKey: string) => void;
+  sorting: Array<{ id: string; desc: boolean }>;
+  setSorting: (sorting: Array<{ id: string; desc: boolean }>) => void;
 }
 
-/**
- * Custom table header component with sorting icons and filter dropdowns
- * Follows project patterns for header structure and icons
- */
 export const CustomTableHeader = memo(function CustomTableHeader({
-  fields,
-  getSortDirection,
-  onSort,
-  onFilterOpen,
+  sorting,
+  setSorting,
 }: CustomTableHeaderProps) {
+  const getSortDirection = useCallback(
+    (fieldKey: TableFieldKey): "asc" | "desc" | null => {
+      const sortItem = sorting.find((item) => item.id === fieldKey);
+      if (!sortItem) return null;
+      return sortItem.desc ? "desc" : "asc";
+    },
+    [sorting]
+  );
+
+  const handleSort = useCallback(
+    (fieldKey: SortableFieldKey) => {
+      const currentSort = getSortDirection(fieldKey);
+      
+      if (!currentSort) {
+        // No current sort - set to ascending
+        setSorting([{ id: fieldKey, desc: false }]);
+      } else if (currentSort === "asc") {
+        // Currently ascending - change to descending
+        setSorting([{ id: fieldKey, desc: true }]);
+      } else {
+        // Currently descending - remove sort
+        setSorting([]);
+      }
+    },
+    [getSortDirection, setSorting]
+  );
+
+  const renderSortIcon = useCallback((fieldKey: TableFieldKey) => {
+    const config = TABLE_FIELDS_CONFIG[fieldKey];
+    if (!config.sortable) return null;
+
+    const sortDirection = getSortDirection(fieldKey);
+    const iconSize = "h-4 w-4";
+    
+    if (sortDirection === "asc") {
+      return <ArrowUp className={cn(iconSize, "text-blue-600")} />;
+    } else if (sortDirection === "desc") {
+      return <ArrowDown className={cn(iconSize, "text-blue-600")} />;
+    } else {
+      return <ArrowUpDown className={cn(iconSize, "text-gray-400")} />;
+    }
+  }, [getSortDirection]);
+
+  const renderHeaderCell = useCallback(
+    (fieldKey: TableFieldKey) => {
+      const config = TABLE_FIELDS_CONFIG[fieldKey];
+      const sortDirection = getSortDirection(fieldKey);
+
+      // For cover_image column, render empty cell
+      if (fieldKey === "cover_image") {
+        return (
+          <div
+            key={fieldKey}
+            className={cn(config.headerClassName)}
+          >
+            {/* Empty cell for image column */}
+          </div>
+        );
+      }
+
+      // For sortable columns, render clickable header with sort icon
+      if (config.sortable) {
+        return (
+          <div
+            key={fieldKey}
+            className={cn(config.headerClassName)}
+          >
+            <Button
+              variant="ghost"
+              className={cn(
+                "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 cursor-pointer h-auto p-0",
+                sortDirection && "text-blue-600"
+              )}
+              onClick={() => handleSort(fieldKey as SortableFieldKey)}
+            >
+              <span>{config.label}</span>
+              <div className="ml-1">
+                {renderSortIcon(fieldKey)}
+              </div>
+            </Button>
+          </div>
+        );
+      }
+
+      // For non-sortable columns, render plain text
+      return (
+        <div
+          key={fieldKey}
+          className={cn(config.headerClassName)}
+        >
+          <span className="text-sm font-medium text-gray-700">
+            {config.label}
+          </span>
+        </div>
+      );
+    },
+    [getSortDirection, handleSort, renderSortIcon]
+  );
+
   return (
-    <div 
-      className="grid border-b bg-muted/50 h-12"
-      style={{ gridTemplateColumns: GRID_TEMPLATE_COLUMNS }}
+    <div
+      className="border-b border-gray-200 bg-gray-50"
+      style={{
+        display: "grid",
+        gridTemplateColumns: GRID_TEMPLATE_COLUMNS,
+      }}
     >
-      {fields.map((field) => (
-        <CustomTableHeaderCell
-          key={field.key}
-          field={field}
-          sortDirection={getSortDirection(field.key)}
-          onSort={() => onSort(field.key)}
-          onFilter={() => field.filterable && onFilterOpen(field.key)}
-        />
-      ))}
+      {VISIBLE_FIELDS.map(renderHeaderCell)}
     </div>
   );
 });
 
-interface CustomTableHeaderCellProps {
-  field: TableFieldConfig;
-  sortDirection: "asc" | "desc" | null;
-  onSort: () => void;
-  onFilter: () => void;
+// Header with dropdown functionality for future expansion
+interface HeaderWithDropdownProps {
+  fieldKey: TableFieldKey;
+  setSorting: (sorting: Array<{ id: string; desc: boolean }>) => void;
 }
 
-/**
- * Individual header cell with sorting and filtering capabilities
- * Follows existing project patterns for icons and interaction
- */
-const CustomTableHeaderCell = memo(function CustomTableHeaderCell({
-  field,
-  sortDirection,
-  onSort,
-  onFilter,
-}: CustomTableHeaderCellProps) {
-  // Sort icon logic following existing patterns
-  const SortIcon = sortDirection === "desc" 
-    ? ArrowDownNarrowWide 
-    : sortDirection === "asc" 
-    ? ArrowUpNarrowWide 
-    : ArrowUpDown;
+export const HeaderWithDropdown = memo(function HeaderWithDropdown({
+  fieldKey,
+  setSorting,
+}: HeaderWithDropdownProps) {
+  const config = TABLE_FIELDS_CONFIG[fieldKey];
+
+  const handleSortAsc = () => {
+    setSorting([{ id: fieldKey, desc: false }]);
+  };
+
+  const handleSortDesc = () => {
+    setSorting([{ id: fieldKey, desc: true }]);
+  };
+
+  const handleHideColumn = () => {
+    // Future functionality to hide columns
+    console.log(`Hide column: ${fieldKey}`);
+  };
+
+  if (!config.sortable) {
+    return <span className="text-sm font-medium text-gray-700">{config.label}</span>;
+  }
 
   return (
-    <div className={cn(
-      "flex items-center px-4 h-12",
-      field.align === "center" && "justify-center",
-      field.align === "right" && "justify-end",
-      field.align === "left" && "justify-start"
-    )}>
-      {/* Title section - filterable or plain */}
-      <div className="flex items-center flex-1 min-w-0">
-        {field.filterable ? (
-          <Button
-            variant="ghost"
-            onClick={onFilter}
-            className={cn(
-              "hover:bg-muted/50 focus:bg-muted h-auto p-1 rounded-sm",
-              "text-sm font-medium tracking-wide",
-              "flex items-center gap-1 min-w-0"
-            )}
-          >
-            <span className="truncate">{field.title}</span>
-            <ChevronDown className="w-4 h-4 opacity-60" />
-          </Button>
-        ) : (
-          <span className="text-sm font-medium tracking-wide truncate">
-            {field.title}
-          </span>
-        )}
-      </div>
-
-      {/* Sorting button - only for sortable fields */}
-      {field.sortable && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onSort();
-          }}
-          className="hover:bg-muted/30 ml-2 rounded p-1 transition-colors flex-shrink-0"
-          aria-label={`Sort by ${field.title}`}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 cursor-pointer h-auto p-0"
         >
-          <SortIcon className="h-4 w-4 opacity-60 transition-opacity hover:opacity-100" />
-        </button>
-      )}
-    </div>
+          <span>{config.label}</span>
+          <ChevronDown className="ml-1 h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="min-w-[180px] bg-white border border-gray-200 rounded-md shadow-lg py-1">
+        <DropdownMenuItem
+          onClick={handleSortAsc}
+          className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+        >
+          Sort by ASC
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleSortDesc}
+          className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+        >
+          Sort by DESC
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleHideColumn}
+          className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+        >
+          Hide column
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }); 
