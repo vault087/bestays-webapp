@@ -13,6 +13,7 @@ import {
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/modules/shadcn/components/ui/table";
+import { FilterBadges } from "./filter-badges";
 import { createPropertyColumns } from "./property-listing-columns";
 import { PropertyRow } from "./types";
 
@@ -99,6 +100,12 @@ export function PropertyListingTable({
             </TableRow>
           ))}
         </TableHeader>
+        <FilterBadges
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+          entries={entries}
+          locale={locale}
+        />
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (

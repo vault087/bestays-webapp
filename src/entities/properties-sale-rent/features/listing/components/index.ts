@@ -6,4 +6,5 @@ export * from "./property-listing-filters";
 export * from "./property-listing-columns";
 export * from "./property-listing-table";
 export * from "./property-listing";
+export * from "./filter-badges";
 export * from "./types";

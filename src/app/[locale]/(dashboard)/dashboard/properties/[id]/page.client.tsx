@@ -125,9 +125,9 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
           <PropertyAboutInput />
           <PropertyPersonalNotesInput />
         </div>
+        <ReactiveDebugCard />
       </div>
       {/* </div> */}
-      <ReactiveDebugCard />
     </div>
   );
 });
