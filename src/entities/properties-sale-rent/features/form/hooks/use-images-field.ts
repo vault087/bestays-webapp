@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useId } from "react";
-import { DBImage, MutableImage } from "@/entities/media/types/image.type";
+import { generateTemporarySerialId } from "@/entities/common";
+import { DBImage } from "@/entities/media/types/image.type";
 import { usePropertyFormStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
 
 // Input hook for property images using slice management
@@ -15,10 +16,14 @@ export function usePropertyImagesInput(): {
   error?: string;
 } {
   const inputId = useId();
-  const { clearImages, addDBImages, addImage, deleteImage, reorderImages } = usePropertyFormStoreActions();
+  const { addDBImages, addImage, deleteImage, reorderImages, refreshImages } = usePropertyFormStoreActions();
   // Subscribe to slice state changes for reactive updates
   const allImages = usePropertyFormStore((state) =>
-    state.imageIds.map((id) => state.images[id]).filter((image): image is MutableImage => image !== undefined),
+    Object.values(state.images).map((image) => ({
+      ...image,
+      id: generateTemporarySerialId(),
+      is_new: false,
+    })),
   );
 
   // Convert to DBImage format for UI compatibility
@@ -33,10 +38,9 @@ export function usePropertyImagesInput(): {
     (newImages: DBImage[]) => {
       // Clear existing and add new ones
       // Note: This is mainly for compatibility - prefer individual operations
-      clearImages();
-      addDBImages(newImages);
+      refreshImages(newImages);
     },
-    [clearImages, addDBImages],
+    [refreshImages],
   );
 
   // Add existing DB image

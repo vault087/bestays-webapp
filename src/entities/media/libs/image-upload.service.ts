@@ -19,7 +19,7 @@ export async function uploadImageToStorage(
   file: File,
   bucketName: string = "property-images",
   folderPath?: string,
-): Promise<ImageUploadResult> {
+): Promise<{ url: string; path: string; error?: string }> {
   try {
     // Generate unique filename
     const fileExt = file.name.split(".").pop();
@@ -37,11 +37,18 @@ export async function uploadImageToStorage(
       return { url: "", path: "", error: error.message };
     }
 
-    // Get public URL
-    const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+    // Generate a signed URL with 10-year expiration (in seconds)
+    const TEN_YEARS_IN_SECONDS = 10 * 365 * 24 * 60 * 60; // 315,360,000 seconds
+    const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+      .from(bucketName)
+      .createSignedUrl(filePath, TEN_YEARS_IN_SECONDS);
+
+    if (signedUrlError || !signedUrlData) {
+      return { url: "", path: "", error: signedUrlError?.message || "Failed to generate signed URL" };
+    }
 
     return {
-      url: urlData.publicUrl,
+      url: signedUrlData.signedUrl,
       path: filePath,
     };
   } catch (error) {

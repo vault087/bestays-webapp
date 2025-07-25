@@ -3,6 +3,7 @@
 import { produce } from "immer";
 import { StoreApi, createStore } from "zustand";
 import { persist } from "zustand/middleware";
+import { DBImage } from "@/entities/media";
 import {
   createImageStoreSlice,
   ImageStoreSliceActions,
@@ -22,6 +23,7 @@ export interface PropertyFormStoreState extends ImageStoreSliceState {
 
 // MutableDictionary Store Actions
 export interface PropertyFormStoreActions extends ImageStoreSliceActions {
+  refreshImages: (images: DBImage[]) => void;
   updateProperty: (updater: (draft: MutableProperty) => void) => void;
   reset: (property?: DBProperty) => void;
 }
@@ -52,6 +54,14 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
             }),
           ),
 
+        refreshImages: (images: DBImage[]) =>
+          set(
+            produce((state: PropertyFormStore) => {
+              state.clearImages();
+              state.addDBImages(images);
+              state.property.images = images;
+            }),
+          ),
         reset: (property?: DBProperty) =>
           set((state) => {
             const newProperty = property ? property : state.initialProperty;
