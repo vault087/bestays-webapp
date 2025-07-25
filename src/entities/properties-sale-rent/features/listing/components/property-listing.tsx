@@ -5,11 +5,13 @@ import { useMemo, useState } from "react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { PropertyFieldToDictionaryCodeMap } from "@/entities/properties-sale-rent/types/property-fields.types";
+import { useRouter } from "@/modules/i18n/core/client/navigation";
+import { CustomPropertyTable } from "./custom-property-table";
 import { FilterTags } from "./filter-tags";
-import { PropertyListingTable } from "./property-listing-table";
 import { PropertyListingProps, PropertyRow } from "./types";
 
 export function PropertyListing({ properties, dictionaries, entries, locale }: PropertyListingProps) {
+  const router = useRouter();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([{ id: "updated_at", desc: true }]);
 
@@ -75,6 +77,10 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
     console.log("Edit filter:", columnId);
   };
 
+  const handleRowClick = (propertyId: string) => {
+    router.push(`/dashboard/properties/${propertyId}`);
+  };
+
   return (
     <div className="space-y-4">
       <FilterTags
@@ -86,7 +92,7 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
         onFilterEdit={handleFilterEdit}
       />
 
-      <PropertyListingTable
+      <CustomPropertyTable
         data={tableData}
         dictionaries={dictionaries}
         entries={entries}
@@ -95,6 +101,7 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
         setColumnFilters={setColumnFilters}
         sorting={sorting}
         setSorting={setSorting}
+        onRowClick={handleRowClick}
       />
     </div>
   );
