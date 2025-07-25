@@ -23,6 +23,7 @@ interface CustomPropertyTableProps {
 
 export const CustomPropertyTable = memo(function CustomPropertyTable({
   data,
+  dictionaries,
   entries,
   locale,
   columnFilters,
@@ -49,7 +50,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
     }));
   }, [data]);
 
-  // Apply filtering to data
+  // Apply filtering to data using original TanStack logic
   const filteredData = useMemo(() => {
     if (columnFilters.length === 0) return dashboardData;
 
@@ -57,22 +58,39 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
       return columnFilters.every((filter) => {
         const { id: fieldKey, value: filterValue } = filter;
 
-        // Handle boolean filters
+        // Handle boolean filters (same as original filterFn)
         if (typeof filterValue === "boolean") {
-          return item[fieldKey as keyof DashboardProperty] === filterValue;
-        }
-
-        // Handle string filters (dictionary entries)
-        if (typeof filterValue === "string" && filterValue !== "all") {
-          // For dictionary fields, we need to check against the original ID
           const row = data.find((r) => r.id === item.id);
-          if (row) {
-            const originalIdField = `${fieldKey}_id` as keyof PropertyRow;
-            const originalId = row[originalIdField];
-            return originalId?.toString() === filterValue;
+          if (!row) return false;
+          
+          switch (fieldKey) {
+            case "rent_enabled":
+              return row.rent_enabled === filterValue;
+            case "sale_enabled":
+              return row.sale_enabled === filterValue;
+            case "is_published":
+              return row.is_published === filterValue;
+            default:
+              return item[fieldKey as keyof DashboardProperty] === filterValue;
           }
         }
 
+        // Handle dictionary filters using original ID fields (same as original filterFn)
+        if (typeof filterValue === "string" && filterValue !== "all") {
+          const row = data.find((r) => r.id === item.id);
+          if (!row) return false;
+
+          switch (fieldKey) {
+            case "property_type":
+              return row.property_type_id?.toString() === filterValue;
+            case "area":
+              return row.area_id?.toString() === filterValue;
+            default:
+              return true;
+          }
+        }
+
+        // filterValue is undefined or "all" - show all items
         return true;
       });
     });
@@ -118,6 +136,11 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
       <CustomTableHeader
         sorting={sorting}
         setSorting={setSorting}
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        dictionaries={dictionaries}
+        entries={entries}
+        locale={locale}
       />
 
       {/* Filter Row */}

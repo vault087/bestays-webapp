@@ -95,21 +95,42 @@ export const CustomTableRow = memo(function CustomTableRow({
   );
 
   const renderPrice = useCallback((price: number | null, type: "sale" | "rent") => {
-    if (price) {
-      const isEnabled = type === "sale" ? row.sale_enabled : row.rent_enabled;
-      if (isEnabled) {
-        return (
-          <div className="text-right">
-            <span className="font-semibold text-gray-900">
-              ฿{price.toLocaleString()}
-            </span>
-          </div>
-        );
-      }
+    const isEnabled = type === "sale" ? row.sale_enabled : row.rent_enabled;
+    
+    // Not enabled - show "Not set" badge
+    if (!isEnabled) {
+      return (
+        <div className="text-right">
+          <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
+            Not set
+          </span>
+        </div>
+      );
     }
+
+    // Enabled but no price - show "Price TBD" badge
+    if (!price) {
+      return (
+        <div className="text-right">
+          <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">
+            Price TBD
+          </span>
+        </div>
+      );
+    }
+
+    // Has price - show colored price badge
+    const bgColor = type === "rent" ? "bg-blue-50" : "bg-green-50";
+    const textColor = type === "rent" ? "text-blue-700" : "text-green-700";
+    const ringColor = type === "rent" ? "ring-blue-700/10" : "ring-green-700/10";
+
     return (
       <div className="text-right">
-        <span className="text-gray-500">—</span>
+        <span
+          className={`inline-flex items-center rounded-md ${bgColor} px-2 py-1 text-xs font-medium ${textColor} ring-1 ring-inset ${ringColor}`}
+        >
+          ฿{price.toLocaleString()}
+        </span>
       </div>
     );
   }, [row.sale_enabled, row.rent_enabled]);
@@ -203,6 +224,12 @@ export const CustomTableRow = memo(function CustomTableRow({
           break;
         case "rent_price":
           cellContent = renderPrice(value as number | null, "rent");
+          break;
+        case "rent_enabled":
+          cellContent = renderPrice(row.rent_price ?? null, "rent");
+          break;
+        case "sale_enabled":
+          cellContent = renderPrice(row.sale_price ?? null, "sale");
           break;
         case "is_published":
           cellContent = renderPublishedStatus();
