@@ -3,7 +3,7 @@ import { EllipsisVerticalIcon, SquarePenIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useState } from "react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
-// import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
+import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { DictionaryEntryEditor } from "@/entities/dictionaries/features/form/components/blocks/dictionary-entry-editor";
 import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
@@ -69,9 +69,9 @@ export function PropertyOptionField({
       className={className}
       config={{ focus_ring: true }}
     >
-      {/* <FormFieldLayoutToolbar>
+      <FormFieldLayoutToolbar>
         <FieldDropDownMenu field={field} />
-      </FormFieldLayoutToolbar> */}
+      </FormFieldLayoutToolbar>
 
       <FormOptionInput
         inputId={inputId}

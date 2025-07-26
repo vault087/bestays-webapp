@@ -2,7 +2,9 @@
 
 import { FormFieldLayout } from "@/components/form";
 import { FormMultiOption, FormMultiOptionVariant } from "@/components/form/inputs/form-multi-option-input";
+import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
+import { FieldDropDownMenu } from "./option-input";
 
 export type MultiOptionFieldProps = {
   className?: string;
@@ -55,9 +57,9 @@ function MultiOptionField({
       className={className}
       config={{ focus_ring: true }}
     >
-      {/* <FormFieldLayoutToolbar>
+      <FormFieldLayoutToolbar>
         <FieldDropDownMenu field={field} />
-      </FormFieldLayoutToolbar> */}
+      </FormFieldLayoutToolbar>
 
       <FormMultiOption
         isAddingOption={isAddingOption}
