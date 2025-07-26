@@ -1,6 +1,8 @@
 "use client";
+import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useTransition } from "react";
 import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { PropertyListing } from "@/entities/properties-sale-rent/features/listing";
@@ -20,15 +22,19 @@ export default function PropertyListingPageContent({
   properties: DashboardProperty[];
 }) {
   const t = useTranslations("Properties");
+  const [isPending, startTransition] = useTransition();
+
   const handleAddProperty = async () => {
-    const response = await createNewProperty();
-    if (response.error) {
-      console.error("Error adding property:", response.error);
-    }
-    const propertyId = response.data?.id;
-    if (propertyId) {
-      redirect(`/dashboard/properties/${propertyId}`);
-    }
+    startTransition(async () => {
+      const response = await createNewProperty();
+      if (response.error) {
+        console.error("Error adding property:", response.error);
+      }
+      const propertyId = response.data?.id;
+      if (propertyId) {
+        redirect(`/dashboard/properties/${propertyId}`);
+      }
+    });
   };
   return (
     <div className="flex h-full w-full flex-col">
@@ -36,8 +42,9 @@ export default function PropertyListingPageContent({
       <div className="flex w-full flex-col gap-4 pt-4">
         <div className="flex w-full flex-row items-center justify-between px-6">
           <h1 className="text-xl font-bold">{t("title")}</h1>
-          <Button onClick={handleAddProperty} variant="outline">
+          <Button onClick={handleAddProperty} variant="outline" disabled={isPending}>
             {t("add_property")}
+            {isPending && <Loader2 className="animate-spin" size={4} />}
           </Button>
         </div>
       </div>

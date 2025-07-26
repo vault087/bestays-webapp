@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftIcon, CircleAlertIcon } from "lucide-react";
+import { ArrowLeftIcon, CircleAlertIcon, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useMemo, useState, useCallback, useId, useTransition, startTransition } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
@@ -114,7 +114,7 @@ export default function PropertiesPageClient({
               <div className="flex flex-col overflow-auto">
                 <PropertyListCanvas />
                 <div className="flex flex-row items-center justify-center space-x-6 py-4">
-                  <DeleteButton />
+                  <DeleteButton onRedirect={handleBackNavigation} />
                 </div>
               </div>
             </div>
@@ -333,12 +333,13 @@ function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirma
   );
 }
 
-export const DeleteButton = memo(function DeleteButton() {
+export const DeleteButton = memo(function DeleteButton({ onRedirect }: { onRedirect: () => void }) {
+  const t = useTranslations("Properties.delete_confirmation");
+  const [isPending, startTransition] = useTransition();
   const store = usePropertyFormStoreContext();
   const { updateProperty } = store.getState(); // instant
   const isDeleted = usePropertyFormStore((state) => state.property.deleted_at !== null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const router = useRouter();
 
   const handleDelete = useCallback(
     (isDeleted: boolean) => {
@@ -354,10 +355,10 @@ export const DeleteButton = memo(function DeleteButton() {
 
         await updatePropertyAction(property.id, property);
         // need to navigate to dashboard/properties
-        router.push("/dashboard/properties");
+        onRedirect();
       });
     },
-    [store, router, updateProperty],
+    [store, onRedirect, updateProperty],
   );
 
   const handleShowDeleteDialog = useCallback(() => {
@@ -371,24 +372,22 @@ export const DeleteButton = memo(function DeleteButton() {
   return (
     <>
       <div>
-        {isDeleted && (
-          <Button
-            variant="secondary"
-            size="sm"
-            className=""
-            onClick={() => {
+        <Button
+          variant="secondary"
+          size="sm"
+          className=""
+          disabled={isPending || isDeleted}
+          onClick={() => {
+            if (isDeleted) {
               handleDelete(false);
-            }}
-          >
-            Restore
-          </Button>
-        )}
-
-        {!isDeleted && (
-          <Button variant="destructive" size="sm" className="" onClick={handleShowDeleteDialog}>
-            Delete
-          </Button>
-        )}
+            } else {
+              handleShowDeleteDialog();
+            }
+          }}
+        >
+          {t("delete")}
+          {isPending && <Loader2 className="animate-spin" size={4} />}
+        </Button>
       </div>
 
       <DeleteConfirmationDialog
