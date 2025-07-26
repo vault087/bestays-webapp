@@ -1,9 +1,8 @@
 "use client";
 
-import { memo, ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import { memo, ReactNode } from "react";
 import { Link, usePathname } from "@/modules/i18n";
-import { cn } from "@/modules/shadcn/utils/cn";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
   NavigationMenu,
@@ -11,6 +10,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/modules/shadcn/components/ui/navigation-menu";
+import { cn } from "@/modules/shadcn/utils/cn";
 
 export interface DashboardLayoutProps {
   children: ReactNode;

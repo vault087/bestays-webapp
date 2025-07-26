@@ -1,8 +1,8 @@
 "use client";
 
 import { memo, ReactNode } from "react";
+import { DashboardToolbar, DashboardToolbarProps } from '@/components/form/layout/dashboard-toolbar';
 import { cn } from "@/modules/shadcn/utils/cn";
-import { DashboardToolbar, DashboardToolbarProps } from "../dashboard-toolbar";
 
 export interface DashboardPageProps {
   children: ReactNode;

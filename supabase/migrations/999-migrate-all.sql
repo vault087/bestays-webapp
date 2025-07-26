@@ -1,4 +1,4 @@
--- Generated: 2025-07-26T11:35:08.194Z
+-- Generated: 2025-07-26T14:01:48.491Z
 
 -- 0_clean_up.sql
 DROP TABLE IF EXISTS bestays_properties;
@@ -200,7 +200,45 @@ Price rai: 8000000
 Price total: 256000000
 ', null, null, '2025-07-16 13:45:03.278664+00', '2025-07-16 13:45:03.278664+00', null);
 
--- 20_property_images_bucket.sql
+-- 20_fix_serial_id_pointers.sql
+SELECT setval('bestays_dictionaries_id_seq', (SELECT MAX(id) FROM bestays_dictionaries));
+SELECT setval('bestays_dictionary_entries_id_seq', (SELECT MAX(id) FROM bestays_dictionary_entries));
+
+
+-- 21_functioons.sql
+-- First, create a reusable function that updates the updated_at column
+DROP FUNCTION IF EXISTS refresh_updated_at_column();
+CREATE OR REPLACE FUNCTION refresh_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create trigger for your properties table
+DROP TRIGGER IF EXISTS update_properties_updated_at ON bestays_properties;
+CREATE TRIGGER update_properties_updated_at
+    BEFORE UPDATE ON bestays_properties
+    FOR EACH ROW
+    EXECUTE FUNCTION refresh_updated_at_column();
+
+-- Create trigger for your dictionary entries table
+DROP TRIGGER IF EXISTS update_dictionaries_updated_at ON bestays_dictionaries;
+CREATE TRIGGER update_dictionaries_updated_at
+    BEFORE UPDATE ON bestays_dictionaries
+    FOR EACH ROW
+    EXECUTE FUNCTION refresh_updated_at_column();
+
+-- Create trigger for your dictionary entries table
+DROP TRIGGER IF EXISTS update_dictionary_entries_updated_at ON bestays_dictionary_entries;
+CREATE TRIGGER update_dictionary_entries_updated_at
+    BEFORE UPDATE ON bestays_dictionary_entries
+    FOR EACH ROW
+    EXECUTE FUNCTION refresh_updated_at_column();
+
+
+-- 30_property_images_bucket.sql
 DROP POLICY IF EXISTS "public_write" ON storage.objects;
 CREATE POLICY "public_write"
 ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'bestays-property-images');
