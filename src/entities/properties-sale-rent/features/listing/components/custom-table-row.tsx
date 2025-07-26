@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { memo, useCallback } from "react";
-import { moneyToString } from "@/entities/common";
+import { moneyToString, formatMoneyDisplay, DEFAULT_CURRENCY } from "@/entities/common";
 import { DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import {
@@ -68,7 +68,11 @@ export const CustomTableRow = memo(function CustomTableRow({
       if (originalId) {
         const entry = entries.find((e) => e.id === originalId);
         if (entry) {
-          return <span className="text-gray-900">{capitalize(getAvailableLocalizedText(entry.name, locale))}</span>;
+          return (
+            <div className="flex h-full w-full items-center justify-center">
+              <span className="text-gray-900">{capitalize(getAvailableLocalizedText(entry.name, locale))}</span>
+            </div>
+          );
         }
       }
 
@@ -90,16 +94,15 @@ export const CustomTableRow = memo(function CustomTableRow({
           {price && (
             <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">
               <div className={cn("text-center text-sm", isEnabled ? "text-green-800" : "text-gray-600")}>
-                {moneyToString(price)}
+                {formatMoneyDisplay(moneyToString(price), locale, DEFAULT_CURRENCY, "narrowSymbol")}
               </div>
             </span>
           )}
           {!price && <div className={cn("text-center", isEnabled ? "text-green-800" : "text-gray-600")}>Not set</div>}
-          {/* </span> */}
         </div>
       );
     },
-    [row.sale_enabled, row.rent_enabled],
+    [row.sale_enabled, row.rent_enabled, locale],
   );
 
   const renderPublishedStatus = useCallback(() => {
