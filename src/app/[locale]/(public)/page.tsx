@@ -46,9 +46,9 @@ export default async function HomePage() {
           <p>📍 Sanchao, Ko Phangan, Surat Thani, Thailand 84280</p>
           <p>📧 beststaysinfo@gmail.com</p>
           <p>📱 +66 98-034-8288</p>
-          {/* <Link href="/login">
-            <span className="text-sm font-light">login</span>
-          </Link> */}
+          <Link href="/login">
+            <span className="text-xs font-light">login</span>
+          </Link>
         </div>
       </div>
     </div>

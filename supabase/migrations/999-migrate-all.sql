@@ -1,4 +1,4 @@
--- Generated: 2025-07-26T16:41:53.332Z
+-- Generated: 2025-07-26T21:04:48.466Z
 
 -- 0_clean_up.sql
 DROP TABLE IF EXISTS bestays_properties;
@@ -237,6 +237,28 @@ CREATE TRIGGER update_dictionary_entries_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION refresh_updated_at_column();
 
+
+-- Created By
+DROP FUNCTION IF EXISTS set_created_by();
+CREATE OR REPLACE FUNCTION set_created_by()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Only set created_by if it's not already provided and user is authenticated
+    IF NEW.created_by IS NULL AND auth.uid() IS NOT NULL THEN
+        NEW.created_by = auth.uid();
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create trigger that runs before INSERT
+DROP TRIGGER IF EXISTS trigger_set_created_by ON bestays_properties;
+DROP TRIGGER IF EXISTS trigger_set_created_by ON bestays_properties;
+CREATE TRIGGER trigger_set_created_by
+    BEFORE INSERT ON bestays_properties
+    FOR EACH ROW
+    EXECUTE FUNCTION set_created_by();
 
 -- 30_property_images_bucket.sql
 DROP POLICY IF EXISTS "public_write" ON storage.objects;
