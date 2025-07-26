@@ -64,6 +64,16 @@ export default function PropertiesPageClient({
 }) {
   const router = useRouter();
 
+  const handleBackNavigation = useCallback(() => {
+    // Check if we can go back in history (user came from another page)
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      // Direct URL access - go to properties list
+      router.push("/dashboard/properties");
+    }
+  }, [router]);
+
   const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
   const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", property), [property]);
 
@@ -75,7 +85,7 @@ export default function PropertiesPageClient({
             <div className="flex w-full flex-col gap-4 pt-4">
               <div className="flex w-full flex-row items-center justify-between px-6">
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard/properties")}>
+                  <Button variant="ghost" size="icon" onClick={handleBackNavigation}>
                     <ArrowLeftIcon className="!h-6 !w-6" />
                   </Button>
                   {/* <h1 className="text-xl font-bold">Listing editor</h1> */}
