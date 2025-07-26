@@ -60,6 +60,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
               state.clearImages();
               state.addDBImages(images);
               state.property.images = images;
+              state.property.cover_image = images.length > 0 ? images[0] : null;
             }),
           ),
         reset: (property?: DBProperty) =>

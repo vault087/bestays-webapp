@@ -1,5 +1,5 @@
 import { uploadImagesBatch } from "@/entities/media/libs/image-upload.service";
-import { DBImage, MutableImage } from "@/entities/media/types/image.type";
+import { DBImage, MutableImage, PROPERTY_IMAGES_BUCKET } from "@/entities/media/types/image.type";
 
 export interface PropertyImageUploadResult {
   success: boolean;
@@ -19,7 +19,7 @@ export async function uploadPropertyImages(
     const folderPath = propertyId ? `properties/${propertyId}` : `properties/${Date.now()}`;
 
     // Upload images to storage
-    const uploadResult = await uploadImagesBatch(mutableImages, "property-images", folderPath);
+    const uploadResult = await uploadImagesBatch(mutableImages, PROPERTY_IMAGES_BUCKET, folderPath);
 
     // Convert successful uploads to DB format
     const dbImages: DBImage[] = uploadResult.success.map((result) => ({

@@ -40,7 +40,7 @@ export const PropertyImage = memo(function PropertyImage({
         )}
       >
         <div className="flex h-full w-full transition-transform duration-200 group-hover/image:scale-105">
-          <Image src={image.url} alt="Cover photo" fill className="object-cover" unoptimized />
+          <Image src={image.url} alt="Photo" fill className="object-cover" unoptimized />
         </div>
         {isCover && (
           <div className="bg-primary/80 text-primary-foreground absolute top-1.5 left-1.5 rounded px-1 text-xs select-none">

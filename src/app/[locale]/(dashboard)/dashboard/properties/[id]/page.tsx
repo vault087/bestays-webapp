@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { loadDictionaries, loadEntries } from "@/entities/dictionaries/libs";
+import { loadDictionaries } from "@/entities/dictionaries/libs/dictionaries";
+import { loadEntries } from "@/entities/dictionaries/libs/entries";
 import { MutableProperty } from "@/entities/properties-sale-rent/features/form/types/mutable-property.types";
 import { loadDashboardPropertyDetails } from "@/entities/properties-sale-rent/libs/load-properties";
 import PropertiesPageClient from "./page.client";

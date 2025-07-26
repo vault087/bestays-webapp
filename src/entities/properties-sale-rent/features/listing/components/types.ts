@@ -1,3 +1,4 @@
+import { DBImage, DBSerialID } from "@/entities/common";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
 
@@ -17,10 +18,10 @@ export interface PropertyRow {
   sale_price: number | null;
   rent_enabled: boolean | null;
   sale_enabled: boolean | null;
-  cover_image: { url?: string } | null;
+  cover_image: DBImage | null;
   is_published: boolean | null;
   updated_at: string | null;
   // Original IDs for filtering
-  property_type_id?: number | null;
-  area_id?: number | null;
+  property_type_id?: DBSerialID | null;
+  area_id?: DBSerialID | null;
 }

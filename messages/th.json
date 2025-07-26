@@ -81,6 +81,8 @@
     }
   },
   "Properties": {
+    "title": "รายการประกาศอสังหาริมทรัพย์",
+    "add_property": "เพิ่มประกาศอสังหาริมทรัพย์",
     "fields": {
       "published": {
         "is_published": "อนุมัติ",

@@ -4,7 +4,6 @@ import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import { memo, useMemo } from "react";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
-import { CustomFilterRow } from "./custom-filter-row";
 import { CustomTableHeader } from "./custom-table-header";
 import { CustomTableRow } from "./custom-table-row";
 import { PropertyRow } from "./types";
@@ -34,20 +33,22 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
 }: CustomPropertyTableProps) {
   // Convert PropertyRow to DashboardProperty for internal use
   const dashboardData: DashboardProperty[] = useMemo(() => {
-    return data.map((row) => ({
-      id: row.id,
-      personal_title: row.personal_title,
-      property_type: row.property_type,
-      area: row.area,
-      rent_price: row.rent_price,
-      sale_price: row.sale_price,
-      rent_enabled: row.rent_enabled,
-      sale_enabled: row.sale_enabled,
-      cover_image: row.cover_image,
-      is_published: row.is_published,
-      updated_at: row.updated_at,
-      deleted_at: null, // Not used in listing
-    }));
+    return (
+      data.map((row) => ({
+        id: row.id,
+        personal_title: row.personal_title,
+        property_type_id: row.property_type_id,
+        area: row.area_id,
+        rent_price: row.rent_price,
+        sale_price: row.sale_price,
+        rent_enabled: row.rent_enabled,
+        sale_enabled: row.sale_enabled,
+        cover_image: row.cover_image,
+        is_published: row.is_published,
+        updated_at: row.updated_at,
+        deleted_at: null, // Not used in listing
+      })) || []
+    );
   }, [data]);
 
   // Apply filtering to data using original TanStack logic
@@ -146,7 +147,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
       />
 
       {/* Table Body */}
-      <div className="divide-y divide-gray-100">
+      <div className="w-full divide-y divide-gray-100">
         {sortedData.length > 0 ? (
           sortedData.map((row, index) => (
             <CustomTableRow
@@ -197,19 +198,19 @@ export const TypeSafeCustomPropertyTable = memo(function TypeSafeCustomPropertyT
   const propertyRows: PropertyRow[] = useMemo(() => {
     return data.map((property) => ({
       id: property.id,
-      personal_title: property.personal_title,
-      property_type: property.property_type,
-      area: property.area,
-      rent_price: property.rent_price,
-      sale_price: property.sale_price,
-      rent_enabled: property.rent_enabled,
-      sale_enabled: property.sale_enabled,
-      cover_image: property.cover_image,
-      is_published: property.is_published,
-      updated_at: property.updated_at,
+      personal_title: property.personal_title || null,
+      property_type: property.property_type?.toString() || null,
+      area: property.area?.toString() || null,
+      rent_price: property.rent_price || null,
+      sale_price: property.sale_price || null,
+      rent_enabled: property.rent_enabled || null,
+      sale_enabled: property.sale_enabled || null,
+      cover_image: property.cover_image || null,
+      is_published: property.is_published || null,
+      updated_at: property.updated_at || null,
       // These fields would need to be populated from the original data if filtering is needed
-      property_type_id: null,
-      area_id: null,
+      property_type_id: property.property_type,
+      area_id: property.area,
     }));
   }, [data]);
 

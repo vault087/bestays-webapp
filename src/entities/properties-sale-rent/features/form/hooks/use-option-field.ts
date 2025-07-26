@@ -4,7 +4,8 @@ import { FormOption, FormSingleOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import { DBDictionary } from "@/entities/dictionaries";
 import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
-import { DBDictionaryInsertEntry, insertNewEntry } from "@/entities/dictionaries/libs";
+import { insertNewEntry } from "@/entities/dictionaries/libs/actions/entries";
+import { DBDictionaryInsertEntry } from "@/entities/dictionaries/libs/actions/entries-action.types";
 import {
   DBPropertyCodeField,
   usePropertyFormStoreActions,
@@ -77,7 +78,7 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
         }
       });
     },
-    [dictionary?.id, locale, updateProperty, field],
+    [dictionary?.id, locale, updateProperty, field, addEntry],
   );
 
   return {

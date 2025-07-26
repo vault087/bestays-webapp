@@ -37,19 +37,11 @@ export const CustomTableRow = memo(function CustomTableRow({
   }, [onClick, row.id]);
 
   const renderCoverImage = useCallback(() => {
-    const coverImage = row.cover_image;
-    if (coverImage?.url) {
-      return (
-        <Image
-          src={coverImage.url}
-          alt="Property"
-          className="h-12 w-12 rounded-md border border-gray-200 object-cover"
-        />
-      );
-    }
+    const coverImageURL = row.cover_image?.url;
     return (
-      <div className="flex h-12 w-12 items-center justify-center rounded-md border border-gray-200 bg-gray-100">
-        <span className="text-center text-xs text-gray-400">No image</span>
+      <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-md">
+        {coverImageURL && <Image src={coverImageURL} alt="Property" fill className="object-cover" />}
+        {!coverImageURL && <span className="text-center text-xs text-gray-400">No image</span>}
       </div>
     );
   }, [row.cover_image]);
@@ -128,37 +120,9 @@ export const CustomTableRow = memo(function CustomTableRow({
   }, [row.is_published]);
 
   const renderRelativeTime = useCallback(() => {
-    const updatedAt = row.updated_at;
-    if (updatedAt) {
-      const date = new Date(updatedAt);
-      const now = new Date();
-      const diffMs = now.getTime() - date.getTime();
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-      const diffMinutes = Math.floor(diffMs / (1000 * 60));
-
-      let timeAgo: string;
-      if (diffDays > 0) {
-        timeAgo = `${diffDays}d ago`;
-      } else if (diffHours > 0) {
-        timeAgo = `${diffHours}h ago`;
-      } else if (diffMinutes > 0) {
-        timeAgo = `${diffMinutes}m ago`;
-      } else {
-        timeAgo = "Just now";
-      }
-
-      return (
-        <div className="flex h-full w-full items-center justify-center">
-          <span className="text-center text-sm text-gray-500" title={date.toLocaleString()}>
-            {timeAgo}
-          </span>
-        </div>
-      );
-    }
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <span className="text-gray-500"></span>
+        <span className="text-center text-sm text-gray-500">{row.updated_at}</span>
       </div>
     );
   }, [row.updated_at]);

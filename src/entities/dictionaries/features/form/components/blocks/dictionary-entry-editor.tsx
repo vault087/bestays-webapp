@@ -2,10 +2,12 @@
 
 import { SearchIcon, Plus, CircleAlertIcon, TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useCallback, useMemo, useId } from "react";
+import { useState, useCallback, useMemo, useId, useTransition } from "react";
 import { DBSerialID } from "@/entities/common";
 import { DBDictionary, useDictionaryFormStoreActions, MutableEntry } from "@/entities/dictionaries";
 import { DictionaryEntryNameInput } from "@/entities/dictionaries/features/form/components/entry-name";
+import { insertNewEntry } from "@/entities/dictionaries/libs/actions/entries";
+import { DBDictionaryInsertEntry } from "@/entities/dictionaries/libs/actions/entries-action.types";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -112,6 +114,9 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
     return Object.values(entries).sort((a, b) => a.name?.[locale]?.localeCompare(b.name?.[locale] || "") || 0);
   }, [entries, locale]);
 
+  const [isAddingOption, startTransition] = useTransition();
+  const dictionaryId = dictionary?.id;
+
   // Filter entries based on search query
   const filteredEntries = useMemo(() => {
     if (!searchQuery.trim()) return entryList;
@@ -123,11 +128,35 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
   }, [entryList, searchQuery, locale]);
 
   const handleAddEntry = useCallback(() => {
-    if (!newEntryName.trim()) return;
+    const value = newEntryName.trim();
+    console.log("0", value);
+    if (!dictionaryId || !value) return;
 
-    addEntry(dictionary.id, { [locale]: newEntryName.trim() });
-    setNewEntryName("");
-  }, [newEntryName, dictionary.id, locale, addEntry]);
+    console.log("1");
+    const insertingEntry: DBDictionaryInsertEntry = {
+      dictionary_id: dictionaryId,
+      name: { [locale]: newEntryName.trim() },
+      is_active: true,
+    };
+    console.log("2");
+    startTransition(async () => {
+      const response = await insertNewEntry(insertingEntry);
+      console.log("3");
+      if (response.error) {
+        console.error("Insert option error:", response.error);
+        console.log("3-");
+        return;
+      }
+
+      console.log("4");
+      const newEntry = response.data;
+      if (newEntry) {
+        console.log("5");
+        addEntry(newEntry);
+        setNewEntryName("");
+      }
+    });
+  }, [dictionaryId, locale, addEntry, newEntryName]);
 
   const handleDeleteEntry = useCallback(
     (entry: MutableEntry) => {
@@ -157,6 +186,8 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
   });
 
   const description = getAvailableLocalizedText(dictionary.description, locale);
+
+  const addButtonDisabled = newEntryName.trim().length < 2 || isAddingOption;
 
   return (
     <>
@@ -227,7 +258,7 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
               }
             }}
           />
-          <Button onClick={handleAddEntry} disabled={newEntryName.trim().length < 2} size="sm">
+          <Button onClick={handleAddEntry} disabled={addButtonDisabled} size="sm">
             <Plus className="h-4 w-4" />
           </Button>
         </div>

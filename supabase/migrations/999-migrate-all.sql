@@ -1,4 +1,4 @@
--- Generated: 2025-07-26T10:54:32.143Z
+-- Generated: 2025-07-26T11:35:08.194Z
 
 -- 0_clean_up.sql
 DROP TABLE IF EXISTS bestays_properties;
@@ -19,19 +19,21 @@ CREATE TABLE bestays_dictionaries (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE bestays_dictionaries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bestays_dictionaries DISABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS "public_read" ON bestays_dictionaries;
-CREATE POLICY "public_read" 
-ON bestays_dictionaries FOR SELECT
-USING (true);
+-- ALTER TABLE bestays_dictionaries ENABLE ROW LEVEL SECURITY;
 
--- Only authenticated users can insert/update/delete (ownership not checked)
-DROP POLICY IF EXISTS "authenticated_write" ON bestays_dictionaries;
-CREATE POLICY "authenticated_write" 
-ON bestays_dictionaries FOR ALL
-TO authenticated
-USING (true);
+-- DROP POLICY IF EXISTS "public_read" ON bestays_dictionaries;
+-- CREATE POLICY "public_read" 
+-- ON bestays_dictionaries FOR SELECT
+-- USING (true);
+
+-- -- Only authenticated users can insert/update/delete (ownership not checked)
+-- DROP POLICY IF EXISTS "authenticated_write" ON bestays_dictionaries;
+-- CREATE POLICY "authenticated_write" 
+-- ON bestays_dictionaries FOR ALL
+-- TO authenticated
+-- USING (true);
 
 
 -- 2_dictionary_entry.sql
@@ -46,19 +48,21 @@ CREATE TABLE bestays_dictionary_entries (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE bestays_dictionary_entries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bestays_dictionary_entries DISABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS "public_read" ON bestays_dictionary_entries;
-CREATE POLICY "public_read" 
-ON bestays_dictionary_entries FOR SELECT
-USING (true);
+-- ALTER TABLE bestays_dictionary_entries ENABLE ROW LEVEL SECURITY;
 
--- Only authenticated users can insert/update/delete (ownership not checked)
-DROP POLICY IF EXISTS "authenticated_write" ON bestays_dictionary_entries;
-CREATE POLICY "authenticated_write" 
-ON bestays_dictionary_entries FOR ALL
-TO authenticated
-USING (true);
+-- DROP POLICY IF EXISTS "public_read" ON bestays_dictionary_entries;
+-- CREATE POLICY "public_read" 
+-- ON bestays_dictionary_entries FOR SELECT
+-- USING (true);
+
+-- -- Only authenticated users can insert/update/delete (ownership not checked)
+-- DROP POLICY IF EXISTS "authenticated_write" ON bestays_dictionary_entries;
+-- CREATE POLICY "authenticated_write" 
+-- ON bestays_dictionary_entries FOR ALL
+-- TO authenticated
+-- USING (true);
 
 
 -- 3_properties_sale_rent.sql
@@ -103,26 +107,26 @@ CREATE INDEX idx_properties_rent_enabled ON bestays_properties (rent_enabled);
 CREATE INDEX idx_properties_is_published ON bestays_properties (is_published);
 CREATE INDEX idx_properties_area ON bestays_properties (area);
 
-ALTER TABLE bestays_properties ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bestays_properties DISABLE ROW LEVEL SECURITY;
 
-
+-- ALTER TABLE bestays_properties ENABLE ROW LEVEL SECURITY;
 -- Anyone can read published listings
-DROP POLICY IF EXISTS "public_read" ON bestays_properties;
-CREATE POLICY "public_read" 
-ON bestays_properties
-FOR SELECT
-TO authenticated
-USING (true);
 
--- USING (is_published = true AND deleted_at IS NULL);
+-- DROP POLICY IF EXISTS "public_read" ON bestays_dictionary_entries;
+-- CREATE POLICY "public_read" 
+-- ON bestays_dictionary_entries FOR SELECT
+-- USING (true);
 
--- Authenticated write (no ownership check)
-DROP POLICY IF EXISTS "authenticated_write" ON bestays_properties;
-CREATE POLICY "authenticated_write" 
-ON bestays_properties
-FOR ALL
-TO authenticated
-USING (true);
+
+-- -- USING (is_published = true AND deleted_at IS NULL);
+
+-- -- Authenticated write (no ownership check)
+-- DROP POLICY IF EXISTS "authenticated_write" ON bestays_properties;
+-- CREATE POLICY "authenticated_write" 
+-- ON bestays_properties
+-- FOR ALL
+-- TO authenticated
+-- USING (true);
 
 -- -- Owners can modify their own properties
 -- CREATE POLICY "Owner write"
@@ -197,9 +201,11 @@ Price total: 256000000
 ', null, null, '2025-07-16 13:45:03.278664+00', '2025-07-16 13:45:03.278664+00', null);
 
 -- 20_property_images_bucket.sql
-CREATE POLICY "Allow authenticated users to upload to my_private_bucket"
+DROP POLICY IF EXISTS "public_write" ON storage.objects;
+CREATE POLICY "public_write"
 ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'bestays-property-images');
 
 -- Add policy to allow reading files (required for signed URLs)
-CREATE POLICY "Allow public read access to property images"
+DROP POLICY IF EXISTS "public_read" ON storage.objects;
+CREATE POLICY "public_read"
 ON storage.objects FOR SELECT TO public USING (bucket_id = 'bestays-property-images');

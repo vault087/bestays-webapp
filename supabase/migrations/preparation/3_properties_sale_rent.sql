@@ -39,26 +39,26 @@ CREATE INDEX idx_properties_rent_enabled ON bestays_properties (rent_enabled);
 CREATE INDEX idx_properties_is_published ON bestays_properties (is_published);
 CREATE INDEX idx_properties_area ON bestays_properties (area);
 
-ALTER TABLE bestays_properties ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bestays_properties DISABLE ROW LEVEL SECURITY;
 
-
+-- ALTER TABLE bestays_properties ENABLE ROW LEVEL SECURITY;
 -- Anyone can read published listings
-DROP POLICY IF EXISTS "public_read" ON bestays_properties;
-CREATE POLICY "public_read" 
-ON bestays_properties
-FOR SELECT
-TO authenticated
-USING (true);
 
--- USING (is_published = true AND deleted_at IS NULL);
+-- DROP POLICY IF EXISTS "public_read" ON bestays_dictionary_entries;
+-- CREATE POLICY "public_read" 
+-- ON bestays_dictionary_entries FOR SELECT
+-- USING (true);
 
--- Authenticated write (no ownership check)
-DROP POLICY IF EXISTS "authenticated_write" ON bestays_properties;
-CREATE POLICY "authenticated_write" 
-ON bestays_properties
-FOR ALL
-TO authenticated
-USING (true);
+
+-- -- USING (is_published = true AND deleted_at IS NULL);
+
+-- -- Authenticated write (no ownership check)
+-- DROP POLICY IF EXISTS "authenticated_write" ON bestays_properties;
+-- CREATE POLICY "authenticated_write" 
+-- ON bestays_properties
+-- FOR ALL
+-- TO authenticated
+-- USING (true);
 
 -- -- Owners can modify their own properties
 -- CREATE POLICY "Owner write"

@@ -12,6 +12,7 @@ import { PropertyListingProps, PropertyRow } from "./types";
 
 export function PropertyListing({ properties, dictionaries, entries, locale }: PropertyListingProps) {
   const router = useRouter();
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([{ id: "updated_at", desc: true }]);
 
@@ -70,12 +71,6 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
       };
     });
   }, [properties, dictionaryByCode, entriesByDictionaryId, locale]);
-
-  const handleFilterEdit = (columnId: string) => {
-    // For now, this could trigger focus on the specific filter dropdown
-    // Implementation can be enhanced later if needed
-    console.log("Edit filter:", columnId);
-  };
 
   const handleRowClick = (propertyId: string) => {
     router.push(`/dashboard/properties/${propertyId}`);

@@ -81,6 +81,8 @@
     }
   },
   "Properties": {
+    "title": "Property Listings",
+    "add_property": "Add Property",
     "delete_confirmation": {
       "title": "Delete Property",
       "description": "Are you sure want to delete this property? To confirm deletion, please type \"delete\" below.",

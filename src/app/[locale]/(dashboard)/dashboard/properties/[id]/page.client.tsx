@@ -6,7 +6,7 @@ import { memo, useMemo, useState, useCallback, useId, useTransition } from "reac
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";
-import { createDictionaryFormStore, useDictionaryFormStaticStore } from "@/entities/dictionaries/features/form/store";
+import { createDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import {
@@ -37,7 +37,7 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/form/hooks/use-bool-field";
-import { updateDictionariesEntriesPropertiesBatch } from "@/entities/properties-sale-rent/libs/batch-update";
+import { updateProperty } from "@/entities/properties-sale-rent/libs/actions/property";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button, Input } from "@/modules/shadcn";
@@ -79,7 +79,9 @@ export default function PropertiesPageClient({
                     <ArrowLeftIcon className="!h-6 !w-6" />
                   </Button>
                   {/* <h1 className="text-xl font-bold">Listing editor</h1> */}
-                  <TitleInput />
+                  <div className="shrink-0">
+                    <TitleInput />
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-2"></div>
@@ -220,61 +222,33 @@ export const SaveButton = memo(function SaveButton() {
   const [isPending, startTransition] = useTransition();
   const t = useTranslations("Common");
 
-  // Get store instances
-  const dictionaryStore = useDictionaryFormStaticStore();
   const propertyStore = usePropertyFormStoreContext();
+
+  const [error, setError] = useState<string | null>(null);
 
   const handleSave = useCallback(() => {
     startTransition(async () => {
-      try {
-        // Collect all data from stores
-        const dictionaries = Object.values(dictionaryStore.dictionaries);
-        const entries = Object.values(dictionaryStore.entries).flatMap(Object.values);
-        const property = propertyStore.getState().property;
+      const property = propertyStore.getState().property;
+      console.log("property", property);
+      if (!property) return;
 
-        // Filter out unchanged data (only send changed/new/deleted items)
-        const changedDictionaries = dictionaries.filter(
-          (dict) => dict.is_new || dict !== dictionaryStore.dbDictionaries.find((db) => db.id === dict.id),
-        );
-        const changedEntries = entries.filter(
-          (entry) => entry.is_new || entry !== dictionaryStore.dbEntries.find((db) => db.id === entry.id),
-        );
-        const changedProperty =
-          property.is_new || property !== propertyStore.getState().initialProperty ? [property] : [];
-
-        // Get deleted items
-        const deletedDictionaries = dictionaryStore.deletedDictionaryIds;
-        const deletedEntries = dictionaryStore.deletedEntryIds;
-        const deletedProperties = property.deleted_at ? [property.id] : [];
-
-        // Call batch update
-        const result = await updateDictionariesEntriesPropertiesBatch({
-          dictionaries: changedDictionaries,
-          entries: changedEntries,
-          properties: changedProperty,
-          deletedDictionaries,
-          deletedEntries,
-          deletedProperties,
-        });
-
-        if (result.success) {
-          console.log("Save successful:", result.idMapping);
-          // TODO: Update stores with new IDs from idMapping
-        } else {
-          console.error("Save failed:", result.error);
-          // TODO: Show error message to user
-        }
-      } catch (error) {
-        console.error("Save error:", error);
-        // TODO: Show error message to user
-      }
+      const response = await updateProperty(property.id, property);
+      setError(response.error);
     });
-  }, [dictionaryStore, propertyStore, startTransition]);
+  }, [propertyStore, startTransition]);
 
   return (
-    <Button size="sm" onClick={handleSave} disabled={isPending}>
-      {isPending ? t("saving") : t("save")}
-    </Button>
+    <div className="relative">
+      <Button size="sm" onClick={handleSave} disabled={isPending}>
+        {isPending ? t("saving") : t("save")}
+      </Button>
+
+      {error && (
+        <div onClick={() => setError(null)} className="absolute top-2 left-0 w-full text-sm text-red-500">
+          {error}
+        </div>
+      )}
+    </div>
   );
 });
 

@@ -1,8 +1,8 @@
-import { DBProperty, DBPropertySchema, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale-rent";
+import { DBProperty, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale-rent";
 import { supabase } from "@/modules/supabase/clients/client";
-import { fetch } from "@/modules/supabase/crud/fetch";
+// import { fetch } from "@/modules/supabase/crud/fetch";
 
-const DASHBOARD_LISTING_FIELDS: (keyof DBProperty)[] = [
+export const DASHBOARD_LISTING_FIELDS: (keyof DBProperty)[] = [
   "id",
   "personal_title",
   "property_type",
@@ -19,8 +19,11 @@ const DASHBOARD_LISTING_FIELDS: (keyof DBProperty)[] = [
 
 export type DashboardProperty = Pick<DBProperty, (typeof DASHBOARD_LISTING_FIELDS)[number]>;
 
-export function loadDashboardPropertyListings(): ReturnType<typeof fetch> {
-  return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, DASHBOARD_LISTING_FIELDS);
+export async function loadDashboardPropertyListings(): Promise<DashboardProperty[]> {
+  const response = await supabase.from("bestays_properties").select("*").order("updated_at", { ascending: false });
+  return response.data || [];
+
+  // return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, DASHBOARD_LISTING_FIELDS);
 }
 
 // export async function loadDashboardPropertyDetails(id: number): Promise<ReturnType<typeof fetch>> {

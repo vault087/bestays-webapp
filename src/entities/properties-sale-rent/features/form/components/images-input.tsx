@@ -6,12 +6,18 @@ import { FormFieldLayout } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { generateTemporarySerialId } from "@/entities/common";
 import { MutableImage } from "@/entities/media/types/image.type";
-import { usePropertyFormStore, usePropertyFormStoreActions } from "@/entities/properties-sale-rent";
+import {
+  usePropertyFormStore,
+  usePropertyFormStoreContext,
+  usePropertyFormStoreActions,
+} from "@/entities/properties-sale-rent";
+import { updateProperty } from "@/entities/properties-sale-rent/libs/actions/property";
 import { uploadPropertyImages } from "@/entities/properties-sale-rent/libs/image-upload";
 import { PROPERTY_MAX_IMAGES } from "@/entities/properties-sale-rent/types/property.types";
 import { ImageFieldExpandDialog, CompactImagesView } from "./images";
 
 export const PropertyImagesInput = memo(function PropertyImagesInput({ className }: { className?: string }) {
+  const propertyStore = usePropertyFormStoreContext();
   const images = usePropertyFormStore((state) => state.property.images);
   const { refreshImages } = usePropertyFormStoreActions();
   const maxImages = PROPERTY_MAX_IMAGES;
@@ -80,6 +86,8 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
 
       // Update the DB images with uploaded URLs
       refreshImages(uploadResult.images);
+      const property = propertyStore.getState()?.property;
+      updateProperty(property.id, property);
 
       // Close expanded view
       setIsExpandedOpen(false);

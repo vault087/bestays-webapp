@@ -3,7 +3,8 @@ import { useState, useCallback, useMemo, useTransition } from "react";
 import { FormOption, FormMultiOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
-import { DBDictionaryInsertEntry, insertNewEntry } from "@/entities/dictionaries/libs";
+import { insertNewEntry } from "@/entities/dictionaries/libs/actions/entries";
+import { DBDictionaryInsertEntry } from "@/entities/dictionaries/libs/actions/entries-action.types";
 import {
   DBPropertyMultiCodeField,
   usePropertyFormStoreActions,
@@ -101,7 +102,7 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
         }
       });
     },
-    [dictionary?.id, locale, updateProperty, field, currentValues],
+    [dictionary?.id, locale, updateProperty, field, currentValues, addEntry],
   );
 
   return {

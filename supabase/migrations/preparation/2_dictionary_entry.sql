@@ -9,16 +9,18 @@ CREATE TABLE bestays_dictionary_entries (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE bestays_dictionary_entries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bestays_dictionary_entries DISABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS "public_read" ON bestays_dictionary_entries;
-CREATE POLICY "public_read" 
-ON bestays_dictionary_entries FOR SELECT
-USING (true);
+-- ALTER TABLE bestays_dictionary_entries ENABLE ROW LEVEL SECURITY;
 
--- Only authenticated users can insert/update/delete (ownership not checked)
-DROP POLICY IF EXISTS "authenticated_write" ON bestays_dictionary_entries;
-CREATE POLICY "authenticated_write" 
-ON bestays_dictionary_entries FOR ALL
-TO authenticated
-USING (true);
+-- DROP POLICY IF EXISTS "public_read" ON bestays_dictionary_entries;
+-- CREATE POLICY "public_read" 
+-- ON bestays_dictionary_entries FOR SELECT
+-- USING (true);
+
+-- -- Only authenticated users can insert/update/delete (ownership not checked)
+-- DROP POLICY IF EXISTS "authenticated_write" ON bestays_dictionary_entries;
+-- CREATE POLICY "authenticated_write" 
+-- ON bestays_dictionary_entries FOR ALL
+-- TO authenticated
+-- USING (true);
