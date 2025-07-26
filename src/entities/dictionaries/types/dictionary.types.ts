@@ -3,8 +3,8 @@ import { DBCodeSchema, DBSerialIDSchema } from "@/entities/common";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 
 // Table constants
-export const DICTIONARIES_TABLE = "dictionaries";
-export const DICTIONARY_ENTRIES_TABLE = "dictionary_entries";
+export const DICTIONARIES_TABLE = "bestays_dictionaries";
+export const DICTIONARY_ENTRIES_TABLE = "bestays_dictionary_entries";
 
 export const DICTIONARY_NAME_MAX = 255;
 export const DICTIONARY_DESCRIPTION_MAX = 2000;

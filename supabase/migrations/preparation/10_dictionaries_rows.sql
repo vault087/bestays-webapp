@@ -1,4 +1,4 @@
-INSERT INTO "public"."dictionaries" 
+INSERT INTO "public"."bestays_dictionaries" 
 ("id", "code", "name", "metadata", "description") 
 VALUES 
 ('1', 'areas', '{"en":"Location Area","ru":"Район местоположения","th":"พื้นที่ทำเล"}', '{"info": "Defines the administrative or commonly known zones where the property is located, aiding geographical search and regional grouping"}', '{"en": "The geographical area where the property is located", "ru": "Географический район, где находится недвижимость", "th": "พื้นที่ทางภูมิศาสตร์ที่อสังหาริมทรัพย์ตั้งอยู่"}'),

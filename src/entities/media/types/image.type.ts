@@ -19,3 +19,5 @@ export interface MutableImage extends DBImage {
   name?: string; // Original filename
   size?: number; // File size in bytes
 }
+
+export const PROPERTY_IMAGES_BUCKET = "bestays-property-images";

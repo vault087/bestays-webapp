@@ -3,7 +3,7 @@ import { DBMoneySchema, DBSerialIDSchema } from "@/entities/common";
 import { LocalizedTextSchema } from "@/entities/localized-text";
 import { DBImageSchema } from "@/entities/media/types/image.type";
 // Table constants
-export const PROPERTIES_SALE_RENT_TABLE = "properties_sale_rent";
+export const PROPERTIES_SALE_RENT_TABLE = "bestays_properties";
 
 export const DBSizeEntrySchema = z.object({
   value: z.number().positive(),

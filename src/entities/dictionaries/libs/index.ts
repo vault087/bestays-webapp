@@ -1,2 +1,2 @@
-export * from "./load-dictionaries";
-export * from "./load-entries";
+export * from "./dictionaries";
+export * from "./entries";

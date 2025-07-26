@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS properties_sale_rent;
-CREATE TABLE properties_sale_rent (
+CREATE TABLE bestays_properties (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     about JSONB,
 
@@ -35,11 +34,32 @@ CREATE TABLE properties_sale_rent (
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
 
-ALTER TABLE properties_sale_rent DISABLE ROW LEVEL SECURITY;
+CREATE INDEX idx_properties_sale_enabled ON bestays_properties (sale_enabled);
+CREATE INDEX idx_properties_rent_enabled ON bestays_properties (rent_enabled);
+CREATE INDEX idx_properties_is_published ON bestays_properties (is_published);
+CREATE INDEX idx_properties_area ON bestays_properties (area);
 
-CREATE INDEX idx_properties_sale_rent_sale_enabled ON properties_sale_rent (sale_enabled);
-CREATE INDEX idx_properties_sale_rent_rent_enabled ON properties_sale_rent (rent_enabled);
-CREATE INDEX idx_properties_sale_rent_is_published ON properties_sale_rent (is_published);
-CREATE INDEX idx_properties_sale_rent_created_at ON properties_sale_rent (created_at);
-CREATE INDEX idx_properties_sale_rent_updated_at ON properties_sale_rent (updated_at);
-CREATE INDEX idx_properties_sale_rent_deleted_at ON properties_sale_rent (deleted_at);
+ALTER TABLE bestays_properties ENABLE ROW LEVEL SECURITY;
+
+
+-- Anyone can read published listings
+CREATE POLICY "Public read published"
+ON bestays_properties
+FOR SELECT
+USING (is_published = true AND deleted_at IS NULL);
+
+-- Authenticated write (no ownership check)
+CREATE POLICY "Authenticated write"
+ON bestays_properties
+FOR ALL
+TO authenticated
+USING (true)
+WITH CHECK (true);
+
+-- -- Owners can modify their own properties
+-- CREATE POLICY "Owner write"
+-- ON bestays_properties
+-- FOR ALL
+-- TO authenticated
+-- USING (created_by = auth.uid() OR agent_id = auth.uid())
+-- WITH CHECK (created_by = auth.uid() OR agent_id = auth.uid());

@@ -1,4 +1,4 @@
-import { MutableImage } from "@/entities/media/types/image.type";
+import { MutableImage, PROPERTY_IMAGES_BUCKET } from "@/entities/media/types/image.type";
 import { supabase } from "@/modules/supabase/clients/client";
 
 export interface ImageUploadResult {
@@ -17,7 +17,7 @@ export interface BatchImageUploadResult {
  */
 export async function uploadImageToStorage(
   file: File,
-  bucketName: string = "property-images",
+  bucketName: string = PROPERTY_IMAGES_BUCKET,
   folderPath?: string,
 ): Promise<{ url: string; path: string; error?: string }> {
   try {
@@ -62,7 +62,7 @@ export async function uploadImageToStorage(
  */
 export async function uploadImagesBatch(
   images: MutableImage[],
-  bucketName: string = "property-images",
+  bucketName: string = PROPERTY_IMAGES_BUCKET,
   folderPath?: string,
 ): Promise<BatchImageUploadResult> {
   const results: BatchImageUploadResult = {
@@ -126,7 +126,7 @@ export async function uploadImagesBatch(
  */
 export async function deleteImageFromStorage(
   path: string,
-  bucketName: string = "property-images",
+  bucketName: string = PROPERTY_IMAGES_BUCKET,
 ): Promise<{ error?: string }> {
   try {
     const { error } = await supabase.storage.from(bucketName).remove([path]);
