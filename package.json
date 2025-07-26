@@ -17,10 +17,6 @@
     "test": "npx jest@latest",
     "test:watch": "npx jest@latest --watch"
   },
-  "overrides": {
-    "react": "$react",
-    "react-dom": "$react-dom"
-  },
   "dependencies": {
     "@cospired/i18n-iso-languages": "^4.2.0",
     "@hello-pangea/dnd": "^18.0.1",
