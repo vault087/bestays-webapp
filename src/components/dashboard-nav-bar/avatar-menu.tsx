@@ -1,9 +1,8 @@
 "use client";
 
 import { ChevronDownIcon, LogOutIcon } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
-import { logout } from "@/entities/users/libs/auth";
-import { redirect } from "@/modules/i18n";
+import { useTranslations } from "next-intl";
+import { logoutAction } from "@/app/[locale]/(auth)/logout/action";
 import { Avatar, AvatarFallback, AvatarImage } from "@/modules/shadcn/components/ui/avatar";
 import { Button } from "@/modules/shadcn/components/ui/button";
 import {
@@ -17,7 +16,6 @@ import {
 } from "@/modules/shadcn/components/ui/dropdown-menu";
 
 export default function AvatarMenu() {
-  const locale = useLocale();
   const t = useTranslations("Dashboard.NavBar");
   const user = {
     avatar: "/",
@@ -25,11 +23,6 @@ export default function AvatarMenu() {
     email: "test@test.com",
     fallback: "T",
   };
-
-  function logoutHandler() {
-    logout();
-    redirect({ href: "/", locale });
-  }
 
   return (
     <DropdownMenu>
@@ -49,9 +42,13 @@ export default function AvatarMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span onClick={logoutHandler}>{t("Logout")}</span>
+          <DropdownMenuItem asChild>
+            <form action={logoutAction}>
+              <button type="submit" className="flex w-full items-center gap-2">
+                <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
+                <span>{t("Logout")}</span>
+              </button>
+            </form>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

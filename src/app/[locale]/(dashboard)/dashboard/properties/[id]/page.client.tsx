@@ -2,7 +2,7 @@
 
 import { ArrowLeftIcon, CircleAlertIcon, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useMemo, useState, useCallback, useId, useTransition, startTransition } from "react";
+import { memo, useMemo, useState, useCallback, useId, useTransition } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";

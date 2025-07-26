@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import RootLayout from "@/components/layout/root-layout";
 import { getUser } from "@/entities/users/user.libs";
 
@@ -18,7 +18,7 @@ export default async function DashboardLayout({
   const user = await getUser();
 
   if (!user) {
-    // redirect("/login");
+    redirect("/login");
   }
 
   return (
