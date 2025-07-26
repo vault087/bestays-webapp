@@ -20,7 +20,11 @@ export const DASHBOARD_LISTING_FIELDS: (keyof DBProperty)[] = [
 export type DashboardProperty = Pick<DBProperty, (typeof DASHBOARD_LISTING_FIELDS)[number]>;
 
 export async function loadDashboardPropertyListings(): Promise<DashboardProperty[]> {
-  const response = await supabase.from("bestays_properties").select("*").order("updated_at", { ascending: false });
+  const response = await supabase
+    .from("bestays_properties")
+    .select("*")
+    .is("deleted_at", null)
+    .order("updated_at", { ascending: false });
   return response.data || [];
 
   // return fetch(PROPERTIES_SALE_RENT_TABLE, DBPropertySchema, DASHBOARD_LISTING_FIELDS);

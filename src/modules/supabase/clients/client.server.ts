@@ -5,7 +5,7 @@ import { cache } from "react";
 
 export const getSupabase = cache(
   async () =>
-    await createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""),
+    await createClient(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", process.env.NEXT_PUBLIC_SUPABASE_ANON ?? ""),
 );
 
 export const getAdminSupabase = cache(

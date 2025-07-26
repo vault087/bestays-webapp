@@ -2,7 +2,7 @@
 
 import { ArrowLeftIcon, CircleAlertIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useMemo, useState, useCallback, useId, useTransition } from "react";
+import { memo, useMemo, useState, useCallback, useId, useTransition, startTransition } from "react";
 import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
 import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
 import { DebugCard } from "@/components/ui/debug-json-card";
@@ -37,7 +37,7 @@ import {
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/form/hooks/use-bool-field";
-import { updateProperty } from "@/entities/properties-sale-rent/libs/actions/property";
+import { updateProperty as updatePropertyAction } from "@/entities/properties-sale-rent/libs/actions/property";
 import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button, Input } from "@/modules/shadcn";
@@ -232,7 +232,7 @@ export const SaveButton = memo(function SaveButton() {
       console.log("property", property);
       if (!property) return;
 
-      const response = await updateProperty(property.id, property);
+      const response = await updatePropertyAction(property.id, property);
       setError(response.error);
     });
   }, [propertyStore, startTransition]);
@@ -329,12 +329,28 @@ export const DeleteButton = memo(function DeleteButton() {
   const { updateProperty } = store.getState(); // instant
   const isDeleted = usePropertyFormStore((state) => state.property.deleted_at !== null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const router = useRouter();
 
-  const handleDelete = useCallback(() => {
-    updateProperty((draft) => {
-      draft.deleted_at = new Date().toISOString();
-    });
-  }, [updateProperty]);
+  const handleDelete = useCallback(
+    (isDeleted: boolean) => {
+      const newDeletedAt = isDeleted ? new Date().toISOString() : null;
+      updateProperty((draft) => {
+        draft.deleted_at = newDeletedAt;
+      });
+
+      startTransition(async () => {
+        const property = store.getState().property;
+
+        console.log("property", property);
+        if (!property) return;
+
+        await updatePropertyAction(property.id, property);
+        // need to navigate to dashboard/properties
+        router.push("/dashboard/properties");
+      });
+    },
+    [store, router, updateProperty],
+  );
 
   const handleShowDeleteDialog = useCallback(() => {
     setShowDeleteDialog(true);

@@ -24,6 +24,12 @@ const config: NextConfig = {
         hostname: "127.0.0.1",
         pathname: "/**",
       },
+
+      {
+        protocol: "https",
+        hostname: "mtctlgbvwpssxqakyvoc.supabase.co",
+        pathname: "/**",
+      },
     ],
   },
   experimental: {
