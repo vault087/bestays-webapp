@@ -2,13 +2,14 @@
 
 import { ChevronDownIcon, CheckIcon } from "lucide-react";
 import { memo, useCallback } from "react";
+import { SortIcon, type SortDirection } from "@/components/ui/sort-icon";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import {
   TABLE_FIELDS_CONFIG,
   VISIBLE_FIELDS,
   GRID_TEMPLATE_COLUMNS,
-  // type SortableFieldKey,
+  type SortableFieldKey,
   type TableFieldKey,
   type FilterableFieldKey,
 } from "@/entities/properties-sale-rent/features/listing/types/table-fields.types";
@@ -37,22 +38,22 @@ interface CustomTableHeaderProps {
 }
 
 export const CustomTableHeader = memo(function CustomTableHeader({
-  // sorting,
-  // setSorting,
+  sorting,
+  setSorting,
   columnFilters,
   setColumnFilters,
   dictionaries,
   entries,
   locale,
 }: CustomTableHeaderProps) {
-  // const getSortDirection = useCallback(
-  //   (fieldKey: TableFieldKey): "asc" | "desc" | null => {
-  //     const sortItem = sorting.find((item) => item.id === fieldKey);
-  //     if (!sortItem) return null;
-  //     return sortItem.desc ? "desc" : "asc";
-  //   },
-  //   [sorting],
-  // );
+  const getSortDirection = useCallback(
+    (fieldKey: TableFieldKey): SortDirection => {
+      const sortItem = sorting.find((item) => item.id === fieldKey);
+      if (!sortItem) return "off";
+      return sortItem.desc ? "desc" : "asc";
+    },
+    [sorting],
+  );
 
   const getFilterValue = useCallback(
     (fieldKey: FilterableFieldKey): string | boolean | undefined => {
@@ -62,20 +63,20 @@ export const CustomTableHeader = memo(function CustomTableHeader({
     [columnFilters],
   );
 
-  // const handleSort = useCallback(
-  //   (fieldKey: SortableFieldKey) => {
-  //     const currentSort = getSortDirection(fieldKey);
+  const handleSort = useCallback(
+    (fieldKey: SortableFieldKey) => {
+      const currentSort = getSortDirection(fieldKey);
 
-  //     if (!currentSort) {
-  //       setSorting([{ id: fieldKey, desc: false }]);
-  //     } else if (currentSort === "asc") {
-  //       setSorting([{ id: fieldKey, desc: true }]);
-  //     } else {
-  //       setSorting([]);
-  //     }
-  //   },
-  //   [getSortDirection, setSorting],
-  // );
+      if (currentSort === "asc") {
+        setSorting([{ id: fieldKey, desc: true }]);
+      } else if (currentSort === "desc") {
+        setSorting([{ id: fieldKey, desc: false }]);
+      } else {
+        setSorting([{ id: fieldKey, desc: true }]);
+      }
+    },
+    [getSortDirection, setSorting],
+  );
 
   const setFilterValue = useCallback(
     (fieldKey: FilterableFieldKey, value: string | boolean | undefined) => {
@@ -291,6 +292,22 @@ export const CustomTableHeader = memo(function CustomTableHeader({
       //   );
       // }
 
+      // Sortable fields - title + sort icon
+      if (config.sortable) {
+        return (
+          <div
+            key={fieldKey}
+            className={cn(config.headerClassName, "cursor-pointer")}
+            onClick={() => handleSort(fieldKey as SortableFieldKey)}
+          >
+            <div className="flex h-12 items-center justify-center gap-2">
+              <span className="text-center text-sm font-medium tracking-wide text-gray-700">{config.label}</span>
+              <SortIcon direction={getSortDirection(fieldKey)} />
+            </div>
+          </div>
+        );
+      }
+
       // Non-sortable, non-filterable fields
       return (
         <div key={fieldKey} className={cn(config.headerClassName, "flex items-center justify-center")}>
@@ -298,7 +315,7 @@ export const CustomTableHeader = memo(function CustomTableHeader({
         </div>
       );
     },
-    [DictionaryHeaderFilter, BooleanHeaderFilter],
+    [DictionaryHeaderFilter, BooleanHeaderFilter, handleSort, getSortDirection],
   );
 
   return (
