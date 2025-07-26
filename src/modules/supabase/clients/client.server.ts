@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 export const getSupabase = cache(
-  async () => await createClient(process.env.SUPABASE_URL ?? "", process.env.SUPABASE_ANON ?? ""),
+  async () => await createClient(process.env.SUPABASE_URL ?? "", process.env.SUPABASE_ANON_KEY ?? ""),
 );
 
 export const getAdminSupabase = cache(
