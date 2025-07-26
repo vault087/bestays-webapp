@@ -5,7 +5,7 @@ export default async function Login() {
   // await createTestUser();
 
   return (
-    <div className="flex min-h-dvh w-screen items-center justify-center bg-slate-300">
+    <div className="bg-background flex min-h-dvh w-screen items-center justify-center">
       <LoginForm />
     </div>
   );

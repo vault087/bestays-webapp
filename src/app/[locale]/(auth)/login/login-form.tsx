@@ -22,7 +22,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="min-w-sm space-y-4 rounded-lg bg-white p-4 shadow-xl">
+    <div className="bg-background text-foreground min-w-sm space-y-4 rounded-lg p-4 shadow-2xl">
       <h1 className="text-center text-2xl font-medium">Sign In</h1>
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <input type="email" placeholder="Email" className="w-full rounded-md border border-gray-300 p-2" name="email" />
