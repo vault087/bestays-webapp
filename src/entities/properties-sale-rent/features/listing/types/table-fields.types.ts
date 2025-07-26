@@ -113,7 +113,7 @@ export const TABLE_FIELDS_CONFIG: Record<TableFieldKey, TableFieldConfig> = {
     className: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     headerClassName: "px-4 py-3 text-left text-sm font-medium text-gray-700",
     cellClassName: "px-4 py-4 text-sm text-gray-500",
-    minWidth: "130px",
+    minWidth: "1fr",
   },
   // Hidden fields that exist in DashboardProperty but not displayed
   id: {
