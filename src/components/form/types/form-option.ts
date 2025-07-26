@@ -6,6 +6,7 @@ export type FormOption = {
 export interface FormBaseOptionProps {
   options: FormOption[];
   placeholder?: string | undefined | null;
+  isAddingOption: boolean;
   addOption?:
     | {
         label?: string | undefined;

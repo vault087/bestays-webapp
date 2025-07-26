@@ -16,6 +16,7 @@ export type FormMultiOptionVariant = "select" | "checkbox";
 export const FormMultiOption = memo(function FormMultiOption({
   inputId,
   title,
+  isAddingOption,
   selectedOptions,
   options,
   toggleOption,
@@ -28,6 +29,7 @@ export const FormMultiOption = memo(function FormMultiOption({
     <>
       {variant === "checkbox" && (
         <FormMultiOptionCheckbox
+          isAddingOption={isAddingOption}
           selectOptions={selectOptions}
           inputId={inputId}
           selectedOptions={selectedOptions}
@@ -41,6 +43,7 @@ export const FormMultiOption = memo(function FormMultiOption({
         <FormMultiOptionSelect
           inputId={inputId}
           toggleOption={toggleOption}
+          isAddingOption={isAddingOption}
           title={title}
           selectedOptions={selectedOptions}
           options={options}

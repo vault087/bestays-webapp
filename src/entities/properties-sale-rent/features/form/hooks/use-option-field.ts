@@ -1,9 +1,10 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useTransition } from "react";
 import { FormOption, FormSingleOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import { DBDictionary } from "@/entities/dictionaries";
 import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
+import { DBDictionaryInsertEntry, insertNewEntry } from "@/entities/dictionaries/libs";
 import {
   DBPropertyCodeField,
   usePropertyFormStoreActions,
@@ -49,23 +50,40 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
 
   const selectOption = useCallback((option: FormOption) => setValue(Number(option.key) as DBSerialID), [setValue]);
 
+  const [isAddingOption, startTransition] = useTransition();
+
   const addOption = useCallback(
     (value: string | undefined) => {
       if (!value || !dictionary?.id) return;
-      const newEntry = addEntry(dictionary?.id, { [locale]: value });
-      if (newEntry) {
-        setCurrentValue(newEntry.id);
-        updateProperty((draft) => {
-          draft[field] = newEntry.id;
-        });
-      }
+      const insertingEntry: DBDictionaryInsertEntry = {
+        dictionary_id: dictionary.id,
+        name: { [locale]: value },
+        is_active: true,
+      };
+      startTransition(async () => {
+        const response = await insertNewEntry(insertingEntry);
+        if (response.error) {
+          console.error("Insert option error:", response.error);
+          return;
+        }
+
+        const newEntry = response.data;
+        if (newEntry) {
+          addEntry(newEntry);
+          setCurrentValue(newEntry.id);
+          updateProperty((draft) => {
+            draft[field] = newEntry.id;
+          });
+        }
+      });
     },
-    [dictionary?.id, addEntry, locale, updateProperty, field],
+    [dictionary?.id, locale, updateProperty, field],
   );
 
   return {
     inputId,
     selectedOption,
+    isAddingOption,
     options,
     selectOption,
     title,

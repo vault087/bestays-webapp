@@ -35,8 +35,18 @@ function MultiOptionField({
   className?: string;
   variant?: FormMultiOptionVariant | undefined;
 }) {
-  const { inputId, selectedOptions, options, title, description, selectOptions, toggleOption, addOption, error } =
-    useMultiOptionField({ field });
+  const {
+    inputId,
+    selectedOptions,
+    options,
+    title,
+    description,
+    selectOptions,
+    toggleOption,
+    addOption,
+    error,
+    isAddingOption,
+  } = useMultiOptionField({ field });
 
   return (
     <FormFieldLayout
@@ -51,6 +61,7 @@ function MultiOptionField({
       </FormFieldLayoutToolbar>
 
       <FormMultiOption
+        isAddingOption={isAddingOption}
         title={title}
         inputId={inputId}
         selectedOptions={selectedOptions}

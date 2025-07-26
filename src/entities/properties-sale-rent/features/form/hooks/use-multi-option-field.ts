@@ -1,8 +1,9 @@
 "use client";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useTransition } from "react";
 import { FormOption, FormMultiOptionProps } from "@/components/form";
 import { DBSerialID } from "@/entities/common/";
 import { useDictionaryFormStoreActions } from "@/entities/dictionaries/features/form/store";
+import { DBDictionaryInsertEntry, insertNewEntry } from "@/entities/dictionaries/libs";
 import {
   DBPropertyMultiCodeField,
   usePropertyFormStoreActions,
@@ -72,27 +73,42 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
     [updateProperty, field, currentValues],
   );
 
+  const [isAddingOption, startTransition] = useTransition();
+
   const addOption = useCallback(
     (value: string | undefined) => {
       if (!value || !dictionary?.id) return;
-      const newEntry = addEntry(dictionary?.id, { [locale]: value });
-      if (newEntry) {
-        const current = currentValues || [];
+      const insertingEntry: DBDictionaryInsertEntry = {
+        dictionary_id: dictionary.id,
+        name: { [locale]: value },
+        is_active: true,
+      };
+      startTransition(async () => {
+        const response = await insertNewEntry(insertingEntry);
+        if (response.error) {
+          console.error("Insert option error:", response.error);
+          return;
+        }
 
-        const newValues: DBSerialID[] = [...current, newEntry.id];
-        setCurrentValues(newValues);
-        updateProperty((draft) => {
-          draft[field] = newValues;
-        });
-      }
+        const newEntry = response.data;
+        if (newEntry) {
+          addEntry(newEntry);
+          const newValues: DBSerialID[] = [...(currentValues || []), newEntry.id];
+          setCurrentValues(newValues);
+          updateProperty((draft) => {
+            draft[field] = newValues;
+          });
+        }
+      });
     },
-    [dictionary?.id, addEntry, locale, currentValues, updateProperty, field],
+    [dictionary?.id, locale, updateProperty, field, currentValues],
   );
 
   return {
     inputId,
     options,
     selectedOptions,
+    isAddingOption,
     selectOptions,
     selectedKeys,
     toggleOption,

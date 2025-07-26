@@ -1,7 +1,7 @@
 "use client";
 import { EllipsisVerticalIcon, SquarePenIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
 import { DictionaryEntryEditor } from "@/entities/dictionaries/features/form/components/blocks/dictionary-entry-editor";
@@ -44,10 +44,20 @@ export function PropertyOptionField({
   className,
   variant = "select",
 }: OptionFieldProps & { field: DBPropertyCodeField }) {
-  const { inputId, selectedOption, options, title, description, selectOption, dictionary, error, addOption } =
-    useOptionField({
-      field,
-    });
+  const {
+    inputId,
+    selectedOption,
+    isAddingOption,
+    title,
+    description,
+    options,
+    selectOption,
+    dictionary,
+    error,
+    addOption,
+  } = useOptionField({
+    field,
+  });
 
   const locale = usePropertyLocale();
 
@@ -67,6 +77,7 @@ export function PropertyOptionField({
       <FormOptionInput
         inputId={inputId}
         selectedOption={selectedOption}
+        isAddingOption={isAddingOption}
         options={options}
         selectOption={selectOption}
         variant={variant}
@@ -77,7 +88,11 @@ export function PropertyOptionField({
     </FormFieldLayout>
   );
 }
-export function FieldDropDownMenu({ field }: { field: DBPropertyCodeField | DBPropertyMultiCodeField }) {
+export const FieldDropDownMenu = memo(function FieldDropDownMenu({
+  field,
+}: {
+  field: DBPropertyCodeField | DBPropertyMultiCodeField;
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -115,7 +130,7 @@ export function FieldDropDownMenu({ field }: { field: DBPropertyCodeField | DBPr
       <FieldMenuDialog field={field} open={dialogOpen} onOpenChange={setDialogOpen} />
     </>
   );
-}
+});
 
 export function FieldMenuDialog({
   field,

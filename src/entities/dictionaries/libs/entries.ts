@@ -38,7 +38,7 @@ export type DBEntryResponse = Promise<{
 }>;
 
 export type DBDictionaryInsertEntry = Omit<DBDictionaryEntry, "id" | "created_at" | "updated_at">;
-export async function addEntry(entry: DBDictionaryInsertEntry): DBEntryResponse {
+export async function insertNewEntry(entry: DBDictionaryInsertEntry): DBEntryResponse {
   try {
     const { data, error } = await supabase.from(DICTIONARY_ENTRIES_TABLE).insert(entry);
     return {

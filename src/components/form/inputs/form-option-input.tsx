@@ -27,6 +27,7 @@ export const FormOptionInput = memo(function FormOptionInput({
   inputId,
   selectedOption,
   options,
+  isAddingOption,
   selectOption,
   addOption,
   variant,
@@ -36,6 +37,7 @@ export const FormOptionInput = memo(function FormOptionInput({
       {variant === "select" && (
         <FormOptionSelect
           inputId={inputId}
+          isAddingOption={isAddingOption}
           selectedOption={selectedOption}
           options={options}
           selectOption={selectOption}
@@ -50,6 +52,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
   inputId,
   selectedOption,
   options,
+  isAddingOption,
   selectOption,
   addOption,
 }: FormOptionState) {
@@ -76,7 +79,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
     return options.some((option) => option.label.toLowerCase() === inputValue.toLowerCase().trim());
   }, [options, inputValue]);
 
-  const isAddButtonEnabled = inputValue.trim().length > 1 && !isExactMatching;
+  const isAddButtonEnabled = inputValue.trim().length > 1 && !isExactMatching && !isAddingOption;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

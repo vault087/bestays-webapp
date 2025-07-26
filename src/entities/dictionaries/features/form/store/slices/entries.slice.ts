@@ -2,7 +2,6 @@ import { produce } from "immer";
 import { StateCreator } from "zustand";
 import { DBSerialID, DBTemporarySerialID, generateTemporarySerialId } from "@/entities/common/";
 import { DBDictionaryEntry, MutableEntry } from "@/entities/dictionaries/";
-import { LocalizedText } from "@/entities/localized-text";
 
 export interface EntriesStoreSliceState {
   dbEntries: DBDictionaryEntry[];
@@ -14,7 +13,7 @@ export interface EntriesStoreSliceState {
 
 // Entry Store Actions
 export interface EntriesStoreSliceActions {
-  addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => MutableEntry;
+  addEntry: (entry: DBDictionaryEntry) => MutableEntry;
   updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => void;
   deleteEntry: (dictionaryId: DBSerialID, entryId: DBSerialID) => void;
   deleteEntries: (dictionaryId: DBSerialID) => void;
@@ -47,14 +46,12 @@ export const createEntriesStoreSlice = (
     deletedEntryIds: [],
     temporaryEntryId: generateTemporarySerialId(),
 
-    addEntry: (dictionaryId: DBSerialID, name: LocalizedText) => {
+    addEntry: (entry: DBDictionaryEntry) => {
       const newEntry = {
-        id: -1, // Will be updated in set
-        is_active: true,
-        dictionary_id: dictionaryId,
-        name,
+        ...entry,
         is_new: true,
       };
+      const dictionaryId = entry.dictionary_id;
       set(
         produce((draft: EntriesStoreSlice) => {
           newEntry.id = draft.temporaryEntryId;
