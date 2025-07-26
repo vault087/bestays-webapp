@@ -10,7 +10,7 @@ export async function login(email: string, password: string): Promise<{ user: Us
     password,
   });
 
-  const user = await supabase.auth.getUser();
+  // const user = await supabase.auth.getUser();
   // console.log("login user", user);
   // console.log("login data", data);
   // console.log("login error", error);

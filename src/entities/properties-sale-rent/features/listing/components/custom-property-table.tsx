@@ -37,7 +37,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
       data.map((row) => ({
         id: row.id,
         personal_title: row.personal_title,
-        property_type_id: row.property_type_id,
+        property_type: row.property_type_id,
         area: row.area_id,
         rent_price: row.rent_price,
         sale_price: row.sale_price,
@@ -208,7 +208,7 @@ export const TypeSafeCustomPropertyTable = memo(function TypeSafeCustomPropertyT
       cover_image: property.cover_image || null,
       is_published: property.is_published || null,
       updated_at: property.updated_at || null,
-      // These fields would need to be populated from the original data if filtering is needed
+      // Store the original IDs for filtering and display
       property_type_id: property.property_type,
       area_id: property.area,
     }));

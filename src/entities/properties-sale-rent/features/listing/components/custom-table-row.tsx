@@ -62,9 +62,8 @@ export const CustomTableRow = memo(function CustomTableRow({
         return <span className="text-gray-500"></span>;
       }
 
-      // Find the original ID field
-      const originalIdField = `${fieldKey}_id` as keyof DashboardProperty;
-      const originalId = row[originalIdField] as number | null;
+      // For property_type and area, the field itself contains the ID
+      const originalId = row[fieldKey as keyof DashboardProperty] as number | null;
 
       if (originalId) {
         const entry = entries.find((e) => e.id === originalId);

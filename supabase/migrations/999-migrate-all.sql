@@ -1,4 +1,4 @@
--- Generated: 2025-07-26T14:01:48.491Z
+-- Generated: 2025-07-26T16:41:53.332Z
 
 -- 0_clean_up.sql
 DROP TABLE IF EXISTS bestays_properties;
