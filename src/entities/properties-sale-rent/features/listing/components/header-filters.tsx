@@ -45,6 +45,7 @@ export function BooleanHeaderFilter({ title, column }: BooleanHeaderFilterProps)
       selectedOption={selectedOption}
       options={options}
       selectOption={selectOption}
+      isAddingOption={false}
       placeholder={capitalize("all")}
       className="hover:bg-muted/50 focus:bg-muted h-12 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-all duration-200 ease-in-out"
     />
@@ -104,6 +105,7 @@ export function DictionaryHeaderFilter({
       selectedOption={selectedOption}
       options={options}
       selectOption={selectOption}
+      isAddingOption={false}
       placeholder={capitalize("all")}
       className="hover:bg-muted/50 focus:bg-muted h-12 min-w-0 rounded-sm border-0 bg-transparent text-xs tracking-wide transition-all duration-200 ease-in-out"
     />

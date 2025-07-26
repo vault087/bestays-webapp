@@ -68,7 +68,7 @@ export const CustomFilterRow = memo(function CustomFilterRow({
         >
           {filter &&
             (() => {
-              const displayValue = getFilterDisplayValue(filter);
+              const displayValue = getFilterDisplayValue(filter as { id: string; value: string | boolean | number });
               if (displayValue) {
                 return (
                   <Button

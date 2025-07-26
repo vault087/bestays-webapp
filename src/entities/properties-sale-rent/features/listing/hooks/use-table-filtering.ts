@@ -14,7 +14,7 @@ export function useTableFiltering(
   columnFilters: ColumnFiltersState,
   setColumnFilters: (filters: ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)) => void,
   entries: DBDictionaryEntry[],
-  locale: string
+  locale: string,
 ): {
   getFilterValue: (fieldKey: FilterableFieldKey) => string | boolean | undefined;
   setFilterValue: (fieldKey: FilterableFieldKey, value: string | boolean | undefined) => void;
@@ -23,7 +23,7 @@ export function useTableFiltering(
   getFilterDisplayValue: (filter: { id: string; value: string | boolean | number }) => string;
   applyFiltering: <T extends Record<string, unknown>>(
     data: T[],
-    filterMappings?: Record<string, (item: T, filterValue: unknown) => boolean>
+    filterMappings?: Record<string, (item: T, filterValue: unknown) => boolean>,
   ) => T[];
   activeFilters: Array<{ field: FilterableFieldKey; value: unknown; displayValue: string }>;
   hasFilters: boolean;
@@ -34,7 +34,7 @@ export function useTableFiltering(
       const filter = columnFilters.find((f) => f.id === fieldKey);
       return filter?.value as string | boolean | undefined;
     },
-    [columnFilters]
+    [columnFilters],
   );
 
   // Set filter value for a specific field
@@ -57,7 +57,7 @@ export function useTableFiltering(
         }
       });
     },
-    [setColumnFilters]
+    [setColumnFilters],
   );
 
   // Remove filter for a specific field
@@ -65,7 +65,7 @@ export function useTableFiltering(
     (fieldKey: FilterableFieldKey) => {
       setColumnFilters((prev) => prev.filter((f) => f.id !== fieldKey));
     },
-    [setColumnFilters]
+    [setColumnFilters],
   );
 
   // Clear all filters
@@ -91,14 +91,14 @@ export function useTableFiltering(
 
       return filter.value?.toString() || "";
     },
-    [entries, locale]
+    [entries, locale],
   );
 
   // Apply filtering to data array
   const applyFiltering = useCallback(
     <T extends Record<string, unknown>>(
       data: T[],
-      filterMappings?: Record<string, (item: T, filterValue: unknown) => boolean>
+      filterMappings?: Record<string, (item: T, filterValue: unknown) => boolean>,
     ): T[] => {
       if (columnFilters.length === 0) return data;
 
@@ -131,7 +131,7 @@ export function useTableFiltering(
         });
       });
     },
-    [columnFilters]
+    [columnFilters],
   );
 
   // Get active filters summary
@@ -139,7 +139,7 @@ export function useTableFiltering(
     return columnFilters.map((filter) => ({
       field: filter.id as FilterableFieldKey,
       value: filter.value,
-      displayValue: getFilterDisplayValue(filter),
+      displayValue: getFilterDisplayValue(filter as { id: string; value: string | boolean | number }),
     }));
   }, [columnFilters, getFilterDisplayValue]);
 
@@ -153,4 +153,4 @@ export function useTableFiltering(
     activeFilters,
     hasFilters: columnFilters.length > 0,
   };
-} 
+}

@@ -53,5 +53,15 @@ export const useDictionaryOptions = ({
   const title = getAvailableLocalizedText(dictionary?.name, locale) || dictionary?.code;
   const description = getAvailableLocalizedText(dictionary?.description, locale);
 
-  return { inputId, options, locale, description, dictionary, entries, entryToDropDownOption, title };
+  return {
+    inputId,
+    options,
+    isAddingOption: false,
+    locale,
+    description,
+    dictionary,
+    entries,
+    entryToDropDownOption,
+    title,
+  };
 };

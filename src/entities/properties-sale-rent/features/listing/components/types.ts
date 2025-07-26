@@ -1,5 +1,6 @@
-import { DBImage, DBSerialID } from "@/entities/common";
+import { DBSerialID } from "@/entities/common";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries";
+import { DBImage } from "@/entities/media";
 import { DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
 
 export interface PropertyListingProps {

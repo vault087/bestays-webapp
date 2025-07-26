@@ -1,10 +1,9 @@
-import { getTranslations } from "next-intl/server";
 import BackgroundAnimated from "@/components/background/background-animated";
 import { Link } from "@/modules/i18n";
 import { Button } from "@/modules/shadcn/";
 
 export default async function HomePage() {
-  const t = await getTranslations("Home");
+  // const t = await getTranslations("Home");
 
   return (
     <div className="min-h-screen bg-white">

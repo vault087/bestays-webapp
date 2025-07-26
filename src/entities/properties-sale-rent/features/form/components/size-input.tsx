@@ -108,6 +108,7 @@ export const PropertySizeFieldInput = memo(function PropertySizeFieldInput({
             options={units}
             selectOption={setUnit}
             className="rounded-s-none rounded-e-md"
+            isAddingOption={false}
           />
         </div>
 

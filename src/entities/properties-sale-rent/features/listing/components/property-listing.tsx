@@ -62,7 +62,7 @@ export function PropertyListing({ properties, dictionaries, entries, locale }: P
         sale_price: property.sale_price || null,
         rent_enabled: property.rent_enabled ?? null,
         sale_enabled: property.sale_enabled ?? null,
-        cover_image: property.cover_image ? (property.cover_image as { url?: string }) : null,
+        cover_image: property.cover_image?.url ? (property.cover_image as { url: string }) : null,
         is_published: property.is_published ?? null,
         updated_at: property.updated_at ?? null,
         // Store the original entry IDs for filtering

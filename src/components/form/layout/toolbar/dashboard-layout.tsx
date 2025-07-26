@@ -1,15 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { memo, ReactNode } from "react";
 import { Link, usePathname } from "@/modules/i18n";
-import { Button } from "@/modules/shadcn/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/modules/shadcn/components/ui/navigation-menu";
 import { cn } from "@/modules/shadcn/utils/cn";
 
 export interface DashboardLayoutProps {
@@ -37,8 +29,6 @@ export interface DashboardSidebarProps {
 }
 
 export const DashboardSidebar = memo(function DashboardSidebar({ title, children, className }: DashboardSidebarProps) {
-  const t = useTranslations("Dashboard");
-
   return (
     <div className={cn("flex h-full flex-col", className)}>
       {title && (

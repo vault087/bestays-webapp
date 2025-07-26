@@ -95,7 +95,7 @@ export const PropertyImagesInput = memo(function PropertyImagesInput({ className
       console.error("Failed to save images:", error);
       // TODO: Show error to user
     }
-  }, [mutableImages, refreshImages]);
+  }, [mutableImages, refreshImages, propertyStore]);
 
   // Handle setting cover image in both views
   const setCoverInCompact = useCallback(
