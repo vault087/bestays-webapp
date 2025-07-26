@@ -1,6 +1,6 @@
 {
   "name": "bestays.app",
-  "version": "4.9.1",
+  "version": "1.0",
   "private": true,
   "scripts": {
     "db:link": "supabase link --project-ref iklcoiwhhmzfjsqtwtyn",
