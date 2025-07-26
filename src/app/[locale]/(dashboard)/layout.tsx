@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import ClientAuthGuard from "@/components/auth/client-auth-guard";
 import RootLayout from "@/components/layout/root-layout";
 import { getUser } from "@/entities/users/user.libs";
 
@@ -23,7 +24,9 @@ export default async function DashboardLayout({
 
   return (
     <RootLayout params={params}>
-      <div className="flex min-h-screen flex-col">{children}</div>
+      <ClientAuthGuard>
+        <div className="flex min-h-screen flex-col">{children}</div>
+      </ClientAuthGuard>
     </RootLayout>
   );
 }

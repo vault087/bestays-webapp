@@ -1,12 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { loginAction, type LoginState } from "./action";
 
 const initialState: LoginState = {};
 
 export default function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
+  const router = useRouter();
+
+  // Handle successful login redirect
+  useEffect(() => {
+    if (state?.message === "Login successful! Redirecting...") {
+      router.push("/dashboard");
+    }
+  }, [state?.message, router]);
 
   return (
     <div className="flex min-h-dvh w-screen items-center justify-center bg-zinc-700">
@@ -52,7 +61,15 @@ export default function LoginForm() {
                 )}
               </div>
 
-              {state?.message && <p className="text-center text-xs text-red-400 md:text-left">{state.message}</p>}
+              {state?.message && (
+                <p
+                  className={`text-center text-xs md:text-left ${
+                    state.message === "Login successful! Redirecting..." ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {state.message}
+                </p>
+              )}
 
               <div className="flex justify-center md:justify-end">
                 <button

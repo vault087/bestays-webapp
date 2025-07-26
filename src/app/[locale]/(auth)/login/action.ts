@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { getSupabase } from "@/modules/supabase";
 
 export type LoginState = {
@@ -25,7 +24,7 @@ export async function loginAction(prevState: LoginState, formData: FormData): Pr
     };
   }
 
-  if (!password || password.length < 6) {
+  if (!password || password.length < 3) {
     return {
       errors: {
         password: ["Password must be at least 6 characters"],
@@ -48,13 +47,18 @@ export async function loginAction(prevState: LoginState, formData: FormData): Pr
 
     if (data.user) {
       revalidatePath("/", "layout");
-      redirect("/dashboard");
+      revalidatePath("/dashboard", "layout");
+      // Return success state instead of redirecting
+      return {
+        message: "Login successful! Redirecting...",
+      };
     }
 
     return {
       message: "Login failed. Please try again.",
     };
-  } catch {
+  } catch (error) {
+    console.error("Login error:", error);
     return {
       message: "An unexpected error occurred. Please try again.",
     };

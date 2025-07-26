@@ -2,11 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getSupabase } from "@/modules/supabase";
+import { getSupabaseUncached } from "@/modules/supabase/clients/client.server";
 
 export async function logoutAction(): Promise<never> {
   try {
-    const supabase = await getSupabase();
+    const supabase = await getSupabaseUncached();
     const { error } = await supabase.auth.signOut();
 
     if (error) {
@@ -16,6 +16,12 @@ export async function logoutAction(): Promise<never> {
     // Revalidate all paths to clear any cached user data
     revalidatePath("/", "layout");
     revalidatePath("/dashboard", "layout");
+    revalidatePath("/login", "layout");
+
+    // Clear any server-side session cookies
+    const cookieStore = await import("next/headers").then(({ cookies }) => cookies());
+    cookieStore.delete("sb-access-token");
+    cookieStore.delete("sb-refresh-token");
 
     // Redirect to home page
     redirect("/");
