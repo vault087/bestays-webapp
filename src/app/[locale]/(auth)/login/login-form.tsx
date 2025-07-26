@@ -1,11 +1,12 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { login } from "@/entities/users/libs/auth";
+import { useRouter } from "@/modules/i18n/core/client/navigation";
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -16,7 +17,7 @@ export default function LoginForm() {
     const { user, error } = await login(email, password);
     setError(error?.message ?? null);
     if (user) {
-      redirect("/dashboard");
+      router.push("/dashboard");
     }
   }
 
