@@ -11,7 +11,7 @@ const handleI18nRouting = createMiddleware({
   defaultLocale: DEFAULT_LOCALE,
 });
 
-export default createMiddlewareChain([AuthMiddleware, NextIntlMiddleware, UpdateSessionMiddleware]);
+export default createMiddlewareChain([NextIntlMiddleware, UpdateSessionMiddleware]);
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
@@ -33,7 +33,7 @@ function UpdateSessionMiddleware(middleware: NextMiddleware): NextMiddleware {
   };
 }
 
-function AuthMiddleware(middleware: NextMiddleware): NextMiddleware {
+export function AuthMiddleware(middleware: NextMiddleware): NextMiddleware {
   return async (request: NextRequest, event: NextFetchEvent) => {
     const { pathname } = request.nextUrl;
 

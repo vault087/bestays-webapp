@@ -1915,7 +1915,6 @@ __metadata:
 "@next/swc-darwin-x64@npm:15.3.4":
   version: 15.3.4
   resolution: "@next/swc-darwin-x64@npm:15.3.4"
-  checksum: 10c0/ff58e26cf0c2185530de1c04db5b70b0748e1a53e7185117abe70fd114a3c2b637eec3fdd18e730a4e16e13b0750fd2074a0a3f9f971f54c886f2eae3e2345af
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -4819,7 +4818,6 @@ __metadata:
     "@eslint/eslintrc": "npm:^3.3.1"
     "@hello-pangea/dnd": "npm:^18.0.1"
     "@hookform/resolvers": "npm:^5.1.1"
-    "@next/swc-darwin-x64": "npm:15.3.4"
     "@nkzw/use-relative-time": "npm:^1.2.1"
     "@radix-ui/react-alert-dialog": "npm:^1.1.14"
     "@radix-ui/react-avatar": "npm:^1.1.10"
