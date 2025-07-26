@@ -22,7 +22,6 @@ export default function PropertyListingPageContent({
   const t = useTranslations("Properties");
   const handleAddProperty = async () => {
     const response = await createNewProperty();
-    console.log("response", response);
     if (response.error) {
       console.error("Error adding property:", response.error);
     }

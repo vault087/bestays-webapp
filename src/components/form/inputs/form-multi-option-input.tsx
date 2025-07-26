@@ -24,7 +24,6 @@ export const FormMultiOption = memo(function FormMultiOption({
   addOption,
   variant,
 }: FormMultiOptionState & { variant: FormMultiOptionVariant }) {
-  console.log("addOption", addOption);
   return (
     <>
       {variant === "checkbox" && (

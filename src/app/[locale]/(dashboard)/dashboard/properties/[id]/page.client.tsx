@@ -229,7 +229,6 @@ export const SaveButton = memo(function SaveButton() {
   const handleSave = useCallback(() => {
     startTransition(async () => {
       const property = propertyStore.getState().property;
-      console.log("property", property);
       if (!property) return;
 
       const response = await updatePropertyAction(property.id, property);
@@ -341,7 +340,6 @@ export const DeleteButton = memo(function DeleteButton() {
       startTransition(async () => {
         const property = store.getState().property;
 
-        console.log("property", property);
         if (!property) return;
 
         await updatePropertyAction(property.id, property);
@@ -369,9 +367,7 @@ export const DeleteButton = memo(function DeleteButton() {
             size="sm"
             className=""
             onClick={() => {
-              updateProperty((draft) => {
-                draft.deleted_at = null;
-              });
+              handleDelete(false);
             }}
           >
             Restore
@@ -385,7 +381,13 @@ export const DeleteButton = memo(function DeleteButton() {
         )}
       </div>
 
-      <DeleteConfirmationDialog isOpen={showDeleteDialog} onClose={handleCloseDeleteDialog} onConfirm={handleDelete} />
+      <DeleteConfirmationDialog
+        isOpen={showDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={() => {
+          handleDelete(true);
+        }}
+      />
     </>
   );
 });

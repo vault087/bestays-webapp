@@ -7,7 +7,6 @@ import PropertiesPageClient from "./page.client";
 
 export default async function PropertiesSellRentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  console.log("id", id);
   const [propertyResponse, dbDictionaries, dbEntries] = await Promise.all([
     loadDashboardPropertyDetails(id),
     loadDictionaries(),
@@ -23,7 +22,6 @@ export default async function PropertiesSellRentPage({ params }: { params: Promi
     is_new: false,
   };
 
-  console.log(property);
   return (
     <div>
       <PropertiesPageClient

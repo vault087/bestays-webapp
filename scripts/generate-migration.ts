@@ -17,8 +17,6 @@ function generateMigration(): void {
         return numA - numB;
       });
 
-    console.log(`Merging ${files.length} files:`, files);
-
     let combinedSQL = `-- Generated: ${new Date().toISOString()}\n\n`;
 
     files.forEach((file, index) => {
@@ -39,8 +37,6 @@ function generateMigration(): void {
 
     const outputPath = path.join(OUTPUT_DIR, OUTPUT_FILE);
     fs.writeFileSync(outputPath, combinedSQL, "utf8");
-
-    console.log(`✅ Generated: ${OUTPUT_FILE}`);
   } catch (error) {
     console.error("❌ Error:", (error as Error).message);
     process.exit(1);

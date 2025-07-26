@@ -10,13 +10,12 @@ export default function LoginForm() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log("loginHandler", formData);
+
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const { user, error } = await login(email, password);
     setError(error?.message ?? null);
     if (user) {
-      console.log("redirecting to dashboard with user", user);
       redirect("/dashboard");
     }
   }

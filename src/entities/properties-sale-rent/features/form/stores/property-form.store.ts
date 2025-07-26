@@ -85,12 +85,8 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
         }),
         onRehydrateStorage: () => (state) => {
           if (state) {
-            console.log("hydrated, ", state);
-
             // Check if we need to reset due to property mismatch
             if (state.property.id !== state.freshProperty?.id) {
-              console.log("property id mismatch, updating state");
-
               // Instead of calling reset (which could cause issues),
               // directly update the state
               const newProperty = state.freshProperty;

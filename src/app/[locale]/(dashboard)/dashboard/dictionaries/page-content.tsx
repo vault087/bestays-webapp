@@ -43,7 +43,6 @@ export default function DictionariesPageContent({ dictionaries, entries }: Dicti
     store.getState().addDictionary({ en: `New Dictionary` });
   };
 
-  console.log("DictionariesPageContent rendered");
   return (
     <DictionaryFormStoreProvider store={store}>
       <div className="flex gap-6 p-4">
@@ -76,7 +75,7 @@ const DictionaryCanvas = () => {
   const locale = useLocale();
 
   const handleAddEntry = (dictionaryId: number) => {
-    addEntry(dictionaryId, { en: `New Entry` });
+    addEntry({ name: { en: `New Entry` }, dictionary_id: dictionaryId, is_active: true, id: 0 });
   };
 
   const showCode = true;

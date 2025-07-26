@@ -61,7 +61,6 @@ export function PropertyOptionField({
 
   const locale = usePropertyLocale();
 
-  console.log("re-render");
   return (
     <FormFieldLayout
       title={title}

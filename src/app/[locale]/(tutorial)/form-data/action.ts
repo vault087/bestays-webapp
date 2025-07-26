@@ -1,6 +1,6 @@
 "use server";
 import qs from "qs";
-import { FormState, ItemsWithTransform, ItemsWithTransformSchema } from './types';
+import { FormState, ItemsWithTransform, ItemsWithTransformSchema } from "./types";
 
 export async function updateFormData(prevState: FormState, formData: FormData): Promise<FormState> {
   const raw = new URLSearchParams(formData as unknown as string).toString();
@@ -12,7 +12,6 @@ export async function updateFormData(prevState: FormState, formData: FormData): 
   try {
     verified = items.map((item) => {
       const directParse = ItemsWithTransformSchema.parse(item);
-      // console.log("direct parse worked:", directParse);
       return directParse;
     });
   } catch (error) {

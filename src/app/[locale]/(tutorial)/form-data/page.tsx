@@ -1,14 +1,13 @@
 "use client";
 import { useActionState } from "react";
-import { updateFormData } from './action';
-import { mockedItems } from './mocks';
-import { FormState } from './types';
+import { updateFormData } from "./action";
+import { mockedItems } from "./mocks";
+import { FormState } from "./types";
 
 export default function FormDataPage() {
   const [state, formAction] = useActionState<FormState, FormData>(updateFormData, {
     items: mockedItems,
   });
-  console.log("re-rendering:", state);
   return (
     <div className="mx-auto mt-12 flex max-w-2xl flex-col justify-center gap-4 border-2 border-gray-300 p-4">
       <form action={formAction} className="flex flex-col justify-center gap-4">

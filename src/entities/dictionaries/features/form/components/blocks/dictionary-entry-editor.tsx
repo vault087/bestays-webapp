@@ -129,29 +129,21 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
 
   const handleAddEntry = useCallback(() => {
     const value = newEntryName.trim();
-    console.log("0", value);
     if (!dictionaryId || !value) return;
 
-    console.log("1");
     const insertingEntry: DBDictionaryInsertEntry = {
       dictionary_id: dictionaryId,
       name: { [locale]: newEntryName.trim() },
       is_active: true,
     };
-    console.log("2");
     startTransition(async () => {
       const response = await insertNewEntry(insertingEntry);
-      console.log("3");
       if (response.error) {
-        console.error("Insert option error:", response.error);
-        console.log("3-");
         return;
       }
 
-      console.log("4");
       const newEntry = response.data;
       if (newEntry) {
-        console.log("5");
         addEntry(newEntry);
         setNewEntryName("");
       }
