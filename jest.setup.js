@@ -15,7 +15,7 @@ console.warn = (...args) => {
 };
 
 // Mock Supabase server client
-jest.mock("@/modules/supabase/clients/client.server", () => ({
+jest.mock("@/modules/supabase/clients/server", () => ({
   auth: {
     getSession: jest.fn(),
     getUser: jest.fn(),

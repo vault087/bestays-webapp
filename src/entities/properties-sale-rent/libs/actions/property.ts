@@ -1,23 +1,32 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { DBProperty, DBPropertySchema, PROPERTIES_SALE_RENT_TABLE } from "@/entities/properties-sale-rent";
-import { supabase } from "@/modules/supabase/clients/client";
+import { getSupabase } from "@/modules/supabase/clients/server";
 
 export async function createNewProperty(): Promise<{
   data: DBProperty | null;
   error: string | null;
 }> {
   try {
-    const { data, error } = await supabase.from(PROPERTIES_SALE_RENT_TABLE).insert({}).select("*");
+    const supabase = await getSupabase();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return {
+        data: null,
+        error: authError?.message || "",
+      };
+    }
+    const { data, error } = await supabase
+      .from(PROPERTIES_SALE_RENT_TABLE)
+      .insert({ created_by: user.id }) // Explicitly set created_by
+      .select("*");
 
     if (data && !error) {
-      // Revalidate the properties page
       revalidatePath("/dashboard/properties");
-      // If you have a properties list on other pages, revalidate those too
-      // revalidatePath("/properties");
-
-      // Alternative: Use tags if you've tagged your data fetching
-      // revalidateTag("properties");
     }
 
     return {
@@ -34,6 +43,10 @@ export async function createNewProperty(): Promise<{
   }
 }
 
+// Usage in your component:
+// const { data: { user } } = await supabase.auth.getUser();
+// await createNewProperty(user.id);
+
 export async function updateProperty(
   id: string,
   updates: Partial<DBProperty>,
@@ -42,6 +55,7 @@ export async function updateProperty(
   error: string | null;
 }> {
   try {
+    const supabase = await getSupabase();
     const property = DBPropertySchema.parse(updates);
 
     const { data, error } = await supabase

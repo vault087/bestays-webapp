@@ -1,6 +1,6 @@
 import { MutableDictionary, MutableEntry } from "@/entities/dictionaries/features/form/types/mutable-dictionary.types";
 import { MutableProperty } from "@/entities/properties-sale-rent/features/form/types/mutable-property.types";
-import { supabase } from "@/modules/supabase/clients/client";
+import { getSupabase } from "@/modules/supabase/clients/server";
 
 export interface BatchUpdateParams {
   dictionaries: MutableDictionary[];
@@ -28,6 +28,7 @@ export interface BatchUpdateResult {
 export async function updateDictionariesEntriesPropertiesBatch(params: BatchUpdateParams): Promise<BatchUpdateResult> {
   try {
     console.log("sending data", params);
+    const supabase = await getSupabase();
 
     const { data, error } = await supabase.rpc("update_dictionaries_entries_properties_batch", {
       dictionaries: params.dictionaries,
@@ -81,6 +82,7 @@ export async function updatePropertiesWithImagesBatch(
   params: BatchUpdateParamsLegacy,
 ): Promise<BatchUpdateResultLegacy> {
   try {
+    const supabase = await getSupabase();
     const { data, error } = await supabase.rpc("update_properties_with_images_batch", {
       p_domain_id: params.domainId,
       properties: params.properties,

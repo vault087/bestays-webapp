@@ -1,4 +1,4 @@
-import { getSupabase } from "@/modules/supabase/clients/client.server";
+import { getSupabase } from "@/modules/supabase/clients/server";
 import { User } from "./user.types";
 
 // Core auth functions - predictable return types

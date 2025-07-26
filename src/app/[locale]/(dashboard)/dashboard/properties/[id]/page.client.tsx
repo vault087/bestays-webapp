@@ -66,7 +66,7 @@ export default function PropertiesPageClient({
 
   const handleBackNavigation = useCallback(() => {
     // Check if we can go back in history (user came from another page)
-    if (window.history.length > 1) {
+    if (window.history.length > 1 && window.history.state?.from === "/dashboard/properties") {
       router.back();
     } else {
       // Direct URL access - go to properties list

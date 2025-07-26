@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getSupabaseUncached } from "@/modules/supabase/clients/client.server";
+import { getSupabaseUncached } from "@/modules/supabase/clients/server";
 
 export async function logoutAction(): Promise<never> {
   try {

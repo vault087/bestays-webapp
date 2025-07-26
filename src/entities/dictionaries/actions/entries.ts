@@ -1,7 +1,7 @@
 "use server";
 import { z } from "zod";
 import { DBDictionaryEntry, DBDictionaryEntrySchema, DICTIONARY_ENTRIES_TABLE } from "@/entities/dictionaries";
-import { supabase } from "@/modules/supabase/clients/client";
+import { getSupabase } from "@/modules/supabase/clients/server";
 
 export type DBEntryResponse = Promise<{
   data: DBDictionaryEntry | null;
@@ -17,7 +17,7 @@ export type DBDictionaryInsertEntry = z.infer<typeof DBDictionaryInsertEntrySche
 export async function insertNewEntry(entry: DBDictionaryInsertEntry): DBEntryResponse {
   try {
     const checkedValue = DBDictionaryInsertEntrySchema.parse(entry);
-
+    const supabase = await getSupabase();
     const { data, error } = await supabase.from(DICTIONARY_ENTRIES_TABLE).insert(checkedValue);
     return {
       data: data,

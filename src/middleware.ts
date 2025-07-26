@@ -3,7 +3,7 @@ import { NextMiddleware } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { createMiddlewareChain } from "./libs";
 import { LOCALES, DEFAULT_LOCALE } from "./modules/i18n/types/locale-types";
-import { getSupabase } from "./modules/supabase/clients/client.server";
+import { getSupabase } from "./modules/supabase/clients/server";
 import { updateSession } from "./modules/supabase/middleware/updateSession";
 
 const handleI18nRouting = createMiddleware({

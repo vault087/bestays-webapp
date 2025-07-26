@@ -1,12 +1,13 @@
 "use server";
 import { DICTIONARY_ENTRIES_TABLE } from "@/entities/dictionaries/types/dictionary.types";
-import { supabase } from "@/modules/supabase/clients/client";
+import { getSupabase } from "@/modules/supabase/clients/server";
 import { DBDictionaryInsertEntry, DBEntryResponse, DBDictionaryInsertEntrySchema } from "./entries-action.types";
 
 export async function insertNewEntry(entry: DBDictionaryInsertEntry): DBEntryResponse {
   try {
     const checkedValue = DBDictionaryInsertEntrySchema.parse(entry);
 
+    const supabase = await getSupabase();
     const { data, error } = await supabase.from(DICTIONARY_ENTRIES_TABLE).insert(checkedValue).select("*");
     return {
       data: data?.[0] ?? null,
