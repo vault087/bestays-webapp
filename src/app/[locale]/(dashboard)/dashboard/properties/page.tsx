@@ -1,4 +1,6 @@
-import { loadDictionaries, loadEntries } from "@/entities/dictionaries/libs";
+import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
+import { loadDictionaries } from "@/entities/dictionaries/libs/dictionaries";
+import { loadEntries } from "@/entities/dictionaries/libs/entries";
 import { PropertyListing } from "@/entities/properties-sale-rent/features/listing";
 import { loadDashboardPropertyListings, DashboardProperty } from "@/entities/properties-sale-rent/libs/load-properties";
 
@@ -31,6 +33,7 @@ export default async function PropertiesListingPage({ params }: { params: Promis
 
   return (
     <div className="flex h-full w-full flex-col">
+      <DashboardNavBarComponent />
       <div className="flex w-full flex-col gap-4 pt-4">
         <div className="flex w-full flex-row items-center justify-between px-6">
           <h1 className="text-xl font-bold">Property Listings</h1>

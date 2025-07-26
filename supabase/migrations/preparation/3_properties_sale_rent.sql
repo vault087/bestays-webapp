@@ -2,14 +2,14 @@ CREATE TABLE bestays_properties (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     about JSONB,
 
-    ownership_type INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
-    property_type INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
-    area INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    ownership_type INT REFERENCES bestays_dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    property_type INT REFERENCES bestays_dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    area INT REFERENCES bestays_dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
     location_strengths INT[],
     highlights INT[],
     size JSONB,
 
-    divisible_sale INT REFERENCES dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    divisible_sale INT REFERENCES bestays_dictionary_entries(id) ON DELETE SET NULL ON UPDATE CASCADE,
     land_features INT[],
     rooms JSONB,
     nearby_attractions INT[],
@@ -43,18 +43,22 @@ ALTER TABLE bestays_properties ENABLE ROW LEVEL SECURITY;
 
 
 -- Anyone can read published listings
-CREATE POLICY "Public read published"
+DROP POLICY IF EXISTS "public_read" ON bestays_properties;
+CREATE POLICY "public_read" 
 ON bestays_properties
 FOR SELECT
-USING (is_published = true AND deleted_at IS NULL);
+TO authenticated
+USING (true);
+
+-- USING (is_published = true AND deleted_at IS NULL);
 
 -- Authenticated write (no ownership check)
-CREATE POLICY "Authenticated write"
+DROP POLICY IF EXISTS "authenticated_write" ON bestays_properties;
+CREATE POLICY "authenticated_write" 
 ON bestays_properties
 FOR ALL
 TO authenticated
-USING (true)
-WITH CHECK (true);
+USING (true);
 
 -- -- Owners can modify their own properties
 -- CREATE POLICY "Owner write"

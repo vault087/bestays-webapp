@@ -15,7 +15,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/modules/shadcn/components";
-import Comp521 from "@/modules/shadcn/components/comp-521";
 import AvatarMenu from "./avatar-menu";
 
 const Logo = () => {
@@ -45,8 +44,8 @@ export default function DashboardNavBar() {
   };
   // Navigation links array to be used in both desktop and mobile menus
   const navigationLinks = [
-    { href: "/dashboard/properties", label: t("Listings") },
-    { href: "/dashboard/dictionaries", label: t("Settings") },
+    { href: "/dashboard/properties", label: t("Properties") },
+    // { href: "/dashboard/dictionaries", label: t("Settings") },
   ];
   return (
     <header className="border-b px-4 md:px-6">
@@ -81,9 +80,6 @@ export default function DashboardNavBar() {
           </div>
         </div>
 
-        <div className="min-w-sm pt-4">
-          <Comp521 />
-        </div>
         {/* Right side */}
         <div className="flex items-center justify-end space-x-3">
           <LocaleSwitcher />
