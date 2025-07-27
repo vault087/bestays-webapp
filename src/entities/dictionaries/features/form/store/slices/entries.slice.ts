@@ -91,7 +91,6 @@ export const createEntriesStoreSlice = (
         }),
       );
     },
-
     deleteEntries: (dictionaryId: DBSerialID) => {
       set(
         produce((draft: EntriesStoreSlice) => {

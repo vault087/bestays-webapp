@@ -21,6 +21,8 @@ export type DictionaryFormStore = DictionaryFormStoreState &
 export function createDictionaryFormStore(
   dictionaries: DBDictionary[],
   entries: DBDictionaryEntry[],
+  name: string = "dictionary-form-store",
+  isPersistant: boolean = true,
 ): StoreApi<DictionaryFormStore> {
   const dictionarySliceCreator = createDictionariesStoreSlice(dictionaries, entries);
 
@@ -33,16 +35,20 @@ export function createDictionaryFormStore(
         };
       },
       {
-        name: "dictionary-form-store",
-
-        partialize: (state) => ({
-          dbDictionaries: state.dbDictionaries,
-          dbEntries: state.dbEntries,
-          dictionaries: state.dictionaries,
-          dictionaryIds: state.dictionaryIds,
-          entriesIds: state.entriesIds,
-          entries: state.entries,
-        }),
+        name: name,
+        partialize: (state) => {
+          if (isPersistant) {
+            return {
+              dbDictionaries: state.dbDictionaries,
+              dbEntries: state.dbEntries,
+              dictionaries: state.dictionaries,
+              dictionaryIds: state.dictionaryIds,
+              entriesIds: state.entriesIds,
+            };
+          } else {
+            return state;
+          }
+        },
         onRehydrateStorage: () => (state) => {
           if (state) {
             state.hydrated = true;
