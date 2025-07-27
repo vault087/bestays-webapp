@@ -132,7 +132,7 @@ export const CustomPropertyTable = memo(function CustomPropertyTable({
   }, [filteredData, sorting]);
 
   return (
-    <div className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+    <div className="w-full overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
       {/* Filter Row */}
 
       {/* Header */}
