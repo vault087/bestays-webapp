@@ -33,8 +33,6 @@ import {
   usePropertyTextInput,
   PROPERTY_PERSONAL_NOTES_MAX,
   usePropertyFormStoreContext,
-  PropertyTitleInput,
-  // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/form/hooks/use-bool-field";
@@ -63,20 +61,24 @@ export default function PropertiesPageClient({
   entries: DBDictionaryEntry[];
 }) {
   const router = useRouter();
+  const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
+  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", property), [property]);
+  const isMobile = useIsMobile();
 
-  const handleBackNavigation = useCallback(() => {
+  const handleBackNavigation = useCallback(async () => {
     // Check if we can go back in history (user came from another page)
+    const property = propertyStore.getState().property;
+    if (!property) return;
+
+    await updatePropertyAction(property.id, property);
+
     if (window.history.length > 1 && window.history.state?.from === "/dashboard/properties") {
       router.back();
     } else {
       // Direct URL access - go to properties list
       router.push("/dashboard/properties");
     }
-  }, [router]);
-
-  const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
-  const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", property), [property]);
-  const isMobile = useIsMobile();
+  }, [router, propertyStore]);
 
   return (
     <div className="flex h-full w-full">
@@ -234,7 +236,7 @@ export const PublishedToggle = memo(function PublishedInput() {
   const t = useTranslations("Properties.fields.published");
 
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="flex flex-row items-center justify-between gap-2">
       <Label
         htmlFor={inputId}
         className={cn("text-sm font-medium", value && "text-primary", !value && "text-muted-foreground")}
