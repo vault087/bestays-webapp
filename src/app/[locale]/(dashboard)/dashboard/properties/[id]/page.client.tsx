@@ -3,6 +3,7 @@
 import { ArrowLeftIcon, CircleAlertIcon, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useMemo, useState, useCallback, useId, useTransition } from "react";
+import { FormFieldLayout } from "@/components/form/layout";
 import AvatarMenu from "@/components/nav-bars/avatar-menu";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import { createDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
@@ -32,13 +33,14 @@ import {
   usePropertyTextInput,
   PROPERTY_PERSONAL_NOTES_MAX,
   usePropertyFormStoreContext,
+  PropertyTitleInput,
   // PropertyPriceInputGroup,
 } from "@/entities/properties-sale-rent/";
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/form/hooks/use-bool-field";
 import { updateProperty as updatePropertyAction } from "@/entities/properties-sale-rent/libs/actions/property";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
-import { cn, Button, Input } from "@/modules/shadcn";
+import { useIsMobile, cn, Button, Input } from "@/modules/shadcn";
 import {
   Dialog,
   DialogDescription,
@@ -74,6 +76,7 @@ export default function PropertiesPageClient({
 
   const dictionaryStore = useMemo(() => createDictionaryFormStore(dictionaries, entries), [dictionaries, entries]);
   const propertyStore = useMemo(() => createPropertyFormStore("properties-sell-rent", property), [property]);
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex h-full w-full">
@@ -81,33 +84,57 @@ export default function PropertiesPageClient({
         <PropertyFormStoreProvider store={propertyStore}>
           <PropertyFormStoreHydrated fallback={<div>Loading...</div>}>
             <div className="flex w-full flex-col gap-4 pt-4">
-              <div className="flex w-full flex-row items-center justify-between px-6">
-                <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" onClick={handleBackNavigation}>
-                    <ArrowLeftIcon className="!h-6 !w-6" />
-                  </Button>
-                  {/* <h1 className="text-xl font-bold">Listing editor</h1> */}
-                  <div className="shrink-0">
+              {/* Top Bar */}
+              <div className="flex h-20 w-full flex-row items-center justify-between gap-4 px-6">
+                {/* Left Side */}
+                <div className="flex flex-row justify-start space-x-2">
+                  {/* Back Button */}
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" onClick={handleBackNavigation}>
+                      <ArrowLeftIcon className="!h-6 !w-6" />
+                    </Button>
+                  </div>
+                  {/* Text Input */}
+                  {/* {!isMobile && ( */}
+                  <div className="flex justify-start">
                     <TitleInput />
                   </div>
+                  {/* )} */}
                 </div>
 
-                <div className="flex items-center gap-2"></div>
-
-                <div className="min-w-sm pt-4">{/* <Comp439 /> */}</div>
-
-                <div className="flex items-center justify-end space-x-3">
-                  <div className="flex pr-4">
-                    <PublishedToggle />
+                {isMobile && (
+                  <div className={cn("flex flex-row justify-center")}>
+                    <div className="flex flex-row space-x-6">
+                      <SaveButton />
+                    </div>
+                    <AvatarMenu />
                   </div>
-                  <div className="flex flex-row space-x-6">
-                    <SaveButton />
+                )}
+
+                {!isMobile && (
+                  <div className={cn("flex flex-row justify-center", isMobile && "contents")}>
+                    {/* Middle Side */}
+                    <div className="flex items-center justify-center space-x-3">
+                      <div className="flex pr-4">
+                        <PublishedToggle />
+                      </div>
+                      <div className="flex flex-row space-x-6">
+                        <SaveButton />
+                      </div>
+                    </div>
+
+                    {/* Right Side */}
+                    <AvatarMenu />
                   </div>
-                  <AvatarMenu />
-                </div>
+                )}
               </div>
 
-              <div className="flex flex-col overflow-auto">
+              <div className="flex flex-col overflow-auto px-5">
+                {isMobile && (
+                  <FormFieldLayout config={{ focus_ring: true, isPrivate: true }}>
+                    <PublishedToggle />
+                  </FormFieldLayout>
+                )}
                 <PropertyListCanvas />
                 <div className="flex flex-row items-center justify-center space-x-6 py-4">
                   <DeleteButton onRedirect={handleBackNavigation} />
@@ -123,7 +150,7 @@ export default function PropertiesPageClient({
 
 const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { className?: string }) {
   return (
-    <div className={cn("bg-background w-full px-5 pt-2", className)}>
+    <div className={cn("bg-background w-full pt-2", className)}>
       {/* Editing Area */}
       {/* <div className="w-full"> */}
       {/* Fields Container */}
