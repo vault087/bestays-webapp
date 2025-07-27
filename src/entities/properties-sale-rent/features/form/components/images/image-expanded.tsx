@@ -34,8 +34,29 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
 }) {
   const t = useTranslations("Properties.fields.images");
   const title = t("title");
+
+  // Auto-save on dialog close if there are unsaved changes
+  const hasUnsavedChanges = mutableImages.some((img) => img.is_new);
+
+  const handleOpenChange = useCallback(
+    async (open: boolean) => {
+      if (!open && hasUnsavedChanges) {
+        // Auto-save before closing
+        try {
+          await onSave();
+        } catch (error) {
+          console.error("Auto-save failed:", error);
+          // Don't close dialog if save fails
+          return;
+        }
+      }
+      onOpenChange(open);
+    },
+    [hasUnsavedChanges, onSave, onOpenChange],
+  );
+
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" onClick={() => {}}>
           <Expand size={16} className="text-muted-foreground/80" />
@@ -50,7 +71,7 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
           onSave={onSave}
           maxImages={maxImages}
           setCover={setCover}
-          onClose={() => onOpenChange(false)}
+          onClose={() => handleOpenChange(false)}
           shouldAutoSelectFile={shouldAutoSelectFile}
           onAutoSelectFileUsed={onAutoSelectFileUsed}
         />
