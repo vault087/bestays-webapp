@@ -13,7 +13,7 @@ export interface EntriesStoreSliceState {
 
 // Entry Store Actions
 export interface EntriesStoreSliceActions {
-  addEntry: (entry: DBDictionaryEntry) => MutableEntry;
+  addEntry: (entry: DBDictionaryEntry) => void;
   updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => void;
   deleteEntry: (dictionaryId: DBSerialID, entryId: DBSerialID) => void;
   deleteEntries: (dictionaryId: DBSerialID) => void;
@@ -36,7 +36,7 @@ export const createEntriesStoreSlice = (
       entriesIds[dictionaryId] = [];
     }
     entriesIds[dictionaryId].push(entry.id);
-    convertedEntries[dictionaryId][entry.id] = { ...entry, is_new: false };
+    convertedEntries[dictionaryId][entry.id] = entry;
   });
 
   return (set) => ({
@@ -47,15 +47,9 @@ export const createEntriesStoreSlice = (
     temporaryEntryId: generateTemporarySerialId(),
 
     addEntry: (entry: DBDictionaryEntry) => {
-      const newEntry = {
-        ...entry,
-        is_new: true,
-      };
       const dictionaryId = entry.dictionary_id;
       set(
         produce((draft: EntriesStoreSlice) => {
-          newEntry.id = draft.temporaryEntryId;
-
           if (!draft.entries[dictionaryId]) {
             draft.entries[dictionaryId] = {};
           }
@@ -63,13 +57,11 @@ export const createEntriesStoreSlice = (
           if (!draft.entriesIds[dictionaryId]) {
             draft.entriesIds[dictionaryId] = [];
           }
-          draft.entriesIds[dictionaryId].push(newEntry.id);
-          draft.entries[dictionaryId][newEntry.id] = newEntry;
+          draft.entriesIds[dictionaryId].push(entry.id);
+          draft.entries[dictionaryId][entry.id] = entry;
           draft.temporaryEntryId--;
         }),
       );
-
-      return newEntry;
     },
 
     updateEntry: (dictionaryId: DBSerialID, entryId: DBSerialID, updater: (draft: MutableEntry) => void) => {
@@ -91,9 +83,7 @@ export const createEntriesStoreSlice = (
           const entry = draft.entries[dictionaryId][entryId];
           if (!entry) return;
 
-          if (!entry.is_new) {
-            draft.deletedEntryIds.push(entryId);
-          }
+          draft.deletedEntryIds.push(entryId);
 
           delete draft.entries[dictionaryId][entryId];
           // Remove entry id from entriesIds
@@ -108,9 +98,7 @@ export const createEntriesStoreSlice = (
           if (!draft.entries[dictionaryId]) return;
 
           Object.values(draft.entries[dictionaryId]).forEach((entry) => {
-            if (!entry.is_new) {
-              draft.deletedEntryIds.push(entry.id);
-            }
+            draft.deletedEntryIds.push(entry.id);
           });
 
           delete draft.entries[dictionaryId];

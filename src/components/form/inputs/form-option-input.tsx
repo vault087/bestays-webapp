@@ -81,6 +81,19 @@ export const FormOptionSelect = memo(function FormOptionInput({
 
   const isAddButtonEnabled = inputValue.trim().length > 1 && !isExactMatching && !isAddingOption;
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter" && isAddButtonEnabled) {
+        e.preventDefault();
+        setInputValue("");
+        addOption?.onClick(inputValue);
+        setOpen(false);
+        setFocused(false);
+      }
+    },
+    [addOption, inputValue, setFocused, isAddButtonEnabled],
+  );
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -103,6 +116,7 @@ export const FormOptionSelect = memo(function FormOptionInput({
             placeholder={t("option.find_or_enter_value", { value: addOption?.label || "" })}
             ref={inputRef}
             onValueChange={setInputValue}
+            onKeyDown={handleKeyDown}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
           />

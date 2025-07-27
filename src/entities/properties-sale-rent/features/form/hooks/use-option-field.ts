@@ -41,6 +41,8 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
   // Set value
   const setValue = useCallback(
     (value: DBSerialID) => {
+      console.log("addinng new value:", value);
+
       setCurrentValue(value);
       updateProperty((draft) => {
         draft[field] = value;
@@ -70,15 +72,13 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
 
         const newEntry = response.data;
         if (newEntry) {
+          console.log("addinng new netry:", newEntry);
           addEntry(newEntry);
-          setCurrentValue(newEntry.id);
-          updateProperty((draft) => {
-            draft[field] = newEntry.id;
-          });
+          setValue(newEntry.id);
         }
       });
     },
-    [dictionary?.id, locale, updateProperty, field, addEntry],
+    [dictionary?.id, locale, setValue, addEntry],
   );
 
   return {

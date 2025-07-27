@@ -14,8 +14,6 @@ export const MutableEntrySchema = DBDictionaryEntrySchema.omit({
   created_by: true,
   created_at: true,
   updated_at: true,
-}).extend({
-  is_new: z.boolean().default(false),
 });
 
 export type MutableDictionary = z.infer<typeof MutableDictionarySchema>;

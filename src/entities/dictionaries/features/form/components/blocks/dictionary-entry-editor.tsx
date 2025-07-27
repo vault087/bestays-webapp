@@ -150,18 +150,9 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
     });
   }, [dictionaryId, locale, addEntry, newEntryName]);
 
-  const handleDeleteEntry = useCallback(
-    (entry: MutableEntry) => {
-      if (entry.is_new) {
-        // For new entries, delete immediately
-        deleteEntry(dictionary.id, entry.id);
-      } else {
-        // For existing entries, show confirmation dialog
-        setDeleteDialogEntry(entry);
-      }
-    },
-    [dictionary.id, deleteEntry],
-  );
+  const handleDeleteEntry = useCallback((entry: MutableEntry) => {
+    setDeleteDialogEntry(entry);
+  }, []);
 
   const handleConfirmDelete = useCallback(() => {
     if (deleteDialogEntry) {
