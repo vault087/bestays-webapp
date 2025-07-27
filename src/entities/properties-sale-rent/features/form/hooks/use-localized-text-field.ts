@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useId } from "react";
+import { useCallback, useEffect, useId } from "react";
 import { LocalizedText } from "@/entities/localized-text";
 import {
   usePropertyFormStaticStore,
@@ -27,14 +27,20 @@ export function usePropertyLocalizedTextInput(
   characterCount: number;
   error?: string;
 } {
-  const { property } = usePropertyFormStaticStore();
   const { updateProperty } = usePropertyFormStoreActions();
   const locale = usePropertyLocale();
+  const { property } = usePropertyFormStaticStore();
+
   const initialValue = property[field] as LocalizedText | null | undefined;
   const { value, setValue, characterCount } = useCharacterLimit({
     maxLength,
     initialValue: initialValue?.[locale] || "",
   });
+
+  useEffect(() => {
+    setValue(initialValue?.[locale] || "");
+  }, [initialValue, locale, setValue]);
+
   const inputId = useId();
 
   // Handle change
