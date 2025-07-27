@@ -139,6 +139,7 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
     startTransition(async () => {
       const response = await insertNewEntry(insertingEntry);
       if (response.error) {
+        console.error("Insert option error:", response.error);
         return;
       }
 

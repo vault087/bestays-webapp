@@ -81,7 +81,7 @@ export const useMultiOptionField = ({ field }: { field: DBPropertyMultiCodeField
       if (!value || !dictionary?.id) return;
       const insertingEntry: DBDictionaryInsertEntry = {
         dictionary_id: dictionary.id,
-        name: { [locale]: value },
+        name: { [locale]: value.trim() },
         is_active: true,
       };
       startTransition(async () => {
