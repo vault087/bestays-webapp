@@ -19,6 +19,7 @@ export interface PropertyFormStoreState extends ImageStoreSliceState {
   property: MutableProperty;
   hydrated: boolean;
   resetKey: string;
+  hasChanged: boolean;
 }
 
 // MutableDictionary Store Actions
@@ -44,6 +45,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
         freshProperty: property,
         property: convertToMutableProperty(property),
         hydrated: false,
+        hasChanged: false,
         resetKey: generateUUID(),
         ...imageSliceCreator(set, get, api),
 
@@ -51,6 +53,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
           set(
             produce((state: PropertyFormStore) => {
               updater(state.property);
+              state.hasChanged = checkPropertiesChanged(state.initialProperty, state.property);
             }),
           ),
 
@@ -61,6 +64,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
               state.addDBImages(images);
               state.property.images = images;
               state.property.cover_image = images.length > 0 ? images[0] : null;
+              state.hasChanged = checkPropertiesChanged(state.initialProperty, state.property);
             }),
           ),
         reset: (property?: DBProperty) =>
@@ -73,6 +77,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
               property: convertToMutableProperty(newProperty),
               hydrated: state.hydrated,
               resetKey: generateUUID(), // Force component re-render
+              hasChanged: false,
             };
           }),
       }),
@@ -80,6 +85,7 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
         name: `property-store-${store_id}`,
         partialize: (state) => ({
           initialProperty: state.initialProperty,
+          hasChanged: state.hasChanged,
           property: state.property,
           resetKey: state.resetKey,
         }),
@@ -87,8 +93,6 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
           if (state) {
             // Check if we need to reset due to property mismatch
             if (state.property.id !== state.freshProperty?.id) {
-              // Instead of calling reset (which could cause issues),
-              // directly update the state
               const newProperty = state.freshProperty;
 
               Object.assign(state, {
@@ -106,4 +110,30 @@ export function createPropertyFormStore(store_id: string, property?: DBProperty)
       },
     ),
   );
+}
+
+export function checkPropertiesChanged(initial: DBProperty | undefined, current: MutableProperty): boolean {
+  if (!initial) return true;
+
+  const initialComparable = { ...initial };
+  const currentComparable = { ...current };
+
+  return shallowDiff(initialComparable, currentComparable);
+}
+
+function shallowDiff(obj1: Record<string, unknown>, obj2: Record<string, unknown>): boolean {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) {
+    return true;
+  }
+
+  for (const key of keys1) {
+    if (obj1[key] !== obj2[key]) {
+      return true;
+    }
+  }
+
+  return false;
 }

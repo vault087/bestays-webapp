@@ -1,21 +1,23 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { loginAction, type LoginState } from "./action";
 
 const initialState: LoginState = {};
 
 export default function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   // Handle successful login redirect
   useEffect(() => {
     if (state?.message === "Login successful! Redirecting...") {
+      setIsLoggedIn(true);
       router.push("/dashboard");
     }
-  }, [state?.message, router]);
+  }, [state?.message, router, setIsLoggedIn]);
 
   return (
     <div className="flex min-h-dvh w-screen items-center justify-center bg-zinc-700">
@@ -74,7 +76,7 @@ export default function LoginForm() {
               <div className="flex justify-center md:justify-end">
                 <button
                   type="submit"
-                  disabled={pending}
+                  disabled={pending || isLoggedIn}
                   className="transform rounded-md bg-lime-500 px-5 py-3 text-xs text-zinc-800 duration-500 select-none hover:bg-lime-700 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {pending ? "Signing in..." : "Sign In"}

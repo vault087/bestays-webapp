@@ -255,6 +255,7 @@ export const PublishedToggle = memo(function PublishedInput() {
 
 export const SaveButton = memo(function SaveButton() {
   const [isPending, startTransition] = useTransition();
+  const hasChanged = usePropertyFormStore((state) => state.hasChanged);
   const t = useTranslations("Common");
 
   const propertyStore = usePropertyFormStoreContext();
@@ -267,13 +268,16 @@ export const SaveButton = memo(function SaveButton() {
       if (!property) return;
 
       const response = await updatePropertyAction(property.id, property);
+      if (response.data) {
+        propertyStore.getState().reset(response.data);
+      }
       setError(response.error);
     });
   }, [propertyStore, startTransition]);
 
   return (
     <div className="relative">
-      <Button size="sm" onClick={handleSave} disabled={isPending}>
+      <Button size="sm" onClick={handleSave} disabled={isPending || !hasChanged}>
         {isPending ? t("saving") : t("save")}
       </Button>
 
