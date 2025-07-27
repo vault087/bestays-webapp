@@ -68,6 +68,20 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
     }
   }, [addOption]);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter" && addValueText.trim().length >= 2) {
+        e.preventDefault();
+        addOption?.onClick(addValueText);
+        setAddValueText("");
+        if (addOptionRef.current) {
+          addOptionRef.current.value = "";
+        }
+      }
+    },
+    [addOption, addValueText],
+  );
+
   return (
     <div className="grid grid-cols-2 gap-2">
       {options.map((option: FormOption) => (
@@ -110,6 +124,7 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
             id={`${inputId}-add-option`}
             ref={addOptionRef}
             onChange={(e) => setAddValueText(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Add New"
             className="roudned-none border-0 shadow-none"
           />
@@ -122,7 +137,14 @@ function FormMultiOptionCheckbox({ inputId, selectedOptions, options, toggleOpti
   );
 }
 
-function FormMultiOptionSelect({ inputId, title, selectedOptions, options, selectOptions }: FormMultiOptionState) {
+function FormMultiOptionSelect({
+  inputId,
+  title,
+  selectedOptions,
+  options,
+  selectOptions,
+  addOption,
+}: FormMultiOptionState) {
   const convertedOptions: Option[] = useMemo(() => {
     return options.map((option) => ({
       value: String(option.key),
@@ -163,6 +185,15 @@ function FormMultiOptionSelect({ inputId, title, selectedOptions, options, selec
     [selectOptions],
   );
 
+  const handleCreateOption = useCallback(
+    (value: string) => {
+      if (addOption && value.trim().length >= 2) {
+        addOption.onClick(value);
+      }
+    },
+    [addOption],
+  );
+
   return (
     <MultipleSelector
       inputProps={{
@@ -179,6 +210,13 @@ function FormMultiOptionSelect({ inputId, title, selectedOptions, options, selec
       hideClearAllButton
       hidePlaceholderWhenSelected
       emptyIndicator={<p className="text-center text-sm">No results found</p>}
+      creatable={!!addOption}
+      onSearchSync={(search) => {
+        if (search.trim().length >= 2) {
+          handleCreateOption(search);
+        }
+        return [];
+      }}
     />
   );
 }
