@@ -70,7 +70,8 @@ export function PropertyOptionField({
       config={{ focus_ring: true }}
     >
       <FormFieldLayoutToolbar>
-        <FieldDropDownMenu field={field} />
+        <div />
+        {/* <FieldDropDownMenu field={field} /> */}
       </FormFieldLayoutToolbar>
 
       <FormOptionInput

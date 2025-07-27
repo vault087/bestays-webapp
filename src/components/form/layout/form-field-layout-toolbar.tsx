@@ -15,8 +15,8 @@ export const FormFieldLayoutToolbar = memo(function FormFieldLayoutToolbar({
         className,
       )}
     >
-      {children && null}
-      {/* {children} */}
+      {/* {children && null} */}
+      {children}
     </div>
   );
 });
