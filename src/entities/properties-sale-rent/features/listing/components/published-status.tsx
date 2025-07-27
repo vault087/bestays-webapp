@@ -16,7 +16,7 @@ export function PublishedStatus({ is_published }: PublishedStatusProps) {
         is_published ? "bg-green-500 text-white hover:bg-green-600" : "bg-yellow-500 text-white hover:bg-yellow-600",
       )}
     >
-      {is_published ? "Published" : "Pending"}
+      {is_published ? "Approved" : "Draft"}
     </Badge>
   );
 }

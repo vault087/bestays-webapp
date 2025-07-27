@@ -115,7 +115,7 @@ export const CustomTableRow = memo(function CustomTableRow({
             isPublished ? "text-green-800" : "text-gray-800",
           )}
         >
-          {isPublished ? "Published" : "Draft"}
+          {isPublished ? "Approved" : "Draft"}
         </span>
       </div>
     );

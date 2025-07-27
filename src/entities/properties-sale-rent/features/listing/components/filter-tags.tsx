@@ -69,7 +69,7 @@ export function FilterTags({
         label = "For sale";
         displayValue = filter.value ? capitalize("yes") : capitalize("no");
       } else if (filter.id === "is_published") {
-        label = "Published";
+        label = "Approved";
         displayValue = filter.value ? capitalize("yes") : capitalize("no");
       }
 
