@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
-import DashboardNavBarComponent from "@/components/dashboard-nav-bar/dashboard-nav-bar";
+import DashboardNavBarComponent from "@/components/nav-bars/dashboard-navbar";
 import { DBDictionary, DBDictionaryEntry } from "@/entities/dictionaries/types/dictionary.types";
 import { PropertyListing } from "@/entities/properties-sale-rent/features/listing";
 import { createNewProperty } from "@/entities/properties-sale-rent/libs/actions/property";

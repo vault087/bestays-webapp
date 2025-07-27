@@ -3,8 +3,7 @@
 import { ArrowLeftIcon, CircleAlertIcon, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useMemo, useState, useCallback, useId, useTransition } from "react";
-import AvatarMenu from "@/components/dashboard-nav-bar/avatar-menu";
-import { ThemeSwitcher } from "@/components/theme/components/theme-switcher";
+import AvatarMenu from "@/components/nav-bars/avatar-menu";
 import { DebugCard } from "@/components/ui/debug-json-card";
 import { createDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { DictionaryFormStoreProvider } from "@/entities/dictionaries/features/form/store/dictionary-form.store.provider";
@@ -38,7 +37,6 @@ import {
 import { PropertyImagesInput } from "@/entities/properties-sale-rent/features/form/components/images-input";
 import { usePropertyBoolInput } from "@/entities/properties-sale-rent/features/form/hooks/use-bool-field";
 import { updateProperty as updatePropertyAction } from "@/entities/properties-sale-rent/libs/actions/property";
-import LocaleSwitcher from "@/modules/i18n/components/locale-switcher";
 import { useRouter } from "@/modules/i18n/core/client/navigation";
 import { cn, Button, Input } from "@/modules/shadcn";
 import {
@@ -105,8 +103,6 @@ export default function PropertiesPageClient({
                   <div className="flex flex-row space-x-6">
                     <SaveButton />
                   </div>
-                  <LocaleSwitcher />
-                  <ThemeSwitcher />
                   <AvatarMenu />
                 </div>
               </div>

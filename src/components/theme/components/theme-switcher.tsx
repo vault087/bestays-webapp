@@ -7,15 +7,15 @@ import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { ClientOnly } from "@/components/utils/client-only";
 import { Toggle } from "@/modules/shadcn";
 
-export function ThemeSwitcher() {
+export function ThemeSwitcher({ className }: { className?: string }) {
   return (
     <ClientOnly>
-      <ThemeSwitcherInner />
+      <ThemeSwitcherInner className={className} />
     </ClientOnly>
   );
 }
 
-export function ThemeSwitcherInner() {
+export function ThemeSwitcherInner({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
   const t = useTranslations("UI.Tooltips.Theme");
 
@@ -56,12 +56,12 @@ export function ThemeSwitcherInner() {
   };
 
   return (
-    <div>
+    <div className={className}>
       <QuickTooltip content={getCurrentThemeTooltip()}>
         <div>
           <Toggle
             variant="outline"
-            className="group data-[state=on]:hover:bg-muted size-9 data-[state=on]:bg-transparent"
+            className="group data-[state=on]:hover:bg-muted size-9 hover:cursor-pointer data-[state=on]:bg-transparent"
             pressed={theme !== "light"}
             onPressedChange={cycleTheme}
             aria-label={getAriaLabel()}

@@ -15,15 +15,15 @@ import {
   DropdownMenuTrigger,
 } from "@/modules/shadcn/components/ui/dropdown-menu";
 
-export default function LocaleSwitcher() {
+export default function LocaleSwitcher({ variant = "icon" }: { variant?: "default" | "icon" }) {
   return (
     <ClientOnly>
-      <LocaleSwitcherInner />
+      <LocaleSwitcherInner variant={variant} />
     </ClientOnly>
   );
 }
 
-function LocaleSwitcherInner() {
+function LocaleSwitcherInner({ variant }: { variant: "default" | "icon" }) {
   const { locales: contextLocales, switchLocale } = useLocalization();
   const currentLocale = useLocale();
   const t = useTranslations("UI.Tooltips");
@@ -41,16 +41,25 @@ function LocaleSwitcherInner() {
         <QuickTooltip content={t("SelectLanguage")}>
           <div>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                aria-label="Select language"
-                className="flex items-center pr-2 hover:cursor-pointer"
-              >
-                <div className="flex items-center space-x-1.5">
-                  <CurrentFlag className="h-3 w-4" aria-hidden="true" />
-                  <span className="text-sm capitalize">{getLanguageName(currentLocale, currentLocale)}</span>
-                </div>
-              </Button>
+              <div>
+                {variant === "default" && (
+                  <Button
+                    variant="ghost"
+                    aria-label="Select language"
+                    className="flex items-center pr-2 hover:cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-1.5">
+                      <CurrentFlag className="h-3 w-4" aria-hidden="true" />
+                      <span className="text-sm capitalize">{getLanguageName(currentLocale, currentLocale)}</span>
+                    </div>
+                  </Button>
+                )}
+                {variant === "icon" && (
+                  <Button variant="outline" aria-label="Select language" className="flex items-center pr-2">
+                    <CurrentFlag className="h-3 w-4" aria-hidden="true" />
+                  </Button>
+                )}
+              </div>
             </DropdownMenuTrigger>
           </div>
         </QuickTooltip>
