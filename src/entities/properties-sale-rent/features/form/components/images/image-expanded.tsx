@@ -41,7 +41,7 @@ export const ImageFieldExpandDialog = memo(function ImageFieldExpandDialog({
           <Expand size={16} className="text-muted-foreground/80" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-[90vw] overflow-y-auto rounded-xl px-8">
         <DialogTitle className="sr-only">{title}</DialogTitle>
         <ExpandedImagesView
           mutableImages={mutableImages}
@@ -171,34 +171,36 @@ export const ExpandedImagesView = memo(function ExpandedImagesView({
       </div>
 
       {/* q-Column Grid Layout */}
-      <div className="grid min-h-[400px] grid-cols-2 gap-6">
+      <div className="flex min-h-[400px] w-full flex-col-reverse gap-0 space-y-4 sm:flex-row sm:space-y-0 md:justify-between">
         {/* Column 2: Other Images Grid */}
-        <div className="space-y-2">
-          <div className="grid max-h-[400px] grid-cols-3 gap-2 overflow-y-auto">
-            {/* Add Images */}
-            {mutableImages.length < maxImages && (
+        {/* <div className="flex w-full items-center justify-center space-y-4 bg-amber-500"> */}
+        <div className="grid h-full w-full gap-2 overflow-y-auto sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+          {/* Add Images */}
+          {mutableImages.length < maxImages && (
+            <div className="flex items-center justify-center">
               <ImageAddButton size="md" remainingCount={remainingCount} onClick={() => fileInputRef.current?.click()} />
-            )}
+            </div>
+          )}
 
-            {otherImages.map((image, index) => (
-              <div key={image.id} className="group relative">
-                <PropertyImage
-                  image={image}
-                  onRemove={() => handleRemoveImage(index + 1)}
-                  isCover={false}
-                  setCover={() => handleSetCover(index + 1)}
-                  size="md"
-                />
-                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-                  <ImageOrderNumber index={index + 1} />
-                </div>
+          {otherImages.map((image, index) => (
+            <div key={image.id} className="group relative flex items-center justify-center">
+              <PropertyImage
+                image={image}
+                onRemove={() => handleRemoveImage(index + 1)}
+                isCover={false}
+                setCover={() => handleSetCover(index + 1)}
+                size="md"
+              />
+              <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                <ImageOrderNumber index={index + 1} />
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+          {/* </div> */}
         </div>
 
         {/* Column 1: Cover Image */}
-        <div className="flex flex-col justify-between space-y-2">
+        <div className="flex flex-col justify-between space-y-2 sm:min-w-sm">
           {coverImage ? (
             <PropertyImage size="lg" image={coverImage} onRemove={() => handleRemoveImage(0)} isCover={true} />
           ) : (
