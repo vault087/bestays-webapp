@@ -1,10 +1,17 @@
 "use client";
 
+import { memo, useMemo, useState } from "react";
 import { FormFieldLayout } from "@/components/form";
 import { FormMultiOption, FormMultiOptionVariant } from "@/components/form/inputs/form-multi-option-input";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
-import { DBPropertyMultiCodeField, useMultiOptionField } from "@/entities/properties-sale-rent/";
+import {
+  DBPropertyMultiCodeField,
+  PropertyLocaleProvider,
+  usePropertyLocale,
+  useMultiOptionField,
+} from "@/entities/properties-sale-rent/";
 // import { FieldDropDownMenu } from "./option-input";
+import { CustomLocaleSwitcher } from "./custom-locale-switcher";
 
 export type MultiOptionFieldProps = {
   className?: string;
@@ -12,29 +19,59 @@ export type MultiOptionFieldProps = {
 };
 
 export function PropertyHighlightsInput({ className, variant }: MultiOptionFieldProps) {
-  return <MultiOptionField variant={variant} field="highlights" className={className} />;
+  return <MultiOptionFieldLocalized variant={variant} field="highlights" className={className} />;
 }
 export function PropertyLocationStrengthsInput({ className, variant }: MultiOptionFieldProps) {
-  return <MultiOptionField variant={variant} field="location_strengths" className={className} />;
+  return <MultiOptionFieldLocalized variant={variant} field="location_strengths" className={className} />;
 }
 export function PropertyLandFeaturesInput({ className, variant }: MultiOptionFieldProps) {
-  return <MultiOptionField variant={variant} field="land_features" className={className} />;
+  return <MultiOptionFieldLocalized variant={variant} field="land_features" className={className} />;
 }
 export function PropertyNearbyAttractionsInput({ className, variant }: MultiOptionFieldProps) {
-  return <MultiOptionField variant={variant} field="nearby_attractions" className={className} />;
+  return <MultiOptionFieldLocalized variant={variant} field="nearby_attractions" className={className} />;
 }
 export function PropertyLandAndConstructionInput({ className, variant }: MultiOptionFieldProps) {
-  return <MultiOptionField variant={variant} field="land_and_construction" className={className} />;
+  return <MultiOptionFieldLocalized variant={variant} field="land_and_construction" className={className} />;
 }
+
+const MultiOptionFieldLocalized = memo(function MultiOptionFieldLocalized({
+  field,
+  className,
+  variant = "checkbox",
+}: {
+  field: DBPropertyMultiCodeField;
+  className?: string;
+  variant?: FormMultiOptionVariant | undefined;
+}) {
+  const locale = usePropertyLocale();
+  const [customLocale, setCustomLocale] = useState(locale);
+
+  const toolbar = useMemo(
+    () => (
+      <FormFieldLayoutToolbar>
+        <CustomLocaleSwitcher locale={locale} customLocale={customLocale} setCustomLocale={setCustomLocale} />{" "}
+      </FormFieldLayoutToolbar>
+    ),
+    [locale, customLocale, setCustomLocale],
+  );
+
+  return (
+    <PropertyLocaleProvider locale={customLocale}>
+      <MultiOptionField field={field} className={className} variant={variant} toolbar={toolbar} />
+    </PropertyLocaleProvider>
+  );
+});
 
 function MultiOptionField({
   field,
   variant = "checkbox",
   className,
+  toolbar,
 }: {
   field: DBPropertyMultiCodeField;
   className?: string;
   variant?: FormMultiOptionVariant | undefined;
+  toolbar?: React.ReactNode;
 }) {
   const {
     inputId,
@@ -57,11 +94,7 @@ function MultiOptionField({
       className={className}
       config={{ focus_ring: true }}
     >
-      <FormFieldLayoutToolbar>
-        <div />
-        {/* <FieldDropDownMenu field={field} /> */}
-      </FormFieldLayoutToolbar>
-
+      {toolbar}
       <FormMultiOption
         isAddingOption={isAddingOption}
         title={title}

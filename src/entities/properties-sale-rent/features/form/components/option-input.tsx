@@ -1,25 +1,11 @@
 "use client";
-import { EllipsisVerticalIcon, SquarePenIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { FormFieldLayout, FormOptionInput, FormOptionVariant } from "@/components/form";
 import { FormFieldLayoutToolbar } from "@/components/form/layout/form-field-layout-toolbar";
-import { DictionaryEntryEditor } from "@/entities/dictionaries/features/form/components/blocks/dictionary-entry-editor";
-import { useDictionaryFormStore } from "@/entities/dictionaries/features/form/store";
 import { getAvailableLocalizedText } from "@/entities/localized-text";
-import { DBPropertyCodeField, DBPropertyMultiCodeField, usePropertyLocale } from "@/entities/properties-sale-rent/";
+import { DBPropertyCodeField, PropertyLocaleProvider, usePropertyLocale } from "@/entities/properties-sale-rent/";
 import { useOptionField } from "@/entities/properties-sale-rent/features/form/hooks/use-option-field";
-import { useDictionaryOptions } from "@/entities/properties-sale-rent/features/form/hooks/utils/use-dictionary-options";
-import {
-  Button,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenu,
-  DropdownMenuGroup,
-  cn,
-} from "@/modules/shadcn";
-import { Dialog, DialogContent, DialogTitle } from "@/modules/shadcn/components/ui/dialog";
+import { CustomLocaleSwitcher } from "./custom-locale-switcher";
 
 export type OptionFieldProps = {
   className?: string;
@@ -27,29 +13,55 @@ export type OptionFieldProps = {
 };
 // Single CodeUncontrolled Input
 export function PropertyAreaInput({ className, variant }: OptionFieldProps) {
-  return <PropertyOptionField variant={variant} field="area" className={className} />;
+  return <PropertyOptionFieldLocalized variant={variant} field="area" className={className} />;
 }
 export function PropertyDivisibleSaleInput({ className, variant }: OptionFieldProps) {
-  return <PropertyOptionField variant={variant} field="divisible_sale" className={className} />;
+  return <PropertyOptionFieldLocalized variant={variant} field="divisible_sale" className={className} />;
 }
 export function PropertyOwnershipTypeInput({ className, variant }: OptionFieldProps) {
-  return <PropertyOptionField variant={variant} field="ownership_type" className={className} />;
+  return <PropertyOptionFieldLocalized variant={variant} field="ownership_type" className={className} />;
 }
 export function PropertyPropertyTypeInput({ className, variant }: OptionFieldProps) {
-  return <PropertyOptionField variant={variant} field="property_type" className={className} />;
+  return <PropertyOptionFieldLocalized variant={variant} field="property_type" className={className} />;
 }
+
+const PropertyOptionFieldLocalized = memo(function PropertyOptionFieldLocalized({
+  field,
+  className,
+  variant = "select",
+}: OptionFieldProps & { field: DBPropertyCodeField }) {
+  const locale = usePropertyLocale();
+  const [customLocale, setCustomLocale] = useState(locale);
+
+  const toolbar = useMemo(
+    () => (
+      <FormFieldLayoutToolbar>
+        <CustomLocaleSwitcher locale={locale} customLocale={customLocale} setCustomLocale={setCustomLocale} />{" "}
+      </FormFieldLayoutToolbar>
+    ),
+    [locale, customLocale, setCustomLocale],
+  );
+
+  return (
+    <PropertyLocaleProvider locale={customLocale}>
+      <PropertyOptionField field={field} className={className} variant={variant} toolbar={toolbar} />
+    </PropertyLocaleProvider>
+  );
+});
 
 export function PropertyOptionField({
   field,
   className,
   variant = "select",
-}: OptionFieldProps & { field: DBPropertyCodeField }) {
+  toolbar,
+}: OptionFieldProps & { field: DBPropertyCodeField; toolbar?: React.ReactNode }) {
   const {
     inputId,
     selectedOption,
     isAddingOption,
     title,
     description,
+    locale,
     options,
     selectOption,
     dictionary,
@@ -59,8 +71,6 @@ export function PropertyOptionField({
     field,
   });
 
-  const locale = usePropertyLocale();
-
   return (
     <FormFieldLayout
       title={title}
@@ -69,11 +79,7 @@ export function PropertyOptionField({
       className={className}
       config={{ focus_ring: true }}
     >
-      <FormFieldLayoutToolbar>
-        <div />
-        {/* <FieldDropDownMenu field={field} /> */}
-      </FormFieldLayoutToolbar>
-
+      {toolbar}
       <FormOptionInput
         inputId={inputId}
         selectedOption={selectedOption}
@@ -82,96 +88,12 @@ export function PropertyOptionField({
         selectOption={selectOption}
         variant={variant}
         addOption={
-          addOption && { ...addOption, label: getAvailableLocalizedText(dictionary?.name, locale).toLocaleLowerCase() }
+          addOption && {
+            ...addOption,
+            label: getAvailableLocalizedText(dictionary?.name, locale).toLocaleLowerCase(),
+          }
         }
       />
     </FormFieldLayout>
-  );
-}
-export const FieldDropDownMenu = memo(function FieldDropDownMenu({
-  field,
-}: {
-  field: DBPropertyCodeField | DBPropertyMultiCodeField;
-}) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const t = useTranslations("Common");
-  const handleEditClick = () => {
-    setDropdownOpen(false);
-    setDialogOpen(true);
-  };
-
-  return (
-    <>
-      <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:text-primary hover:bg-transparent"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <EllipsisVerticalIcon className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-(--radix-dropdown-menu-trigger-width)">
-          <DropdownMenuGroup>
-            <DropdownMenuItem onSelect={handleEditClick}>
-              <SquarePenIcon className="h-4 w-4" />
-              {t("edit")}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <FieldMenuDialog field={field} open={dialogOpen} onOpenChange={setDialogOpen} />
-    </>
-  );
-});
-
-export function FieldMenuDialog({
-  field,
-  open,
-  onOpenChange,
-  className,
-}: {
-  field: DBPropertyCodeField | DBPropertyMultiCodeField;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  className?: string;
-}) {
-  const { dictionary, locale } = useDictionaryOptions({ field });
-  // Get mutable entries from dictionary store instead
-  const entries = useDictionaryFormStore((state) => (dictionary?.id ? state.entries[dictionary.id] : undefined));
-  const [forceClose, setForceClose] = useState(false);
-
-  if (!dictionary || !entries) {
-    return null;
-  }
-
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!newOpen && !forceClose) {
-      // Don't close if there are unsaved changes
-      return;
-    }
-    setForceClose(false);
-    onOpenChange(newOpen);
-  };
-
-  const handleClose = () => {
-    setForceClose(true);
-    onOpenChange(false);
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className={cn("max-w-[90vw] px-12", className)} hideCloseButton>
-        <DialogTitle className="sr-only">Manage {dictionary.name?.[locale] || dictionary.code} Options</DialogTitle>
-        <DictionaryEntryEditor dictionary={dictionary} entries={entries} locale={locale} onClose={handleClose} />
-      </DialogContent>
-    </Dialog>
   );
 }

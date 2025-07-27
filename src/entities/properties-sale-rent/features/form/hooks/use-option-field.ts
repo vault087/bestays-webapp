@@ -19,6 +19,7 @@ export type OptionFieldState = FormSingleOptionProps & {
   description: string | undefined;
   error?: string | undefined;
   dictionary: DBDictionary | undefined;
+  locale: string;
 };
 
 export const useOptionField = ({ field }: { field: DBPropertyCodeField }): OptionFieldState => {
@@ -86,6 +87,7 @@ export const useOptionField = ({ field }: { field: DBPropertyCodeField }): Optio
     selectedOption,
     isAddingOption,
     options,
+    locale,
     selectOption,
     title,
     description,

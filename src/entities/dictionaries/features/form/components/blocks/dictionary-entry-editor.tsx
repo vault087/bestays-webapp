@@ -46,6 +46,8 @@ export const DictionaryEntryEditor = memo(({ dictionary, entries, locale, onClos
   const [isSaving, startSavingTransition] = useTransition();
 
   const [isEditing, setIsEditing] = useState(false);
+  if (!isEditing) {
+  }
 
   const handleAddEntry = useCallback(() => {
     const value = newEntryName.trim();
