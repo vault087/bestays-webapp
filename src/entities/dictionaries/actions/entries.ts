@@ -1,26 +1,24 @@
 "use server";
-import { z } from "zod";
-import { DBDictionaryEntry, DBDictionaryEntrySchema, DICTIONARY_ENTRIES_TABLE } from "@/entities/dictionaries";
+import { DBDictionaryEntry, DICTIONARY_ENTRIES_TABLE } from "@/entities/dictionaries";
+import {
+  DBDictionaryInsertEntry,
+  DBDictionaryInsertEntrySchema,
+  DBEntryResponse,
+} from "@/entities/dictionaries/libs/actions/entries-action.types";
 import { getSupabase } from "@/modules/supabase/clients/server";
 
-export type DBEntryResponse = Promise<{
-  data: DBDictionaryEntry | null;
+export type DBBatchEntryResponse = Promise<{
+  data: DBDictionaryEntry[] | null;
   error: string | null;
 }>;
 
-export const DBDictionaryInsertEntrySchema = DBDictionaryEntrySchema.omit({
-  id: true,
-  created_at: true,
-  updated_at: true,
-});
-export type DBDictionaryInsertEntry = z.infer<typeof DBDictionaryInsertEntrySchema>;
 export async function insertNewEntry(entry: DBDictionaryInsertEntry): DBEntryResponse {
   try {
     const checkedValue = DBDictionaryInsertEntrySchema.parse(entry);
     const supabase = await getSupabase();
-    const { data, error } = await supabase.from(DICTIONARY_ENTRIES_TABLE).insert(checkedValue);
+    const { data, error } = await supabase.from(DICTIONARY_ENTRIES_TABLE).insert(checkedValue).select().limit(1);
     return {
-      data: data,
+      data: data?.[0] || null,
       error: error?.message ?? null,
     };
   } catch (error) {
@@ -32,11 +30,6 @@ export async function insertNewEntry(entry: DBDictionaryInsertEntry): DBEntryRes
     };
   }
 }
-
-export type DBBatchEntryResponse = Promise<{
-  data: DBDictionaryEntry[] | null;
-  error: string | null;
-}>;
 
 export async function updateEntries(entries: DBDictionaryInsertEntry[]): DBBatchEntryResponse {
   try {

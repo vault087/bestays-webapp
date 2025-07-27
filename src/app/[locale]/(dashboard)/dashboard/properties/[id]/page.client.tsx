@@ -186,14 +186,14 @@ const PropertyListCanvas = memo(function PropertyListCanvas({ className }: { cla
         {/* Right Column */}
         <div className="contents w-1/2 flex-col space-y-4 sm:flex">
           <PropertyImagesInput />
-          <div className="grid w-full grid-cols-2 gap-4">
+          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
             <PropertyRentPriceInput />
             <PropertySalePriceInput />
           </div>
           <PropertyAboutInput />
           <PropertyPersonalNotesInput />
         </div>
-        <ReactiveDebugCard />
+        {/* <ReactiveDebugCard /> */}
       </div>
       {/* </div> */}
     </div>

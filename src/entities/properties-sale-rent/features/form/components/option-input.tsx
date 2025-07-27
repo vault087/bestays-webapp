@@ -145,23 +145,31 @@ export function FieldMenuDialog({
   const { dictionary, locale } = useDictionaryOptions({ field });
   // Get mutable entries from dictionary store instead
   const entries = useDictionaryFormStore((state) => (dictionary?.id ? state.entries[dictionary.id] : undefined));
+  const [forceClose, setForceClose] = useState(false);
 
   if (!dictionary || !entries) {
     return null;
   }
 
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen && !forceClose) {
+      // Don't close if there are unsaved changes
+      return;
+    }
+    setForceClose(false);
+    onOpenChange(newOpen);
+  };
+
+  const handleClose = () => {
+    setForceClose(true);
+    onOpenChange(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("max-w-[90vw] px-12", className)}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent className={cn("max-w-[90vw] px-12", className)} hideCloseButton>
         <DialogTitle className="sr-only">Manage {dictionary.name?.[locale] || dictionary.code} Options</DialogTitle>
-        <DictionaryEntryEditor
-          dictionary={dictionary}
-          entries={entries}
-          locale={locale}
-          onClose={() => {
-            onOpenChange(false);
-          }}
-        />
+        <DictionaryEntryEditor dictionary={dictionary} entries={entries} locale={locale} onClose={handleClose} />
       </DialogContent>
     </Dialog>
   );

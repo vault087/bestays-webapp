@@ -1,12 +1,13 @@
 "use client";
 
-import { SearchIcon, Plus, CircleAlertIcon, TrashIcon } from "lucide-react";
+import { SearchIcon, Plus, CircleAlertIcon, TrashIcon, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useCallback, useMemo, useId, useTransition } from "react";
+import { useState, useCallback, useMemo, useTransition } from "react";
 import { DBSerialID } from "@/entities/common";
-import { DBDictionary, useDictionaryFormStoreActions, MutableEntry } from "@/entities/dictionaries";
+import { DBDictionary, useDictionaryFormStoreActions, MutableEntry, DBDictionaryEntry } from "@/entities/dictionaries";
+import { insertNewEntry, updateEntries } from "@/entities/dictionaries/actions/entries";
 import { DictionaryEntryNameInput } from "@/entities/dictionaries/features/form/components/entry-name";
-import { insertNewEntry } from "@/entities/dictionaries/libs/actions/entries";
+import { DBEntriesResponse } from "@/entities/dictionaries/libs";
 import { DBDictionaryInsertEntry } from "@/entities/dictionaries/libs/actions/entries-action.types";
 import { getAvailableLocalizedText } from "@/entities/localized-text/utils/get-available-localized-text";
 import { Button } from "@/modules/shadcn/components/ui/button";
@@ -20,7 +21,6 @@ import {
   DialogClose,
 } from "@/modules/shadcn/components/ui/dialog";
 import { Input } from "@/modules/shadcn/components/ui/input";
-import { Label } from "@/modules/shadcn/components/ui/label";
 
 interface DictionaryEntryEditorProps {
   dictionary: DBDictionary;
@@ -36,22 +36,14 @@ interface DeleteConfirmationDialogProps {
 }
 
 function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirmationDialogProps) {
-  const id = useId();
-  const [inputValue, setInputValue] = useState("");
   const t = useTranslations("Dictionaries.entries.editor.delete_confirmation");
 
-  const isConfirmEnabled = inputValue.toLowerCase() === "delete";
-
   const handleConfirm = useCallback(() => {
-    if (isConfirmEnabled) {
-      onConfirm();
-      setInputValue("");
-      onClose();
-    }
-  }, [isConfirmEnabled, onConfirm, onClose]);
+    onConfirm();
+    onClose();
+  }, [onConfirm, onClose]);
 
   const handleClose = useCallback(() => {
-    setInputValue("");
     onClose();
   }, [onClose]);
 
@@ -69,29 +61,13 @@ function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirma
         </div>
 
         <form className="space-y-5">
-          <div className="*:not-first:mt-2">
-            <Label htmlFor={id}>{t("description")}</Label>
-            <Input
-              id={id}
-              type="text"
-              placeholder={t("input_placeholder")}
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline" className="flex-1">
                 {t("cancel")}
               </Button>
             </DialogClose>
-            <Button
-              type="button"
-              variant="destructive"
-              className="flex-1"
-              disabled={!isConfirmEnabled}
-              onClick={handleConfirm}
-            >
+            <Button type="button" variant="destructive" className="flex-1" onClick={handleConfirm}>
               {t("delete")}
             </Button>
           </DialogFooter>
@@ -101,10 +77,11 @@ function DeleteConfirmationDialog({ isOpen, onClose, onConfirm }: DeleteConfirma
   );
 }
 
-export function DictionaryEntryEditor({ dictionary, entries, locale }: DictionaryEntryEditorProps) {
+export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: DictionaryEntryEditorProps) {
   const [newEntryName, setNewEntryName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteDialogEntry, setDeleteDialogEntry] = useState<MutableEntry | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const { addEntry, deleteEntry } = useDictionaryFormStoreActions();
   const t = useTranslations("Dictionaries.entries.editor");
@@ -130,12 +107,14 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
   const handleAddEntry = useCallback(() => {
     const value = newEntryName.trim();
     if (!dictionaryId || !value) return;
+    console.log("handleAddEntry", newEntryName);
 
     const insertingEntry: DBDictionaryInsertEntry = {
       dictionary_id: dictionaryId,
       name: { [locale]: newEntryName.trim() },
       is_active: true,
     };
+    console.log("insertingEntry", insertingEntry);
     startTransition(async () => {
       const response = await insertNewEntry(insertingEntry);
       if (response.error) {
@@ -164,6 +143,41 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
   const handleCloseDeleteDialog = useCallback(() => {
     setDeleteDialogEntry(null);
   }, []);
+
+  const [initialEntries] = useState(Object.values(entries) as DBDictionaryEntry[]);
+
+  const handleSave = useCallback(async () => {
+    setIsSaving(true);
+    try {
+      const hasChanged = checkEntriesChanged(initialEntries, Object.values(entries) as DBDictionaryEntry[]);
+      if (!hasChanged) {
+        onClose();
+        return;
+      }
+      // Convert entries to the format needed for batch update
+      const entriesToUpdate: DBDictionaryInsertEntry[] = Object.values(entries).map((entry) => ({
+        id: entry.id,
+        dictionary_id: entry.dictionary_id,
+        name: entry.name,
+        is_active: entry.is_active,
+      }));
+
+      const response = await updateEntries(entriesToUpdate);
+      if (response.error) {
+        console.error("Batch update error:", response.error);
+        // You might want to show an error toast here
+        return;
+      }
+
+      // Close the dialog on successful save
+      onClose();
+    } catch (error) {
+      console.error("Failed to save entries:", error);
+      // You might want to show an error toast here
+    } finally {
+      setIsSaving(false);
+    }
+  }, [entries, onClose, initialEntries]);
 
   const title = t("dialog_title", {
     dictionaryName: getAvailableLocalizedText(dictionary.name, locale),
@@ -248,12 +262,62 @@ export function DictionaryEntryEditor({ dictionary, entries, locale }: Dictionar
         </div>
       </div>
 
+      {/* Save button in dialog footer */}
+      <DialogFooter className="mt-4">
+        <Button type="button" onClick={handleSave} disabled={isSaving} className="min-w-[80px]">
+          {isSaving ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {tCommon("saving")}
+            </>
+          ) : (
+            tCommon("done")
+          )}
+        </Button>
+      </DialogFooter>
+
       {/* Delete confirmation dialog */}
       <DeleteConfirmationDialog
         isOpen={!!deleteDialogEntry}
         onClose={handleCloseDeleteDialog}
         onConfirm={handleConfirmDelete}
       />
+
+      {/* Unsaved changes dialog */}
+      {/* <UnsavedChangesDialog isOpen={showUnsavedDialog} onClose={handleCancelClose} onConfirm={handleConfirmClose} /> */}
     </>
   );
+}
+
+function checkEntriesChanged(initial: DBDictionaryEntry[] | undefined, current: DBDictionaryEntry[]): boolean {
+  if (!initial) return true;
+  if (!current) return true;
+  if (initial.length !== current.length) return true;
+  return initial.some((entry, index) => checkEntryChanged(entry, current[index]));
+}
+
+function checkEntryChanged(initial: DBDictionaryEntry | undefined, current: DBDictionaryEntry): boolean {
+  if (!initial) return true;
+
+  const initialComparable = { ...initial };
+  const currentComparable = { ...current };
+
+  return shallowDiff(initialComparable, currentComparable);
+}
+
+function shallowDiff(obj1: Record<string, unknown>, obj2: Record<string, unknown>): boolean {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) {
+    return true;
+  }
+
+  for (const key of keys1) {
+    if (obj1[key] !== obj2[key]) {
+      return true;
+    }
+  }
+
+  return false;
 }

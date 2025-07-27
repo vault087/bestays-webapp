@@ -72,7 +72,7 @@ export const FormPriceInput = memo(function FormPriceInput({
     <div
       className={cn("relative flex", "text-muted-foreground", disabled && "pointer-events-none opacity-50", className)}
     >
-      <div className="flex flex-col">
+      <div className="flex w-full flex-col">
         {/* Outside Border Area */}
         <div className="flex">
           {/* Inside Border Area */}

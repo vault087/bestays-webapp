@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { QuickTooltip } from "@/components/ui/quick-tooltip";
 import { ClientOnly } from "@/components/utils/client-only";
@@ -57,6 +57,7 @@ function LocaleSwitcherInner({ variant }: { variant: "default" | "icon" }) {
                 {variant === "icon" && (
                   <Button variant="outline" aria-label="Select language" className="flex items-center pr-2">
                     <CurrentFlag className="h-3 w-4" aria-hidden="true" />
+                    <ChevronDownIcon size={16} className="opacity-60" aria-hidden="true" />
                   </Button>
                 )}
               </div>
