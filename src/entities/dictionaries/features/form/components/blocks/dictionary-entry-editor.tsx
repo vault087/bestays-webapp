@@ -218,10 +218,13 @@ export function DictionaryEntryEditor({ dictionary, entries, locale, onClose }: 
               {tCommon("not_found")}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-0">
+            <div className="grid grid-cols-1 gap-0 sm:grid-cols-2">
               {filteredEntries.map((entry) => (
-                <div key={entry.id} className="flex items-center space-x-2 rounded-sm odd:pr-4">
-                  <div className="min-w-0 flex-1 rounded-b-none border-b-1">
+                <div
+                  key={entry.id}
+                  className="flex w-full items-center justify-between space-x-2 rounded-sm sm:odd:pr-4"
+                >
+                  <div className="w-full min-w-0 rounded-b-none border-b-1">
                     <DictionaryEntryNameInput
                       placeholder={getAvailableLocalizedText(entry.name, locale)}
                       dictionaryId={dictionary.id}
