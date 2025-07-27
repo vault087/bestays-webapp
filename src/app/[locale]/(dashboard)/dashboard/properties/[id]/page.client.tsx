@@ -92,11 +92,12 @@ export default function PropertiesPageClient({
                 <div className="flex flex-row justify-start space-x-2">
                   {/* Back Button */}
                   {/* <div className=""> */}
-                  <div className="flex h-full items-center gap-2 hover:cursor-pointer" onClick={handleBackNavigation}>
-                    <Button variant="ghost" size="icon">
-                      <ArrowLeftIcon className="!h-6 !w-6" />
-                    </Button>
-                    {/* </div> */}
+                  <div className="flex items-center gap-2 hover:cursor-pointer" onClick={handleBackNavigation}>
+                    <div className="flex h-full items-center justify-center">
+                      <Button variant="ghost" size="icon">
+                        <ArrowLeftIcon className="!h-6 !w-6" />
+                      </Button>
+                    </div>
                   </div>
                   {/* Text Input */}
                   {/* {!isMobile && ( */}
