@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import LocaleLayout from "@/components/layout/root-layout";
 
@@ -16,6 +17,7 @@ export default async function RootLayout({
   return (
     <LocaleLayout params={params}>
       <main>{children}</main>
+      <Analytics />
     </LocaleLayout>
   );
 }

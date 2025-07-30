@@ -35,7 +35,7 @@ const Logo = () => {
   );
 };
 
-export default function DashboardNavBar() {
+export default function PropertyEditNavBar() {
   const t = useTranslations("Dashboard.NavBar");
 
   const pathname = usePathname();
